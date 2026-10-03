@@ -15,7 +15,9 @@ background-blur = 30
 window-padding-x = 22
 window-padding-y = 18
 window-padding-balance = true
-macos-titlebar-style = hidden
+macos-titlebar-style = transparent
+# Красная кнопка (или cmd-w) на последнем окне закрывает Ghostty полностью
+quit-after-last-window-closed = true
 window-save-state = always
 unfocused-split-opacity = 0.85
 unfocused-split-fill = #191724
