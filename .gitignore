@@ -1,0 +1,3 @@
+.claude/
+*.pre-clean
+.DS_Store
