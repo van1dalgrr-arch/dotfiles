@@ -330,9 +330,11 @@ fkill() {
 }
 
 # gco — переключить ветку через fzf, в превью последние коммиты
+# (заменяет алиас gco из oh-my-zsh; gco main — сразу, если ветка одна)
+unalias gco 2>/dev/null
 gco() {
     local b=$(git branch --all --sort=-committerdate --format='%(refname:short)' | grep -v HEAD | \
-        fzf --query="$1" --header="ветка" --preview 'git log --oneline --graph --color=always -15 {}')
+        fzf --query="$1" --select-1 --header="ветка" --preview 'git log --oneline --graph --color=always -15 {}')
     [ -n "$b" ] && git switch "${b#origin/}"
 }
 
