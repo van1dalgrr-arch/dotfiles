@@ -1,0 +1,168 @@
+#!/bin/bash
+# ============================================================
+#   SketchyBar — Rosé Pine, «парящие таблетки» над AeroSpace
+#   Перезапуск: sketchybar --reload
+# ============================================================
+
+source "$CONFIG_DIR/colors.sh"
+PLUGINS="$CONFIG_DIR/plugins"
+FONT="JetBrainsMono Nerd Font"
+APP_FONT="sketchybar-app-font:Regular:15.0"
+
+# Ghostty с командой внутри (для кликов по виджетам)
+export TERM_RUN="open -na Ghostty --args -e"
+
+sketchybar --bar position=top \
+                 height=32 \
+                 margin=10 \
+                 y_offset=6 \
+                 color=$TRANSPARENT \
+                 shadow=off \
+                 sticky=on \
+                 padding_left=0 \
+                 padding_right=0 \
+                 notch_width=200
+
+sketchybar --default updates=when_shown \
+                     icon.font="$FONT:Bold:14.0" \
+                     icon.color=$TEXT \
+                     label.font="$FONT:Bold:12.5" \
+                     label.color=$TEXT \
+                     padding_left=2 \
+                     padding_right=2 \
+                     icon.padding_left=8 \
+                     icon.padding_right=4 \
+                     label.padding_left=2 \
+                     label.padding_right=8 \
+                     background.height=24 \
+                     background.corner_radius=8 \
+                     popup.background.color=$PILL_BG \
+                     popup.background.border_color=$IRIS \
+                     popup.background.border_width=2 \
+                     popup.background.corner_radius=10 \
+                     popup.blur_radius=30 \
+                     popup.y_offset=6
+
+# События от AeroSpace (см. aerospace.toml)
+sketchybar --add event aerospace_workspace_change \
+           --add event aerospace_mode_change
+
+# ─────────────────────────── ЛЕВО ───────────────────────────
+
+# Яблоко: клик — меню
+sketchybar --add item apple left \
+           --set apple icon=󰀵 \
+                       icon.font="$FONT:Regular:17.0" \
+                       icon.color=$IRIS \
+                       icon.padding_left=12 \
+                       icon.padding_right=8 \
+                       label.drawing=off \
+                       click_script="sketchybar --set apple popup.drawing=toggle"
+
+apple_menu() { # name icon label command
+    sketchybar --add item "apple.$1" popup.apple \
+               --set "apple.$1" icon="$2" label="$3" icon.color=$ROSE \
+                     padding_left=6 padding_right=10 \
+                     click_script="$4; sketchybar --set apple popup.drawing=off"
+}
+apple_menu settings 󰒓 "Настройки"     "open -b com.apple.systempreferences"
+apple_menu monitor  󰍛 "Мониторинг"    "$TERM_RUN btop"
+apple_menu docker   󰡨 "lazydocker"    "$TERM_RUN lazydocker"
+apple_menu reload   󰑓 "Перезапуск UI" "aerospace reload-config; sketchybar --reload"
+apple_menu lock     󰌾 "Заблокировать" "pmset displaysleepnow"
+
+# Рабочие столы AeroSpace: номер + иконки окон, пустые скрыты
+for sid in $(aerospace list-workspaces --all); do
+    sketchybar --add item "space.$sid" left \
+               --set "space.$sid" icon="$sid" \
+                     icon.font="$FONT:ExtraBold:13.0" \
+                     icon.padding_left=9 \
+                     icon.padding_right=4 \
+                     label.font="$APP_FONT" \
+                     label.padding_right=9 \
+                     label.y_offset=-1 \
+                     background.color=$TRANSPARENT \
+                     padding_left=1 padding_right=1 \
+                     drawing=off \
+                     click_script="aerospace workspace $sid"
+done
+
+# Невидимый «наблюдатель» перерисовывает все столы разом
+sketchybar --add item spaces_watch left \
+           --set spaces_watch drawing=off updates=on script="$PLUGINS/spaces.sh" \
+           --subscribe spaces_watch aerospace_workspace_change front_app_switched \
+                                   space_windows_change system_woke display_change
+
+sketchybar --add bracket left_pill apple '/space\..*/' \
+           --set left_pill background.color=$PILL_BG \
+                           background.border_color=$PILL_BORDER \
+                           background.border_width=1 \
+                           background.corner_radius=11 \
+                           background.height=32
+
+# Режим AeroSpace (resize / service) — появляется только когда включён
+sketchybar --add item mode left \
+           --set mode drawing=off updates=on \
+                      icon=󰩨 icon.color=$BASE label.color=$BASE \
+                      background.color=$GOLD background.height=28 background.corner_radius=10 \
+                      padding_left=8 \
+                      script="$PLUGINS/mode.sh" \
+           --subscribe mode aerospace_mode_change
+
+# Активное приложение
+sketchybar --add item front_app left \
+           --set front_app icon.font="$APP_FONT" \
+                           icon.color=$ROSE \
+                           icon.padding_left=12 \
+                           label.color=$SUBTLE \
+                           label.padding_right=12 \
+                           padding_left=8 \
+                           background.color=$PILL_BG \
+                           background.border_color=$PILL_BORDER \
+                           background.border_width=1 \
+                           background.corner_radius=11 \
+                           background.height=32 \
+                           script="$PLUGINS/front_app.sh" \
+           --subscribe front_app front_app_switched
+
+# ─────────────────────────── ПРАВО ──────────────────────────
+# (добавляются справа налево)
+
+sketchybar --add item clock right \
+           --set clock update_freq=15 \
+                       icon=󰃰 icon.color=$BASE \
+                       label.color=$BASE \
+                       background.color=$IRIS \
+                       background.corner_radius=11 \
+                       background.height=32 \
+                       icon.padding_left=12 label.padding_right=12 \
+                       padding_left=8 \
+                       script="$PLUGINS/clock.sh" \
+                       click_script="open -a Calendar" \
+           --subscribe clock system_woke
+
+sketchybar --add item battery right \
+           --set battery update_freq=60 script="$PLUGINS/battery.sh" \
+           --subscribe battery power_source_change system_woke
+
+sketchybar --add item volume right \
+           --set volume icon.color=$FOAM script="$PLUGINS/volume.sh" \
+                        click_script="osascript -e 'set volume output muted not (output muted of (get volume settings))'" \
+           --subscribe volume volume_change
+
+sketchybar --add item cpu right \
+           --set cpu update_freq=4 icon=󰻠 icon.color=$ROSE script="$PLUGINS/cpu.sh" \
+                     click_script="$TERM_RUN btop"
+
+sketchybar --add item docker right \
+           --set docker update_freq=20 icon=󰡨 icon.color=$PINE drawing=off script="$PLUGINS/docker.sh" \
+                        click_script="$TERM_RUN lazydocker"
+
+sketchybar --add bracket status docker cpu volume battery \
+           --set status background.color=$PILL_BG \
+                        background.border_color=$PILL_BORDER \
+                        background.border_width=1 \
+                        background.corner_radius=11 \
+                        background.height=32
+
+sketchybar --update

@@ -8,7 +8,7 @@
 # ────────────────────────────────────────────────────────────
 
 export PATH="/opt/homebrew/bin:$PATH"
-export PATH="$PATH:$(go env GOPATH)/bin"
+export PATH="$PATH:${GOPATH:-$HOME/go}/bin"   # без вызова `go env` — быстрее старт
 
 # ────────────────────────────────────────────────────────────
 # OH MY ZSH
@@ -142,13 +142,19 @@ alias dcd="docker compose down"
 alias dcl="docker compose logs -f"
 alias dprune="docker system prune -f"
 alias lzd="lazydocker"
+alias dcup='docker compose --env-file .env -f deploy/docker-compose.yml up --build'
 
 # ────────────────────────────────────────────────────────────
 # KUBERNETES
 # ────────────────────────────────────────────────────────────
 
 alias k="kubectl"
-source <(kubectl completion zsh)
+# Дополнение kubectl кэшируется и пересобирается только после обновления kubectl
+_kc="$HOME/.cache/zsh/kubectl.zsh"
+if [[ ! -s $_kc || $commands[kubectl] -nt $_kc ]]; then
+    mkdir -p "${_kc:h}" && kubectl completion zsh >| "$_kc"
+fi
+source "$_kc"; unset _kc
 
 # ────────────────────────────────────────────────────────────
 # PYTHON (uv)
@@ -185,8 +191,8 @@ alias mv="mv -i"
 
 HISTFILE="$HOME/.zsh_history"
 
-HISTSIZE=10000
-SAVEHIST=10000
+HISTSIZE=100000
+SAVEHIST=100000
 
 setopt APPEND_HISTORY
 setopt SHARE_HISTORY
@@ -316,7 +322,35 @@ GO
     go mod tidy && git init -q && echo "готово: запусти air → http://localhost:8080/ping"
 }
 
+# fkill — выбрать процесс(ы) через fzf и убить (Tab — несколько)
+fkill() {
+    local pids=$(ps -axo pid,%cpu,%mem,comm | sed 1d | \
+        fzf -m --header="убить процесс · tab — несколько" --query="$1" | awk '{print $1}')
+    [ -n "$pids" ] && echo "$pids" | xargs kill -${2:-15} && echo "убито: $(echo $pids | tr '\n' ' ')"
+}
+
+# gco — переключить ветку через fzf, в превью последние коммиты
+gco() {
+    local b=$(git branch --all --sort=-committerdate --format='%(refname:short)' | grep -v HEAD | \
+        fzf --query="$1" --header="ветка" --preview 'git log --oneline --graph --color=always -15 {}')
+    [ -n "$b" ] && git switch "${b#origin/}"
+}
+
+# port 8080 — кто слушает порт
+port() { lsof -nP -iTCP:"$1" -sTCP:LISTEN; }
+
+# serve — раздать текущую папку по http (serve 9000)
+serve() { echo "→ http://localhost:${1:-8000}"; python3 -m http.server "${1:-8000}"; }
+
+# weather — погода (weather Moscow)
+weather() { curl -s "wttr.in/${1}?lang=ru&F" ; }
+
+# ────────────────────────────────────────────────────────────
+# ШПАРГАЛКА: ? или Ctrl+/
+# ────────────────────────────────────────────────────────────
+
+source "$HOME/dotfiles/zsh/cheatsheet.zsh"
+
 # ============================================================
 #                         END
 # ============================================================
-alias dcup='docker compose --env-file .env -f deploy/docker-compose.yml up --build'
