@@ -20,6 +20,7 @@ ZSH_THEME=""
 
 plugins=(
     git
+    fzf-tab
 )
 
 source "$ZSH/oh-my-zsh.sh"
@@ -57,6 +58,18 @@ export FZF_ALT_C_OPTS="--preview 'eza --tree --level=2 --icons --color=always {}
 eval "$(zoxide init zsh)"
 
 # ────────────────────────────────────────────────────────────
+# FZF-TAB (Tab → меню с превью) / ATUIN (Ctrl+R → история)
+# ────────────────────────────────────────────────────────────
+
+zstyle ':fzf-tab:*' fzf-flags --height=50% --border=rounded
+zstyle ':fzf-tab:*' switch-group '<' '>'
+zstyle ':fzf-tab:complete:cd:*' fzf-preview 'eza -1 --icons --color=always $realpath'
+zstyle ':fzf-tab:complete:z:*' fzf-preview 'eza -1 --icons --color=always $realpath'
+zstyle ':fzf-tab:complete:(cat|bat|nvim|code):*' fzf-preview 'bat --color=always --line-range=:100 $realpath 2>/dev/null || eza -1 --icons --color=always $realpath'
+
+eval "$(atuin init zsh --disable-up-arrow)"
+
+# ────────────────────────────────────────────────────────────
 # MODERN CLI
 # ────────────────────────────────────────────────────────────
 
@@ -91,6 +104,10 @@ alias got="go test ./..."
 alias gotv="go test -v ./..."
 alias gof="gofmt -w ."
 alias gom="go mod tidy"
+alias gol="golangci-lint run ./..."
+alias gotc="go test -cover ./..."
+alias gorun="air"   # hot-reload (air init — создать .air.toml)
+alias gdbg="dlv debug ."
 
 # ────────────────────────────────────────────────────────────
 # GIT
@@ -120,6 +137,31 @@ alias dps="docker ps"
 alias dpa="docker ps -a"
 alias di="docker images"
 alias dex="docker exec -it"
+alias dcu="docker compose up -d"
+alias dcd="docker compose down"
+alias dcl="docker compose logs -f"
+alias dprune="docker system prune -f"
+alias lzd="lazydocker"
+
+# ────────────────────────────────────────────────────────────
+# KUBERNETES
+# ────────────────────────────────────────────────────────────
+
+alias k="kubectl"
+source <(kubectl completion zsh)
+
+# ────────────────────────────────────────────────────────────
+# PYTHON (uv)
+# ────────────────────────────────────────────────────────────
+
+alias py="python3"
+alias venv="uv venv && source .venv/bin/activate"
+
+# ────────────────────────────────────────────────────────────
+# DIRENV (.envrc в папке проекта)
+# ────────────────────────────────────────────────────────────
+
+eval "$(direnv hook zsh)"
 
 # ────────────────────────────────────────────────────────────
 # SYSTEM
@@ -206,6 +248,63 @@ ZSH_HIGHLIGHT_STYLES[bracket-level-1]='fg=#89b4fa'
 ZSH_HIGHLIGHT_STYLES[bracket-level-2]='fg=#cba6f7'
 ZSH_HIGHLIGHT_STYLES[bracket-level-3]='fg=#94e2d5'
 ZSH_HIGHLIGHT_STYLES[bracket-error]='fg=#f38ba8'
+
+# ────────────────────────────────────────────────────────────
+# ФУНКЦИИ
+# ────────────────────────────────────────────────────────────
+
+# yazi: при выходе остаёмся в папке, где закрыли
+y() {
+    local tmp="$(mktemp -t yazi-cwd.XXXXXX)" cwd
+    yazi "$@" --cwd-file="$tmp"
+    cwd="$(command cat -- "$tmp")" && [ -n "$cwd" ] && [ "$cwd" != "$PWD" ] && cd -- "$cwd"
+    rm -f -- "$tmp"
+}
+
+mkcd() { mkdir -p "$1" && cd "$1"; }
+
+# killport 8080 — убить процесс на порту
+killport() { lsof -ti tcp:"$1" | xargs kill -9 2>/dev/null && echo "порт $1 свободен" || echo "на порту $1 ничего нет"; }
+
+# dsh — зайти в контейнер, выбрав его через fzf
+dsh() {
+    local c=$(docker ps --format '{{.Names}}\t{{.Image}}\t{{.Status}}' | fzf --header="контейнер" | cut -f1)
+    [ -n "$c" ] && docker exec -it "$c" sh -c '[ -x /bin/bash ] && exec bash || exec sh'
+}
+
+# dlogs — логи контейнера через fzf
+dlogs() {
+    local c=$(docker ps --format '{{.Names}}' | fzf --header="логи")
+    [ -n "$c" ] && docker logs -f --tail 200 "$c"
+}
+
+# gonew myapi — новый проект на Gin с air и git
+gonew() {
+    [ -z "$1" ] && { echo "usage: gonew <name>"; return 1; }
+    mkdir -p "$1" && cd "$1" || return
+    go mod init "$1" && go get github.com/gin-gonic/gin
+    mkdir -p cmd/api internal
+    command cat > cmd/api/main.go <<'GO'
+package main
+
+import (
+	"net/http"
+
+	"github.com/gin-gonic/gin"
+)
+
+func main() {
+	r := gin.Default()
+	r.GET("/ping", func(c *gin.Context) {
+		c.JSON(http.StatusOK, gin.H{"message": "pong"})
+	})
+	r.Run(":8080")
+}
+GO
+    air init >/dev/null && sed -i '' 's|cmd = "go build -o ./tmp/main ."|cmd = "go build -o ./tmp/main ./cmd/api"|' .air.toml
+    printf "tmp/\nbin/\n.env\n" > .gitignore
+    go mod tidy && git init -q && echo "готово: запусти air → http://localhost:8080/ping"
+}
 
 # ============================================================
 #                         END

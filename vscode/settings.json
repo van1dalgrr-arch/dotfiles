@@ -1,0 +1,347 @@
+{
+  // ============================================================
+  //   VS Code — Go (Gin) / Docker / Python
+  //   ~/dotfiles/vscode/settings.json
+  // ============================================================
+
+  // ────────────────────────────────────────────────────────────
+  //  ВНЕШНИЙ ВИД
+  // ────────────────────────────────────────────────────────────
+
+  // В стиле терминала. Вернуть старую: "Andromeda Colorizer"
+  "workbench.colorTheme": "Catppuccin Mocha",
+  "workbench.iconTheme": "catppuccin-mocha",
+  "workbench.productIconTheme": "material-product-icons",
+  "catppuccin.accentColor": "mauve",
+  "catppuccin.italicComments": true,
+
+  "window.titleBarStyle": "custom",
+  "window.commandCenter": true,
+  "window.title": "${rootName}${separator}${activeEditorShort}${dirty}",
+
+  "workbench.startupEditor": "none",
+  "workbench.tips.enabled": false,
+  "workbench.list.smoothScrolling": true,
+  "workbench.tree.indent": 14,
+  "workbench.tree.renderIndentGuides": "always",
+  "workbench.editor.enablePreview": false,
+  "workbench.editor.highlightModifiedTabs": true,
+  "workbench.editor.tabSizing": "shrink",
+  "workbench.editor.limit.enabled": true,
+  "workbench.editor.limit.value": 10,
+  "workbench.editor.empty.hint": "hidden",
+  "breadcrumbs.enabled": true,
+  "problems.showCurrentInStatus": true,
+
+  // ────────────────────────────────────────────────────────────
+  //  РЕДАКТОР
+  // ────────────────────────────────────────────────────────────
+
+  "editor.fontFamily": "'JetBrainsMono Nerd Font', 'JetBrains Mono', monospace",
+  "editor.fontSize": 15,
+  "editor.lineHeight": 1.6,
+  "editor.fontLigatures": true,
+  "editor.padding.top": 8,
+
+  "editor.cursorStyle": "line",
+  "editor.cursorWidth": 2,
+  "editor.cursorBlinking": "expand",
+  "editor.cursorSmoothCaretAnimation": "on",
+  "editor.cursorSurroundingLines": 8,
+  "editor.smoothScrolling": true,
+
+  "editor.tabSize": 4,
+  "editor.detectIndentation": true,
+  "editor.rulers": [{ "column": 120, "color": "#313244" }],
+  "editor.renderWhitespace": "boundary",
+  "editor.renderLineHighlight": "all",
+  "editor.minimap.enabled": true,
+  "editor.minimap.renderCharacters": false,
+  "editor.minimap.showSlider": "mouseover",
+  "editor.bracketPairColorization.enabled": true,
+  "editor.guides.bracketPairs": "active",
+  "editor.stickyScroll.enabled": true,
+  "editor.linkedEditing": true,
+  "editor.foldingImportsByDefault": true,
+  "editor.showFoldingControls": "mouseover",
+  "editor.unicodeHighlight.allowedLocales": { "ru": true },
+
+  "editor.inlayHints.enabled": "onUnlessPressed",
+  "editor.inlayHints.fontSize": 12,
+  "editor.hover.delay": 300,
+  "editor.hover.sticky": true,
+  "editor.suggestSelection": "first",
+  "editor.acceptSuggestionOnEnter": "smart",
+  "editor.suggest.preview": true,
+  "editor.suggest.snippetsPreventQuickSuggestions": false,
+  "editor.gotoLocation.multipleReferences": "peek",
+
+  "editor.formatOnSave": true,
+  "editor.formatOnPaste": false,
+  "editor.codeActionsOnSave": {
+    "source.organizeImports": "explicit"
+  },
+
+  // ────────────────────────────────────────────────────────────
+  //  ФАЙЛЫ / ПРОВОДНИК / ПОИСК
+  // ────────────────────────────────────────────────────────────
+
+  "files.autoSave": "onFocusChange",
+  "files.eol": "\n",
+  "files.insertFinalNewline": true,
+  "files.trimFinalNewlines": true,
+  "files.trimTrailingWhitespace": true,
+  "files.exclude": {
+    "**/.git": true,
+    "**/.DS_Store": true,
+    "**/__pycache__": true,
+    "**/.pytest_cache": true,
+    "**/.ruff_cache": true
+  },
+  "files.watcherExclude": {
+    "**/.git/objects/**": true,
+    "**/vendor/**": true,
+    "**/tmp/**": true,
+    "**/.venv/**": true
+  },
+  "files.associations": {
+    ".env*": "dotenv",
+    ".air.toml": "toml",
+    "Dockerfile.*": "dockerfile",
+    "docker-compose*.yml": "dockercompose",
+    "compose*.yml": "dockercompose",
+    "*.tmpl": "gotmpl"
+  },
+  "files.readonlyInclude": {
+    "**/go/pkg/mod/**": true
+  },
+
+  "explorer.compactFolders": false,
+  "explorer.confirmDelete": false,
+  "explorer.confirmDragAndDrop": false,
+  "explorer.sortOrder": "foldersNestsFiles",
+  "explorer.fileNesting.enabled": true,
+  "explorer.fileNesting.patterns": {
+    "go.mod": "go.sum, go.work, go.work.sum",
+    "*.go": "${capture}_test.go",
+    "Dockerfile": "Dockerfile.*, .dockerignore",
+    "docker-compose.yml": "docker-compose.*.yml",
+    ".env": ".env.*, .envrc",
+    "pyproject.toml": "uv.lock, .python-version, requirements*.txt",
+    ".gitignore": ".gitattributes, .editorconfig, .golangci.yml, .air.toml"
+  },
+
+  "search.exclude": {
+    "**/vendor": true,
+    "**/tmp": true,
+    "**/bin": true,
+    "**/.venv": true,
+    "**/go.sum": true,
+    "**/uv.lock": true
+  },
+  "search.smartCase": true,
+
+  // ────────────────────────────────────────────────────────────
+  //  GO
+  // ────────────────────────────────────────────────────────────
+
+  "go.useLanguageServer": true,
+  "go.toolsManagement.autoUpdate": true,
+  "go.lintTool": "golangci-lint",
+  "go.lintFlags": ["--fast"],
+  "go.lintOnSave": "package",
+  "go.showWelcome": false,
+  "go.survey.prompt": false,
+  "go.addTags": {
+    "tags": "json",
+    "options": "json=omitempty",
+    "promptForTags": false,
+    "transform": "snakecase"
+  },
+  "go.testFlags": ["-v", "-race", "-count=1"],
+  "go.testTimeout": "90s",
+  "go.coverOnSingleTest": true,
+  "go.coverageDecorator": { "type": "gutter" },
+  "go.diagnostic.vulncheck": "Imports",
+  "go.delveConfig": {
+    "debugAdapter": "dlv-dap",
+    "hideSystemGoroutines": true
+  },
+
+  "gopls": {
+    "formatting.gofumpt": true,
+    "ui.semanticTokens": true,
+    "ui.completion.usePlaceholders": true,
+    "ui.diagnostic.analyses": {
+      "nilness": true,
+      "shadow": true,
+      "unusedparams": true,
+      "unusedwrite": true
+    },
+    "ui.inlayhint.hints": {
+      "assignVariableTypes": true,
+      "compositeLiteralFields": true,
+      "parameterNames": true,
+      "rangeVariableTypes": true
+    }
+  },
+
+  "[go]": {
+    "editor.defaultFormatter": "golang.go",
+    "editor.insertSpaces": false,
+    "editor.tabSize": 4
+  },
+  "[go.mod]": {
+    "editor.defaultFormatter": "golang.go"
+  },
+
+  // ────────────────────────────────────────────────────────────
+  //  PYTHON
+  // ────────────────────────────────────────────────────────────
+
+  "python.analysis.typeCheckingMode": "basic",
+  "python.analysis.autoImportCompletions": true,
+  "python.analysis.inlayHints.functionReturnTypes": true,
+  "python.terminal.activateEnvironment": true,
+  "python.testing.pytestEnabled": true,
+  "ruff.lineLength": 100,
+  "[python]": {
+    "editor.defaultFormatter": "charliermarsh.ruff",
+    "editor.codeActionsOnSave": {
+      "source.organizeImports.ruff": "explicit",
+      "source.fixAll.ruff": "explicit"
+    }
+  },
+
+  // ────────────────────────────────────────────────────────────
+  //  DOCKER
+  // ────────────────────────────────────────────────────────────
+
+  "containers.containers.groupBy": "Compose Project Name",
+  "containers.composeBuild": true,
+  "containers.composeDetached": true,
+  "hadolint.hadolintPath": "/opt/homebrew/bin/hadolint",
+  "[dockerfile]": {
+    "editor.tabSize": 4
+  },
+  "[dockercompose]": {
+    "editor.tabSize": 2,
+    "editor.insertSpaces": true,
+    "editor.defaultFormatter": "redhat.vscode-yaml"
+  },
+
+  // ────────────────────────────────────────────────────────────
+  //  YAML / JSON / TOML / MAKEFILE
+  // ────────────────────────────────────────────────────────────
+
+  "yaml.validate": true,
+  "yaml.schemas": {
+    "https://json.schemastore.org/github-workflow.json": ".github/workflows/*.{yml,yaml}",
+    "https://raw.githubusercontent.com/compose-spec/compose-spec/master/schema/compose-spec.json": [
+      "docker-compose*.{yml,yaml}",
+      "compose*.{yml,yaml}"
+    ],
+    "https://json.schemastore.org/golangci-lint.json": ".golangci.{yml,yaml}"
+  },
+  "[yaml]": {
+    "editor.tabSize": 2,
+    "editor.insertSpaces": true,
+    "editor.defaultFormatter": "redhat.vscode-yaml"
+  },
+  "[json][jsonc]": {
+    "editor.tabSize": 2,
+    "editor.defaultFormatter": "vscode.json-language-features"
+  },
+  "[toml]": {
+    "editor.defaultFormatter": "tamasfe.even-better-toml"
+  },
+  "[makefile]": {
+    "editor.insertSpaces": false
+  },
+  "[markdown]": {
+    "editor.wordWrap": "on",
+    "files.trimTrailingWhitespace": false
+  },
+
+  // ────────────────────────────────────────────────────────────
+  //  ТЕРМИНАЛ
+  // ────────────────────────────────────────────────────────────
+
+  "terminal.integrated.defaultProfile.osx": "zsh",
+  "terminal.integrated.fontFamily": "'JetBrainsMono Nerd Font', monospace",
+  "terminal.integrated.fontSize": 13,
+  "terminal.integrated.lineHeight": 1.2,
+  "terminal.integrated.cursorStyle": "line",
+  "terminal.integrated.cursorBlinking": true,
+  "terminal.integrated.smoothScrolling": true,
+  "terminal.integrated.scrollback": 20000,
+  "terminal.integrated.macOptionIsMeta": true,
+  "terminal.integrated.copyOnSelection": true,
+  "terminal.integrated.confirmOnExit": "never",
+  "terminal.integrated.enableMultiLinePasteWarning": "never",
+  "terminal.integrated.initialHint": false,
+  "terminal.integrated.tabs.location": "right",
+  "terminal.integrated.stickyScroll.enabled": true,
+  "terminal.external.osxExec": "Ghostty.app",
+
+  // ────────────────────────────────────────────────────────────
+  //  ОТЛАДКА / ТЕСТЫ
+  // ────────────────────────────────────────────────────────────
+
+  "debug.toolBarLocation": "commandCenter",
+  "debug.inlineValues": "on",
+  "debug.openDebug": "openOnDebugBreak",
+  "testing.automaticallyOpenTestResults": "openOnTestFailure",
+  "testing.gutterEnabled": true,
+
+  // ────────────────────────────────────────────────────────────
+  //  GIT
+  // ────────────────────────────────────────────────────────────
+
+  "git.autofetch": true,
+  "git.confirmSync": false,
+  "git.enableSmartCommit": true,
+  "git.pruneOnFetch": true,
+  "git.rebaseWhenSync": true,
+  "git.autoStash": true,
+  "git.openRepositoryInParentFolders": "always",
+  "git.branchProtection": ["main", "master"],
+  "scm.defaultViewMode": "tree",
+  "diffEditor.ignoreTrimWhitespace": false,
+  "diffEditor.hideUnchangedRegions.enabled": true,
+
+  "gitlens.codeLens.enabled": false,
+  "gitlens.currentLine.enabled": true,
+  "gitlens.statusBar.enabled": false,
+  "gitlens.showWelcomeOnInstall": false,
+  "gitlens.showWhatsNewAfterUpgrades": false,
+
+  // ────────────────────────────────────────────────────────────
+  //  РАСШИРЕНИЯ
+  // ────────────────────────────────────────────────────────────
+
+  "errorLens.enabledDiagnosticLevels": ["error", "warning"],
+  "errorLens.fontStyleItalic": true,
+  "errorLens.delay": 500,
+
+  "todo-tree.general.tags": ["TODO", "FIXME", "BUG", "HACK", "NOTE"],
+
+  "rest-client.environmentVariables": {
+    "$shared": {},
+    "local": {
+      "baseUrl": "http://localhost:8080",
+      "apiUrl": "http://localhost:8080/api/v1"
+    }
+  },
+
+  // ────────────────────────────────────────────────────────────
+  //  ПРОЧЕЕ
+  // ────────────────────────────────────────────────────────────
+
+  // Хоткеи работают и на русской раскладке
+  "keyboard.dispatch": "keyCode",
+  "telemetry.telemetryLevel": "off",
+  "redhat.telemetry.enabled": false,
+  "extensions.autoUpdate": true,
+  "update.showReleaseNotes": false
+}

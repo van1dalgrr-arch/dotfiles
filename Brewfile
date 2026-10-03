@@ -28,3 +28,29 @@ brew "lazygit"
 # Go
 brew "goimports"
 brew "golangci-lint"
+brew "delve"
+
+# Docker / DevOps
+brew "lazydocker"
+brew "dive"
+brew "hadolint"
+brew "kubectl"
+brew "k9s"
+brew "jq"
+brew "yq"
+brew "direnv"
+brew "git-lfs"
+
+# Python
+brew "uv"
+
+# Приложения
+cask "rectangle"
+cask "raycast"
+brew "yazi"
+brew "glow"
+brew "atuin"
+brew "shellcheck"
+brew "shfmt"
+tap "FelixKratz/formulae"
+brew "borders"

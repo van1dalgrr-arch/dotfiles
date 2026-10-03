@@ -32,3 +32,12 @@ link eza/theme.yml                   "$HOME/.config/eza/theme.yml"
 link fastfetch/config.jsonc          "$HOME/.config/fastfetch/config.jsonc"
 link tealdeer/config.toml            "$HOME/.config/tealdeer/config.toml"
 link lazygit/config.yml              "$HOME/Library/Application Support/lazygit/config.yml"
+
+# Go-утилиты, которых нет в Homebrew (brew "air" — это другая программа)
+command -v go >/dev/null && go install github.com/air-verse/air@latest && echo "installed: air"
+link vscode/settings.json            "$HOME/Library/Application Support/Code/User/settings.json"
+link vscode/keybindings.json         "$HOME/Library/Application Support/Code/User/keybindings.json"
+link borders/bordersrc               "$HOME/.config/borders/bordersrc"
+[ -d "$HOME/.oh-my-zsh/custom/plugins/fzf-tab" ] || git clone --depth 1 https://github.com/Aloxaf/fzf-tab "$HOME/.oh-my-zsh/custom/plugins/fzf-tab"
+command -v code >/dev/null && xargs -n1 code --install-extension < "$DOTFILES/vscode/extensions.txt"
+link atuin/config.toml              "$HOME/.config/atuin/config.toml"

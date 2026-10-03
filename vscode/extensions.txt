@@ -1,0 +1,16 @@
+catppuccin.catppuccin-vsc
+catppuccin.catppuccin-vsc-icons
+pkief.material-product-icons
+golang.go
+ms-python.python
+charliermarsh.ruff
+ms-azuretools.vscode-containers
+exiasr.hadolint
+redhat.vscode-yaml
+tamasfe.even-better-toml
+mikestead.dotenv
+humao.rest-client
+eamodio.gitlens
+usernamehw.errorlens
+gruntfuggly.todo-tree
+anthropic.claude-code

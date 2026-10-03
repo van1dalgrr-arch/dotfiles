@@ -1,0 +1,38 @@
+// ============================================================
+//   VS Code keybindings — ~/dotfiles/vscode/keybindings.json
+//   Работают и на русской раскладке ("keyboard.dispatch": "keyCode")
+// ============================================================
+[
+  // ─── Терминал ───
+  { "key": "ctrl+`",        "command": "workbench.action.terminal.toggleTerminal" },
+  { "key": "ctrl+shift+`",  "command": "workbench.action.terminal.new" },
+  { "key": "cmd+k",         "command": "workbench.action.terminal.clear", "when": "terminalFocus" },
+  { "key": "cmd+d",         "command": "workbench.action.terminal.split", "when": "terminalFocus" },
+  { "key": "cmd+shift+m",   "command": "workbench.action.toggleMaximizedPanel" },
+
+  // ─── Редактор ───
+  { "key": "cmd+shift+d",   "command": "editor.action.copyLinesDownAction", "when": "editorTextFocus && !editorReadonly" },
+  { "key": "cmd+shift+k",   "command": "editor.action.deleteLines", "when": "textInputFocus && !editorReadonly" },
+  { "key": "cmd+alt+l",     "command": "editor.action.formatDocument", "when": "editorHasDocumentFormattingProvider && editorTextFocus && !editorReadonly" },
+  { "key": "cmd+k cmd+h",   "command": "editor.action.inlayHints.toggle" },
+  { "key": "cmd+e",         "command": "workbench.action.quickOpenPreviousRecentlyUsedEditor" },
+  { "key": "cmd+[",         "command": "workbench.action.navigateBack" },
+  { "key": "cmd+]",         "command": "workbench.action.navigateForward" },
+  { "key": "cmd+alt+w",     "command": "workbench.action.closeOtherEditors" },
+
+  // ─── Go ───
+  { "key": "cmd+shift+t",   "command": "go.toggle.test.file", "when": "editorTextFocus && editorLangId == 'go'" },
+  { "key": "cmd+alt+t",     "command": "go.test.cursor", "when": "editorTextFocus && editorLangId == 'go'" },
+  { "key": "cmd+alt+shift+t","command": "go.test.package", "when": "editorTextFocus && editorLangId == 'go'" },
+  { "key": "cmd+alt+j",     "command": "go.add.tags", "when": "editorTextFocus && editorLangId == 'go'" },
+  { "key": "ctrl+alt+f",    "command": "go.fill.struct", "when": "editorTextFocus && editorLangId == 'go'" },
+
+  // ─── Отладка / тесты ───
+  { "key": "f9",            "command": "editor.debug.action.toggleBreakpoint", "when": "debuggersAvailable && editorTextFocus" },
+  { "key": "cmd+; cmd+a",   "command": "testing.runAll" },
+  { "key": "cmd+; cmd+l",   "command": "testing.reRunLastRun" },
+
+  // ─── Git ───
+  { "key": "alt+f5",        "command": "workbench.action.editor.nextChange", "when": "editorTextFocus" },
+  { "key": "alt+shift+f5",  "command": "workbench.action.editor.previousChange", "when": "editorTextFocus" }
+]
