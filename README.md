@@ -1,11 +1,13 @@
 # dotfiles
 
-Настройки терминала на macOS. Тема везде одна: Catppuccin Mocha.
+Настройки терминала на macOS. Тема везде одна: Rosé Pine.
 
 | Что | Файл |
 |---|---|
 | zsh | `zsh/.zshrc` |
-| Ghostty | `ghostty/config.ghostty` |
+| Ghostty (+ шлейф курсора) | `ghostty/config.ghostty`, `ghostty/shaders/` |
+| Тайлинг окон (AeroSpace) | `aerospace/aerospace.toml` |
+| Шпаргалка `?` / Ctrl+/ | `zsh/cheatsheet.zsh` |
 | Промпт (starship) | `starship/starship.toml` |
 | git + delta | `git/.gitconfig` |
 | lazygit | `lazygit/config.yml` |

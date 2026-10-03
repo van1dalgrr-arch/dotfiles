@@ -3,7 +3,12 @@
 #   Alt = главная клавиша (как Super в Linux)
 # ============================================================
 
+config-version = 2
 start-at-login = true
+# сохранил файл — AeroSpace сам перечитал конфиг
+auto-reload-config = true
+# с config-version 2 пустые столы 1–9 не пропадают только так
+persistent-workspaces = ['1', '2', '3', '4', '5', '6', '7', '8', '9']
 after-startup-command = []
 
 enable-normalization-flatten-containers = true
@@ -14,7 +19,6 @@ accordion-padding = 30
 
 # Мышь переезжает за фокусом на другой монитор
 on-focused-monitor-changed = ['move-mouse monitor-lazy-center']
-automatically-unhide-macos-hidden-apps = true
 
 # Хоткеи по коду клавиши — работают и на русской раскладке
 [key-mapping]
@@ -104,7 +108,7 @@ backspace = ['close-all-windows-but-current', 'mode main']
 # 1 терминал · 2 код · 3 браузер · 4 чаты · 5 музыка
 [[on-window-detected]]
 if.app-id = 'com.mitchellh.ghostty'
-run = 'move-node-to-workspace 1'
+run = ['layout floating', 'move-node-to-workspace 1']
 
 [[on-window-detected]]
 if.app-id = 'com.microsoft.VSCode'

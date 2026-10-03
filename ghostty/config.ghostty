@@ -15,10 +15,8 @@ background-blur = 30
 window-padding-x = 22
 window-padding-y = 18
 window-padding-balance = true
-macos-titlebar-style = transparent
-# Красная кнопка (или cmd-w) на последнем окне закрывает Ghostty полностью
-quit-after-last-window-closed = true
-window-save-state = always
+# Красная кнопка закрывает окно, Ghostty остаётся в фоне — ctrl+` работает всегда
+quit-after-last-window-closed = false
 unfocused-split-opacity = 0.85
 unfocused-split-fill = #191724
 # AeroSpace постоянно меняет размеры окон — без всплывашки «120×40»
@@ -34,25 +32,13 @@ cursor-style = bar
 cursor-color = #ebbcba
 selection-background = #403d52
 cursor-style-blink = true
-shell-integration = zsh
-shell-integration-features = no-cursor
 # Светящийся шлейф при прыжках курсора (выключить — закомментировать)
 custom-shader = shaders/cursor_trail.glsl
 
-# --- Behaviour ---
-mouse-hide-while-typing = true
-copy-on-select = clipboard
-confirm-close-surface = false
+# --- Keys ---
 macos-option-as-alt = left
 scrollback-limit = 50000000
 link-url = true
-
-# --- Quick terminal (выпадающий по хоткею) ---
-quick-terminal-position = top
-quick-terminal-animation-duration = 0.15
-quick-terminal-screen = mouse
-quick-terminal-autohide = true
-keybind = global:ctrl+backquote=toggle_quick_terminal
 
 # --- Splits ---
 keybind = cmd+d=new_split:right
@@ -63,3 +49,10 @@ keybind = cmd+alt+up=goto_split:top
 keybind = cmd+alt+down=goto_split:bottom
 keybind = cmd+shift+enter=toggle_split_zoom
 keybind = cmd+shift+e=equalize_splits
+
+# --- Quick terminal (выпадающий по хоткею) ---
+quick-terminal-position = top
+quick-terminal-animation-duration = 0.15
+# открывается на том мониторе, где мышь
+quick-terminal-screen = mouse
+keybind = global:ctrl+backquote=toggle_quick_terminal

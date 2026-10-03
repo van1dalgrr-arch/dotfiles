@@ -1,4 +1,4 @@
-# Catppuccin Mocha
+# Rosé Pine
 [display]
 compact = false
 use_pager = false
@@ -8,18 +8,18 @@ auto_update = true
 auto_update_interval_hours = 720
 
 [style.description]
-foreground = { rgb = { r = 205, g = 214, b = 244 } }
+foreground = { rgb = { r = 224, g = 222, b = 244 } }
 
 [style.command_name]
-foreground = { rgb = { r = 166, g = 227, b = 161 } }
+foreground = { rgb = { r = 156, g = 207, b = 216 } }
 bold = true
 
 [style.example_text]
-foreground = { rgb = { r = 137, g = 180, b = 250 } }
+foreground = { rgb = { r = 196, g = 167, b = 231 } }
 
 [style.example_code]
-foreground = { rgb = { r = 249, g = 226, b = 175 } }
+foreground = { rgb = { r = 246, g = 193, b = 119 } }
 
 [style.example_variable]
-foreground = { rgb = { r = 250, g = 179, b = 135 } }
+foreground = { rgb = { r = 235, g = 188, b = 186 } }
 italic = true
