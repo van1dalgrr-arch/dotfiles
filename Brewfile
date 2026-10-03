@@ -45,7 +45,6 @@ brew "git-lfs"
 brew "uv"
 
 # Приложения
-cask "rectangle"
 cask "raycast"
 brew "yazi"
 brew "glow"
@@ -54,3 +53,5 @@ brew "shellcheck"
 brew "shfmt"
 tap "FelixKratz/formulae"
 brew "borders"
+tap "nikitabobko/tap"
+cask "nikitabobko/tap/aerospace"
