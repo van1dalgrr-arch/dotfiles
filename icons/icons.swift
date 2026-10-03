@@ -92,10 +92,10 @@ for app in apps {
         print("png: \(out)")
     case "apply":
         let ok = NSWorkspace.shared.setIcon(render(app), forFile: app.path, options: [])
-        print(ok ? "✓ \(name)" : "✗ \(name) — нужен sudo")
+        print(ok ? "✓ \(name)" : "✗ \(name) — не вышло: дай терминалу «Управление приложениями», для root-приложений ещё sudo")
     case "reset":
         let ok = NSWorkspace.shared.setIcon(nil, forFile: app.path, options: [])
-        print(ok ? "↺ \(name)" : "✗ \(name) — нужен sudo")
+        print(ok ? "↺ \(name)" : "✗ \(name) — не вышло: дай терминалу «Управление приложениями», для root-приложений ещё sudo")
     default:
         print("usage: icons.swift preview <dir> | apply | reset")
     }
