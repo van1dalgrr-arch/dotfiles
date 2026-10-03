@@ -1,0 +1,33 @@
+[filter "lfs"]
+	process = git-lfs filter-process
+	required = true
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+[user]
+	name = van1dal
+	email = van1dalgrr@gmail.com
+[push]
+	autoSetupRemote = true
+[core]
+	pager = delta
+[interactive]
+	diffFilter = delta --color-only
+[delta]
+	navigate = true
+	line-numbers = true
+	syntax-theme = Catppuccin Mocha
+	minus-style = "syntax \"#53394c\""
+	minus-emph-style = "syntax \"#694559\""
+	plus-style = "syntax \"#394545\""
+	plus-emph-style = "syntax \"#4e6356\""
+	file-style = "bold \"#cba6f7\""
+	file-decoration-style = "\"#cba6f7\" ul"
+	hunk-header-style = file line-number syntax
+	hunk-header-decoration-style = "\"#6c7086\" box"
+	line-numbers-minus-style = "\"#f38ba8\""
+	line-numbers-plus-style = "\"#a6e3a1\""
+	line-numbers-zero-style = "\"#6c7086\""
+[merge]
+	conflictStyle = zdiff3
+[diff]
+	colorMoved = default
