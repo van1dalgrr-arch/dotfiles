@@ -56,3 +56,6 @@ quick-terminal-animation-duration = 0.15
 # открывается на том мониторе, где мышь
 quick-terminal-screen = mouse
 keybind = global:ctrl+backquote=toggle_quick_terminal
+# cmd+q только закрывает окна — Ghostty живёт в фоне, ctrl+` работает всегда
+# (выйти совсем: меню Ghostty → Quit)
+keybind = super+q=close_all_windows
