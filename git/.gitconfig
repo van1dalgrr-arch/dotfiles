@@ -15,18 +15,18 @@
 [delta]
 	navigate = true
 	line-numbers = true
-	syntax-theme = Catppuccin Mocha
-	minus-style = "syntax \"#53394c\""
-	minus-emph-style = "syntax \"#694559\""
-	plus-style = "syntax \"#394545\""
-	plus-emph-style = "syntax \"#4e6356\""
-	file-style = "bold \"#cba6f7\""
-	file-decoration-style = "\"#cba6f7\" ul"
+	syntax-theme = rose-pine
+	minus-style = "syntax \"#3d2a38\""
+	minus-emph-style = "syntax \"#5c3b4f\""
+	plus-style = "syntax \"#233a40\""
+	plus-emph-style = "syntax \"#2d4f57\""
+	file-style = "bold \"#c4a7e7\""
+	file-decoration-style = "\"#c4a7e7\" ul"
 	hunk-header-style = file line-number syntax
-	hunk-header-decoration-style = "\"#6c7086\" box"
-	line-numbers-minus-style = "\"#f38ba8\""
-	line-numbers-plus-style = "\"#a6e3a1\""
-	line-numbers-zero-style = "\"#6c7086\""
+	hunk-header-decoration-style = "\"#6e6a86\" box"
+	line-numbers-minus-style = "\"#eb6f92\""
+	line-numbers-plus-style = "\"#9ccfd8\""
+	line-numbers-zero-style = "\"#6e6a86\""
 [merge]
 	conflictStyle = zdiff3
 [diff]

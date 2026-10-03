@@ -42,3 +42,5 @@ link borders/bordersrc               "$HOME/.config/borders/bordersrc"
 command -v code >/dev/null && xargs -n1 code --install-extension < "$DOTFILES/vscode/extensions.txt"
 link atuin/config.toml              "$HOME/.config/atuin/config.toml"
 link aerospace/aerospace.toml       "$HOME/.config/aerospace/aerospace.toml"
+link btop/themes/rose-pine.theme   "$HOME/.config/btop/themes/rose-pine.theme"
+link bat/themes/rose-pine.tmTheme   "$HOME/.config/bat/themes/rose-pine.tmTheme" && bat cache --build >/dev/null

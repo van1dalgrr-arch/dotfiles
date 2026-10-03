@@ -9,11 +9,9 @@
   // ────────────────────────────────────────────────────────────
 
   // В стиле терминала. Вернуть старую: "Andromeda Colorizer"
-  "workbench.colorTheme": "Catppuccin Mocha",
-  "workbench.iconTheme": "catppuccin-mocha",
+  "workbench.colorTheme": "Rosé Pine",
+  "workbench.iconTheme": "material-icon-theme",
   "workbench.productIconTheme": "material-product-icons",
-  "catppuccin.accentColor": "mauve",
-  "catppuccin.italicComments": true,
 
   "window.titleBarStyle": "custom",
   "window.commandCenter": true,
@@ -52,7 +50,7 @@
 
   "editor.tabSize": 4,
   "editor.detectIndentation": true,
-  "editor.rulers": [{ "column": 120, "color": "#313244" }],
+  "editor.rulers": [{ "column": 120, "color": "#26233a" }],
   "editor.renderWhitespace": "boundary",
   "editor.renderLineHighlight": "all",
   "editor.minimap.enabled": true,

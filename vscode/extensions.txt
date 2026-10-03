@@ -1,5 +1,4 @@
-catppuccin.catppuccin-vsc
-catppuccin.catppuccin-vsc-icons
+mvllow.rose-pine
 pkief.material-product-icons
 golang.go
 ms-python.python

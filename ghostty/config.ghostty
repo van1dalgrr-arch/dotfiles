@@ -3,24 +3,26 @@
 # =========================
 
 # --- Theme & font ---
-theme = Catppuccin Mocha
+theme = Rose Pine
 font-family = JetBrainsMono Nerd Font
 font-size = 14
 font-thicken = true
 adjust-cell-height = 10%
 
 # --- Window ---
-background-opacity = 0.92
-background-blur = 20
-window-padding-x = 16
-window-padding-y = 14
+background-opacity = 0.88
+background-blur = 30
+window-padding-x = 22
+window-padding-y = 18
 window-padding-balance = true
-macos-titlebar-style = tabs
+macos-titlebar-style = hidden
 window-save-state = always
 unfocused-split-opacity = 0.85
 
 # --- Cursor ---
-cursor-style = block
+cursor-style = bar
+cursor-color = #ebbcba
+selection-background = #403d52
 cursor-style-blink = true
 shell-integration = zsh
 shell-integration-features = no-cursor

@@ -41,13 +41,13 @@ export FZF_DEFAULT_COMMAND="fd --type f --hidden --exclude .git"
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 export FZF_ALT_C_COMMAND="fd --type d --hidden --exclude .git"
 
-# Catppuccin Mocha
+# Rosé Pine
 export FZF_DEFAULT_OPTS=" \
 --height=40% --layout=reverse --border=rounded --info=inline \
---color=bg+:#313244,bg:-1,spinner:#f5e0dc,hl:#f38ba8 \
---color=fg:#cdd6f4,header:#f38ba8,info:#cba6f7,pointer:#f5e0dc \
---color=marker:#b4befe,fg+:#cdd6f4,prompt:#cba6f7,hl+:#f38ba8 \
---color=selected-bg:#45475a,border:#6c7086,label:#cdd6f4"
+--color=bg+:#26233a,bg:-1,spinner:#ebbcba,hl:#eb6f92 \
+--color=fg:#e0def4,header:#eb6f92,info:#c4a7e7,pointer:#ebbcba \
+--color=marker:#c4a7e7,fg+:#e0def4,prompt:#c4a7e7,hl+:#eb6f92 \
+--color=selected-bg:#403d52,border:#6e6a86,label:#e0def4"
 export FZF_CTRL_T_OPTS="--preview 'bat --color=always --style=numbers --line-range=:300 {}'"
 export FZF_ALT_C_OPTS="--preview 'eza --tree --level=2 --icons --color=always {}'"
 
@@ -79,7 +79,7 @@ alias ll="eza -lah --icons --group-directories-first --git"
 alias la="eza -a --icons --group-directories-first"
 alias lt="eza --tree --level=2 --icons"
 
-export BAT_THEME="Catppuccin Mocha"
+export BAT_THEME="rose-pine"
 alias cat="bat"
 alias top="btop"
 
@@ -215,39 +215,39 @@ setopt INTERACTIVE_COMMENTS
 # PLUGINS (syntax-highlighting — строго последним)
 # ────────────────────────────────────────────────────────────
 
-ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=#6c7086"
+ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=#6e6a86"
 source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 
 [ -f /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ] && \
     source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
-# Catppuccin Mocha для подсветки
+# Rosé Pine для подсветки
 ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets)
 typeset -A ZSH_HIGHLIGHT_STYLES
-ZSH_HIGHLIGHT_STYLES[command]='fg=#a6e3a1'
-ZSH_HIGHLIGHT_STYLES[builtin]='fg=#a6e3a1'
-ZSH_HIGHLIGHT_STYLES[alias]='fg=#a6e3a1'
-ZSH_HIGHLIGHT_STYLES[function]='fg=#a6e3a1'
-ZSH_HIGHLIGHT_STYLES[precommand]='fg=#a6e3a1,italic'
-ZSH_HIGHLIGHT_STYLES[unknown-token]='fg=#f38ba8'
-ZSH_HIGHLIGHT_STYLES[reserved-word]='fg=#cba6f7'
-ZSH_HIGHLIGHT_STYLES[commandseparator]='fg=#f38ba8'
-ZSH_HIGHLIGHT_STYLES[path]='fg=#cdd6f4,underline'
-ZSH_HIGHLIGHT_STYLES[single-hyphen-option]='fg=#fab387'
-ZSH_HIGHLIGHT_STYLES[double-hyphen-option]='fg=#fab387'
-ZSH_HIGHLIGHT_STYLES[single-quoted-argument]='fg=#f9e2af'
-ZSH_HIGHLIGHT_STYLES[double-quoted-argument]='fg=#f9e2af'
-ZSH_HIGHLIGHT_STYLES[dollar-quoted-argument]='fg=#f9e2af'
-ZSH_HIGHLIGHT_STYLES[back-quoted-argument]='fg=#cba6f7'
-ZSH_HIGHLIGHT_STYLES[redirection]='fg=#f5c2e7'
-ZSH_HIGHLIGHT_STYLES[globbing]='fg=#89dceb'
-ZSH_HIGHLIGHT_STYLES[comment]='fg=#6c7086,italic'
-ZSH_HIGHLIGHT_STYLES[arg0]='fg=#a6e3a1'
-ZSH_HIGHLIGHT_STYLES[default]='fg=#cdd6f4'
-ZSH_HIGHLIGHT_STYLES[bracket-level-1]='fg=#89b4fa'
-ZSH_HIGHLIGHT_STYLES[bracket-level-2]='fg=#cba6f7'
-ZSH_HIGHLIGHT_STYLES[bracket-level-3]='fg=#94e2d5'
-ZSH_HIGHLIGHT_STYLES[bracket-error]='fg=#f38ba8'
+ZSH_HIGHLIGHT_STYLES[command]='fg=#9ccfd8'
+ZSH_HIGHLIGHT_STYLES[builtin]='fg=#9ccfd8'
+ZSH_HIGHLIGHT_STYLES[alias]='fg=#9ccfd8'
+ZSH_HIGHLIGHT_STYLES[function]='fg=#9ccfd8'
+ZSH_HIGHLIGHT_STYLES[precommand]='fg=#9ccfd8,italic'
+ZSH_HIGHLIGHT_STYLES[unknown-token]='fg=#eb6f92'
+ZSH_HIGHLIGHT_STYLES[reserved-word]='fg=#c4a7e7'
+ZSH_HIGHLIGHT_STYLES[commandseparator]='fg=#eb6f92'
+ZSH_HIGHLIGHT_STYLES[path]='fg=#e0def4,underline'
+ZSH_HIGHLIGHT_STYLES[single-hyphen-option]='fg=#f6c177'
+ZSH_HIGHLIGHT_STYLES[double-hyphen-option]='fg=#f6c177'
+ZSH_HIGHLIGHT_STYLES[single-quoted-argument]='fg=#f6c177'
+ZSH_HIGHLIGHT_STYLES[double-quoted-argument]='fg=#f6c177'
+ZSH_HIGHLIGHT_STYLES[dollar-quoted-argument]='fg=#f6c177'
+ZSH_HIGHLIGHT_STYLES[back-quoted-argument]='fg=#c4a7e7'
+ZSH_HIGHLIGHT_STYLES[redirection]='fg=#ebbcba'
+ZSH_HIGHLIGHT_STYLES[globbing]='fg=#9ccfd8'
+ZSH_HIGHLIGHT_STYLES[comment]='fg=#6e6a86,italic'
+ZSH_HIGHLIGHT_STYLES[arg0]='fg=#9ccfd8'
+ZSH_HIGHLIGHT_STYLES[default]='fg=#e0def4'
+ZSH_HIGHLIGHT_STYLES[bracket-level-1]='fg=#31748f'
+ZSH_HIGHLIGHT_STYLES[bracket-level-2]='fg=#c4a7e7'
+ZSH_HIGHLIGHT_STYLES[bracket-level-3]='fg=#9ccfd8'
+ZSH_HIGHLIGHT_STYLES[bracket-error]='fg=#eb6f92'
 
 # ────────────────────────────────────────────────────────────
 # ФУНКЦИИ

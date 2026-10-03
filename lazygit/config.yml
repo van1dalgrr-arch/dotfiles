@@ -1,33 +1,33 @@
-# Catppuccin Mocha
+# Rosé Pine
 gui:
   nerdFontsVersion: "3"
   border: rounded
   showIcons: true
   theme:
     activeBorderColor:
-      - "#89b4fa"
+      - "#31748f"
       - bold
     inactiveBorderColor:
-      - "#6c7086"
+      - "#6e6a86"
     searchingActiveBorderColor:
-      - "#f9e2af"
+      - "#f6c177"
     optionsTextColor:
-      - "#89b4fa"
+      - "#31748f"
     selectedLineBgColor:
-      - "#313244"
+      - "#26233a"
     inactiveViewSelectedLineBgColor:
-      - "#45475a"
+      - "#403d52"
     cherryPickedCommitFgColor:
-      - "#89b4fa"
+      - "#31748f"
     cherryPickedCommitBgColor:
-      - "#45475a"
+      - "#403d52"
     markedBaseCommitFgColor:
-      - "#89b4fa"
+      - "#31748f"
     markedBaseCommitBgColor:
-      - "#f9e2af"
+      - "#f6c177"
     unstagedChangesColor:
-      - "#f38ba8"
+      - "#eb6f92"
     defaultFgColor:
-      - "#cdd6f4"
+      - "#e0def4"
   authorColors:
-    "*": "#b4befe"
+    "*": "#c4a7e7"
