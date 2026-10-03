@@ -36,3 +36,8 @@ defaults write com.apple.screencapture disable-shadow -bool true
 
 killall Finder Dock SystemUIServer 2>/dev/null || true
 echo "macOS настроена. Для скорости клавиатуры нужно перелогиниться."
+
+# Finder: новое окно открывается в ~/dev
+defaults write com.apple.finder NewWindowTarget -string "PfLo"
+defaults write com.apple.finder NewWindowTargetPath -string "file://$HOME/dev/"
+killall Finder 2>/dev/null || true

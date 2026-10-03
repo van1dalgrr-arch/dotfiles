@@ -261,6 +261,15 @@ y() {
     rm -f -- "$tmp"
 }
 
+# p — выбрать проект из ~/dev через fzf и перейти в него (p kino — сразу с фильтром)
+export DEV="$HOME/dev"
+alias dev='cd $DEV'
+p() {
+    local d=$(fd --type d --max-depth 1 --exclude sandbox . "$DEV" | sed "s|$DEV/||;s|/$||" | \
+        fzf --query="$1" --select-1 --header="проекты" --preview "eza -1 --icons --color=always $DEV/{}; echo; git -C $DEV/{} log --oneline -5 2>/dev/null")
+    [ -n "$d" ] && cd "$DEV/$d"
+}
+
 mkcd() { mkdir -p "$1" && cd "$1"; }
 
 # killport 8080 — убить процесс на порту
@@ -281,6 +290,7 @@ dlogs() {
 # gonew myapi — новый проект на Gin с air и git
 gonew() {
     [ -z "$1" ] && { echo "usage: gonew <name>"; return 1; }
+    cd "$DEV" || return
     mkdir -p "$1" && cd "$1" || return
     go mod init "$1" && go get github.com/gin-gonic/gin
     mkdir -p cmd/api internal
