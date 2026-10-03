@@ -30,16 +30,15 @@ Ghostty|cmd-shift-enter|развернуть сплит
 Ghostty|cmd-shift-e|выровнять сплиты
 Ghostty|cmd-shift-p|палитра команд
 Ghostty|cmd-k|очистить экран
+Ghostty|cmd-w|закрыть сплит / вкладку / окно
+Ghostty|cmd-shift-w|закрыть окно целиком
+Shell|ctrl-d / q|выйти из shell (закроет окно)
 Shell|ctrl-r|история (atuin)
 Shell|ctrl-t|найти файл (fzf + превью)
 Shell|alt-c|перейти в папку (fzf)
 Shell|tab|автодополнение с превью (fzf-tab), < > — группы
 Shell|ctrl-/|эта шпаргалка
 Shell|z <часть пути>|прыжок в папку (zoxide)
-Bar|клик по |меню: настройки, btop, lazydocker, перезапуск UI
-Bar|клик по столу|перейти на стол
-Bar|клик по CPU / Docker|btop / lazydocker
-Bar|клик по громкости|mute
 EOF
 }
 
@@ -66,7 +65,6 @@ _cheat_lines() {
         AeroSpace $'\e[38;2;196;167;231m'
         Ghostty   $'\e[38;2;235;188;186m'
         Shell     $'\e[38;2;156;207;216m'
-        Bar       $'\e[38;2;246;193;119m'
         func      $'\e[38;2;49;116;143m'
         alias     $'\e[38;2;144;140;170m'
     )
