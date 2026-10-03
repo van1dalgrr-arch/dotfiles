@@ -9,7 +9,8 @@ start-at-login = true
 auto-reload-config = true
 # с config-version 2 пустые столы 1–9 не пропадают только так
 persistent-workspaces = ['1', '2', '3', '4', '5', '6', '7', '8', '9']
-after-startup-command = []
+# Ghostty сразу в фоне без окна — ctrl+` (quick terminal) работает из любого приложения
+after-startup-command = ['exec-and-forget open -g -a Ghostty --args --initial-window=false --window-save-state=never']
 
 enable-normalization-flatten-containers = true
 enable-normalization-opposite-orientation-for-nested-containers = true
