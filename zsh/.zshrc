@@ -452,7 +452,7 @@ source "$HOME/dotfiles/zsh/ram.zsh"
 # в первые миллисекунды ещё маленькое (80×24), и проверка размера ошибочно не проходила
 _greeting() {
     add-zsh-hook -d precmd _greeting                     # только один раз
-    [[ $TERM_PROGRAM == ghostty && $SHLVL -eq 1 && $LINES -ge 30 && $COLUMNS -ge 80 && -z $NO_GREETING ]] || return
+    [[ $TERM_PROGRAM == ghostty && $SHLVL -le 2 && $LINES -ge 12 && $COLUMNS -ge 60 && -z $NO_GREETING ]] || return
     fastfetch -c "$HOME/dotfiles/fastfetch/greeting.jsonc"
     # совет: случайная функция из шпаргалки — постепенно запоминаются свои команды
     local -a tips=(${(f)"$(_cheat_funcs)"})
