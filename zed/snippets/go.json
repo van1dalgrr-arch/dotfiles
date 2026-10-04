@@ -1,12 +1,20 @@
 {
   "if err != nil": {
     "prefix": "iferr",
-    "body": ["if err != nil {", "\treturn ${1:err}", "}"],
+    "body": [
+      "if err != nil {",
+      "\treturn ${1:err}",
+      "}"
+    ],
     "description": "проверка ошибки"
   },
   "wrap error": {
     "prefix": "iferrw",
-    "body": ["if err != nil {", "\treturn fmt.Errorf(\"${1:что делали}: %w\", err)", "}"],
+    "body": [
+      "if err != nil {",
+      "\treturn fmt.Errorf(\"${1:что делали}: %w\", err)",
+      "}"
+    ],
     "description": "проверка ошибки с обёрткой %w"
   },
   "gin handler": {
@@ -78,5 +86,59 @@
       "defer cancel()"
     ],
     "description": "контекст с таймаутом"
+  },
+  "gin middleware": {
+    "prefix": "ginmw",
+    "body": [
+      "func ${1:Logger}() gin.HandlerFunc {",
+      "\treturn func(c *gin.Context) {",
+      "\t\tstart := time.Now()",
+      "\t\tc.Next()",
+      "\t\tslog.Info(\"request\", \"path\", c.Request.URL.Path, \"status\", c.Writer.Status(), \"took\", time.Since(start))",
+      "\t}",
+      "}"
+    ],
+    "description": "middleware Gin"
+  },
+  "slog": {
+    "prefix": "slog",
+    "body": [
+      "slog.${1|Info,Error,Warn,Debug|}(\"${2:message}\", \"${3:key}\", ${4:value})"
+    ],
+    "description": "структурный лог"
+  },
+  "benchmark": {
+    "prefix": "bench",
+    "body": [
+      "func Benchmark${1:Name}(b *testing.B) {",
+      "\tfor b.Loop() {",
+      "\t\t${0}",
+      "\t}",
+      "}"
+    ],
+    "description": "бенчмарк"
+  },
+  "pgx query row": {
+    "prefix": "qrow",
+    "body": [
+      "var ${1:v} ${2:Type}",
+      "err := ${3:db}.QueryRow(ctx, `${4:SELECT id FROM t WHERE id = \\$1}`, ${5:id}).Scan(&$1)",
+      "if err != nil {",
+      "\treturn ${6:err}",
+      "}"
+    ],
+    "description": "pgx: один ряд"
+  },
+  "httptest gin": {
+    "prefix": "htest",
+    "body": [
+      "w := httptest.NewRecorder()",
+      "req := httptest.NewRequest(http.Method${1:Get}, \"${2:/health}\", nil)",
+      "${3:r}.ServeHTTP(w, req)",
+      "if w.Code != http.Status${4:OK} {",
+      "\tt.Fatalf(\"status = %d\", w.Code)",
+      "}"
+    ],
+    "description": "тест обработчика через httptest"
   }
 }

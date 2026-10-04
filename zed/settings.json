@@ -129,6 +129,19 @@
     },
   },
 
+  // панель над редактором: путь к символу, быстрые действия, меню выделения
+  "toolbar": {
+    "breadcrumbs": true,
+    "quick_actions": true,
+    "selections_menu": true,
+  },
+  "search": { "button": true, "whole_word": false, "case_sensitive": false, "regex": false },
+  "file_finder": { "modal_max_width": "medium", "file_icons": true },
+  "show_completions_on_input": true,
+  "show_completion_documentation": true,
+  // cmd-alt-l — текст по центру экрана (удобно читать README и длинные файлы)
+  "centered_layout": { "left_padding": 0.18, "right_padding": 0.18 },
+
   // ────────────────────────────────────────────────────────────
   //  ФАЙЛЫ / СОХРАНЕНИЕ
   // ────────────────────────────────────────────────────────────
@@ -250,6 +263,7 @@
 
   "languages": {
     "Go": {
+      "language_servers": ["gopls", "golangci-lint"],   // линтер прямо в редакторе
       "hard_tabs": true,
       "tab_size": 4,
       "preferred_line_length": 120,
@@ -284,6 +298,12 @@
   },
 
   "lsp": {
+    // golangci-lint v2: ошибки линтера подсвечиваются как обычные диагностики
+    "golangci-lint": {
+      "initialization_options": {
+        "command": ["golangci-lint", "run", "--output.json.path=stdout", "--show-stats=false", "--issues-exit-code=1"],
+      },
+    },
     "gopls": {
       "initialization_options": {
         "gofumpt": true,
@@ -367,5 +387,12 @@
     "sql": true,
     "git-firefly": true,
     "terraform": true,
+    "golangci-lint": true,   // линтер Go в редакторе
+    "http": true,            // .http-файлы: запросы к своему API прямо из Zed
+    "env": true,             // подсветка .env
+    "proto": true,
+    "helm": true,
+    "nginx": true,
+    "log": true,             // подсветка логов
   },
 }

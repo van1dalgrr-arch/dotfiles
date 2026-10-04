@@ -36,6 +36,37 @@
     "reveal": "always",
   },
   {
+    "label": "тест под курсором",
+    "command": "go test -count=1 -v -run '^$ZED_SYMBOL$' ./$(dirname \"$ZED_RELATIVE_FILE\")",
+    "cwd": "$ZED_WORKTREE_ROOT",
+    "reveal": "always",
+  },
+  {
+    "label": "бенчмарк под курсором",
+    "command": "go test -run '^$' -bench '^$ZED_SYMBOL$' -benchmem ./$(dirname \"$ZED_RELATIVE_FILE\")",
+    "cwd": "$ZED_WORKTREE_ROOT",
+    "reveal": "always",
+  },
+  {
+    "label": "покрытие тестами",
+    "command": "go test -coverprofile=/tmp/cover.out ./... && go tool cover -html=/tmp/cover.out",
+    "cwd": "$ZED_WORKTREE_ROOT",
+    "reveal": "no_focus",
+  },
+  {
+    "label": "логи compose",
+    "command": "docker compose logs -f --tail 100",
+    "cwd": "$ZED_WORKTREE_ROOT",
+    "use_new_terminal": true,
+    "reveal": "always",
+  },
+  {
+    "label": "curl /health",
+    "command": "curl -s localhost:${PORT:-8080}/health | jq .",
+    "cwd": "$ZED_WORKTREE_ROOT",
+    "reveal": "always",
+  },
+  {
     "label": "golangci-lint",
     "command": "golangci-lint run ./...",
     "cwd": "$ZED_WORKTREE_ROOT",

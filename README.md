@@ -58,11 +58,13 @@ After that you edit configs right in `~/dotfiles`, and changes show up in `git s
 | **Terminal** | [Ghostty](https://ghostty.org) with a drop-down window on `` ctrl+` `` and a glowing cursor trail |
 | **Windows** | [AeroSpace](https://github.com/nikitabobko/AeroSpace) — i3-style tiling, hotkeys work on any keyboard layout |
 | **Prompt** | custom zsh: path from the repo root, git status, Go version from `go.mod`, command duration |
-| **Editor** | [Zed](https://zed.dev) with my own Dev Night theme, icon theme and tasks on `ctrl-r` |
+| **Editor** | [Zed](https://zed.dev) with my own Dev Night theme and icons, Delve debugger, golangci-lint in the editor, tasks on `ctrl-r` |
 | **Themes** | `theme vesper` / `kanagawa` / `rose-pine` — recolors the whole terminal, app icons and wallpaper |
 | **Wallpapers** | `wall` — pick one of 25 live wallpapers with an image preview right in the terminal |
 | **Git** | delta for diffs, lazygit, gitleaks before every commit |
 | **Docker** | OrbStack, lazydocker, and `up` — start dependencies and run the project in one command |
+
+<p align="center"><img src="docs/zed.png" width="90%" alt="Zed with the Dev Night theme and icons"/></p>
 
 ## Day to day
 
@@ -126,14 +128,19 @@ Type a command that doesn't exist and the prompt tells you if it's available in 
 
 | Keys | Action |
 |---|---|
-| `ctrl-r` | task menu: `up`, `air`, tests, linter, compose |
+| `ctrl-r` | task menu: `up`, `air`, tests, coverage, linter, compose logs, `curl /health` |
+| `ctrl-t` | run the test under the cursor |
+| `f5` | debug with Delve: `cmd/api`, current package, or the test under the cursor |
 | `ctrl-shift-r` | rerun the last task |
 | `alt-g` · `alt-d` | lazygit · lazydocker inside Zed |
 | `cmd-j` | terminal |
 | `cmd-1` · `cmd-2` · `cmd-3` | files · outline · git |
 | `cmd-shift-d` | all project diagnostics |
 
-Go snippets: `iferr`, `iferrw`, `ginh`, `ginbind`, `ginr`, `ttest`, `jstruct`, `ctxt`.
+Go snippets: `iferr`, `iferrw`, `ginh`, `ginbind`, `ginr`, `ginmw`, `ttest`, `htest`, `bench`, `qrow`, `slog`, `jstruct`, `ctxt`.
+
+Also: golangci-lint runs as a language server (warnings right in the code), `.http` files send requests
+to your API like REST Client in VS Code, `cmd-alt-l` centers the text.
 
 </details>
 

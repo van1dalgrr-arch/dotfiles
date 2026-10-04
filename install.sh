@@ -48,6 +48,8 @@ link ghostty/shaders/cursor_trail.glsl "$HOME/.config/ghostty/shaders/cursor_tra
 link zed/settings.json               "$HOME/.config/zed/settings.json"
 link zed/keymap.json                 "$HOME/.config/zed/keymap.json"
 link zed/tasks.json                  "$HOME/.config/zed/tasks.json"
+link zed/debug.json                  "$HOME/.config/zed/debug.json"
+command -v go >/dev/null && go install github.com/nametake/golangci-lint-langserver@latest   # линтер в Zed
 link zed/themes/dev-night.json       "$HOME/.config/zed/themes/dev-night.json"
 link zed/snippets/go.json            "$HOME/.config/zed/snippets/go.json"
 # своя тема иконок — локальное (dev) расширение Zed: ссылка на папку в репозитории

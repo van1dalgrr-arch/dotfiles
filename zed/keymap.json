@@ -17,6 +17,8 @@
       "ctrl-shift-r": "task::Rerun",                   // повторить последнюю
       "alt-g": ["task::Spawn", { "task_name": "lazygit" }],
       "alt-d": ["task::Spawn", { "task_name": "lazydocker" }],
+      "f5": "debugger::Start",                         // отладка: выбрать конфигурацию (zed/debug.json)
+      "cmd-alt-l": "workspace::ToggleCenteredLayout",  // текст по центру
     },
   },
   {
@@ -26,6 +28,10 @@
       "cmd-alt-b": "editor::ToggleGitBlameInline",     // blame в строке вкл/выкл
       "cmd-shift-i": "editor::ToggleInlayHints",       // подсказки типов
       "cmd-shift-l": "editor::ToggleIndentGuides",
+      "ctrl-t": ["task::Spawn", { "task_name": "тест под курсором" }],
+      "alt-up": "editor::MoveLineUp",
+      "alt-down": "editor::MoveLineDown",
+      "cmd-shift-k": "editor::DeleteLine",
     },
   },
 ]
