@@ -8,7 +8,7 @@
   //  ВНЕШНИЙ ВИД
   // ────────────────────────────────────────────────────────────
 
-  // В стиле терминала. Вернуть старую: "Andromeda Colorizer"
+  // В стиле терминала. Светлая: "Atom One Light"
   "workbench.colorTheme": "Rosé Pine",
   "workbench.iconTheme": "material-icon-theme",
   "workbench.productIconTheme": "material-product-icons",
@@ -244,10 +244,7 @@
       "docker-compose*.{yml,yaml}",
       "compose*.{yml,yaml}"
     ],
-    "https://json.schemastore.org/golangci-lint.json": ".golangci.{yml,yaml}",
-    "file:///Users/dev/.vscode/extensions/continue.continue-2.0.0-darwin-arm64/config-yaml-schema.json": [
-      ".continue/**/*.yaml"
-    ]
+    "https://json.schemastore.org/golangci-lint.json": ".golangci.{yml,yaml}"
   },
   "[yaml]": {
     "editor.tabSize": 2,
