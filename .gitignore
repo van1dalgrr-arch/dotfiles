@@ -2,3 +2,7 @@
 *.pre-clean
 .DS_Store
 __pycache__/
+
+# ключи age/SOPS никогда не в этом репозитории (docs/secrets.md)
+*.agekey
+keys.txt

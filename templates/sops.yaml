@@ -1,0 +1,17 @@
+# .sops.yaml — какие файлы шифровать и чьим ключом. Шаблон из ~/dotfiles/templates/sops.yaml
+# (`dot secrets init` подставит твой ПУБЛИЧНЫЙ ключ age).
+#
+# Этот файл можно и нужно коммитить: публичный ключ (age1…) — не секрет.
+# Приватный ключ живёт только у тебя: ~/.config/sops/age/keys.txt — никогда не в репозитории.
+# Несколько получателей (коллега, CI) — через запятую: age1aaa…,age1bbb…  →  sops updatekeys <файл>
+#
+# Правила проверяются сверху вниз, срабатывает первое подходящее.
+creation_rules:
+  # секреты приложения: sops edit secrets.enc.yaml (или .enc.env / .enc.json)
+  - path_regex: (^|/)secrets(\.[^/]+)?\.enc\.(ya?ml|json|env)$
+    age: AGE_PUBLIC_KEY
+
+  # Kubernetes Secret: шифруются только значения data/stringData — имена ключей видны в diff
+  - path_regex: (^|/)(k8s|deploy|manifests)/.*\.secret\.ya?ml$
+    encrypted_regex: ^(data|stringData)$
+    age: AGE_PUBLIC_KEY

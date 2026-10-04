@@ -1,0 +1,3 @@
+# Необязательные Go-утилиты для DevOps (как Brewfile.devops). Поставить: dot tools install devops
+# tflint убрали из homebrew-core — ставится из исходников, версия закреплена.
+github.com/terraform-linters/tflint@v0.64.0

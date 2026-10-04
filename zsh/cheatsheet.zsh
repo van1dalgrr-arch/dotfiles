@@ -58,12 +58,13 @@ serve|раздать текущую папку по http
 weather|погода в терминале
 ram|кто ест память (по приложениям): ram 15
 update|обслуживание: brew, Go-инструменты, мусор Docker, иконки
-dot|dot doctor — всё ли на месте · dot install/update/theme/wall/check
+dot|dot doctor [--deep] — всё ли на месте · dot project doctor — проверить проект · dot tools/secrets/macos
 up|запустить проект: compose-зависимости + air/go run с .env
 pl|все проекты ~/dev: стек, ветка, изменения, давность
 db|pgcli к базе проекта (DATABASE_URL / .env)
 vuln|уязвимости: govulncheck + trivy
 load|нагрузочный тест: load [url] [сек] [соединений]
+pd|dot project doctor — что есть в проекте и чего не хватает
 theme|сменить тему терминала и обоев: theme kanagawa / theme rose-pine
 wall|сменить обои с превью: wall · petals, neon, rain, eclipse, orbit, code…
 EOF

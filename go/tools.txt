@@ -1,0 +1,8 @@
+# Go-утилиты, которые ставятся через `go install` (в Homebrew их нет или там другая программа:
+# brew "air" — не тот air). Версии закреплены — на новом Mac встанут ровно эти.
+# Обновить: поменять версию здесь → `dot tools install`. Статус: `dot tools`.
+golang.org/x/tools/gopls@v0.23.0
+github.com/air-verse/air@v1.67.4
+github.com/nametake/golangci-lint-langserver@v0.0.12
+golang.org/x/vuln/cmd/govulncheck@v1.8.0
+mvdan.cc/gofumpt@v0.12.0

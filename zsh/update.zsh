@@ -1,6 +1,6 @@
 # ============================================================
 #   update — обслуживание одной командой (раз в неделю):
-#   brew, Go-инструменты, мусор Docker и кэши, tldr, иконки (слетают после обновлений).
+#   brew, Go-инструменты (закреплённые версии), мусор Docker и кэши, tldr, иконки (слетают после обновлений).
 #   Только безопасное: контейнеры и тома Docker не трогаются.
 # ============================================================
 
@@ -13,8 +13,9 @@ update() {
     brew update --quiet && brew upgrade && brew cleanup --prune=7 -q
 
     if (( $+commands[go] )); then
-        _step "Go-инструменты"
-        go install golang.org/x/tools/gopls@latest && go install github.com/air-verse/air@latest && print "${ok}gopls, air ✓${r}"
+        # версии закреплены в go/tools.txt: ставится только недостающее или не той версии
+        _step "Go-инструменты (go/tools.txt)"
+        dot tools install | command grep -v '^$'
     fi
 
     if docker info >/dev/null 2>&1; then

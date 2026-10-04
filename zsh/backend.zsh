@@ -32,4 +32,9 @@ load() {
 alias kx='kubectx'
 alias kn='kubens'
 alias klogs='stern'
-alias j='fx'   # j file.json или curl … | j — интерактивный просмотр JSON
+alias j='fx'
+
+# dot project doctor короче: pd (или pd ~/dev/logsence)
+alias pd='dot project doctor'
+# OpenTofu (Brewfile.devops): tf plan / tf apply — только вручную
+alias tf='tofu'   # j file.json или curl … | j — интерактивный просмотр JSON
