@@ -1,0 +1,34 @@
+# Проверки на каждый пуш: скрипты, zsh-конфиги, JSON-темы, утечки секретов.
+name: ci
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0   # gitleaks смотрит всю историю
+
+      - name: shellcheck
+        run: |
+          shellcheck -S warning -e SC1090 \
+            install.sh macos.sh themes/apply.sh borders/bordersrc git/hooks/_chain git/hooks/pre-commit
+
+      - name: zsh syntax
+        run: |
+          sudo apt-get install -y -qq zsh >/dev/null
+          for f in zsh/.zshrc zsh/*.zsh; do zsh -n "$f" && echo "ok $f"; done
+
+      - name: json / python
+        run: |
+          for f in zed/themes/*.json zed/icon-theme/icon_themes/*.json; do jq empty "$f" && echo "ok $f"; done
+          python3 -m py_compile themes/set-wallpaper.py
+
+      - name: gitleaks
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

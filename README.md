@@ -9,6 +9,7 @@ MacBook Air M2 · 8 GB · zsh · Ghostty · AeroSpace · Zed
 ![shell](https://img.shields.io/badge/shell-zsh-a855f7?style=flat-square)
 ![Go](https://img.shields.io/badge/Go-Gin-3b82f6?style=flat-square&logo=go&logoColor=white)
 ![license](https://img.shields.io/badge/license-MIT-101010?style=flat-square)
+![ci](https://github.com/van1dalgrr-arch/dotfiles/actions/workflows/ci.yml/badge.svg)
 
 <img src="docs/wallpapers.jpg" alt="Live wallpapers from this repo" width="100%">
 
