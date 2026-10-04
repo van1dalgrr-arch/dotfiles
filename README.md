@@ -52,6 +52,8 @@ After that you edit configs right in `~/dotfiles`, and changes show up in `git s
 Then run `dot doctor` — it checks symlinks, installed tools, font, theme, git hooks and shell startup time,
 and tells you how to fix anything that's off. `dot` also wraps the rest: `dot install`, `dot update`, `dot theme`, `dot wall`, `dot check`.
 
+To undo everything: `./uninstall.sh` shows the plan, `./uninstall.sh --yes` removes the symlinks and restores your `*.bak` files.
+
 `macos.sh` is separate and optional: fast key repeat, no autocorrect, screenshots in `~/Pictures/Screenshots`.
 
 ## What's inside
