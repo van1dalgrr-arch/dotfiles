@@ -36,7 +36,7 @@ theme() {
     exec zsh
 }
 
-# wall — сменить живые обои: wall (выбор в fzf) · wall silk · wall orbit · wall minimal
+# wall — сменить живые обои: wall (выбор в fzf) · wall orbit · wall minimal · wall kanagawa
 # Обои — icons/wallpaper-<имя>.swift, собираются в ~/Pictures/Wallpapers/<имя>.heic при первом выборе
 wall() {
     local name=$1
