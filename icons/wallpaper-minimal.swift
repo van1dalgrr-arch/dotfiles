@@ -35,14 +35,14 @@ struct Look {
 
 // Кадры: час → свет. Пятно медленно обходит экран, как солнце, но остаётся почти невидимым
 let frames: [(hour: CGFloat, look: Look)] = [
-    (0.0,  Look(glow: 0x82aaff, glowA: 0.13, gx: 0.80, gy: 0.22, glow2: 0x5a6fa8, glow2A: 0.12, lines: 0.8)),  // ночь — синий
-    (5.0,  Look(glow: 0xaca1cf, glowA: 0.15, gx: 0.18, gy: 0.18, glow2: 0x5a6fa8, glow2A: 0.10, lines: 0.85)), // предрассвет — фиолет
-    (7.0,  Look(glow: 0xf5a191, glowA: 0.11, gx: 0.20, gy: 0.28, glow2: 0xaca1cf, glow2A: 0.12, lines: 0.9)),  // рассвет — розоватый
-    (10.0, Look(glow: 0xf0ece4, glowA: 0.10, gx: 0.40, gy: 0.70, glow2: 0x82aaff, glow2A: 0.06, lines: 1.0)),  // утро — белый свет
-    (13.0, Look(glow: 0xf0ece4, glowA: 0.12, gx: 0.55, gy: 0.82, glow2: 0xaca1cf, glow2A: 0.06, lines: 1.0)),  // день
-    (17.0, Look(glow: 0xf0ece4, glowA: 0.10, gx: 0.74, gy: 0.55, glow2: 0xaca1cf, glow2A: 0.10, lines: 0.95)), // вечер
-    (19.0, Look(glow: 0xf591b2, glowA: 0.11, gx: 0.82, gy: 0.30, glow2: 0xaca1cf, glow2A: 0.12, lines: 0.9)),  // закат — розовый
-    (21.0, Look(glow: 0xaca1cf, glowA: 0.14, gx: 0.80, gy: 0.24, glow2: 0x82aaff, glow2A: 0.07, lines: 0.85)), // сумерки
+    (0.0,  Look(glow: 0x3b82f6, glowA: 0.13, gx: 0.80, gy: 0.22, glow2: 0x1e3a8a, glow2A: 0.12, lines: 0.8)),  // ночь — синий
+    (5.0,  Look(glow: 0xa855f7, glowA: 0.15, gx: 0.18, gy: 0.18, glow2: 0x1e3a8a, glow2A: 0.10, lines: 0.85)), // предрассвет — фиолет
+    (7.0,  Look(glow: 0xf97316, glowA: 0.11, gx: 0.20, gy: 0.28, glow2: 0xa855f7, glow2A: 0.12, lines: 0.9)),  // рассвет — розоватый
+    (10.0, Look(glow: 0xf0ece4, glowA: 0.10, gx: 0.40, gy: 0.70, glow2: 0x3b82f6, glow2A: 0.06, lines: 1.0)),  // утро — белый свет
+    (13.0, Look(glow: 0xf0ece4, glowA: 0.12, gx: 0.55, gy: 0.82, glow2: 0xa855f7, glow2A: 0.06, lines: 1.0)),  // день
+    (17.0, Look(glow: 0xf0ece4, glowA: 0.10, gx: 0.74, gy: 0.55, glow2: 0xa855f7, glow2A: 0.10, lines: 0.95)), // вечер
+    (19.0, Look(glow: 0xec4899, glowA: 0.11, gx: 0.82, gy: 0.30, glow2: 0xa855f7, glow2A: 0.12, lines: 0.9)),  // закат — розовый
+    (21.0, Look(glow: 0xa855f7, glowA: 0.14, gx: 0.80, gy: 0.24, glow2: 0x3b82f6, glow2A: 0.07, lines: 0.85)), // сумерки
 ]
 let lightIndex = 4, darkIndex = 0
 
