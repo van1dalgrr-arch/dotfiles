@@ -43,9 +43,9 @@ let lightIndex = 4, darkIndex = 0
 
 // центр ленты, её ширина и закрутка вдоль x
 func center(_ u: CGFloat) -> CGFloat {
-    H * 0.50 + 170 * S * sin(u * .pi * 1.6 + 0.5) + 70 * S * sin(u * .pi * 3.4 + 1.9) - 120 * S * (u - 0.5)
+    H * 0.34 + 110 * S * sin(u * .pi * 1.6 + 0.5) + 40 * S * sin(u * .pi * 3.4 + 1.9) - 90 * S * (u - 0.5)
 }
-func width(_ u: CGFloat) -> CGFloat { (50 + 210 * pow(max(0, sin(u * .pi)), 1.4)) * S }   // max: за краем экрана sin < 0 → NaN
+func width(_ u: CGFloat) -> CGFloat { (18 + 95 * pow(max(0, sin(u * .pi)), 1.4)) * S }   // max: за краем экрана sin < 0 → NaN
 func twist(_ u: CGFloat) -> CGFloat { 2.4 * sin(u * .pi * 1.25 + 0.3) + u * 4.2 }
 
 // интенсивность света: нити рисуются белым на чёрном (потом окрашиваются градиентом)
@@ -79,10 +79,10 @@ func dust() -> CIImage {
     ctx.setFillColor(CGColor(gray: 0, alpha: 1)); ctx.fill(CGRect(x: 0, y: 0, width: W, height: H))
     var seed: UInt64 = 0x51_1C
     func rnd() -> CGFloat { seed = seed &* 6364136223846793005 &+ 1442695040888963407; return CGFloat(seed >> 33) / CGFloat(1 << 31) }
-    for _ in 0..<520 {
+    for _ in 0..<140 {
         let u = rnd() * 1.1 - 0.05
         let gauss = (rnd() + rnd() + rnd() - 1.5) * 2                  // гуще у ленты
-        let y = center(u) + gauss * width(max(0, min(1, u))) * 1.6
+        let y = center(u) + gauss * width(max(0, min(1, u))) * 1.3
         let r = (0.5 + pow(rnd(), 4) * 2.2) * S
         ctx.setFillColor(CGColor(gray: 1, alpha: 0.15 + pow(rnd(), 2) * 0.6))
         ctx.fillEllipse(in: CGRect(x: u * W - r, y: y - r, width: r * 2, height: r * 2))
@@ -92,8 +92,7 @@ func dust() -> CIImage {
 
 // форма считается один раз
 let extent = CGRect(x: 0, y: 0, width: W, height: H)
-let main = strands(count: 220, alpha: 0.075, lineWidth: max(0.8, 1.1 * S), spread: 1.0, phase: 0, yShift: 0)
-let echo = strands(count: 90, alpha: 0.035, lineWidth: max(0.8, 0.9 * S), spread: 1.6, phase: 1.3, yShift: -40 * S)
+let main = strands(count: 150, alpha: 0.085, lineWidth: max(0.8, 1.0 * S), spread: 1.0, phase: 0, yShift: 0)
 let specks = dust()
 func blur(_ img: CIImage, _ r: CGFloat) -> CIImage {
     img.clampedToExtent().applyingFilter("CIGaussianBlur", parameters: [kCIInputRadiusKey: r]).cropped(to: extent)
@@ -104,7 +103,7 @@ func scale(_ img: CIImage, _ k: CGFloat) -> CIImage {
         "inputRVector": CIVector(x: k, y: 0, z: 0, w: 0), "inputGVector": CIVector(x: 0, y: k, z: 0, w: 0),
         "inputBVector": CIVector(x: 0, y: 0, z: k, w: 0), "inputAVector": CIVector(x: 0, y: 0, z: 0, w: 1)])
 }
-let lines = add(main, echo)
+let lines = main
 let bloomNear = blur(lines, 10 * S), bloomFar = blur(lines, 60 * S)
 
 func render(_ L: Look) -> CGImage {
@@ -114,10 +113,10 @@ func render(_ L: Look) -> CGImage {
         "inputColor0": color(L.a), "inputColor1": color(L.b)])!.outputImage!.cropped(to: extent)
 
     // свет = нити + ближнее и дальнее свечение
-    let light = add(add(lines, scale(bloomNear, 0.9 * L.glow)), scale(bloomFar, 1.6 * L.glow))
+    let light = add(add(lines, scale(bloomNear, 0.6 * L.glow)), scale(bloomFar, 0.55 * L.glow))
     let tinted = grad.applyingFilter("CIMultiplyCompositing", parameters: [kCIInputBackgroundImageKey: light])
     let whiteCore = scale(lines, 0.35)                                   // сердцевина нитей чуть белее
-    let dustTinted = grad.applyingFilter("CIMultiplyCompositing", parameters: [kCIInputBackgroundImageKey: add(specks, scale(blur(specks, 3 * S), 1.5))])
+    let dustTinted = grad.applyingFilter("CIMultiplyCompositing", parameters: [kCIInputBackgroundImageKey: add(scale(specks, 0.6), scale(blur(specks, 3 * S), 0.8))])
 
     // фон: почти чёрный, к краям темнее
     let bg = CIFilter(name: "CIRadialGradient", parameters: [
