@@ -9,6 +9,7 @@
 
 export PATH="/opt/homebrew/bin:$PATH"
 export PATH="$PATH:${GOPATH:-$HOME/go}/bin"   # без вызова `go env` — быстрее старт
+export PATH="$HOME/dotfiles/bin:$PATH"           # dot — управление dotfiles
 
 # ────────────────────────────────────────────────────────────
 # OH MY ZSH

@@ -49,6 +49,9 @@ brew bundle          # everything from the Brewfile
 `install.sh` doesn't delete anything: if a config already exists, it's renamed to `*.bak`.
 After that you edit configs right in `~/dotfiles`, and changes show up in `git status`.
 
+Then run `dot doctor` — it checks symlinks, installed tools, font, theme, git hooks and shell startup time,
+and tells you how to fix anything that's off. `dot` also wraps the rest: `dot install`, `dot update`, `dot theme`, `dot wall`, `dot check`.
+
 `macos.sh` is separate and optional: fast key repeat, no autocorrect, screenshots in `~/Pictures/Screenshots`.
 
 ## What's inside

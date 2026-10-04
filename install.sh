@@ -43,7 +43,6 @@ link atuin/config.toml              "$HOME/.config/atuin/config.toml"
 link aerospace/aerospace.toml       "$HOME/.config/aerospace/aerospace.toml"
 link btop/themes/rose-pine.theme   "$HOME/.config/btop/themes/rose-pine.theme"
 link bat/themes/rose-pine.tmTheme   "$HOME/.config/bat/themes/rose-pine.tmTheme" && bat cache --build >/dev/null
-link ghostty/shaders/cursor_trail.glsl "$HOME/.config/ghostty/shaders/cursor_trail.glsl"
 
 link zed/settings.json               "$HOME/.config/zed/settings.json"
 link zed/keymap.json                 "$HOME/.config/zed/keymap.json"

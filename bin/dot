@@ -1,0 +1,92 @@
+#!/usr/bin/env bash
+# ============================================================
+#   dot — управление dotfiles одной командой
+#     dot doctor        всё ли на месте: ссылки, программы, шрифт, тема, git-хуки
+#     dot install       brew bundle + симлинки + тема
+#     dot update        обслуживание (brew, Go-инструменты, Docker, иконки)
+#     dot theme [имя]   сменить тему          dot wall [имя]   сменить обои
+#     dot check         проверки, как в CI    dot edit         открыть репозиторий в Zed
+# ============================================================
+set -uo pipefail
+DOTFILES="${DOTFILES:-$HOME/dotfiles}"
+
+ok=0 warn=0 fail=0
+c_ok=$'\e[38;2;59;130;246m' c_warn=$'\e[38;2;234;179;8m' c_fail=$'\e[38;2;239;68;68m' c_dim=$'\e[38;2;110;110;120m' c_head=$'\e[38;2;168;85;247m' r=$'\e[0m'
+pass()    { ok=$((ok + 1));     printf '  %s✓%s %s\n' "$c_ok" "$r" "$1"; }
+warning() { warn=$((warn + 1)); printf '  %s!%s %s %s%s%s\n' "$c_warn" "$r" "$1" "$c_dim" "${2:-}" "$r"; }
+failed()  { fail=$((fail + 1)); printf '  %s✗%s %s %s%s%s\n' "$c_fail" "$r" "$1" "$c_dim" "${2:-}" "$r"; }
+section() { printf '\n%s%s%s\n' "$c_head" "$1" "$r"; }
+
+doctor() {
+    section "Симлинки (install.sh)"
+    local broken=0 total=0
+    while read -r src dst; do
+        dst=$(eval echo "$dst")
+        total=$((total + 1))
+        if [ "$(readlink "$dst" 2>/dev/null)" != "$DOTFILES/$src" ]; then
+            failed "$dst" "→ должно указывать на $src"; broken=$((broken + 1))
+        fi
+    done < <(grep -E '^link ' "$DOTFILES/install.sh" | sed -E 's/^link +([^ ]+) +"?([^"]+)"?.*/\1 \2/')
+    [ "$broken" -eq 0 ] && pass "все $total ссылок на месте"
+
+    section "Программы (Brewfile)"
+    local have missing=()
+    have=$(brew list --formula -1 2>/dev/null; brew list --cask -1 2>/dev/null)
+    while read -r name; do
+        name=${name##*/}
+        # не через brew, но есть: приложение в /Applications или команда в PATH (kubectl от OrbStack)
+        grep -qx "$name" <<<"$have" || compgen -G "/Applications/${name}*.app" >/dev/null \
+            || compgen -G "/Applications/$(tr '[:lower:]' '[:upper:]' <<<"${name:0:1}")${name:1}*.app" >/dev/null \
+            || command -v "$name" >/dev/null || missing+=("$name")
+    done < <(grep -E '^(brew|cask) ' "$DOTFILES/Brewfile" | sed -E 's/^(brew|cask) "([^"]+)".*/\2/')
+    if [ ${#missing[@]} -eq 0 ]; then pass "всё из Brewfile установлено"
+    else failed "не установлено: ${missing[*]}" "→ dot install"; fi
+    for t in gopls air golangci-lint-langserver govulncheck gofumpt; do
+        [ -x "$HOME/go/bin/$t" ] || command -v "$t" >/dev/null || warning "Go-инструмент $t" "→ dot update"
+    done
+
+    section "Внешний вид"
+    if compgen -G "$HOME/Library/Fonts/JetBrainsMonoNerdFont*" >/dev/null || compgen -G "/Library/Fonts/JetBrainsMonoNerdFont*" >/dev/null; then
+        pass "шрифт JetBrainsMono Nerd Font"
+    else failed "нет шрифта JetBrainsMono Nerd Font" "→ brew install --cask font-jetbrains-mono-nerd-font"; fi
+    local theme
+    theme=$(cat "$HOME/.config/dotfiles/theme" 2>/dev/null || echo "")
+    if [ -n "$theme" ] && [ -f "$DOTFILES/themes/$theme.sh" ]; then pass "тема: $theme"
+    else warning "тема не применена" "→ dot theme vesper"; fi
+    [ -f "$HOME/.cache/dotfiles-theme/starship.toml" ] && [ -f "$HOME/.config/ghostty/theme.ghostty" ] \
+        && pass "сгенерированные конфиги темы" || warning "нет сгенерированных конфигов темы" "→ dot theme"
+    if /Applications/Ghostty.app/Contents/MacOS/ghostty +validate-config >/dev/null 2>&1; then pass "конфиг Ghostty валиден"
+    else failed "в конфиге Ghostty ошибка" "→ ghostty +validate-config"; fi
+
+    section "Shell"
+    local t
+    t=$(perl -MTime::HiRes=time -e '$s=time; system("zsh -i -c exit >/dev/null 2>&1"); printf "%.2f", time-$s')
+    if awk "BEGIN{exit !($t < 0.35)}"; then pass "zsh стартует за ${t} с"
+    else warning "zsh стартует за ${t} с" "→ медленно, что-то тяжёлое в .zshrc"; fi
+
+    section "Git"
+    local hooks
+    hooks=$(git config --global core.hooksPath)
+    [ "${hooks/#\~/$HOME}" = "$HOME/dotfiles/git/hooks" ] && pass "gitleaks перед каждым коммитом" \
+        || failed "глобальные хуки не подключены" "→ проверь git/.gitconfig"
+    if git -C "$DOTFILES" diff --quiet && git -C "$DOTFILES" diff --cached --quiet; then pass "в dotfiles нет незакоммиченного"
+    else warning "в dotfiles есть изменения" "→ git -C ~/dotfiles status"; fi
+
+    section "Docker"
+    if docker info >/dev/null 2>&1; then pass "OrbStack работает"
+    else warning "Docker не запущен" "→ откроется сам при up или: open -a OrbStack"; fi
+
+    printf '\n%s%d ок%s · %s%d предупреждений%s · %s%d ошибок%s\n' "$c_ok" "$ok" "$r" "$c_warn" "$warn" "$r" "$c_fail" "$fail" "$r"
+    [ "$fail" -eq 0 ]
+}
+
+case "${1:-help}" in
+    doctor)  doctor ;;
+    install) brew bundle --file "$DOTFILES/Brewfile" && "$DOTFILES/install.sh" ;;
+    update)  zsh -ic update ;;
+    theme)   shift; "$DOTFILES/themes/apply.sh" "$@" ;;
+    wall)    shift; zsh -ic "wall $*" ;;
+    check)   make -C "$DOTFILES" check ;;
+    edit)    zed "$DOTFILES" ;;
+    *)       sed -n '3,9p' "$0" | sed 's/^# \{0,1\}//' ;;
+esac

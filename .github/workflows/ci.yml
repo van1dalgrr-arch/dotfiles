@@ -16,7 +16,7 @@ jobs:
       - name: shellcheck
         run: |
           shellcheck -S warning -e SC1090 \
-            install.sh macos.sh themes/apply.sh borders/bordersrc git/hooks/_chain git/hooks/pre-commit
+            bin/dot install.sh macos.sh themes/apply.sh borders/bordersrc git/hooks/_chain git/hooks/pre-commit
 
       - name: zsh syntax
         run: |
