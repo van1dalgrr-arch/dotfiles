@@ -32,16 +32,12 @@ brew bundle
 
 ## Docker → OrbStack
 
-Docker работает через OrbStack вместо Docker Desktop: те же `docker` / `docker compose`,
-но память берётся по мере надобности и отдаётся обратно (на 8 ГБ это заметно).
+Docker работает через OrbStack (Docker Desktop удалён 2026-10-04, данные перенесены
+через `orb docker migrate`). Те же `docker` / `docker compose`, но память берётся
+по мере надобности и отдаётся обратно — на 8 ГБ это заметно.
 
-```bash
-docker context use orbstack        # OrbStack (сейчас)
-docker context use desktop-linux   # вернуться на Docker Desktop
-```
-
-Старые образы остались в Docker Desktop. Перенести: OrbStack → Settings → Migrate from Docker Desktop
-(или просто пересобрать `docker compose build`).
+Если `docker compose` пропал: плагины — ссылки в `~/.docker/cli-plugins/` на
+`/Applications/OrbStack.app/Contents/MacOS/xbin/docker-{compose,buildx}`.
 
 ## Живые обои
 
