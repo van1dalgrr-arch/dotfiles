@@ -106,10 +106,12 @@ f = ['layout floating tiling', 'mode main']
 backspace = ['close-all-windows-but-current', 'mode main']
 
 # ─── Приложения по рабочим столам ───
-# 1 терминал · 2 код · 3 браузер · 4 чаты · 5 музыка
+# 2 код · 3 браузер · 4 чаты · 5 музыка (терминал — где открыл)
+# Ghostty — плавающий, на текущем столе. Без move-node-to-workspace: иначе выпадающий
+# терминал (ctrl+`) тоже утаскивало на стол 1 и он «не открывался» на других столах
 [[on-window-detected]]
 if.app-id = 'com.mitchellh.ghostty'
-run = ['layout floating', 'move-node-to-workspace 1']
+run = 'layout floating'
 
 [[on-window-detected]]
 if.app-id = 'com.microsoft.VSCode'
