@@ -322,6 +322,32 @@ GO
     go mod tidy && git init -q && echo "готово: запусти air → http://localhost:8080/ping"
 }
 
+# up — запустить проект одной командой: OrbStack (если спит) → зависимости из compose
+# (сервисы без build: — postgres, redis…) → приложение с .env (air, иначе go run)
+up() {
+    local compose=( (compose|docker-compose).y(a|)ml(N) )
+    if [ -n "$compose" ]; then
+        if ! docker info >/dev/null 2>&1; then
+            echo "󰡨 запускаю OrbStack…"; open -ga OrbStack
+            until docker info >/dev/null 2>&1; do sleep 1; done
+        fi
+        local deps=(${(f)"$(docker compose config --format json | jq -r '.services | to_entries[] | select(.value.build == null) | .key')"})
+        if (( $#deps )); then
+            echo "󰆼 поднимаю: ${deps[*]}"
+            docker compose up -d --wait "${deps[@]}" || return
+        fi
+    fi
+    # приложение видит .env так же, как compose (в подоболочке — shell не засоряется)
+    (
+        [ -f .env ] && { set -a; source .env; set +a; }
+        if [ -f .air.toml ]; then air
+        elif [ -d cmd/api ]; then go run ./cmd/api
+        else go run .
+        fi
+    )
+    [ -n "$compose" ] && echo "зависимости работают дальше · остановить: dcd"
+}
+
 # fkill — выбрать процесс(ы) через fzf и убить (Tab — несколько)
 fkill() {
     local pids=$(ps -axo pid,%cpu,%mem,comm | sed 1d | \

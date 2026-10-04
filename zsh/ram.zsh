@@ -45,6 +45,8 @@ ram() {
         Ghostty $'\U000f02a0'  OrbStack 󰡨  "Docker (VM)" 󰡨  Docker 󰡨  com.docker.backend 󰡨
         Telegram $'\uf2c6'  Discord 󰙯  Spotify 󰓇  gopls $'\U000f07d3'  go $'\U000f07d3'  claude 󰚩
         Finder 󰀶  WindowServer 󰍹  Raycast 󱓞  AeroSpace 󰕰
+        Happ $'\U000f0582'  lghub $'\U000f037d'  Dock $'\U000f10a9'  Spotlight $'\U000f0349'
+        mds_stores $'\U000f0349'  mdworker_shared $'\U000f0349'  corespotlightd $'\U000f0349'
     )
     local -a eighths=('' ▏ ▎ ▍ ▌ ▋ ▊ ▉)
     local max=${${rows[1]}%%$'\t'*} bw=20
