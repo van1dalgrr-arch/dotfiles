@@ -30,7 +30,7 @@ Put `export PROMPT_ENGINE=starship` in `~/.zshenv` — the config is in `starshi
 <summary><code>dot doctor</code> shows ✗ / ! / ○ — what's what</summary>
 
 `✗` means something required (main `Brewfile`, symlinks, hooks) is broken, and `dot doctor` exits with 1.
-`!` is worth a look but doesn't fail the run. `○` is optional (`Brewfile.devops`, an age key) and just not set up.
+`!` is worth a look but doesn't fail the run. `○` is optional (`Brewfile.devops`) and just not set up.
 Every line ends with the fix. Add `--deep` for versions, pinned revisions, packages installed outside the Brewfile, and `brew doctor`.
 </details>
 

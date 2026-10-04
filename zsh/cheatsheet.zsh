@@ -58,7 +58,7 @@ serve|раздать текущую папку по http
 weather|погода в терминале
 ram|кто ест память (по приложениям): ram 15
 update|обслуживание: brew, Go-инструменты, мусор Docker, иконки
-dot|dot doctor [--deep] — всё ли на месте · dot project doctor — проверить проект · dot tools/secrets/macos
+dot|dot doctor [--deep] — всё ли на месте · dot project doctor — проверить проект · dot tools/macos
 up|запустить проект: compose-зависимости + air/go run с .env
 pl|все проекты ~/dev: стек, ветка, изменения, давность
 db|pgcli к базе проекта (DATABASE_URL / .env)

@@ -10,10 +10,6 @@
 *.p12
 id_rsa*
 id_ed25519*
-# приватные ключи age (SOPS); зашифрованные *.enc.* коммитить можно
-*.agekey
-age-key*.txt
-**/sops/age/keys.txt
 .envrc
 
 # macOS / редакторы

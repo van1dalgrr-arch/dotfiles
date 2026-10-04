@@ -1,7 +1,7 @@
 # Необязательный DevOps-набор: Kubernetes локально, IaC. Всё — одиночные бинарники под arm64,
 # в фоне ничего не запускают и памяти не занимают. Кластеры и облако сами не создаются.
 #   brew bundle --file Brewfile.devops
-# Уже в основном Brewfile: kubectl, helm, k9s, kubectx, stern, trivy, act, hadolint, sops, age.
+# Уже в основном Brewfile: kubectl, helm, k9s, kubectx, stern, trivy, act, hadolint.
 
 # Kubernetes
 brew "kind"             # кластер в Docker (OrbStack): kind create cluster — только вручную

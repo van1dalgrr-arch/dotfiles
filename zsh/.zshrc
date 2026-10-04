@@ -197,9 +197,6 @@ alias venv="uv venv && source .venv/bin/activate"
 
 (( $+commands[mise] )) && eval "$(mise activate zsh)"
 
-# SOPS: ключ age в одном предсказуемом месте (docs/secrets.md). Сам ключ — не в git.
-export SOPS_AGE_KEY_FILE="$HOME/.config/sops/age/keys.txt"
-
 # ────────────────────────────────────────────────────────────
 # SYSTEM
 # ────────────────────────────────────────────────────────────

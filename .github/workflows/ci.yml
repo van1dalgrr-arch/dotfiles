@@ -22,7 +22,7 @@ jobs:
       - name: Brewfile syntax
         run: ruby -c Brewfile && ruby -c Brewfile.devops
 
-      - name: smoke tests (dot project doctor, tools, secrets)
+      - name: smoke tests (dot project doctor, tools)
         run: tests/smoke.sh
 
       - name: zsh syntax

@@ -190,10 +190,10 @@ pgx, `/health` с пингом базы, graceful shutdown, compose, двухэ�
 ## 12. Проверки: `dot doctor`, `make check`, CI
 
 - `dot doctor` — твоя машина: симлинки, Brewfile (обязательное ✗) и Brewfile.devops (необязательное ○), Go,
-  Docker/Compose, Kubernetes, IaC, SOPS/age, git-хуки, Ghostty, Zed, скорость zsh. Каждая проблема — с подсказкой.
+  Docker/Compose, Kubernetes, IaC, git-хуки, Ghostty, Zed, скорость zsh. Каждая проблема — с подсказкой.
   `dot doctor --deep` — ещё версии, закреплённые ревизии, лишние пакеты вне Brewfile, `brew doctor`. Только читает.
 - `dot project doctor` (`pd`) — текущий Go-проект: go.mod, тесты, линтеры, Docker, миграции, безопасность `.env`.
-- Код `dot` — в `lib/*.sh` (ui, doctor, project, tools, secrets), совместим с системным bash 3.2.
+- Код `dot` — в `lib/*.sh` (ui, doctor, project, tools), совместим с системным bash 3.2.
 - `make check` — сам репозиторий: shellcheck, `bash -n` системным bash, синтаксис zsh, Brewfile, JSON, gitleaks.
   `make test` — смоук-тесты `tests/smoke.sh`. То же самое гоняет CI.
 - CI на GitHub (`.github/workflows/ci.yml`): Linux — линтеры и gitleaks; **macOS** — компилирует все Swift-генераторы
@@ -208,7 +208,6 @@ pgx, `/health` с пингом базы, graceful shutdown, compose, двухэ�
 | новые обои | `icons/wallpaper-<имя>.swift` с `runWallpaper { hour in … }` → `wall <имя>` |
 | новую программу | строка в `Brewfile` (или `Brewfile.devops`, если необязательная) → `dot install` |
 | новую Go-утилиту / обновить её | `пакет@версия` в `go/tools.txt` → `dot tools install` |
-| секреты в проекте | `dot secrets init` → `sops edit secrets.enc.yaml` ([secrets.md](secrets.md)) |
 | настройки macOS | `./macos.sh` (план) → `./macos.sh --yes` |
 | новый конфиг под git | файл в репозиторий + строка `link` в `install.sh` → `./install.sh` |
 | понять, что сломалось | `dot doctor` |

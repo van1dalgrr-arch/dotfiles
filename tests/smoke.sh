@@ -58,12 +58,6 @@ check "не Go-проект"         0 "не Go-проект"            -- "$DO
 # go/tools.txt разбирается: имя, пакет, версия
 check "tools.txt разбор"     0 "gopls golang.org/x/tools/gopls v" -- bash -c ". '$DOTFILES/lib/ui.sh'; . '$DOTFILES/lib/tools.sh'; tools_list"
 
-# secrets init без ключа: ничего не создаёт и не генерирует
-mkdir -p "$TMP/sec"
-check "secrets init без ключа" 1 "создай его сам" -- bash -c "cd '$TMP/sec' && SOPS_AGE_KEY_FILE='$TMP/nokey' '$DOT' secrets init"
-[ ! -e "$TMP/sec/.sops.yaml" ] && [ ! -e "$TMP/nokey" ] && { passed=$((passed + 1)); echo "ok   secrets: ключ не создан"; } \
-    || { failed=$((failed + 1)); echo "FAIL secrets: что-то создано без ключа"; }
-
 if [ "$(uname -s)" = Darwin ]; then
     check "macos.sh: план"       0 "finder"    -- "$DOTFILES/macos.sh" finder
     check "macos.sh: группа"     2 "неизвестно" -- "$DOTFILES/macos.sh" bogus

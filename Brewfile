@@ -69,9 +69,6 @@ brew "yq"
 brew "direnv"
 brew "git-lfs"
 
-# Секреты: шифрование файлов в git (docs/secrets.md)
-brew "sops"
-brew "age"
 
 # Python
 brew "uv"

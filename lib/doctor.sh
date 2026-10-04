@@ -3,7 +3,7 @@
 #   dot doctor [--deep] — всё ли на месте. Только читает, ничего не меняет.
 #     обычный режим — быстрые проверки (~1 с)
 #     --deep       — ещё версии, закреплённые ревизии, расхождения с Brewfile,
-#                    brew doctor, JSONC Zed, история dotfiles на секреты (~20 с)
+#                    brew doctor, JSONC Zed, история dotfiles на утечки (~20 с)
 #   Обязательное (Brewfile) отсутствует → ✗ и exit 1. Необязательное (Brewfile.devops) → ○.
 # ============================================================
 
@@ -151,26 +151,6 @@ doc_iac() {
     tool opt terraform-docs "→ brew bundle --file Brewfile.devops" terraform-docs --version
 }
 
-doc_secrets() {
-    section "Секреты (SOPS + age)"
-    tool req sops "→ brew install sops" sops --version
-    tool req age "→ brew install age" age --version
-    local key="${SOPS_AGE_KEY_FILE:-$HOME/.config/sops/age/keys.txt}" mode
-    if [ -f "$key" ]; then
-        mode=$(stat -f %Lp "$key" 2>/dev/null)
-        if [ "$mode" = 600 ] || [ "$mode" = 400 ]; then pass "ключ age: ${key/#$HOME/~} (права $mode)"
-        else failed "ключ age читают другие (права $mode)" "→ chmod 600 \"$key\""; fi
-    else optional "ключ age не создан" "→ docs/secrets.md (создаётся вручную)"; fi
-    if [ "$deep" = 1 ]; then
-        # приватные ключи age не должны попасть в репозиторий (строка собрана из частей,
-        # чтобы этот файл сам не совпадал с поиском)
-        local leaked
-        leaked=$(git -C "$DOTFILES" grep -lI "AGE-SECRET""-KEY-1" 2>/dev/null; git -C "$DOTFILES" ls-files | grep -E '(^|/)keys\.txt$|\.agekey$')
-        if [ -z "$leaked" ]; then pass "в dotfiles нет приватных ключей age"
-        else failed "приватный ключ в репозитории: $leaked" "→ убери из git и смени ключ"; fi
-    fi
-}
-
 doc_git() {
     section "Git"
     tool req git "→ xcode-select --install" git --version
@@ -273,6 +253,6 @@ doctor() {
         esac
     done
     [ "$(uname -s)" = Darwin ] || { echo "dot doctor — только для macOS" >&2; return 2; }
-    doc_links; doc_brew; doc_go; doc_docker; doc_k8s; doc_iac; doc_secrets; doc_git; doc_editors; doc_shell
+    doc_links; doc_brew; doc_go; doc_docker; doc_k8s; doc_iac; doc_git; doc_editors; doc_shell
     summary
 }

@@ -109,7 +109,7 @@ Type a command that doesn't exist and the prompt tells you if it's available in 
 ## Diagnostics: `dot doctor`
 
 ```bash
-dot doctor           # ~1 s: symlinks, Brewfile, Go, Docker, Kubernetes, IaC, secrets, git hooks, Ghostty, Zed, shell
+dot doctor           # ~1 s: symlinks, Brewfile, Go, Docker, Kubernetes, IaC, git hooks, Ghostty, Zed, shell
 dot doctor --deep    # ~20 s: + versions, pinned revisions, packages outside the Brewfile, brew doctor, Zed JSONC, …
 ```
 
@@ -131,7 +131,7 @@ It finds the nearest `go.mod` (from any subfolder) and runs a checklist, grouped
 | Quality | golangci-lint (+ config), govulncheck |
 | Build & run | Makefile targets, Dockerfile (+ `.dockerignore`, multi-stage), compose file, `.air.toml` |
 | Database | migrations folder and `.sql` count, sqlc |
-| Config & secrets | `.env.example`, **`.env` tracked or not ignored → ✗**, `.sops.yaml` |
+| Config & secrets | `.env.example`, **`.env` tracked or not ignored → ✗** |
 | Git | branch, remote, uncommitted changes, `.gitignore`, CI |
 
 Missing optional files show up as `○`, not as errors. It never runs migrations, starts containers, or touches the project.
@@ -164,7 +164,7 @@ and add a shell hook. If you install mise for other languages, `.zshrc` activate
 
 | | Tools |
 |---|---|
-| Always (`Brewfile`) | kubectl, helm, k9s, kubectx/kubens, stern, OrbStack (Docker + Compose + buildx), lazydocker, dive, hadolint, trivy, act, sops, age |
+| Always (`Brewfile`) | kubectl, helm, k9s, kubectx/kubens, stern, OrbStack (Docker + Compose + buildx), lazydocker, dive, hadolint, trivy, act |
 | Optional (`make devops`) | **kind** (Kubernetes in Docker), **kustomize**, **opentofu** (`tofu`, alias `tf`), **terraform-docs**, **tflint** (built from source at a pinned version: Homebrew dropped the formula) |
 
 All of them are small arm64 binaries that don't run in the background. Nothing creates clusters or cloud resources
@@ -186,17 +186,6 @@ network or USB drives), `saving` (to disk rather than iCloud, expanded dialogs),
 
 Running it twice is safe: values that already match are skipped. It restarts only Finder, Dock or SystemUIServer,
 and never logs you out. Keyboard, trackpad and dark mode apply after your next login.
-
-## Secrets: SOPS + age
-
-```bash
-dot secrets          # sops/age installed? key present, mode 600? public key
-dot secrets init     # .sops.yaml in the current project, using your public key
-sops edit secrets.enc.yaml
-```
-
-Nothing here generates keys: you create the age key once, by hand, and back it up. The full workflow (teammates, CI,
-Kubernetes secrets) is in **[docs/secrets.md](docs/secrets.md)**.
 
 ## Wallpapers
 
@@ -236,7 +225,6 @@ The palette, stars, glow and HEIC builder live in `icons/wallpaper-kit.swift`. T
 | [Wallpapers](docs/wallpapers.md) | all 25 live wallpapers with previews, and how to make your own |
 | [Themes](docs/themes.md) | how `theme` recolors everything from one palette file |
 | [Hotkeys](docs/hotkeys.md) | AeroSpace, Ghostty and Zed shortcuts |
-| [Secrets](docs/secrets.md) | SOPS + age: key, `.sops.yaml`, teammates and CI |
 | [Troubleshooting](docs/troubleshooting.md) | icons, theme, drop-down terminal, doctor statuses, Go versions, `macos.sh`, aliases |
 | [Changelog](CHANGELOG.md) | what changed between releases |
 
@@ -253,15 +241,14 @@ False positive? Add a `gitleaks:allow` comment on the line, or use `git commit -
 
 ```
 dotfiles/
-├── bin/dot          entry point: doctor, project doctor, tools, secrets, install, update, theme, wall
-├── lib/             dot modules: ui, doctor, project, tools, secrets (bash 3.2, no dependencies)
+├── bin/dot          entry point: doctor, project doctor, tools, install, update, theme, wall
+├── lib/             dot modules: ui, doctor, project, tools (bash 3.2, no dependencies)
 ├── zsh/             .zshrc, prompt, theme loader, cheatsheet, ram, update, gonew, backend
 ├── themes/          theme palettes and apply.sh
 ├── icons/           wallpapers, app icons, folder icons (Swift)
 ├── ghostty/  aerospace/  zed/  vscode/  fastfetch/
 ├── git/             .gitconfig, delta, gitleaks hooks, global ignore
 ├── go/              tools.txt / tools.devops.txt: pinned Go tools
-├── templates/       sops.yaml for projects
 ├── tests/smoke.sh   smoke tests for dot (make test, CI)
 ├── btop/ bat/ eza/ lazygit/ atuin/ tealdeer/ starship/ pgcli/
 ├── Brewfile         required apps and CLIs   ·  Brewfile.devops: optional

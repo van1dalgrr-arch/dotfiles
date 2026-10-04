@@ -10,12 +10,11 @@
 
 **DevOps**
 - `Brewfile.devops` (optional): kind, kustomize, opentofu, terraform-docs; tflint via `go/tools.devops.txt`
-- SOPS + age in the main Brewfile; `dot secrets [init]`, `templates/sops.yaml`, [docs/secrets.md](docs/secrets.md)
 - Aliases `tf` (tofu) and `pd` (`dot project doctor`)
 
 **dot**
-- `dot doctor` checks Homebrew, Go, Docker/Compose, Kubernetes, IaC, secrets, git hooks, Ghostty and Zed; required vs optional (`○`)
-- `dot doctor --deep`: versions, pinned revisions, packages outside the Brewfile, `brew doctor`, Zed JSONC, age keys in the repo, PATH duplicates
+- `dot doctor` checks Homebrew, Go, Docker/Compose, Kubernetes, IaC, git hooks, Ghostty and Zed; required vs optional (`○`)
+- `dot doctor --deep`: versions, pinned revisions, packages outside the Brewfile, `brew doctor`, Zed JSONC, PATH duplicates
 - `dot project doctor`: Go project checklist (go.mod, tests, linters, Docker, compose, migrations, .env safety)
 - Modules live in `lib/`; works with the system bash 3.2; exit codes 0 / 1 / 2
 

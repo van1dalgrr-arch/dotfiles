@@ -107,11 +107,6 @@ proj_config() {
         elif git check-ignore -q .env; then pass ".env игнорируется git"
         else failed ".env не в .gitignore — уйдёт в коммит" "→ echo .env >> .gitignore"; fi
     fi
-    if [ -f .sops.yaml ]; then
-        local n
-        n=$(pfind -name '*.enc.*' | wc -l | tr -d ' ')
-        pass ".sops.yaml · зашифрованных файлов: $n"
-    else optional ".sops.yaml" "→ dot secrets init (docs/secrets.md)"; fi
 }
 
 proj_git() {
