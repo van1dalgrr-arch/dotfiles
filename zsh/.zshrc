@@ -442,6 +442,7 @@ weather() { curl -s "wttr.in/${1}?lang=ru&F" ; }
 
 source "$HOME/dotfiles/zsh/cheatsheet.zsh"
 source "$HOME/dotfiles/zsh/ram.zsh"
+source "$HOME/dotfiles/zsh/update.zsh"
 
 # ────────────────────────────────────────────────────────────
 # ПРИВЕТСТВИЕ: логотип Arch + коротко о системе (~35 мс).
