@@ -1,0 +1,82 @@
+{
+  "if err != nil": {
+    "prefix": "iferr",
+    "body": ["if err != nil {", "\treturn ${1:err}", "}"],
+    "description": "проверка ошибки"
+  },
+  "wrap error": {
+    "prefix": "iferrw",
+    "body": ["if err != nil {", "\treturn fmt.Errorf(\"${1:что делали}: %w\", err)", "}"],
+    "description": "проверка ошибки с обёрткой %w"
+  },
+  "gin handler": {
+    "prefix": "ginh",
+    "body": [
+      "func (h *${1:Handler}) ${2:Name}(c *gin.Context) {",
+      "\t${0}",
+      "\tc.JSON(http.StatusOK, gin.H{\"${3:status}\": \"${4:ok}\"})",
+      "}"
+    ],
+    "description": "обработчик Gin"
+  },
+  "gin bind json": {
+    "prefix": "ginbind",
+    "body": [
+      "var req ${1:Request}",
+      "if err := c.ShouldBindJSON(&req); err != nil {",
+      "\tc.JSON(http.StatusBadRequest, gin.H{\"error\": err.Error()})",
+      "\treturn",
+      "}"
+    ],
+    "description": "разобрать JSON из запроса"
+  },
+  "gin route group": {
+    "prefix": "ginr",
+    "body": [
+      "${1:api} := r.Group(\"/${2:api/v1}\")",
+      "{",
+      "\t$1.GET(\"/${3:items}\", h.${4:List})",
+      "\t$1.POST(\"/$3\", h.${5:Create})",
+      "}"
+    ],
+    "description": "группа маршрутов Gin"
+  },
+  "table test": {
+    "prefix": "ttest",
+    "body": [
+      "func Test${1:Name}(t *testing.T) {",
+      "\ttests := []struct {",
+      "\t\tname string",
+      "\t\t${2:in   string}",
+      "\t\t${3:want string}",
+      "\t}{",
+      "\t\t{name: \"${4:базовый}\"},",
+      "\t}",
+      "\tfor _, tt := range tests {",
+      "\t\tt.Run(tt.name, func(t *testing.T) {",
+      "\t\t\t${0}",
+      "\t\t})",
+      "\t}",
+      "}"
+    ],
+    "description": "табличный тест"
+  },
+  "struct with json tags": {
+    "prefix": "jstruct",
+    "body": [
+      "type ${1:Name} struct {",
+      "\t${2:ID} ${3:int64} `json:\"${4:id}\"`",
+      "\t${0}",
+      "}"
+    ],
+    "description": "структура с json-тегами"
+  },
+  "context with timeout": {
+    "prefix": "ctxt",
+    "body": [
+      "ctx, cancel := context.WithTimeout(${1:ctx}, ${2:5}*time.Second)",
+      "defer cancel()"
+    ],
+    "description": "контекст с таймаутом"
+  }
+}

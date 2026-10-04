@@ -1,50 +1,31 @@
-// Zed keymap
-//
-// For information on binding keys, see the Zed
-// documentation: https://zed.dev/docs/key-bindings
-//
-// To see the default key bindings run `zed: open default keymap`
-// from the command palette.
+// Хоткеи Zed (поверх раскладки JetBrains). Все действия — cmd-shift-p.
 [
   {
     "context": "Workspace",
     "bindings": {
-      // Терминал — открыть/закрыть и сразу в фокус
-      "cmd-j": "terminal_panel::ToggleFocus",
-
-      // Панель проекта (файлы) слева
-      "cmd-1": "project_panel::ToggleFocus",
-
-      // Outline (структура файла: функции, методы, типы)
-      "cmd-2": "outline_panel::ToggleFocus",
-
-      // Левый док целиком (проект/git — что там открыто)
+      // панели
+      "cmd-j": "terminal_panel::ToggleFocus",          // терминал
+      "cmd-1": "project_panel::ToggleFocus",           // файлы
+      "cmd-2": "outline_panel::ToggleFocus",           // структура файла
+      "cmd-3": "git_panel::ToggleFocus",               // git: изменения, коммит
       "cmd-0": "workspace::ToggleLeftDock",
+      "cmd-9": "workspace::ToggleRightDock",           // AI-агент
+      "cmd-shift-d": "diagnostics::Deploy",            // все ошибки проекта
 
-      // Правый док (AI-агент)
-      "cmd-9": "workspace::ToggleRightDock",
+      // задачи (zed/tasks.json)
+      "ctrl-r": "task::Spawn",                         // выбрать и запустить
+      "ctrl-shift-r": "task::Rerun",                   // повторить последнюю
+      "alt-g": ["task::Spawn", { "task_name": "lazygit" }],
+      "alt-d": ["task::Spawn", { "task_name": "lazydocker" }],
     },
   },
   {
     "context": "Editor",
     "bindings": {
-      // Git blame прямо в строке кода
-      "cmd-shift-b": "editor::ToggleGitBlameInline",
-
-      // Вкл/выкл инлайн-подсказки типов (gopls hints)
-      "cmd-shift-i": "editor::ToggleInlayHints",
-
-      // Вкл/выкл направляющие отступов
+      "cmd-shift-b": "git::Blame",                     // blame всего файла
+      "cmd-alt-b": "editor::ToggleGitBlameInline",     // blame в строке вкл/выкл
+      "cmd-shift-i": "editor::ToggleInlayHints",       // подсказки типов
       "cmd-shift-l": "editor::ToggleIndentGuides",
-
-      // Панель диагностики (ошибки/варнинги по всему проекту)
-      "cmd-shift-d": "editor::ToggleDiagnostics",
-    },
-  },
-  {
-    "context": "Editor && vim_mode == insert",
-    "bindings": {
-      // "j k": "vim::NormalBefore"
     },
   },
 ]

@@ -1,0 +1,81 @@
+// Задачи Zed: ctrl-r — выбрать и запустить, ctrl-shift-r — повторить последнюю.
+// Запускаются в терминале Zed из корня проекта.
+[
+  {
+    "label": "up — зависимости из compose + приложение",
+    "command": "zsh -ic up",
+    "cwd": "$ZED_WORKTREE_ROOT",
+    "use_new_terminal": false,
+    "allow_concurrent_runs": false,
+    "reveal": "always",
+  },
+  {
+    "label": "air — hot reload",
+    "command": "air",
+    "cwd": "$ZED_WORKTREE_ROOT",
+    "allow_concurrent_runs": false,
+    "reveal": "always",
+  },
+  {
+    "label": "go run ./cmd/api",
+    "command": "go run ./cmd/api",
+    "cwd": "$ZED_WORKTREE_ROOT",
+    "allow_concurrent_runs": false,
+    "reveal": "always",
+  },
+  {
+    "label": "тесты — весь проект",
+    "command": "gotestsum --format pkgname-and-test-fails --format-icons hivis -- ./...",
+    "cwd": "$ZED_WORKTREE_ROOT",
+    "reveal": "always",
+  },
+  {
+    "label": "тесты — пакет текущего файла",
+    "command": "gotestsum --format testname -- -count=1 ./$(dirname \"$ZED_RELATIVE_FILE\")",
+    "cwd": "$ZED_WORKTREE_ROOT",
+    "reveal": "always",
+  },
+  {
+    "label": "golangci-lint",
+    "command": "golangci-lint run ./...",
+    "cwd": "$ZED_WORKTREE_ROOT",
+    "reveal": "always",
+  },
+  {
+    "label": "go mod tidy",
+    "command": "go mod tidy",
+    "cwd": "$ZED_WORKTREE_ROOT",
+    "reveal": "no_focus",
+    "hide": "on_success",
+  },
+  {
+    "label": "docker compose up -d",
+    "command": "docker compose up -d --wait",
+    "cwd": "$ZED_WORKTREE_ROOT",
+    "reveal": "always",
+  },
+  {
+    "label": "docker compose down",
+    "command": "docker compose down",
+    "cwd": "$ZED_WORKTREE_ROOT",
+    "reveal": "no_focus",
+    "hide": "on_success",
+  },
+  {
+    "label": "lazygit",
+    "command": "lazygit",
+    "cwd": "$ZED_WORKTREE_ROOT",
+    "use_new_terminal": true,
+    "allow_concurrent_runs": false,
+    "reveal": "always",
+    "hide": "always",
+  },
+  {
+    "label": "lazydocker",
+    "command": "lazydocker",
+    "use_new_terminal": true,
+    "allow_concurrent_runs": false,
+    "reveal": "always",
+    "hide": "always",
+  },
+]

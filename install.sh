@@ -47,6 +47,9 @@ link ghostty/shaders/cursor_trail.glsl "$HOME/.config/ghostty/shaders/cursor_tra
 
 link zed/settings.json               "$HOME/.config/zed/settings.json"
 link zed/keymap.json                 "$HOME/.config/zed/keymap.json"
+link zed/tasks.json                  "$HOME/.config/zed/tasks.json"
+link zed/themes/vesper-dev.json      "$HOME/.config/zed/themes/vesper-dev.json"
+link zed/snippets/go.json            "$HOME/.config/zed/snippets/go.json"
 [ -e /opt/homebrew/bin/zed ] || ln -s /Applications/Zed.app/Contents/MacOS/cli /opt/homebrew/bin/zed   # `zed .` из терминала
 
 # Тема терминала и обоев (по умолчанию rose-pine; сменить — `theme`)
