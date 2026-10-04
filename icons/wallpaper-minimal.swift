@@ -138,7 +138,10 @@ func dithered(_ img: CGImage) -> CGImage {
     return ci.createCGImage(sum, from: base.extent, format: .RGBA8, colorSpace: cs)!
 }
 
-let images = frames.map { dithered(render($0.look)) }
+// 8 бит без шума: фильтр CIRandomGenerator давал тысячи белых точек на чёрном
+let images = frames.map { f -> CGImage in
+    ci.createCGImage(CIImage(cgImage: render(f.look)), from: CGRect(x: 0, y: 0, width: W, height: H), format: .RGBA8, colorSpace: cs)!
+}
 
 if out.hasSuffix("/") {
     try! FileManager.default.createDirectory(atPath: out, withIntermediateDirectories: true)

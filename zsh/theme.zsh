@@ -35,3 +35,17 @@ theme() {
     print -P "%F{8}Ghostty: cmd+shift+, — перечитать конфиг%f"
     exec zsh
 }
+
+# wall — сменить живые обои: wall (выбор в fzf) · wall silk · wall orbit · wall minimal
+# Обои — icons/wallpaper-<имя>.swift, собираются в ~/Pictures/Wallpapers/<имя>.heic при первом выборе
+wall() {
+    local name=$1
+    if [[ -z $name ]]; then
+        name=$(command ls ~/dotfiles/icons/wallpaper-*.swift | sed 's|.*/wallpaper-||; s|\.swift$||' | \
+            fzf --header="обои" --height=40%) || return
+    fi
+    local src=~/dotfiles/icons/wallpaper-$name.swift heic=~/Pictures/Wallpapers/$name.heic
+    [[ -f $src ]] || { echo "нет обоев: $name"; return 1; }
+    [[ -f $heic && $heic -nt $src ]] || { echo "рисую $name…"; swift $src $heic >/dev/null || return; }
+    python3 ~/dotfiles/themes/set-wallpaper.py $heic
+}

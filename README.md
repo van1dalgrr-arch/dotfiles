@@ -83,7 +83,19 @@ swift icons/wallpaper.swift /tmp/wp/                                       # в�
 |---|---|---|
 | `rose-pine` | горы, сосны, луна | `icons/wallpaper.swift` |
 | `kanagawa` | Фудзи, море сэйгайха, касуми, печать 波 | `icons/wallpaper-kanagawa.swift` |
-| `vesper` | минимализм: почти чёрный, точечная сетка, контуры, мягкий свет | `icons/wallpaper-minimal.swift` |
+| `vesper` | вид с орбиты: край планеты, атмосфера, рассвет над горизонтом, HUD | `icons/wallpaper-orbit.swift` |
+
+## Обои: `wall`
+
+`wall` — выбрать живые обои в fzf, или сразу `wall silk` / `wall orbit` / `wall minimal` / `wall kanagawa`.
+Каждые — Swift-скрипт `icons/wallpaper-<имя>.swift`, собирается в динамический HEIC (8 кадров по времени суток).
+
+| Обои | Что на них |
+|---|---|
+| `silk` | сотни нитей скручиваются в светящуюся ленту, свечение и пылинки |
+| `orbit` | вид из кабины: край планеты, атмосфера, орбитальный рассвет, HUD |
+| `minimal` | точечная сетка, топографические контуры, мягкий свет |
+| `kanagawa` | Фудзи, море сэйгайха, касуми |
 
 ## Лицензия
 
