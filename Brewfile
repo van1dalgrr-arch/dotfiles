@@ -29,6 +29,7 @@ brew "lazygit"
 brew "goimports"
 brew "golangci-lint"
 brew "delve"
+brew "gotestsum"
 
 # Docker / DevOps
 cask "orbstack"          # вместо Docker Desktop: память по требованию
@@ -52,6 +53,7 @@ brew "glow"
 brew "atuin"
 brew "shellcheck"
 brew "shfmt"
+brew "gitleaks"
 tap "FelixKratz/formulae"
 brew "borders"
 tap "nikitabobko/tap"

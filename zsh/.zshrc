@@ -100,7 +100,9 @@ alias q="exit"
 
 alias gor="go run ."
 alias gob="go build ."
-alias got="go test ./..."
+# тесты через gotestsum: строка на пакет, упавшие тесты — с выводом
+alias got="gotestsum --format pkgname-and-test-fails --format-icons hivis -- ./..."
+alias gotw="gotestsum --watch --watch-clear --format testname"   # перезапуск при сохранении
 alias gotv="go test -v ./..."
 alias gof="gofmt -w ."
 alias gom="go mod tidy"
