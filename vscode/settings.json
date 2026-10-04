@@ -100,7 +100,10 @@
     "**/.git/objects/**": true,
     "**/vendor/**": true,
     "**/tmp/**": true,
-    "**/.venv/**": true
+    "**/bin/**": true,
+    "**/node_modules/**": true,
+    "**/.venv/**": true,
+    "**/go/pkg/mod/**": true
   },
   "files.associations": {
     ".env*": "dotenv",
@@ -167,6 +170,8 @@
   },
 
   "gopls": {
+    // gopls не индексирует мусорные папки — меньше памяти на больших проектах
+    "build.directoryFilters": ["-**/node_modules", "-**/vendor", "-**/tmp", "-**/bin", "-**/.venv"],
     "formatting.gofumpt": true,
     "ui.semanticTokens": true,
     "ui.completion.usePlaceholders": true,

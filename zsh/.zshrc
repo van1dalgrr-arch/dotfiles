@@ -352,6 +352,7 @@ weather() { curl -s "wttr.in/${1}?lang=ru&F" ; }
 # ────────────────────────────────────────────────────────────
 
 source "$HOME/dotfiles/zsh/cheatsheet.zsh"
+source "$HOME/dotfiles/zsh/ram.zsh"
 
 # ============================================================
 #                         END
