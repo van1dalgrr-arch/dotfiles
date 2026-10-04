@@ -7,7 +7,8 @@
 # PATH
 # ────────────────────────────────────────────────────────────
 
-export PATH="/opt/homebrew/bin:$PATH"
+typeset -U path PATH                             # без повторов, даже если .zshrc читается дважды
+export PATH="/opt/homebrew/bin:/opt/homebrew/sbin:$PATH"
 export PATH="$PATH:${GOPATH:-$HOME/go}/bin"   # без вызова `go env` — быстрее старт
 export PATH="$HOME/dotfiles/bin:$PATH"           # dot — управление dotfiles
 
@@ -24,7 +25,13 @@ plugins=(
     fzf-tab
 )
 
-source "$ZSH/oh-my-zsh.sh"
+if [[ -f $ZSH/oh-my-zsh.sh ]]; then
+    source "$ZSH/oh-my-zsh.sh"
+else
+    # ещё не установлен (./install.sh) — хотя бы дополнение и хуки, чтобы остальное работало
+    autoload -Uz compinit add-zsh-hook && compinit
+    print -P "%F{yellow}нет oh-my-zsh → ~/dotfiles/install.sh%f"
+fi
 
 # ────────────────────────────────────────────────────────────
 # ТЕМА (палитра T_*, theme — переключить)
@@ -37,7 +44,7 @@ source "$HOME/dotfiles/zsh/theme.zsh"
 # PROMPT_ENGINE=starship в ~/.zshenv
 # ────────────────────────────────────────────────────────────
 
-if [[ $PROMPT_ENGINE == starship ]]; then
+if [[ $PROMPT_ENGINE == starship ]] && (( $+commands[starship] )); then
     eval "$(starship init zsh)"
 else
     source "$HOME/dotfiles/zsh/prompt.zsh"
@@ -47,7 +54,7 @@ fi
 # FZF
 # ────────────────────────────────────────────────────────────
 
-source <(fzf --zsh)
+(( $+commands[fzf] )) && source <(fzf --zsh)
 
 export FZF_DEFAULT_COMMAND="fd --type f --hidden --exclude .git"
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
@@ -67,7 +74,7 @@ export FZF_ALT_C_OPTS="--preview 'eza --tree --level=2 --icons --color=always {}
 # ZOXIDE
 # ────────────────────────────────────────────────────────────
 
-eval "$(zoxide init zsh)"
+(( $+commands[zoxide] )) && eval "$(zoxide init zsh)"
 
 # ────────────────────────────────────────────────────────────
 # FZF-TAB (Tab → меню с превью) / ATUIN (Ctrl+R → история)
@@ -79,7 +86,7 @@ zstyle ':fzf-tab:complete:cd:*' fzf-preview 'eza -1 --icons --color=always $real
 zstyle ':fzf-tab:complete:z:*' fzf-preview 'eza -1 --icons --color=always $realpath'
 zstyle ':fzf-tab:complete:(cat|bat|nvim|code):*' fzf-preview 'bat --color=always --line-range=:100 $realpath 2>/dev/null || eza -1 --icons --color=always $realpath'
 
-eval "$(atuin init zsh --disable-up-arrow)"
+(( $+commands[atuin] )) && eval "$(atuin init zsh --disable-up-arrow)"
 
 # ────────────────────────────────────────────────────────────
 # MODERN CLI
@@ -162,10 +169,13 @@ alias dcup='docker compose --env-file .env -f deploy/docker-compose.yml up --bui
 alias k="kubectl"
 # Дополнение kubectl кэшируется и пересобирается только после обновления kubectl
 _kc="$HOME/.cache/zsh/kubectl.zsh"
-if [[ ! -s $_kc || $commands[kubectl] -nt $_kc ]]; then
-    mkdir -p "${_kc:h}" && kubectl completion zsh >| "$_kc"
+if (( $+commands[kubectl] )); then
+    if [[ ! -s $_kc || $commands[kubectl] -nt $_kc ]]; then
+        mkdir -p "${_kc:h}" && kubectl completion zsh >| "$_kc"
+    fi
+    source "$_kc"
 fi
-source "$_kc"; unset _kc
+unset _kc
 
 # ────────────────────────────────────────────────────────────
 # PYTHON (uv)
@@ -178,7 +188,17 @@ alias venv="uv venv && source .venv/bin/activate"
 # DIRENV (.envrc в папке проекта)
 # ────────────────────────────────────────────────────────────
 
-eval "$(direnv hook zsh)"
+(( $+commands[direnv] )) && eval "$(direnv hook zsh)"
+
+# ────────────────────────────────────────────────────────────
+# ВЕРСИИ: Go — из Homebrew, версию проекта задаёт go.mod (go/toolchain, Go скачает сам).
+# mise не нужен; если поставить его для других языков — подхватится здесь.
+# ────────────────────────────────────────────────────────────
+
+(( $+commands[mise] )) && eval "$(mise activate zsh)"
+
+# SOPS: ключ age в одном предсказуемом месте (docs/secrets.md). Сам ключ — не в git.
+export SOPS_AGE_KEY_FILE="$HOME/.config/sops/age/keys.txt"
 
 # ────────────────────────────────────────────────────────────
 # SYSTEM
@@ -233,7 +253,8 @@ setopt INTERACTIVE_COMMENTS
 # ────────────────────────────────────────────────────────────
 
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=#${T_MUTED}"
-source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+[ -f /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh ] && \
+    source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 
 [ -f /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ] && \
     source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
@@ -431,6 +452,7 @@ _greeting() {
     # Флаг в окружении: новое окно — с приветствием, вложенный zsh внутри него — без.
     [[ $TERM_PROGRAM == ghostty && -z $DOTFILES_GREETED && $LINES -ge 12 && $COLUMNS -ge 60 && -z $NO_GREETING ]] || return
     export DOTFILES_GREETED=1
+    (( $+commands[fastfetch] )) || return
     fastfetch -c "$HOME/dotfiles/fastfetch/greeting.jsonc"
     # совет: случайная функция из шпаргалки — постепенно запоминаются свои команды
     local -a tips=(${(f)"$(_cheat_funcs)"})
