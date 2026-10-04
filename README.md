@@ -13,7 +13,7 @@ MacBook Air M2 · 8 GB · zsh · Ghostty · AeroSpace · Zed
 
 <img src="docs/wallpapers.jpg" alt="Live wallpapers from this repo" width="100%">
 
-<sub>22 live wallpapers — all drawn in Swift and changing throughout the day</sub>
+<sub>25 live wallpapers — all drawn in Swift and changing throughout the day</sub>
 
 </div>
 
@@ -60,7 +60,7 @@ After that you edit configs right in `~/dotfiles`, and changes show up in `git s
 | **Prompt** | custom zsh: path from the repo root, git status, Go version from `go.mod`, command duration |
 | **Editor** | [Zed](https://zed.dev) with my own Dev Night theme, icon theme and tasks on `ctrl-r` |
 | **Themes** | `theme vesper` / `kanagawa` / `rose-pine` — recolors the whole terminal, app icons and wallpaper |
-| **Wallpapers** | `wall` — pick one of 22 live wallpapers with an image preview right in the terminal |
+| **Wallpapers** | `wall` — pick one of 25 live wallpapers with an image preview right in the terminal |
 | **Git** | delta for diffs, lazygit, gitleaks before every commit |
 | **Docker** | OrbStack, lazydocker, and `up` — start dependencies and run the project in one command |
 
@@ -163,8 +163,8 @@ wall             # list with an image preview, enter to apply
 wall eclipse     # apply directly
 ```
 
-Space — `eclipse` `orbit` `rings` `aurora` `horizon`<br>
-Tech — `code` `circuit` `ridges` `minimal` `halftone` `iso`<br>
+Space — `eclipse` `orbit` `rings` `aurora` `horizon` `startrails`<br>
+Tech — `code` `circuit` `ridges` `minimal` `halftone` `iso` `helix` `topo`<br>
 Everything else — `petals` `prism` `ocean` `glass` `crystal` `vinyl` `neon` `rain` `bauhaus` `mesh` `kanagawa`
 
 Each wallpaper is a short Swift script in `icons/`. It renders 12 frames per day, and every parameter
