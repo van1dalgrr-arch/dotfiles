@@ -2,239 +2,241 @@
 
 # dotfiles
 
-Мой macOS для разработки на Go и Docker: тёмный, быстрый и бережный к памяти.<br>
-MacBook Air M2 · 8 ГБ · zsh · Ghostty · AeroSpace · Zed
+My macOS setup for Go and Docker work: dark, fast, and easy on memory.<br>
+MacBook Air M2 · 8 GB · zsh · Ghostty · AeroSpace · Zed
 
 ![macOS](https://img.shields.io/badge/macOS-Tahoe-101010?style=flat-square&logo=apple&logoColor=white)
 ![shell](https://img.shields.io/badge/shell-zsh-a855f7?style=flat-square)
 ![Go](https://img.shields.io/badge/Go-Gin-3b82f6?style=flat-square&logo=go&logoColor=white)
 ![license](https://img.shields.io/badge/license-MIT-101010?style=flat-square)
 
-<img src="docs/wallpapers.jpg" alt="Живые обои из этого репозитория" width="100%">
+<img src="docs/wallpapers.jpg" alt="Live wallpapers from this repo" width="100%">
 
-<sub>19 живых обоев — все нарисованы кодом на Swift и меняются в течение дня</sub>
+<sub>19 live wallpapers — all drawn in Swift and changing throughout the day</sub>
 
 </div>
 
 ---
 
-## Зачем это
+## Why
 
-У меня 8 ГБ оперативки, и при этом Docker, Go и пара редакторов. Поэтому всё здесь собрано
-вокруг двух вещей: **чтобы ничего не тормозило** и **чтобы было приятно смотреть**.
+I have 8 GB of RAM and still run Docker, Go and a couple of editors at the same time. So everything
+here is built around two goals: **nothing should lag**, and **it should look good**.
 
-Пара примеров того, к чему это привело:
+A few things that came out of that:
 
-- **Docker — через OrbStack**, а не Docker Desktop. Память берётся по мере надобности и отдаётся обратно, вместо постоянных 4 ГБ под виртуалку.
-- **Промпт на чистом zsh**, без starship. Вне git-репозитория он не запускает ни одного процесса, внутри — один `git status`. Шелл стартует за ~0.15 с.
-- **Zed вместо VS Code** для повседневного кода: обычно в разы меньше памяти.
-- **Обои не висят в фоне** — это обычные динамические HEIC, кадры переключает сама macOS.
+- **Docker runs on OrbStack**, not Docker Desktop. Memory is taken when needed and given back, instead of a VM sitting on 4 GB all day.
+- **The prompt is plain zsh**, no starship. Outside a git repo it spawns zero processes; inside, a single `git status`. The shell starts in ~0.15 s.
+- **Zed instead of VS Code** for everyday code — usually a fraction of the memory.
+- **Wallpapers don't run in the background** — they're regular dynamic HEIC files, macOS switches the frames itself.
 
-## Установка
+> Comments in the configs and messages printed by the commands are in Russian — that's my native language.
 
-Нужны [Homebrew](https://brew.sh) и [oh-my-zsh](https://ohmyz.sh).
+## Install
+
+You'll need [Homebrew](https://brew.sh) and [oh-my-zsh](https://ohmyz.sh).
 
 ```bash
 git clone https://github.com/van1dalgrr-arch/dotfiles ~/dotfiles
 cd ~/dotfiles
-brew bundle          # все программы из Brewfile
-./install.sh         # симлинки конфигов + тема + обои
+brew bundle          # everything from the Brewfile
+./install.sh         # symlinks + theme + wallpaper
 ```
 
-`install.sh` ничего не удаляет: если на месте конфига уже лежит файл, он переименуется в `*.bak`.
-Дальше конфиги правятся прямо в `~/dotfiles`, изменения сразу видны в `git status`.
+`install.sh` doesn't delete anything: if a config already exists, it's renamed to `*.bak`.
+After that you edit configs right in `~/dotfiles`, and changes show up in `git status`.
 
-`macos.sh` — отдельно и по желанию: быстрый повтор клавиш, без автозамен, скриншоты в `~/Pictures/Screenshots`.
+`macos.sh` is separate and optional: fast key repeat, no autocorrect, screenshots in `~/Pictures/Screenshots`.
 
-## Что внутри
+## What's inside
 
 | | |
 |---|---|
-| **Терминал** | [Ghostty](https://ghostty.org) с выпадающим окном по `` ctrl+` `` и светящимся шлейфом курсора |
-| **Окна** | [AeroSpace](https://github.com/nikitabobko/AeroSpace) — тайлинг как в i3, хоткеи работают и на русской раскладке |
-| **Промпт** | свой, на zsh: путь от корня проекта, git, версия Go из `go.mod`, время команды |
-| **Редактор** | [Zed](https://zed.dev) со своей темой Dev Night, иконками и задачами по `ctrl-r` |
-| **Темы** | `theme vesper` / `kanagawa` / `rose-pine` — перекрашивают весь терминал, иконки и обои |
-| **Обои** | `wall` — выбор из 19 живых обоев с превью прямо в терминале |
-| **Git** | delta для диффов, lazygit, gitleaks перед каждым коммитом |
-| **Docker** | OrbStack, lazydocker, `up` — поднять зависимости и запустить проект одной командой |
+| **Terminal** | [Ghostty](https://ghostty.org) with a drop-down window on `` ctrl+` `` and a glowing cursor trail |
+| **Windows** | [AeroSpace](https://github.com/nikitabobko/AeroSpace) — i3-style tiling, hotkeys work on any keyboard layout |
+| **Prompt** | custom zsh: path from the repo root, git status, Go version from `go.mod`, command duration |
+| **Editor** | [Zed](https://zed.dev) with my own Dev Night theme, icon theme and tasks on `ctrl-r` |
+| **Themes** | `theme vesper` / `kanagawa` / `rose-pine` — recolors the whole terminal, app icons and wallpaper |
+| **Wallpapers** | `wall` — pick one of 19 live wallpapers with an image preview right in the terminal |
+| **Git** | delta for diffs, lazygit, gitleaks before every commit |
+| **Docker** | OrbStack, lazydocker, and `up` — start dependencies and run the project in one command |
 
-## Каждый день
+## Day to day
 
-Забыл команду — жми `?` (или `ctrl+/`): откроется шпаргалка со всеми хоткеями, функциями и алиасами.
+Forgot a command? Press `?` (or `ctrl+/`) — a cheatsheet with every hotkey, function and alias pops up.
 
-| Команда | Что делает |
+| Command | What it does |
 |---|---|
-| `p` | выбрать проект из `~/dev` (fzf с превью и последними коммитами) |
-| `up` | поднять из compose только зависимости (postgres, redis…) и запустить приложение с `.env` |
-| `pl` | все проекты разом: стек, ветка, несохранённое, давность последнего коммита |
-| `gonew myapi` | новый проект на Gin с air и git |
-| `got` / `gotw` | тесты через gotestsum / перезапуск тестов при сохранении |
-| `ram` | кто ест память — по приложениям, а не по процессам |
-| `dsh` / `dlogs` | зайти в контейнер / смотреть его логи (выбор через fzf) |
-| `gco` | переключить ветку через fzf |
-| `killport 8080` | освободить порт |
-| `theme` | сменить тему всего терминала |
-| `wall` | сменить обои |
+| `p` | jump to a project in `~/dev` (fzf with a preview and recent commits) |
+| `up` | start only the dependencies from compose (postgres, redis…) and run the app with `.env` |
+| `pl` | all projects at once: stack, branch, uncommitted changes, last commit age |
+| `gonew myapi` | new Gin project with air and git |
+| `got` / `gotw` | run tests with gotestsum / rerun them on every save |
+| `ram` | what's eating memory — grouped by app, not by process |
+| `dsh` / `dlogs` | shell into a container / follow its logs (picked with fzf) |
+| `gco` | switch branches with fzf |
+| `killport 8080` | free a port |
+| `theme` | switch the terminal theme |
+| `wall` | switch the wallpaper |
 
-Если набрать несуществующую команду, промпт подскажет, есть ли она в brew — как `pkgfile` в Arch.
+Type a command that doesn't exist and the prompt tells you if it's available in brew — like `pkgfile` on Arch.
 
-## Хоткеи
+## Hotkeys
 
 <details>
-<summary><b>AeroSpace</b> — окна и рабочие столы</summary>
+<summary><b>AeroSpace</b> — windows and workspaces</summary>
 
-| Клавиши | Действие |
+| Keys | Action |
 |---|---|
-| `alt-enter` | новый терминал |
-| `alt-e` | файловый менеджер (yazi) |
-| `alt-q` | закрыть окно |
-| `alt-h/j/k/l` | фокус влево / вниз / вверх / вправо |
-| `alt-shift-h/j/k/l` | переместить окно |
-| `alt-1…9` | перейти на стол |
-| `alt-shift-1…9` | унести окно на стол |
-| `alt-tab` | предыдущий стол |
-| `alt-/` · `alt-,` | раскладка: плитки · аккордеон |
-| `alt-shift-f` | на весь экран |
-| `alt-shift-space` | плавающее ↔ плитка |
-| `alt-r` | режим ресайза (`hjkl`, `esc`) |
+| `alt-enter` | new terminal |
+| `alt-e` | file manager (yazi) |
+| `alt-q` | close window |
+| `alt-h/j/k/l` | focus left / down / up / right |
+| `alt-shift-h/j/k/l` | move window |
+| `alt-1…9` | go to workspace |
+| `alt-shift-1…9` | send window to workspace |
+| `alt-tab` | previous workspace |
+| `alt-/` · `alt-,` | layout: tiles · accordion |
+| `alt-shift-f` | fullscreen |
+| `alt-shift-space` | floating ↔ tiling |
+| `alt-r` | resize mode (`hjkl`, `esc`) |
 
 </details>
 
 <details>
-<summary><b>Ghostty</b> — терминал</summary>
+<summary><b>Ghostty</b> — terminal</summary>
 
-| Клавиши | Действие |
+| Keys | Action |
 |---|---|
-| `` ctrl+` `` | выпадающий терминал из любого приложения |
-| `cmd-d` · `cmd-shift-d` | сплит вправо · вниз |
-| `cmd-alt-стрелки` | переход между сплитами |
-| `cmd-shift-enter` | развернуть сплит |
-| `cmd-q` | закрыть окна (Ghostty остаётся в фоне, `` ctrl+` `` работает) |
-| `cmd-shift-,` | перечитать конфиг после смены темы |
+| `` ctrl+` `` | drop-down terminal from any app |
+| `cmd-d` · `cmd-shift-d` | split right · down |
+| `cmd-alt-arrows` | move between splits |
+| `cmd-shift-enter` | zoom split |
+| `cmd-q` | close windows (Ghostty stays in the background, `` ctrl+` `` keeps working) |
+| `cmd-shift-,` | reload config after a theme change |
 
 </details>
 
 <details>
-<summary><b>Zed</b> — редактор</summary>
+<summary><b>Zed</b> — editor</summary>
 
-| Клавиши | Действие |
+| Keys | Action |
 |---|---|
-| `ctrl-r` | меню задач: `up`, `air`, тесты, линтер, compose |
-| `ctrl-shift-r` | повторить последнюю задачу |
-| `alt-g` · `alt-d` | lazygit · lazydocker внутри Zed |
-| `cmd-j` | терминал |
-| `cmd-1` · `cmd-2` · `cmd-3` | файлы · структура файла · git |
-| `cmd-shift-d` | все ошибки проекта |
+| `ctrl-r` | task menu: `up`, `air`, tests, linter, compose |
+| `ctrl-shift-r` | rerun the last task |
+| `alt-g` · `alt-d` | lazygit · lazydocker inside Zed |
+| `cmd-j` | terminal |
+| `cmd-1` · `cmd-2` · `cmd-3` | files · outline · git |
+| `cmd-shift-d` | all project diagnostics |
 
-Сниппеты Go: `iferr`, `iferrw`, `ginh`, `ginbind`, `ginr`, `ttest`, `jstruct`, `ctxt`.
+Go snippets: `iferr`, `iferrw`, `ginh`, `ginbind`, `ginr`, `ttest`, `jstruct`, `ctxt`.
 
 </details>
 
-## Темы
+## Themes
 
 ```bash
-theme            # выбрать в fzf, справа — палитра
-theme vesper     # сразу
+theme            # pick in fzf, palette preview on the right
+theme vesper     # apply directly
 ```
 
-| Тема | Настроение |
+| Theme | Mood |
 |---|---|
-| `vesper` | почти чёрный, насыщенные фиолетовый и синий — основная |
-| `kanagawa` | индиго и бумага, по мотивам Хокусая |
-| `rose-pine` | мягкая, приглушённая |
+| `vesper` | near-black with saturated violet and blue — the main one |
+| `kanagawa` | indigo and paper, inspired by Hokusai |
+| `rose-pine` | soft and muted |
 
-Как это устроено: все конфиги в репозитории написаны цветами Rosé Pine, а тема — это просто таблица
-«какой цвет на какой заменить» по 19 ролям (`themes/<имя>.sh`). `themes/apply.sh` за один проход
-перекрашивает копии конфигов в `~/.config` и `~/.cache` — сам репозиторий при смене темы не меняется.
-Под тему перекрашиваются Ghostty, промпт, подсветка, fzf, bat, delta, eza, lazygit, btop, рамка окон,
-иконки в Dock и обои. VS Code тему не меняет.
+How it works: every config in the repo is written in Rosé Pine colors, and a theme is just a map
+of "which color becomes which" across 19 roles (`themes/<name>.sh`). `themes/apply.sh` recolors copies
+of the configs into `~/.config` and `~/.cache` in a single pass — the repo itself never changes when you switch.
+It recolors Ghostty, the prompt, syntax highlighting, fzf, bat, delta, eza, lazygit, btop, window borders,
+Dock icons and the wallpaper. VS Code keeps its own theme.
 
-## Обои
+## Wallpapers
 
 ```bash
-wall             # список с превью-картинкой, enter — поставить
-wall eclipse     # сразу
+wall             # list with an image preview, enter to apply
+wall eclipse     # apply directly
 ```
 
-Космос — `eclipse` `orbit` `rings` `aurora` `horizon`<br>
-Технологии — `code` `circuit` `ridges` `minimal` `halftone`<br>
-Остальное — `petals` `prism` `ocean` `glass` `neon` `rain` `bauhaus` `mesh` `kanagawa`
+Space — `eclipse` `orbit` `rings` `aurora` `horizon`<br>
+Tech — `code` `circuit` `ridges` `minimal` `halftone`<br>
+Everything else — `petals` `prism` `ocean` `glass` `neon` `rain` `bauhaus` `mesh` `kanagawa`
 
-Каждые обои — короткий Swift-скрипт в `icons/`. Он рисует 12 кадров на сутки, и все параметры
-(цвет, свет, положение деталей) считаются от часа непрерывно, поэтому macOS плавно перетекает
-от кадра к кадру. Обои ставятся сразу на все рабочие столы.
+Each wallpaper is a short Swift script in `icons/`. It renders 12 frames per day, and every parameter
+(color, light, positions) is computed continuously from the hour, so macOS blends smoothly from one
+frame to the next. Wallpapers are applied to all Spaces at once.
 
-Хочешь свои — создай `icons/wallpaper-<имя>.swift`:
+Want your own? Create `icons/wallpaper-<name>.swift`:
 
 ```swift
 runWallpaper { hour in
-    let ctx = canvas()                     // почти чёрный холст
-    let (a, b) = tint(hour)                // цвета суток
+    let ctx = canvas()                     // near-black canvas
+    let (a, b) = tint(hour)                // colors for this time of day
     radialGlow(ctx, CGPoint(x: W / 2, y: H / 2), 400 * S, a, 0.3)
     return bloom(ctx.makeImage()!)
 }
 ```
 
-Палитра, звёзды, свечение и сборка HEIC — в `icons/wallpaper-kit.swift`. После этого `wall <имя>`.
+The palette, stars, glow and HEIC builder live in `icons/wallpaper-kit.swift`. Then run `wall <name>`.
 
-## Защита от утечек
+## Leak protection
 
-Перед **каждым** коммитом в любом репозитории [gitleaks](https://github.com/gitleaks/gitleaks)
-проверяет, что коммитится. Нашёл пароль, токен или ключ — коммит не пройдёт и покажет файл и строку.
-Глобальный `.gitignore` не пускает в репозитории `.env`, ключи и `.DS_Store`.
+Before **every** commit in any repo, [gitleaks](https://github.com/gitleaks/gitleaks) scans what's
+being committed. A password, token or key in there — the commit is blocked and you see the file and line.
+A global `.gitignore` keeps `.env`, keys and `.DS_Store` out of every repo.
 
-Хуки самих проектов продолжают работать — `git/hooks/_chain` вызывает их после проверки.
-Ложное срабатывание: комментарий `gitleaks:allow` в строке или `git commit --no-verify`.
+Per-project hooks still run — `git/hooks/_chain` calls them after the check.
+False positive? Add a `gitleaks:allow` comment on the line, or use `git commit --no-verify`.
 
-## Структура
+## Layout
 
 ```
 dotfiles/
-├── zsh/            .zshrc, промпт, тема, шпаргалка, ram
-├── themes/         палитры тем и apply.sh, который их применяет
-├── icons/          обои, иконки приложений, иконка папки ~/dev
-├── ghostty/        конфиг и шейдер шлейфа курсора
-├── aerospace/      тайлинг окон
-├── zed/            настройки, тема Dev Night, иконки, задачи, сниппеты
-├── git/            .gitconfig, delta, хуки с gitleaks, глобальный ignore
-├── fastfetch/      приветствие с логотипом Arch в новом окне
-├── vscode/         настройки и список расширений
+├── zsh/            .zshrc, prompt, theme loader, cheatsheet, ram
+├── themes/         theme palettes and apply.sh
+├── icons/          wallpapers, app icons, ~/dev folder icon
+├── ghostty/        config and the cursor trail shader
+├── aerospace/      window tiling
+├── zed/            settings, Dev Night theme, icon theme, tasks, snippets
+├── git/            .gitconfig, delta, gitleaks hooks, global ignore
+├── fastfetch/      Arch-logo greeting in new windows
+├── vscode/         settings and extension list
 ├── borders/ btop/ bat/ eza/ lazygit/ atuin/ tealdeer/ starship/
-├── Brewfile        всё, что ставится через brew
-├── install.sh      симлинки
-└── macos.sh        системные настройки (по желанию)
+├── Brewfile        everything installed via brew
+├── install.sh      symlinks
+└── macos.sh        system defaults (optional)
 ```
 
-## Если что-то пошло не так
+## Troubleshooting
 
 <details>
-<summary>Иконка приложения стала обычной</summary>
+<summary>An app icon went back to the default</summary>
 
-macOS сбрасывает свою иконку при обновлении приложения. Верни: `theme vesper`
-(или `swift ~/.cache/dotfiles-theme/icons.swift apply`). Приложениям, установленным от root (VS Code, Telegram), нужен `sudo`.
+macOS resets custom icons when an app updates. Bring it back with `theme vesper`
+(or `swift ~/.cache/dotfiles-theme/icons.swift apply`). Apps installed as root (VS Code, Telegram) need `sudo`.
 </details>
 
 <details>
-<summary>Терминал не поменял цвета после <code>theme</code></summary>
+<summary>The terminal didn't change colors after <code>theme</code></summary>
 
-Ghostty читает конфиг при запуске — нажми `cmd-shift-,` и открой новое окно.
+Ghostty reads its config on launch — press `cmd-shift-,` and open a new window.
 </details>
 
 <details>
-<summary>Выпадающий терминал не открывается</summary>
+<summary>The drop-down terminal doesn't open</summary>
 
-Ghostty должен работать в фоне (AeroSpace запускает его при входе) и иметь доступ
-в «Универсальном доступе» — без этого глобальные хоткеи не работают.
+Ghostty has to be running in the background (AeroSpace starts it at login) and needs Accessibility
+permission — global hotkeys don't work without it.
 </details>
 
 <details>
-<summary>Хочу обратно starship</summary>
+<summary>I want starship back</summary>
 
-`export PROMPT_ENGINE=starship` в `~/.zshenv` — конфиг лежит в `starship/`.
+Put `export PROMPT_ENGINE=starship` in `~/.zshenv` — the config is in `starship/`.
 </details>
 
-## Спасибо
+## Thanks
 
 [Vesper](https://github.com/raunofreiberg/vesper) ·
 [Rosé Pine](https://rosepinetheme.com) ·
@@ -244,6 +246,6 @@ Ghostty должен работать в фоне (AeroSpace запускает 
 [AeroSpace](https://github.com/nikitabobko/AeroSpace) ·
 [OrbStack](https://orbstack.dev)
 
-## Лицензия
+## License
 
-[MIT](LICENSE) — бери что нравится, копируй, меняй под себя.
+[MIT](LICENSE) — take whatever you like, copy it, make it yours.
