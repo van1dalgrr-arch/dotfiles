@@ -415,6 +415,7 @@ source "$HOME/dotfiles/zsh/cheatsheet.zsh"
 source "$HOME/dotfiles/zsh/ram.zsh"
 source "$HOME/dotfiles/zsh/update.zsh"
 source "$HOME/dotfiles/zsh/gonew.zsh"
+source "$HOME/dotfiles/zsh/backend.zsh"
 
 # ────────────────────────────────────────────────────────────
 # ПРИВЕТСТВИЕ: логотип Arch + коротко о системе (~35 мс).

@@ -31,7 +31,24 @@ brew "golangci-lint"
 brew "delve"
 brew "gotestsum"
 
+# Backend
+brew "pgcli"
+brew "golang-migrate"
+brew "sqlc"
+brew "grpcurl"
+brew "buf"
+brew "oha"
+brew "fx"
+brew "watchexec"
+brew "scc"
+brew "mkcert"
+
 # Docker / DevOps
+brew "act"
+brew "trivy"
+brew "helm"
+brew "kubectx"
+brew "stern"
 cask "orbstack"          # вместо Docker Desktop: память по требованию
 brew "lazydocker"
 brew "dive"

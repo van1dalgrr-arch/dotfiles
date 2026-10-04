@@ -82,6 +82,9 @@ Forgot a command? Press `?` (or `ctrl+/`) — a cheatsheet with every hotkey, fu
 | `gco` | switch branches with fzf |
 | `killport 8080` | free a port |
 | `update` | weekly maintenance: brew, Go tools, Docker junk, tldr, re-apply icons |
+| `db` | pgcli into the project database (from `DATABASE_URL` / `.env`) |
+| `vuln` | vulnerabilities: govulncheck for Go deps + trivy for the rest |
+| `load` | load test an endpoint with oha (`/health` by default) |
 | `theme` | switch the terminal theme |
 | `wall` | switch the wallpaper |
 

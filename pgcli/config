@@ -1,0 +1,12 @@
+# pgcli: только отличия от стандартного конфига
+[main]
+syntax_style = native
+less_chatty = True
+multi_line = True
+keyring = False
+enable_pager = True
+pager = less -SRXF
+auto_expand = True
+row_limit = 500
+table_format = psql
+smart_completion = True

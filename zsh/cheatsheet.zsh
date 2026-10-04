@@ -60,6 +60,9 @@ ram|кто ест память (по приложениям): ram 15
 update|обслуживание: brew, Go-инструменты, мусор Docker, иконки
 up|запустить проект: compose-зависимости + air/go run с .env
 pl|все проекты ~/dev: стек, ветка, изменения, давность
+db|pgcli к базе проекта (DATABASE_URL / .env)
+vuln|уязвимости: govulncheck + trivy
+load|нагрузочный тест: load [url] [сек] [соединений]
 theme|сменить тему терминала и обоев: theme kanagawa / theme rose-pine
 wall|сменить обои с превью: wall · petals, neon, rain, eclipse, orbit, code…
 EOF
