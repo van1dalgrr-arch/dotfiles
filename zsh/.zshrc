@@ -448,14 +448,18 @@ source "$HOME/dotfiles/zsh/ram.zsh"
 # Только в новом окне Ghostty и если оно большое — не в quick terminal, Zed, VS Code
 # ────────────────────────────────────────────────────────────
 
-if [[ $TERM_PROGRAM == ghostty && $SHLVL -eq 1 && $LINES -ge 30 && $COLUMNS -ge 80 && -z $NO_GREETING ]]; then
+# Показываем перед первым приглашением, а не при чтении .zshrc: новое окно Ghostty
+# в первые миллисекунды ещё маленькое (80×24), и проверка размера ошибочно не проходила
+_greeting() {
+    add-zsh-hook -d precmd _greeting                     # только один раз
+    [[ $TERM_PROGRAM == ghostty && $SHLVL -eq 1 && $LINES -ge 30 && $COLUMNS -ge 80 && -z $NO_GREETING ]] || return
     fastfetch -c "$HOME/dotfiles/fastfetch/greeting.jsonc"
     # совет: случайная функция из шпаргалки — постепенно запоминаются свои команды
-    () {
-        local tip=${${(f)"$(_cheat_funcs)"}[RANDOM % $#${(f)"$(_cheat_funcs)"} + 1]}
-        print -P "\n  $(_c $T_GOLD)󰌵  ${tip%%|*}%f  $(_c $T_MUTED)${tip#*|}  · ? — все команды%f"
-    }
-fi
+    local -a tips=(${(f)"$(_cheat_funcs)"})
+    local tip=${tips[RANDOM % $#tips + 1]}
+    print -P "\n  $(_c $T_GOLD)󰌵  ${tip%%|*}%f  $(_c $T_MUTED)${tip#*|}  · ? — все команды%f"
+}
+add-zsh-hook precmd _greeting
 
 # ============================================================
 #                         END
