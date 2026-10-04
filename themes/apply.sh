@@ -94,7 +94,7 @@ if [ "${NO_ICONS:-}" != 1 ]; then
     recolor "$DOTFILES/icons/icons.swift" "$GEN/icons.swift"
     recolor "$DOTFILES/icons/folder.swift" "$GEN/folder.swift"
     swift "$GEN/icons.swift" apply 2>/dev/null | grep -c '✓' | xargs -I{} echo "иконок обновлено: {}"
-    swift "$GEN/folder.swift" "$HOME/dev" >/dev/null 2>&1 || true
+    swift "$GEN/folder.swift" apply >/dev/null 2>&1 || true
     killall Dock 2>/dev/null || true
 fi
 
