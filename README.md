@@ -9,14 +9,15 @@
 | Тайлинг окон (AeroSpace) | `aerospace/aerospace.toml` |
 | Шпаргалка `?` / Ctrl+/ | `zsh/cheatsheet.zsh` |
 | `ram` — кто ест память | `zsh/ram.zsh` |
-| Промпт (starship) | `starship/starship.toml` |
+| Промпт starship (запасной: `PROMPT_ENGINE=starship`) | `starship/starship.toml` |
 | git + delta | `git/.gitconfig` |
 | lazygit | `lazygit/config.yml` |
 | btop | `btop/` |
 | eza | `eza/theme.yml` |
 | fastfetch | `fastfetch/config.jsonc` |
 | tldr (tealdeer) | `tealdeer/config.toml` |
-| Zed (лёгкий редактор, ~300 МБ против 1–2 ГБ у VS Code): тема Dev Night, задачи `ctrl-r`, сниппеты Go | `zed/` |
+| Zed (лёгкий редактор, ~300 МБ против 1–2 ГБ у VS Code): тема Dev Night, иконки Dev Night Icons, задачи `ctrl-r`, сниппеты Go | `zed/` |
+| Промпт на чистом zsh (без starship) + приветствие с логотипом Arch | `zsh/prompt.zsh`, `fastfetch/greeting.jsonc` |
 
 ## Установка на новый Mac
 

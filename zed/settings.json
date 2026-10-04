@@ -14,7 +14,12 @@
     "light": "One Light",
     "dark": "Dev Night",
   },
-  "icon_theme": "Material Icon Theme",
+  // иконки файлов: своя тема (zed/icon-theme — значки как в терминале); в светлом режиме — Material
+  "icon_theme": {
+    "mode": "system",
+    "light": "Material Icon Theme",
+    "dark": "Dev Night Icons",
+  },
 
   // код — тот же шрифт, что в терминале (с иконками Nerd Font и лигатурами)
   "buffer_font_family": "JetBrainsMono Nerd Font",

@@ -50,6 +50,8 @@ link zed/keymap.json                 "$HOME/.config/zed/keymap.json"
 link zed/tasks.json                  "$HOME/.config/zed/tasks.json"
 link zed/themes/dev-night.json       "$HOME/.config/zed/themes/dev-night.json"
 link zed/snippets/go.json            "$HOME/.config/zed/snippets/go.json"
+# своя тема иконок — локальное (dev) расширение Zed: ссылка на папку в репозитории
+link zed/icon-theme                  "$HOME/Library/Application Support/Zed/extensions/installed/dev-night-icons"
 [ -e /opt/homebrew/bin/zed ] || ln -s /Applications/Zed.app/Contents/MacOS/cli /opt/homebrew/bin/zed   # `zed .` из терминала
 
 # Тема терминала и обоев (по умолчанию rose-pine; сменить — `theme`)

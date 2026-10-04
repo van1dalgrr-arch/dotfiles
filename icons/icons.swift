@@ -39,64 +39,90 @@ let apps: [App] = [
 
 let fontName = "JetBrainsMono Nerd Font"
 
-func render(_ app: App) -> NSImage {
+// Стиль «стекло»: тёмная матовая основа, внутри мягкое свечение двух акцентов темы
+// (rose и foam — в Vesper это фиолетовый и синий), у каждого приложения свой угол,
+// сверху блик и светлая кромка, логотип белый с ореолом.
+func render(_ app: App, index: Int) -> NSImage {
     let size: CGFloat = 1024
     let img = NSImage(size: NSSize(width: size, height: size))
     img.lockFocus()
     defer { img.unlockFocus() }
+    let ctx = NSGraphicsContext.current!.cgContext
 
     // Сетка иконок macOS: тело 824×824 по центру, скругление ~185
     let body = NSRect(x: 100, y: 100, width: 824, height: 824)
     let shape = NSBezierPath(roundedRect: body, xRadius: 185, yRadius: 185)
 
-    // тень, как у системных иконок
+    // тень под плиткой
     NSGraphicsContext.saveGraphicsState()
     let shadow = NSShadow()
-    shadow.shadowColor = NSColor.black.withAlphaComponent(0.35)
-    shadow.shadowBlurRadius = 24
-    shadow.shadowOffset = NSSize(width: 0, height: -10)
+    shadow.shadowColor = NSColor.black.withAlphaComponent(0.45)
+    shadow.shadowBlurRadius = 28
+    shadow.shadowOffset = NSSize(width: 0, height: -12)
     shadow.set()
     base.setFill(); shape.fill()
     NSGraphicsContext.restoreGraphicsState()
 
-    NSGradient(starting: surface, ending: base)!.draw(in: shape, angle: -90)
-
-    // обводка iris → rose
     NSGraphicsContext.saveGraphicsState()
-    let ring = NSBezierPath(roundedRect: body.insetBy(dx: 5, dy: 5), xRadius: 180, yRadius: 180)
-    ring.lineWidth = 10
-    let stroked = ring.cgPath.copy(strokingWithWidth: 10, lineCap: .round, lineJoin: .round, miterLimit: 10)
-    let ctx = NSGraphicsContext.current!.cgContext
-    ctx.addPath(stroked); ctx.clip()
-    NSGradient(starting: iris, ending: rose)!.draw(in: body, angle: -45)
+    shape.addClip()
+    NSGradient(starting: base.blended(withFraction: 0.08, of: .white)!, ending: base)!.draw(in: body, angle: -90)
+
+    // свечение: два пятна по разные стороны, угол зависит от приложения
+    let a = CGFloat(index) * 0.9 + 0.6
+    let r: CGFloat = 330
+    func glow(_ c: NSColor, _ ang: CGFloat, _ alpha: CGFloat, _ radius: CGFloat) {
+        let p = NSPoint(x: 512 + r * cos(ang), y: 512 + r * sin(ang))
+        NSGradient(colors: [c.withAlphaComponent(alpha), c.withAlphaComponent(alpha * 0.35), c.withAlphaComponent(0)],
+                   atLocations: [0, 0.45, 1], colorSpace: .sRGB)!
+            .draw(fromCenter: p, radius: 0, toCenter: p, radius: radius, options: [])
+    }
+    glow(rose, a, 0.72, 560)
+    glow(foam, a + .pi * 0.95, 0.62, 520)
+
+    // стеклянный блик сверху
+    NSGradient(colors: [NSColor.white.withAlphaComponent(0.13), NSColor.white.withAlphaComponent(0)],
+               atLocations: [0, 1], colorSpace: .sRGB)!
+        .draw(in: NSRect(x: 100, y: 560, width: 824, height: 364), angle: -90)
     NSGraphicsContext.restoreGraphicsState()
 
-    // логотип, точно по центру по реальным границам глифа
-    guard let font = NSFont(name: fontName, size: 440) else { fatalError("нет шрифта \(fontName)") }
-    let str = NSAttributedString(string: app.glyph, attributes: [.font: font, .foregroundColor: app.color])
+    // светлая кромка стекла: ярче сверху, гаснет к низу
+    NSGraphicsContext.saveGraphicsState()
+    let ring = NSBezierPath(roundedRect: body.insetBy(dx: 3, dy: 3), xRadius: 182, yRadius: 182)
+    let stroked = ring.cgPath.copy(strokingWithWidth: 5, lineCap: .round, lineJoin: .round, miterLimit: 10)
+    ctx.addPath(stroked); ctx.clip()
+    NSGradient(colors: [NSColor.white.withAlphaComponent(0.30), NSColor.white.withAlphaComponent(0.06)],
+               atLocations: [0, 1], colorSpace: .sRGB)!.draw(in: body, angle: -90)
+    NSGraphicsContext.restoreGraphicsState()
+
+    // логотип: белый, с мягким ореолом, точно по центру по реальным границам глифа
+    guard let font = NSFont(name: fontName, size: 420) else { fatalError("нет шрифта \(fontName)") }
+    let str = NSAttributedString(string: app.glyph, attributes: [.font: font, .foregroundColor: text])
     let line = CTLineCreateWithAttributedString(str)
     let b = CTLineGetImageBounds(line, ctx)
     guard b.width > 1 else { fatalError("в шрифте нет глифа для \(app.path)") }
+    ctx.saveGState()
+    ctx.setShadow(offset: .zero, blur: 40, color: text.withAlphaComponent(0.45).cgColor)
     ctx.textPosition = CGPoint(x: size / 2 - b.midX, y: size / 2 - b.midY)
     CTLineDraw(line, ctx)
+    ctx.restoreGState()
     return img
 }
 
 let args = CommandLine.arguments
 let mode = args.count > 1 ? args[1] : "preview"
 
-for app in apps {
+for (index, app) in apps.enumerated() {
     let name = (app.path as NSString).lastPathComponent
     guard FileManager.default.fileExists(atPath: app.path) else { print("нет: \(name)"); continue }
     switch mode {
     case "preview":
         let dir = args.count > 2 ? args[2] : "."
-        let rep = NSBitmapImageRep(data: render(app).tiffRepresentation!)!
+        let rep = NSBitmapImageRep(data: render(app, index: index).tiffRepresentation!)!
         let out = "\(dir)/\(name).png"
         try! rep.representation(using: .png, properties: [:])!.write(to: URL(fileURLWithPath: out))
         print("png: \(out)")
     case "apply":
-        let ok = NSWorkspace.shared.setIcon(render(app), forFile: app.path, options: [])
+        let ok = NSWorkspace.shared.setIcon(render(app, index: index), forFile: app.path, options: [])
         print(ok ? "✓ \(name)" : "✗ \(name) — не вышло: дай терминалу «Управление приложениями», для root-приложений ещё sudo")
     case "reset":
         let ok = NSWorkspace.shared.setIcon(nil, forFile: app.path, options: [])

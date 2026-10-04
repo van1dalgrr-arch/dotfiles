@@ -32,10 +32,15 @@ source "$ZSH/oh-my-zsh.sh"
 source "$HOME/dotfiles/zsh/theme.zsh"
 
 # ────────────────────────────────────────────────────────────
-# STARSHIP
+# ПРОМПТ: свой на чистом zsh (zsh/prompt.zsh). Вернуть starship:
+# PROMPT_ENGINE=starship в ~/.zshenv
 # ────────────────────────────────────────────────────────────
 
-eval "$(starship init zsh)"
+if [[ $PROMPT_ENGINE == starship ]]; then
+    eval "$(starship init zsh)"
+else
+    source "$HOME/dotfiles/zsh/prompt.zsh"
+fi
 
 # ────────────────────────────────────────────────────────────
 # FZF
@@ -95,7 +100,6 @@ alias ..="cd .."
 alias ...="cd ../.."
 alias ....="cd ../../.."
 
-alias c="clear"
 alias q="exit"
 
 # ────────────────────────────────────────────────────────────
@@ -233,33 +237,45 @@ source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 [ -f /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ] && \
     source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
-# подсветка — цвета из палитры темы
-ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets)
+# подсветка ввода — цвета из палитры темы:
+# команды — фиолетовые жирные, пути — синие, флаги — серые, строки — сиреневые,
+# связки (| && ;) и перенаправления — розовые, несуществующая команда — подчёркнута
+ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern)
 typeset -A ZSH_HIGHLIGHT_STYLES
-ZSH_HIGHLIGHT_STYLES[command]="fg=#${T_FOAM}"
-ZSH_HIGHLIGHT_STYLES[builtin]="fg=#${T_FOAM}"
-ZSH_HIGHLIGHT_STYLES[alias]="fg=#${T_FOAM}"
-ZSH_HIGHLIGHT_STYLES[function]="fg=#${T_FOAM}"
-ZSH_HIGHLIGHT_STYLES[precommand]="fg=#${T_FOAM},italic"
-ZSH_HIGHLIGHT_STYLES[unknown-token]="fg=#${T_LOVE}"
-ZSH_HIGHLIGHT_STYLES[reserved-word]="fg=#${T_IRIS}"
+ZSH_HIGHLIGHT_STYLES[command]="fg=#${T_ROSE},bold"
+ZSH_HIGHLIGHT_STYLES[builtin]="fg=#${T_ROSE},bold"
+ZSH_HIGHLIGHT_STYLES[alias]="fg=#${T_ROSE},bold"
+ZSH_HIGHLIGHT_STYLES[function]="fg=#${T_ROSE},bold"
+ZSH_HIGHLIGHT_STYLES[suffix-alias]="fg=#${T_ROSE},bold"
+ZSH_HIGHLIGHT_STYLES[global-alias]="fg=#${T_ROSE}"
+ZSH_HIGHLIGHT_STYLES[precommand]="fg=#${T_ROSE},italic"
+ZSH_HIGHLIGHT_STYLES[arg0]="fg=#${T_ROSE},bold"
+ZSH_HIGHLIGHT_STYLES[unknown-token]="fg=#${T_LOVE},underline"
+ZSH_HIGHLIGHT_STYLES[reserved-word]="fg=#${T_GOLD},italic"
 ZSH_HIGHLIGHT_STYLES[commandseparator]="fg=#${T_LOVE}"
-ZSH_HIGHLIGHT_STYLES[path]="fg=#${T_TEXT},underline"
-ZSH_HIGHLIGHT_STYLES[single-hyphen-option]="fg=#${T_GOLD}"
-ZSH_HIGHLIGHT_STYLES[double-hyphen-option]="fg=#${T_GOLD}"
+ZSH_HIGHLIGHT_STYLES[redirection]="fg=#${T_LOVE}"
+ZSH_HIGHLIGHT_STYLES[path]="fg=#${T_FOAM}"
+ZSH_HIGHLIGHT_STYLES[path_prefix]="fg=#${T_FOAM}"
+ZSH_HIGHLIGHT_STYLES[autodirectory]="fg=#${T_FOAM},bold"
+ZSH_HIGHLIGHT_STYLES[globbing]="fg=#${T_FOAM},bold"
+ZSH_HIGHLIGHT_STYLES[single-hyphen-option]="fg=#${T_SUBTLE}"
+ZSH_HIGHLIGHT_STYLES[double-hyphen-option]="fg=#${T_SUBTLE}"
 ZSH_HIGHLIGHT_STYLES[single-quoted-argument]="fg=#${T_GOLD}"
 ZSH_HIGHLIGHT_STYLES[double-quoted-argument]="fg=#${T_GOLD}"
 ZSH_HIGHLIGHT_STYLES[dollar-quoted-argument]="fg=#${T_GOLD}"
-ZSH_HIGHLIGHT_STYLES[back-quoted-argument]="fg=#${T_IRIS}"
-ZSH_HIGHLIGHT_STYLES[redirection]="fg=#${T_ROSE}"
-ZSH_HIGHLIGHT_STYLES[globbing]="fg=#${T_FOAM}"
+ZSH_HIGHLIGHT_STYLES[dollar-double-quoted-argument]="fg=#${T_FOAM}"
+ZSH_HIGHLIGHT_STYLES[back-quoted-argument]="fg=#${T_FOAM}"
+ZSH_HIGHLIGHT_STYLES[assign]="fg=#${T_SUBTLE}"
 ZSH_HIGHLIGHT_STYLES[comment]="fg=#${T_MUTED},italic"
-ZSH_HIGHLIGHT_STYLES[arg0]="fg=#${T_FOAM}"
 ZSH_HIGHLIGHT_STYLES[default]="fg=#${T_TEXT}"
-ZSH_HIGHLIGHT_STYLES[bracket-level-1]="fg=#${T_PINE}"
-ZSH_HIGHLIGHT_STYLES[bracket-level-2]="fg=#${T_IRIS}"
-ZSH_HIGHLIGHT_STYLES[bracket-level-3]="fg=#${T_FOAM}"
-ZSH_HIGHLIGHT_STYLES[bracket-error]="fg=#${T_LOVE}"
+ZSH_HIGHLIGHT_STYLES[bracket-level-1]="fg=#${T_ROSE}"
+ZSH_HIGHLIGHT_STYLES[bracket-level-2]="fg=#${T_FOAM}"
+ZSH_HIGHLIGHT_STYLES[bracket-level-3]="fg=#${T_GOLD}"
+ZSH_HIGHLIGHT_STYLES[bracket-error]="fg=#${T_LOVE},bold"
+# опасные команды — красным фоном, чтобы глаз зацепился
+ZSH_HIGHLIGHT_PATTERNS+=('rm -rf *' "fg=#${T_BASE},bg=#${T_LOVE},bold")
+ZSH_HIGHLIGHT_PATTERNS+=('git push --force*' "fg=#${T_BASE},bg=#${T_LOVE},bold")
+ZSH_HIGHLIGHT_PATTERNS+=('docker system prune*' "fg=#${T_BASE},bg=#${T_LOVE},bold")
 
 # ────────────────────────────────────────────────────────────
 # ФУНКЦИИ
@@ -426,6 +442,20 @@ weather() { curl -s "wttr.in/${1}?lang=ru&F" ; }
 
 source "$HOME/dotfiles/zsh/cheatsheet.zsh"
 source "$HOME/dotfiles/zsh/ram.zsh"
+
+# ────────────────────────────────────────────────────────────
+# ПРИВЕТСТВИЕ: логотип Arch + коротко о системе (~35 мс).
+# Только в новом окне Ghostty и если оно большое — не в quick terminal, Zed, VS Code
+# ────────────────────────────────────────────────────────────
+
+if [[ $TERM_PROGRAM == ghostty && $SHLVL -eq 1 && $LINES -ge 30 && $COLUMNS -ge 80 && -z $NO_GREETING ]]; then
+    fastfetch -c "$HOME/dotfiles/fastfetch/greeting.jsonc"
+    # совет: случайная функция из шпаргалки — постепенно запоминаются свои команды
+    () {
+        local tip=${${(f)"$(_cheat_funcs)"}[RANDOM % $#${(f)"$(_cheat_funcs)"} + 1]}
+        print -P "\n  $(_c $T_GOLD)󰌵  ${tip%%|*}%f  $(_c $T_MUTED)${tip#*|}  · ? — все команды%f"
+    }
+fi
 
 # ============================================================
 #                         END

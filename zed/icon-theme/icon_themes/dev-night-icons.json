@@ -1,0 +1,227 @@
+{
+  "$schema" : "https://zed.dev/schema/icon_themes/v0.2.0.json",
+  "author" : "dotfiles",
+  "name" : "Dev Night Icons",
+  "themes" : [
+    {
+      "appearance" : "dark",
+      "chevron_icons" : {
+        "collapsed" : "./icons/chevron-right.svg",
+        "expanded" : "./icons/chevron-down.svg"
+      },
+      "directory_icons" : {
+        "collapsed" : "./icons/folder.svg",
+        "expanded" : "./icons/folder-open.svg"
+      },
+      "file_icons" : {
+        "compose" : {
+          "path" : "./icons/compose.svg"
+        },
+        "css" : {
+          "path" : "./icons/css.svg"
+        },
+        "csv" : {
+          "path" : "./icons/csv.svg"
+        },
+        "default" : {
+          "path" : "./icons/default.svg"
+        },
+        "docker" : {
+          "path" : "./icons/docker.svg"
+        },
+        "env" : {
+          "path" : "./icons/env.svg"
+        },
+        "git" : {
+          "path" : "./icons/git.svg"
+        },
+        "go" : {
+          "path" : "./icons/go.svg"
+        },
+        "gomod" : {
+          "path" : "./icons/gomod.svg"
+        },
+        "html" : {
+          "path" : "./icons/html.svg"
+        },
+        "image" : {
+          "path" : "./icons/image.svg"
+        },
+        "javascript" : {
+          "path" : "./icons/javascript.svg"
+        },
+        "json" : {
+          "path" : "./icons/json.svg"
+        },
+        "license" : {
+          "path" : "./icons/license.svg"
+        },
+        "lock" : {
+          "path" : "./icons/lock.svg"
+        },
+        "make" : {
+          "path" : "./icons/make.svg"
+        },
+        "markdown" : {
+          "path" : "./icons/markdown.svg"
+        },
+        "proto" : {
+          "path" : "./icons/proto.svg"
+        },
+        "python" : {
+          "path" : "./icons/python.svg"
+        },
+        "shell" : {
+          "path" : "./icons/shell.svg"
+        },
+        "sql" : {
+          "path" : "./icons/sql.svg"
+        },
+        "swift" : {
+          "path" : "./icons/swift.svg"
+        },
+        "text" : {
+          "path" : "./icons/text.svg"
+        },
+        "toml" : {
+          "path" : "./icons/toml.svg"
+        },
+        "typescript" : {
+          "path" : "./icons/typescript.svg"
+        },
+        "yaml" : {
+          "path" : "./icons/yaml.svg"
+        }
+      },
+      "file_stems" : {
+        ".air.toml" : "toml",
+        ".dockerignore" : "docker",
+        ".env" : "env",
+        ".env.dev" : "env",
+        ".env.example" : "env",
+        ".env.local" : "env",
+        ".env.prod" : "env",
+        ".env.sample" : "env",
+        ".envrc" : "env",
+        ".gitattributes" : "git",
+        ".gitignore" : "git",
+        ".gitkeep" : "git",
+        ".gitmodules" : "git",
+        ".golangci.yaml" : "toml",
+        ".golangci.yml" : "toml",
+        "Cargo.lock" : "lock",
+        "compose.ci.yaml" : "compose",
+        "compose.ci.yml" : "compose",
+        "compose.dev.yaml" : "compose",
+        "compose.dev.yml" : "compose",
+        "compose.development.yaml" : "compose",
+        "compose.development.yml" : "compose",
+        "compose.local.yaml" : "compose",
+        "compose.local.yml" : "compose",
+        "compose.override.yaml" : "compose",
+        "compose.override.yml" : "compose",
+        "compose.prod.yaml" : "compose",
+        "compose.prod.yml" : "compose",
+        "compose.production.yaml" : "compose",
+        "compose.production.yml" : "compose",
+        "compose.staging.yaml" : "compose",
+        "compose.staging.yml" : "compose",
+        "compose.test.yaml" : "compose",
+        "compose.test.yml" : "compose",
+        "compose.yaml" : "compose",
+        "compose.yml" : "compose",
+        "Containerfile" : "docker",
+        "docker-compose.ci.yaml" : "compose",
+        "docker-compose.ci.yml" : "compose",
+        "docker-compose.dev.yaml" : "compose",
+        "docker-compose.dev.yml" : "compose",
+        "docker-compose.development.yaml" : "compose",
+        "docker-compose.development.yml" : "compose",
+        "docker-compose.local.yaml" : "compose",
+        "docker-compose.local.yml" : "compose",
+        "docker-compose.override.yaml" : "compose",
+        "docker-compose.override.yml" : "compose",
+        "docker-compose.prod.yaml" : "compose",
+        "docker-compose.prod.yml" : "compose",
+        "docker-compose.production.yaml" : "compose",
+        "docker-compose.production.yml" : "compose",
+        "docker-compose.staging.yaml" : "compose",
+        "docker-compose.staging.yml" : "compose",
+        "docker-compose.test.yaml" : "compose",
+        "docker-compose.test.yml" : "compose",
+        "docker-compose.yaml" : "compose",
+        "docker-compose.yml" : "compose",
+        "Dockerfile" : "docker",
+        "GNUmakefile" : "make",
+        "go.mod" : "gomod",
+        "go.sum" : "gomod",
+        "go.work" : "gomod",
+        "go.work.sum" : "gomod",
+        "justfile" : "make",
+        "Justfile" : "make",
+        "LICENSE" : "license",
+        "LICENSE.md" : "license",
+        "LICENSE.txt" : "license",
+        "makefile" : "make",
+        "Makefile" : "make",
+        "package-lock.json" : "lock",
+        "uv.lock" : "lock",
+        "yarn.lock" : "lock"
+      },
+      "file_suffixes" : {
+        "bash" : "shell",
+        "cjs" : "javascript",
+        "css" : "css",
+        "csv" : "csv",
+        "dockerfile" : "docker",
+        "env" : "env",
+        "fish" : "shell",
+        "gif" : "image",
+        "go" : "go",
+        "gohtml" : "html",
+        "heic" : "image",
+        "htm" : "html",
+        "html" : "html",
+        "ico" : "image",
+        "jpeg" : "image",
+        "jpg" : "image",
+        "js" : "javascript",
+        "json" : "json",
+        "json5" : "json",
+        "jsonc" : "json",
+        "jsx" : "javascript",
+        "lock" : "lock",
+        "log" : "text",
+        "markdown" : "markdown",
+        "md" : "markdown",
+        "mdx" : "markdown",
+        "mjs" : "javascript",
+        "mk" : "make",
+        "mts" : "typescript",
+        "png" : "image",
+        "proto" : "proto",
+        "psql" : "sql",
+        "py" : "python",
+        "pyi" : "python",
+        "sass" : "css",
+        "scss" : "css",
+        "sh" : "shell",
+        "sql" : "sql",
+        "sum" : "gomod",
+        "svg" : "image",
+        "swift" : "swift",
+        "tmpl" : "html",
+        "toml" : "toml",
+        "ts" : "typescript",
+        "tsv" : "csv",
+        "tsx" : "typescript",
+        "txt" : "text",
+        "webp" : "image",
+        "yaml" : "yaml",
+        "yml" : "yaml",
+        "zsh" : "shell"
+      },
+      "name" : "Dev Night Icons"
+    }
+  ]
+}
