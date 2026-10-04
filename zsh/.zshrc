@@ -276,6 +276,47 @@ p() {
     [ -n "$d" ] && cd "$DEV/$d"
 }
 
+# pl — все проекты ~/dev одним экраном: стек, ветка, несохранённое, давность коммита
+pl() {
+    local r=$'\e[0m' dim=$'\e[38;2;110;106;134m' txt=$'\e[38;2;224;222;244m' foam=$'\e[38;2;156;207;216m'
+    local pine=$'\e[38;2;49;116;143m' gold=$'\e[38;2;246;193;119m' love=$'\e[38;2;235;111;146m' iris=$'\e[38;2;196;167;231m'
+    local now=$EPOCHSECONDS d name ts rows=()
+    zmodload zsh/datetime
+    for d in $DEV/*(/N); do
+        name=${d:t}
+        [[ $name == sandbox || $name == *.worktrees ]] && continue
+        ts=$(git -C "$d" log -1 --format=%ct 2>/dev/null) || ts=0
+        rows+=("${ts:-0}"$'\t'"$d")
+    done
+    print
+    local row age stack branch st ab dirty
+    for row in ${(On)rows}; do
+        ts=${row%%$'\t'*}; d=${row#*$'\t'}; name=${d:t}
+        # стек: Go и/или Docker
+        local -a dock=($d/(Dockerfile|*compose*.y(a|)ml)(N))
+        stack="  "; [[ -f $d/go.mod ]] && stack="$foam"$'\U000f07d3'" "
+        (( $#dock )) && stack+="$pine"$'\U000f0868'" " || stack+="  "
+        if [[ ! -d $d/.git ]]; then
+            printf '  %s%s %s%-20s%s   %sбез git%s\n' "$stack" "$r" "$txt" "${name[1,20]}" "$r" "$dim" "$r"
+            continue
+        fi
+        branch=$(git -C "$d" branch --show-current 2>/dev/null)
+        dirty=$(git -C "$d" status --porcelain 2>/dev/null | wc -l | tr -d ' ')
+        (( dirty )) && st="$gold!$dirty" || st="$foam✓"
+        ab=$(git -C "$d" rev-list --left-right --count @{u}...HEAD 2>/dev/null | awk '{s=""; if($2) s=s"⇡"$2; if($1) s=s"⇣"$1; print s}')
+        if (( ts )); then
+            age=$(( (now - ts) / 3600 ))
+            if   (( age < 24 ));  then age="${age}ч"
+            elif (( age < 336 )); then age="$(( age / 24 ))д"
+            else age="$(( age / 168 ))нед"; fi
+        else age="пусто"; fi
+        printf '  %s%s %s%-20s%s  %s %-12s%s %-4s%s %s%-6s%s %s%s%s\n' \
+            "$stack" "$r" "$txt" "${name[1,20]}" "$r" "$iris" "${branch[1,12]}" "$r" "$st" "$r" \
+            "$love" "$ab" "$r" "$dim" "$age" "$r"
+    done
+    print
+}
+
 mkcd() { mkdir -p "$1" && cd "$1"; }
 
 # killport 8080 — убить процесс на порту
