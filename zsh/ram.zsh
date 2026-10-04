@@ -6,9 +6,9 @@
 
 ram() {
     local n=${1:-10}
-    local r=$'\e[0m' dim=$'\e[38;2;110;106;134m' sub=$'\e[38;2;144;140;170m' txt=$'\e[38;2;224;222;244m'
-    local foam=$'\e[38;2;156;207;216m' gold=$'\e[38;2;246;193;119m' love=$'\e[38;2;235;111;146m'
-    local iris=$'\e[38;2;196;167;231m' rose=$'\e[38;2;235;188;186m'
+    local r=$'\e[0m' dim="$(_c $T_MUTED)" sub="$(_c $T_SUBTLE)" txt="$(_c $T_TEXT)"
+    local foam="$(_c $T_FOAM)" gold="$(_c $T_GOLD)" love="$(_c $T_LOVE)"
+    local iris="$(_c $T_IRIS)" rose="$(_c $T_ROSE)"
 
     # ── шапка: давление на память (кэш macOS не считается занятым) ──
     local total=$(( $(sysctl -n hw.memsize) / 1048576 ))

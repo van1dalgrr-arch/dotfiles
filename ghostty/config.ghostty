@@ -65,3 +65,6 @@ keybind = global:ctrl+backquote=toggle_quick_terminal
 # cmd+q только закрывает окна — Ghostty живёт в фоне, ctrl+` работает всегда
 # (выйти совсем: меню Ghostty → Quit)
 keybind = super+q=close_all_windows
+
+# --- Тема: themes/apply.sh пишет сюда тему и цвета (перекрывает значения выше) ---
+config-file = ?theme.ghostty

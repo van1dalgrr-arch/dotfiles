@@ -1,10 +1,12 @@
 #!/bin/bash
-# Рамка вокруг активного окна (Rosé Pine: iris → rose)
+# Рамка вокруг активного окна: градиент iris → rose из текущей темы (themes/)
+theme=$(cat "$HOME/.config/dotfiles/theme" 2>/dev/null || echo rose-pine)
+source "$HOME/dotfiles/themes/$theme.sh" 2>/dev/null || source "$HOME/dotfiles/themes/rose-pine.sh"
 options=(
     style=round
     width=5.0
     hidpi=on
-    active_color="gradient(top_left=0xffc4a7e7,bottom_right=0xffebbcba)"
+    active_color="gradient(top_left=0xff$T_IRIS,bottom_right=0xff$T_ROSE)"
     inactive_color=0x00000000
 )
 borders "${options[@]}"

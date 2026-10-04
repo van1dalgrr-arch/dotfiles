@@ -17,18 +17,7 @@
 [delta]
 	navigate = true
 	line-numbers = true
-	syntax-theme = rose-pine
-	minus-style = "syntax \"#3d2a38\""
-	minus-emph-style = "syntax \"#5c3b4f\""
-	plus-style = "syntax \"#233a40\""
-	plus-emph-style = "syntax \"#2d4f57\""
-	file-style = "bold \"#c4a7e7\""
-	file-decoration-style = "\"#c4a7e7\" ul"
 	hunk-header-style = file line-number syntax
-	hunk-header-decoration-style = "\"#6e6a86\" box"
-	line-numbers-minus-style = "\"#eb6f92\""
-	line-numbers-plus-style = "\"#9ccfd8\""
-	line-numbers-zero-style = "\"#6e6a86\""
 [merge]
 	conflictStyle = zdiff3
 [diff]
@@ -48,3 +37,7 @@
 	autoStash = true
 [column]
 	ui = auto
+# цвета delta: эталон (Rosé Pine), поверх — перекрашенные под текущую тему (themes/apply.sh)
+[include]
+	path = ~/dotfiles/git/delta.gitconfig
+	path = ~/.cache/dotfiles-theme/delta.gitconfig

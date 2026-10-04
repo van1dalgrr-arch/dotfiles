@@ -59,17 +59,18 @@ weather|погода в терминале
 ram|кто ест память (по приложениям): ram 15
 up|запустить проект: compose-зависимости + air/go run с .env
 pl|все проекты ~/dev: стек, ветка, изменения, давность
+theme|сменить тему терминала и обоев: theme kanagawa / theme rose-pine
 EOF
 }
 
 _cheat_lines() {
-    local r=$'\e[0m' dim=$'\e[38;2;110;106;134m'
+    local r=$'\e[0m' dim="$(_c $T_MUTED)"
     local -A col=(
-        AeroSpace $'\e[38;2;196;167;231m'
-        Ghostty   $'\e[38;2;235;188;186m'
-        Shell     $'\e[38;2;156;207;216m'
-        func      $'\e[38;2;49;116;143m'
-        alias     $'\e[38;2;144;140;170m'
+        AeroSpace "$(_c $T_IRIS)"
+        Ghostty   "$(_c $T_ROSE)"
+        Shell     "$(_c $T_FOAM)"
+        func      "$(_c $T_PINE)"
+        alias     "$(_c $T_SUBTLE)"
     )
     local sec key desc
     _cheat_static | while IFS='|' read -r sec key desc; do
@@ -94,7 +95,7 @@ _cheat_pick() {
         --border-label=' 󰌌  шпаргалка ' --border-label-pos=3 \
         --prompt='  ' --pointer='❯' \
         --header='enter — вставить команду · esc — выход' \
-        --color='border:#c4a7e7,label:#ebbcba,header:#6e6a86') || return
+        --color="border:#${T_IRIS},label:#${T_ROSE},header:#${T_MUTED}") || return
     local -a f=(${=pick})
     [[ ${f[1]} == (func|alias) ]] && print -r -- "${f[2]}"
 }

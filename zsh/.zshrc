@@ -26,6 +26,12 @@ plugins=(
 source "$ZSH/oh-my-zsh.sh"
 
 # ────────────────────────────────────────────────────────────
+# ТЕМА (палитра T_*, theme — переключить)
+# ────────────────────────────────────────────────────────────
+
+source "$HOME/dotfiles/zsh/theme.zsh"
+
+# ────────────────────────────────────────────────────────────
 # STARSHIP
 # ────────────────────────────────────────────────────────────
 
@@ -41,13 +47,13 @@ export FZF_DEFAULT_COMMAND="fd --type f --hidden --exclude .git"
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 export FZF_ALT_C_COMMAND="fd --type d --hidden --exclude .git"
 
-# Rosé Pine
+# цвета — из палитры темы
 export FZF_DEFAULT_OPTS=" \
 --height=40% --layout=reverse --border=rounded --info=inline \
---color=bg+:#26233a,bg:-1,spinner:#ebbcba,hl:#eb6f92 \
---color=fg:#e0def4,header:#eb6f92,info:#c4a7e7,pointer:#ebbcba \
---color=marker:#c4a7e7,fg+:#e0def4,prompt:#c4a7e7,hl+:#eb6f92 \
---color=selected-bg:#403d52,border:#6e6a86,label:#e0def4"
+--color=bg+:#${T_OVERLAY},bg:-1,spinner:#${T_ROSE},hl:#${T_LOVE} \
+--color=fg:#${T_TEXT},header:#${T_LOVE},info:#${T_IRIS},pointer:#${T_ROSE} \
+--color=marker:#${T_IRIS},fg+:#${T_TEXT},prompt:#${T_IRIS},hl+:#${T_LOVE} \
+--color=selected-bg:#${T_HL_MED},border:#${T_MUTED},label:#${T_TEXT}"
 export FZF_CTRL_T_OPTS="--preview 'bat --color=always --style=numbers --line-range=:300 {}'"
 export FZF_ALT_C_OPTS="--preview 'eza --tree --level=2 --icons --color=always {}'"
 
@@ -73,13 +79,11 @@ eval "$(atuin init zsh --disable-up-arrow)"
 # MODERN CLI
 # ────────────────────────────────────────────────────────────
 
-export EZA_CONFIG_DIR="$HOME/.config/eza"
 alias ls="eza --icons --group-directories-first"
 alias ll="eza -lah --icons --group-directories-first --git"
 alias la="eza -a --icons --group-directories-first"
 alias lt="eza --tree --level=2 --icons"
 
-export BAT_THEME="rose-pine"
 alias cat="bat"
 alias top="btop"
 
@@ -223,39 +227,39 @@ setopt INTERACTIVE_COMMENTS
 # PLUGINS (syntax-highlighting — строго последним)
 # ────────────────────────────────────────────────────────────
 
-ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=#6e6a86"
+ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=#${T_MUTED}"
 source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 
 [ -f /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ] && \
     source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
-# Rosé Pine для подсветки
+# подсветка — цвета из палитры темы
 ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets)
 typeset -A ZSH_HIGHLIGHT_STYLES
-ZSH_HIGHLIGHT_STYLES[command]='fg=#9ccfd8'
-ZSH_HIGHLIGHT_STYLES[builtin]='fg=#9ccfd8'
-ZSH_HIGHLIGHT_STYLES[alias]='fg=#9ccfd8'
-ZSH_HIGHLIGHT_STYLES[function]='fg=#9ccfd8'
-ZSH_HIGHLIGHT_STYLES[precommand]='fg=#9ccfd8,italic'
-ZSH_HIGHLIGHT_STYLES[unknown-token]='fg=#eb6f92'
-ZSH_HIGHLIGHT_STYLES[reserved-word]='fg=#c4a7e7'
-ZSH_HIGHLIGHT_STYLES[commandseparator]='fg=#eb6f92'
-ZSH_HIGHLIGHT_STYLES[path]='fg=#e0def4,underline'
-ZSH_HIGHLIGHT_STYLES[single-hyphen-option]='fg=#f6c177'
-ZSH_HIGHLIGHT_STYLES[double-hyphen-option]='fg=#f6c177'
-ZSH_HIGHLIGHT_STYLES[single-quoted-argument]='fg=#f6c177'
-ZSH_HIGHLIGHT_STYLES[double-quoted-argument]='fg=#f6c177'
-ZSH_HIGHLIGHT_STYLES[dollar-quoted-argument]='fg=#f6c177'
-ZSH_HIGHLIGHT_STYLES[back-quoted-argument]='fg=#c4a7e7'
-ZSH_HIGHLIGHT_STYLES[redirection]='fg=#ebbcba'
-ZSH_HIGHLIGHT_STYLES[globbing]='fg=#9ccfd8'
-ZSH_HIGHLIGHT_STYLES[comment]='fg=#6e6a86,italic'
-ZSH_HIGHLIGHT_STYLES[arg0]='fg=#9ccfd8'
-ZSH_HIGHLIGHT_STYLES[default]='fg=#e0def4'
-ZSH_HIGHLIGHT_STYLES[bracket-level-1]='fg=#31748f'
-ZSH_HIGHLIGHT_STYLES[bracket-level-2]='fg=#c4a7e7'
-ZSH_HIGHLIGHT_STYLES[bracket-level-3]='fg=#9ccfd8'
-ZSH_HIGHLIGHT_STYLES[bracket-error]='fg=#eb6f92'
+ZSH_HIGHLIGHT_STYLES[command]="fg=#${T_FOAM}"
+ZSH_HIGHLIGHT_STYLES[builtin]="fg=#${T_FOAM}"
+ZSH_HIGHLIGHT_STYLES[alias]="fg=#${T_FOAM}"
+ZSH_HIGHLIGHT_STYLES[function]="fg=#${T_FOAM}"
+ZSH_HIGHLIGHT_STYLES[precommand]="fg=#${T_FOAM},italic"
+ZSH_HIGHLIGHT_STYLES[unknown-token]="fg=#${T_LOVE}"
+ZSH_HIGHLIGHT_STYLES[reserved-word]="fg=#${T_IRIS}"
+ZSH_HIGHLIGHT_STYLES[commandseparator]="fg=#${T_LOVE}"
+ZSH_HIGHLIGHT_STYLES[path]="fg=#${T_TEXT},underline"
+ZSH_HIGHLIGHT_STYLES[single-hyphen-option]="fg=#${T_GOLD}"
+ZSH_HIGHLIGHT_STYLES[double-hyphen-option]="fg=#${T_GOLD}"
+ZSH_HIGHLIGHT_STYLES[single-quoted-argument]="fg=#${T_GOLD}"
+ZSH_HIGHLIGHT_STYLES[double-quoted-argument]="fg=#${T_GOLD}"
+ZSH_HIGHLIGHT_STYLES[dollar-quoted-argument]="fg=#${T_GOLD}"
+ZSH_HIGHLIGHT_STYLES[back-quoted-argument]="fg=#${T_IRIS}"
+ZSH_HIGHLIGHT_STYLES[redirection]="fg=#${T_ROSE}"
+ZSH_HIGHLIGHT_STYLES[globbing]="fg=#${T_FOAM}"
+ZSH_HIGHLIGHT_STYLES[comment]="fg=#${T_MUTED},italic"
+ZSH_HIGHLIGHT_STYLES[arg0]="fg=#${T_FOAM}"
+ZSH_HIGHLIGHT_STYLES[default]="fg=#${T_TEXT}"
+ZSH_HIGHLIGHT_STYLES[bracket-level-1]="fg=#${T_PINE}"
+ZSH_HIGHLIGHT_STYLES[bracket-level-2]="fg=#${T_IRIS}"
+ZSH_HIGHLIGHT_STYLES[bracket-level-3]="fg=#${T_FOAM}"
+ZSH_HIGHLIGHT_STYLES[bracket-error]="fg=#${T_LOVE}"
 
 # ────────────────────────────────────────────────────────────
 # ФУНКЦИИ
@@ -280,8 +284,8 @@ p() {
 
 # pl — все проекты ~/dev одним экраном: стек, ветка, несохранённое, давность коммита
 pl() {
-    local r=$'\e[0m' dim=$'\e[38;2;110;106;134m' txt=$'\e[38;2;224;222;244m' foam=$'\e[38;2;156;207;216m'
-    local pine=$'\e[38;2;49;116;143m' gold=$'\e[38;2;246;193;119m' love=$'\e[38;2;235;111;146m' iris=$'\e[38;2;196;167;231m'
+    local r=$'\e[0m' dim="$(_c $T_MUTED)" txt="$(_c $T_TEXT)" foam="$(_c $T_FOAM)"
+    local pine="$(_c $T_PINE)" gold="$(_c $T_GOLD)" love="$(_c $T_LOVE)" iris="$(_c $T_IRIS)"
     local now=$EPOCHSECONDS d name ts rows=()
     zmodload zsh/datetime
     for d in $DEV/*(/N); do

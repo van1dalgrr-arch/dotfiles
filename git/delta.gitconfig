@@ -1,0 +1,13 @@
+# Цвета git diff (delta) в Rosé Pine. Для других тем перекрашивается themes/apply.sh
+[delta]
+	syntax-theme = rose-pine
+	minus-style = "syntax \"#3d2a38\""
+	minus-emph-style = "syntax \"#5c3b4f\""
+	plus-style = "syntax \"#233a40\""
+	plus-emph-style = "syntax \"#2d4f57\""
+	file-style = "bold \"#c4a7e7\""
+	file-decoration-style = "\"#c4a7e7\" ul"
+	hunk-header-decoration-style = "\"#6e6a86\" box"
+	line-numbers-minus-style = "\"#eb6f92\""
+	line-numbers-plus-style = "\"#9ccfd8\""
+	line-numbers-zero-style = "\"#6e6a86\""
