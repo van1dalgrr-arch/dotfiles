@@ -96,82 +96,6 @@ Forgot a command? Press `?` (or `ctrl+/`) — a cheatsheet with every hotkey, fu
 
 Type a command that doesn't exist and the prompt tells you if it's available in brew — like `pkgfile` on Arch.
 
-## Hotkeys
-
-<details>
-<summary><b>AeroSpace</b> — windows and workspaces</summary>
-
-| Keys | Action |
-|---|---|
-| `alt-enter` | new terminal |
-| `alt-e` | file manager (yazi) |
-| `alt-q` | close window |
-| `alt-h/j/k/l` | focus left / down / up / right |
-| `alt-shift-h/j/k/l` | move window |
-| `alt-1…9` | go to workspace |
-| `alt-shift-1…9` | send window to workspace |
-| `alt-tab` | previous workspace |
-| `alt-/` · `alt-,` | layout: tiles · accordion |
-| `alt-shift-f` | fullscreen |
-| `alt-shift-space` | floating ↔ tiling |
-| `alt-r` | resize mode (`hjkl`, `esc`) |
-
-</details>
-
-<details>
-<summary><b>Ghostty</b> — terminal</summary>
-
-| Keys | Action |
-|---|---|
-| `` ctrl+` `` | drop-down terminal from any app |
-| `cmd-d` · `cmd-shift-d` | split right · down |
-| `cmd-alt-arrows` | move between splits |
-| `cmd-shift-enter` | zoom split |
-| `cmd-q` | close windows (Ghostty stays in the background, `` ctrl+` `` keeps working) |
-| `cmd-shift-,` | reload config after a theme change |
-
-</details>
-
-<details>
-<summary><b>Zed</b> — editor</summary>
-
-| Keys | Action |
-|---|---|
-| `ctrl-r` | task menu: `up`, `air`, tests, coverage, linter, compose logs, `curl /health` |
-| `ctrl-t` | run the test under the cursor |
-| `f5` | debug with Delve: `cmd/api`, current package, or the test under the cursor |
-| `ctrl-shift-r` | rerun the last task |
-| `alt-g` · `alt-d` | lazygit · lazydocker inside Zed |
-| `cmd-j` | terminal |
-| `cmd-1` · `cmd-2` · `cmd-3` | files · outline · git |
-| `cmd-shift-d` | all project diagnostics |
-
-Go snippets: `iferr`, `iferrw`, `ginh`, `ginbind`, `ginr`, `ginmw`, `ttest`, `htest`, `bench`, `qrow`, `slog`, `jstruct`, `ctxt`.
-
-Also: golangci-lint runs as a language server (warnings right in the code), `.http` files send requests
-to your API like REST Client in VS Code, `cmd-alt-l` centers the text.
-
-</details>
-
-## Themes
-
-```bash
-theme            # pick in fzf, palette preview on the right
-theme vesper     # apply directly
-```
-
-| Theme | Mood |
-|---|---|
-| `vesper` | near-black with saturated violet and blue — the main one |
-| `kanagawa` | indigo and paper, inspired by Hokusai |
-| `rose-pine` | soft and muted |
-
-How it works: every config in the repo is written in Rosé Pine colors, and a theme is just a map
-of "which color becomes which" across 19 roles (`themes/<name>.sh`). `themes/apply.sh` recolors copies
-of the configs into `~/.config` and `~/.cache` in a single pass — the repo itself never changes when you switch.
-It recolors Ghostty, the prompt, syntax highlighting, fzf, bat, delta, eza, lazygit, btop,
-Dock and folder icons, and the wallpaper. VS Code keeps its own theme.
-
 ## Wallpapers
 
 ```bash
@@ -202,6 +126,16 @@ runWallpaper { hour in
 
 The palette, stars, glow and HEIC builder live in `icons/wallpaper-kit.swift`. Then run `wall <name>`.
 
+## Docs
+
+| | |
+|---|---|
+| [Wallpapers](docs/wallpapers.md) | all 25 live wallpapers with previews, and how to make your own |
+| [Themes](docs/themes.md) | how `theme` recolors everything from one palette file |
+| [Hotkeys](docs/hotkeys.md) | AeroSpace, Ghostty and Zed shortcuts |
+| [Troubleshooting](docs/troubleshooting.md) | icons reset, theme not applied, drop-down terminal, starship |
+| [Changelog](CHANGELOG.md) | what changed between releases |
+
 ## Leak protection
 
 Before **every** commit in any repo, [gitleaks](https://github.com/gitleaks/gitleaks) scans what's
@@ -229,34 +163,6 @@ dotfiles/
 ├── install.sh      symlinks
 └── macos.sh        system defaults (optional)
 ```
-
-## Troubleshooting
-
-<details>
-<summary>An app icon went back to the default</summary>
-
-macOS resets custom icons when an app updates. Bring it back with `theme vesper`
-(or `swift ~/.cache/dotfiles-theme/icons.swift apply`). Apps installed as root (VS Code, Telegram) need `sudo`.
-</details>
-
-<details>
-<summary>The terminal didn't change colors after <code>theme</code></summary>
-
-Ghostty reads its config on launch — press `cmd-shift-,` and open a new window.
-</details>
-
-<details>
-<summary>The drop-down terminal doesn't open</summary>
-
-Ghostty has to be running in the background (AeroSpace starts it at login) and needs Accessibility
-permission — global hotkeys don't work without it.
-</details>
-
-<details>
-<summary>I want starship back</summary>
-
-Put `export PROMPT_ENGINE=starship` in `~/.zshenv` — the config is in `starship/`.
-</details>
 
 ## Thanks
 
