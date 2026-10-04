@@ -31,6 +31,7 @@ brew "golangci-lint"
 brew "delve"
 
 # Docker / DevOps
+cask "orbstack"          # вместо Docker Desktop: память по требованию
 brew "lazydocker"
 brew "dive"
 brew "hadolint"

@@ -29,3 +29,16 @@ brew bundle
 ```
 
 `install.sh` создаёт симлинки из системы на файлы в репозитории. Правишь конфиг как обычно, а изменения сразу видны в `git status` этого репозитория.
+
+## Docker → OrbStack
+
+Docker работает через OrbStack вместо Docker Desktop: те же `docker` / `docker compose`,
+но память берётся по мере надобности и отдаётся обратно (на 8 ГБ это заметно).
+
+```bash
+docker context use orbstack        # OrbStack (сейчас)
+docker context use desktop-linux   # вернуться на Docker Desktop
+```
+
+Старые образы остались в Docker Desktop. Перенести: OrbStack → Settings → Migrate from Docker Desktop
+(или просто пересобрать `docker compose build`).
