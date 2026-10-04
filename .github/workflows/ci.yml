@@ -32,3 +32,27 @@ jobs:
         uses: gitleaks/gitleaks-action@v2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  macos:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Swift generators compile
+        run: |
+          for f in icons/wallpaper-*.swift; do
+            case $f in *-kit.swift) continue ;; esac
+            if grep -q runWallpaper "$f"; then cat icons/wallpaper-kit.swift "$f" > /tmp/w.swift; else cp "$f" /tmp/w.swift; fi
+            swiftc -typecheck /tmp/w.swift && echo "ok $f"
+          done
+          for f in icons/icons.swift icons/folder.swift zed/icon-theme/build.swift; do swiftc -typecheck "$f" && echo "ok $f"; done
+
+      - name: every theme applies in a clean HOME
+        run: |
+          for t in themes/*.sh; do
+            name=$(basename "$t" .sh); [ "$name" = apply ] && continue
+            export HOME=$(mktemp -d)
+            NO_WALLPAPER=1 NO_ICONS=1 ./themes/apply.sh "$name"
+            test -s "$HOME/.config/ghostty/theme.ghostty" && test -s "$HOME/.cache/dotfiles-theme/starship.toml"
+            echo "ok $name"
+          done

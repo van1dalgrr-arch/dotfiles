@@ -15,7 +15,7 @@ theme="$DOTFILES/themes/$name.sh"
 [ -f "$theme" ] || { echo "нет темы: $name (есть: $(cd "$DOTFILES/themes" && command ls *.sh | sed 's/\.sh$//' | grep -v apply | tr '\n' ' '))"; exit 1; }
 
 GEN="$HOME/.cache/dotfiles-theme"
-mkdir -p "$GEN" "$HOME/.config/dotfiles"
+mkdir -p "$GEN" "$HOME/.config/dotfiles" "$HOME/.config/ghostty"
 
 # ─── таблица перевода цветов ───
 roles=(BASE SURFACE OVERLAY HL_LOW HL_MED HL_HIGH MUTED SUBTLE TEXT LOVE GOLD ROSE PINE FOAM IRIS
