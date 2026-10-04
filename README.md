@@ -33,6 +33,8 @@ A few things that came out of that:
 
 > Comments in the configs and messages printed by the commands are in Russian — that's my native language.
 
+<p align="center"><img src="docs/terminal.png" width="85%" alt="Ghostty: Arch-style greeting and the pure-zsh prompt"/></p>
+
 ## Install
 
 You'll need [Homebrew](https://brew.sh) and [oh-my-zsh](https://ohmyz.sh).

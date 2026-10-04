@@ -425,7 +425,10 @@ source "$HOME/dotfiles/zsh/gonew.zsh"
 # в первые миллисекунды ещё маленькое (80×24), и проверка размера ошибочно не проходила
 _greeting() {
     add-zsh-hook -d precmd _greeting                     # только один раз
-    [[ $TERM_PROGRAM == ghostty && $SHLVL -le 2 && $LINES -ge 12 && $COLUMNS -ge 60 && -z $NO_GREETING ]] || return
+    # не SHLVL: Ghostty запускается через AeroSpace и наследует SHLVL=3+, проверка никогда не проходила.
+    # Флаг в окружении: новое окно — с приветствием, вложенный zsh внутри него — без.
+    [[ $TERM_PROGRAM == ghostty && -z $DOTFILES_GREETED && $LINES -ge 12 && $COLUMNS -ge 60 && -z $NO_GREETING ]] || return
+    export DOTFILES_GREETED=1
     fastfetch -c "$HOME/dotfiles/fastfetch/greeting.jsonc"
     # совет: случайная функция из шпаргалки — постепенно запоминаются свои команды
     local -a tips=(${(f)"$(_cheat_funcs)"})
