@@ -34,6 +34,8 @@ let apps: [App] = [
     App(path: "/Applications/ChatGPT.app",            glyph: "\u{F06A9}", color: foam),
     App(path: "/Applications/Claude.app",             glyph: "\u{F06C4}", color: rose),
     App(path: "/Applications/Яндекс Музыка.app",      glyph: "\u{F075A}", color: gold),
+    App(path: "/Applications/Yaak.app",               glyph: "\u{F048A}", color: foam),   // API-клиент
+    App(path: "/Applications/TablePlus.app",          glyph: "\u{F01BC}", color: iris),   // базы данных
     App(path: "/Applications/Happ.app",               glyph: "\u{F132}",  color: love),
 ]
 

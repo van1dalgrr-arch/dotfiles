@@ -63,6 +63,7 @@ After that you edit configs right in `~/dotfiles`, and changes show up in `git s
 | **Wallpapers** | `wall` — pick one of 25 live wallpapers with an image preview right in the terminal |
 | **Git** | delta for diffs, lazygit, gitleaks before every commit |
 | **Docker** | OrbStack, lazydocker, and `up` — start dependencies and run the project in one command |
+| **API & DB** | [Yaak](https://yaak.app) instead of Postman (light, Tauri), [TablePlus](https://tableplus.com) for databases, `pgcli` via `db` |
 
 <p align="center"><img src="docs/zed.png" width="90%" alt="Zed with the Dev Night theme and icons"/></p>
 

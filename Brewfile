@@ -43,6 +43,9 @@ brew "watchexec"
 brew "scc"
 brew "mkcert"
 
+cask "yaak"              # API-клиент вместо Postman (Tauri, лёгкий)
+cask "tableplus"         # GUI для Postgres/MySQL/Redis, нативный
+
 # Docker / DevOps
 brew "act"
 brew "trivy"
