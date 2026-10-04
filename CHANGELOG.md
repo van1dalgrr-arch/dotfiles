@@ -1,5 +1,33 @@
 # Changelog
 
+## Unreleased
+
+**Reproducibility**
+- `go` is now in the Brewfile (it was only installed as a dependency)
+- Go tools are pinned in `go/tools.txt`; `dot tools [install]` installs exactly those versions (no `@latest` anymore)
+- oh-my-zsh and fzf-tab are cloned at pinned commits by `install.sh` (oh-my-zsh used to be a manual step)
+- Zed and VS Code are in the Brewfile, skipped when they're already in `/Applications`
+
+**DevOps**
+- `Brewfile.devops` (optional): kind, kustomize, opentofu, terraform-docs; tflint via `go/tools.devops.txt`
+- SOPS + age in the main Brewfile; `dot secrets [init]`, `templates/sops.yaml`, [docs/secrets.md](docs/secrets.md)
+- Aliases `tf` (tofu) and `pd` (`dot project doctor`)
+
+**dot**
+- `dot doctor` checks Homebrew, Go, Docker/Compose, Kubernetes, IaC, secrets, git hooks, Ghostty and Zed; required vs optional (`○`)
+- `dot doctor --deep`: versions, pinned revisions, packages outside the Brewfile, `brew doctor`, Zed JSONC, age keys in the repo, PATH duplicates
+- `dot project doctor`: Go project checklist (go.mod, tests, linters, Docker, compose, migrations, .env safety)
+- Modules live in `lib/`; works with the system bash 3.2; exit codes 0 / 1 / 2
+
+**macOS**
+- `macos.sh` only prints a plan (current → new) unless you pass `--yes`; groups for keyboard, trackpad, Finder, saving, screenshots, Dock and appearance
+
+**Shell**
+- `.zshrc` no longer breaks when a tool or oh-my-zsh is missing; `typeset -U path`; optional mise hook
+
+**Tests**
+- `tests/smoke.sh` (`make test`), run in CI on Linux and macOS; Brewfile syntax and bash 3.2 parse checks
+
 ## v1.1.0 — 2026-10-05
 
 **Tooling**

@@ -31,7 +31,9 @@ flowchart LR
 ## 2. Установка: `install.sh`
 
 Каждая строка `link <файл в репо> <куда в системе>` делает одно: если на месте уже лежит **обычный файл** —
-переименовывает его в `*.bak` (ничего не теряется), потом ставит симлинк. В конце запускает `themes/apply.sh`.
+переименовывает его в `*.bak` (ничего не теряется), потом ставит симлинк. Потом клонирует oh-my-zsh и fzf-tab
+на закреплённых коммитах (`OMZ_REV`, `FZF_TAB_REV` вверху файла), ставит Go-утилиты точных версий из `go/tools.txt`
+(`dot tools install`) и в конце запускает `themes/apply.sh`. Повторный запуск безопасен.
 
 Почему симлинки, а не копирование: копии расходятся. Через месяц уже не помнишь, какая версия настоящая.
 Симлинк — один источник правды, и git видит каждое изменение.
@@ -187,9 +189,13 @@ pgx, `/health` с пингом базы, graceful shutdown, compose, двухэ�
 
 ## 12. Проверки: `dot doctor`, `make check`, CI
 
-- `dot doctor` — твоя машина: симлинки, программы из Brewfile, Go-инструменты, шрифт, тема, конфиг Ghostty,
-  скорость zsh, git-хуки, Docker. Каждая проблема — с подсказкой, как починить.
-- `make check` — сам репозиторий: shellcheck, синтаксис zsh, JSON, gitleaks. То же самое гоняет CI.
+- `dot doctor` — твоя машина: симлинки, Brewfile (обязательное ✗) и Brewfile.devops (необязательное ○), Go,
+  Docker/Compose, Kubernetes, IaC, SOPS/age, git-хуки, Ghostty, Zed, скорость zsh. Каждая проблема — с подсказкой.
+  `dot doctor --deep` — ещё версии, закреплённые ревизии, лишние пакеты вне Brewfile, `brew doctor`. Только читает.
+- `dot project doctor` (`pd`) — текущий Go-проект: go.mod, тесты, линтеры, Docker, миграции, безопасность `.env`.
+- Код `dot` — в `lib/*.sh` (ui, doctor, project, tools, secrets), совместим с системным bash 3.2.
+- `make check` — сам репозиторий: shellcheck, `bash -n` системным bash, синтаксис zsh, Brewfile, JSON, gitleaks.
+  `make test` — смоук-тесты `tests/smoke.sh`. То же самое гоняет CI.
 - CI на GitHub (`.github/workflows/ci.yml`): Linux — линтеры и gitleaks; **macOS** — компилирует все Swift-генераторы
   и применяет каждую тему в пустом `HOME`, как на новом маке.
 
@@ -200,7 +206,10 @@ pgx, `/health` с пингом базы, graceful shutdown, compose, двухэ�
 | новую команду в терминал | функция в `zsh/*.zsh` + строка в `zsh/cheatsheet.zsh` (`имя\|описание`) |
 | поменять цвет в теме | hex в `themes/<тема>.sh` → `theme <тема>` |
 | новые обои | `icons/wallpaper-<имя>.swift` с `runWallpaper { hour in … }` → `wall <имя>` |
-| новую программу | строка в `Brewfile` → `dot install` |
+| новую программу | строка в `Brewfile` (или `Brewfile.devops`, если необязательная) → `dot install` |
+| новую Go-утилиту / обновить её | `пакет@версия` в `go/tools.txt` → `dot tools install` |
+| секреты в проекте | `dot secrets init` → `sops edit secrets.enc.yaml` ([secrets.md](secrets.md)) |
+| настройки macOS | `./macos.sh` (план) → `./macos.sh --yes` |
 | новый конфиг под git | файл в репозиторий + строка `link` в `install.sh` → `./install.sh` |
 | понять, что сломалось | `dot doctor` |
 | всё обновить | `update` (раз в неделю) |

@@ -37,24 +37,33 @@ A few things that came out of that:
 
 ## Install
 
-You'll need [Homebrew](https://brew.sh) and [oh-my-zsh](https://ohmyz.sh).
+On a clean Mac, starting from nothing:
 
 ```bash
+xcode-select --install                                   # git, clang
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+eval "$(/opt/homebrew/bin/brew shellenv)"
+
 git clone https://github.com/van1dalgrr-arch/dotfiles ~/dotfiles
 cd ~/dotfiles
-brew bundle          # everything from the Brewfile
-./install.sh         # symlinks + theme + wallpaper
+make install         # brew bundle + ./install.sh
+exec zsh
+dot doctor           # everything should be ✓
 ```
 
-`install.sh` doesn't delete anything: if a config already exists, it's renamed to `*.bak`.
-After that you edit configs right in `~/dotfiles`, and changes show up in `git status`.
+`./install.sh` is safe to run again. It:
 
-Then run `dot doctor` — it checks symlinks, installed tools, font, theme, git hooks and shell startup time,
-and tells you how to fix anything that's off. `dot` also wraps the rest: `dot install`, `dot update`, `dot theme`, `dot wall`, `dot check`.
+- symlinks every config (a file already in place is kept as `*.bak`, nothing gets deleted)
+- clones oh-my-zsh and fzf-tab at **pinned commits**, without the oh-my-zsh installer, which would overwrite `.zshrc`
+- installs Go tools at **pinned versions** from `go/tools.txt`
+- applies the theme and wallpaper
 
-To undo everything: `./uninstall.sh` shows the plan, `./uninstall.sh --yes` removes the symlinks and restores your `*.bak` files.
+It doesn't install apps (that's `brew bundle`), and it doesn't touch macOS settings (that's `macos.sh`).
 
-`macos.sh` is separate and optional: fast key repeat, no autocorrect, screenshots in `~/Pictures/Screenshots`.
+Optional extras: `make devops` (Kubernetes / IaC tools, see below) and `./macos.sh` (system settings).
+
+**Uninstall:** `./uninstall.sh` prints the plan. `./uninstall.sh --yes` removes the symlinks and restores
+your `*.bak` files, and `--purge` also deletes the generated theme files. Homebrew packages are left alone.
 
 ## What's inside
 
@@ -87,7 +96,8 @@ Forgot a command? Press `?` (or `ctrl+/`) — a cheatsheet with every hotkey, fu
 | `dsh` / `dlogs` | shell into a container / follow its logs (picked with fzf) |
 | `gco` | switch branches with fzf |
 | `killport 8080` | free a port |
-| `update` | weekly maintenance: brew, Go tools, Docker junk, tldr, re-apply icons |
+| `update` | weekly maintenance: brew, pinned Go tools, Docker junk, tldr, re-apply icons |
+| `pd` | `dot project doctor`: what the current project has and what it's missing |
 | `db` | pgcli into the project database (from `DATABASE_URL` / `.env`) |
 | `vuln` | vulnerabilities: govulncheck for Go deps + trivy for the rest |
 | `load` | load test an endpoint with oha (`/health` by default) |
@@ -95,6 +105,98 @@ Forgot a command? Press `?` (or `ctrl+/`) — a cheatsheet with every hotkey, fu
 | `wall` | switch the wallpaper |
 
 Type a command that doesn't exist and the prompt tells you if it's available in brew — like `pkgfile` on Arch.
+
+## Diagnostics: `dot doctor`
+
+```bash
+dot doctor           # ~1 s: symlinks, Brewfile, Go, Docker, Kubernetes, IaC, secrets, git hooks, Ghostty, Zed, shell
+dot doctor --deep    # ~20 s: + versions, pinned revisions, packages outside the Brewfile, brew doctor, Zed JSONC, …
+```
+
+It only reads, never changes anything. `✓` ok · `!` worth a look · `✗` broken (exit code 1) · `○` optional and not installed.
+Every problem line ends with the command that fixes it. Exit codes: `0` ok (warnings allowed), `1` errors, `2` bad usage.
+
+## Project doctor
+
+```bash
+cd ~/dev/myapi && dot project doctor     # or: pd, or: dot project doctor ~/dev/myapi
+```
+
+It finds the nearest `go.mod` (from any subfolder) and runs a checklist, grouped by topic:
+
+| Group | Checks |
+|---|---|
+| Go | `go.mod`, module, `go` / `toolchain` version vs the installed Go, `go.sum`, entry point |
+| Tests | `*_test.go` count, gotestsum |
+| Quality | golangci-lint (+ config), govulncheck |
+| Build & run | Makefile targets, Dockerfile (+ `.dockerignore`, multi-stage), compose file, `.air.toml` |
+| Database | migrations folder and `.sql` count, sqlc |
+| Config & secrets | `.env.example`, **`.env` tracked or not ignored → ✗**, `.sops.yaml` |
+| Git | branch, remote, uncommitted changes, `.gitignore`, CI |
+
+Missing optional files show up as `○`, not as errors. It never runs migrations, starts containers, or touches the project.
+Outside a Go project it runs only the generic checks.
+
+## Updating
+
+```bash
+update               # (or dot update) brew upgrade, pinned Go tools, Docker junk, tldr, re-apply icons
+dot doctor --deep    # anything installed outside the Brewfile? anything outdated?
+```
+
+Change a config: edit it in `~/dotfiles`, and the change shows up in `git status`. Add a tool: put it in the `Brewfile`,
+then `brew bundle`.
+
+## Versions
+
+| What | How it's pinned |
+|---|---|
+| Homebrew packages | `Brewfile`. Homebrew only ships the latest version, so these are the newest at install time |
+| Go itself | `brew "go"` for the global Go. **Per project, `go.mod` decides**: `go 1.N` / `toolchain go1.N.x` makes Go download that exact toolchain (`GOTOOLCHAIN=auto`, the default) |
+| Go tools | `go/tools.txt`: exact versions; `dot tools` shows the status, `dot tools install` applies it |
+| oh-my-zsh, fzf-tab | commit hashes at the top of `install.sh` |
+
+**Why not mise / asdf?** For a Go-only setup they would duplicate what Go already does (the toolchain in `go.mod`)
+and add a shell hook. If you install mise for other languages, `.zshrc` activates it automatically.
+`dot doctor --deep` warns when mise manages Go too, since two `go` binaries in PATH are a classic source of confusion.
+
+## DevOps toolchain
+
+| | Tools |
+|---|---|
+| Always (`Brewfile`) | kubectl, helm, k9s, kubectx/kubens, stern, OrbStack (Docker + Compose + buildx), lazydocker, dive, hadolint, trivy, act, sops, age |
+| Optional (`make devops`) | **kind** (Kubernetes in Docker), **kustomize**, **opentofu** (`tofu`, alias `tf`), **terraform-docs**, **tflint** (built from source at a pinned version: Homebrew dropped the formula) |
+
+All of them are small arm64 binaries that don't run in the background. Nothing creates clusters or cloud resources
+on its own: `kind create cluster` and `tf apply` are always up to you.
+
+## macOS settings
+
+```bash
+./macos.sh                     # show the plan: setting, current value → new value. Changes nothing
+./macos.sh --yes               # apply
+./macos.sh --yes finder dock   # only some groups
+```
+
+Groups: `keyboard` (fast repeat, no autocorrect or smart quotes), `trackpad` (tap to click), `finder` (extensions,
+hidden files, path and status bar, list view, folders first, search the current folder, no `.DS_Store` on
+network or USB drives), `saving` (to disk rather than iCloud, expanded dialogs), `screenshots`
+(PNG in `~/Pictures/Screenshots`, no shadow or thumbnail), `dock` (autohide, no recents, Spaces stay in place for AeroSpace),
+`appearance` (dark, `ctrl-cmd` drag windows).
+
+Running it twice is safe: values that already match are skipped. It restarts only Finder, Dock or SystemUIServer,
+and never logs you out. Keyboard, trackpad and dark mode apply after your next login.
+
+## Secrets: SOPS + age
+
+```bash
+dot secrets          # sops/age installed? key present, mode 600? public key
+dot secrets init     # .sops.yaml in the current project, using your public key
+sops edit secrets.enc.yaml
+```
+
+Nothing here generates keys: you create the age key once, by hand, and back it up. The full workflow (teammates, CI,
+Kubernetes secrets) is in **[docs/secrets.md](docs/secrets.md)**.
 
 ## Wallpapers
 
@@ -134,7 +236,8 @@ The palette, stars, glow and HEIC builder live in `icons/wallpaper-kit.swift`. T
 | [Wallpapers](docs/wallpapers.md) | all 25 live wallpapers with previews, and how to make your own |
 | [Themes](docs/themes.md) | how `theme` recolors everything from one palette file |
 | [Hotkeys](docs/hotkeys.md) | AeroSpace, Ghostty and Zed shortcuts |
-| [Troubleshooting](docs/troubleshooting.md) | icons reset, theme not applied, drop-down terminal, starship |
+| [Secrets](docs/secrets.md) | SOPS + age: key, `.sops.yaml`, teammates and CI |
+| [Troubleshooting](docs/troubleshooting.md) | icons, theme, drop-down terminal, doctor statuses, Go versions, `macos.sh`, aliases |
 | [Changelog](CHANGELOG.md) | what changed between releases |
 
 ## Leak protection
@@ -150,20 +253,24 @@ False positive? Add a `gitleaks:allow` comment on the line, or use `git commit -
 
 ```
 dotfiles/
-├── zsh/            .zshrc, prompt, theme loader, cheatsheet, ram
-├── themes/         theme palettes and apply.sh
-├── icons/          wallpapers, app icons, ~/dev folder icon
-├── ghostty/        config and the cursor trail shader
-├── aerospace/      window tiling
-├── zed/            settings, Dev Night theme, icon theme, tasks, snippets
-├── git/            .gitconfig, delta, gitleaks hooks, global ignore
-├── fastfetch/      Arch-logo greeting in new windows
-├── vscode/         settings and extension list
-├── btop/ bat/ eza/ lazygit/ atuin/ tealdeer/ starship/
-├── Brewfile        everything installed via brew
-├── install.sh      symlinks
-└── macos.sh        system defaults (optional)
+├── bin/dot          entry point: doctor, project doctor, tools, secrets, install, update, theme, wall
+├── lib/             dot modules: ui, doctor, project, tools, secrets (bash 3.2, no dependencies)
+├── zsh/             .zshrc, prompt, theme loader, cheatsheet, ram, update, gonew, backend
+├── themes/          theme palettes and apply.sh
+├── icons/           wallpapers, app icons, folder icons (Swift)
+├── ghostty/  aerospace/  zed/  vscode/  fastfetch/
+├── git/             .gitconfig, delta, gitleaks hooks, global ignore
+├── go/              tools.txt / tools.devops.txt: pinned Go tools
+├── templates/       sops.yaml for projects
+├── tests/smoke.sh   smoke tests for dot (make test, CI)
+├── btop/ bat/ eza/ lazygit/ atuin/ tealdeer/ starship/ pgcli/
+├── Brewfile         required apps and CLIs   ·  Brewfile.devops: optional
+├── install.sh       symlinks, pinned clones and Go tools, theme   ·  uninstall.sh
+└── macos.sh         system settings (prints a plan, applies only with --yes)
 ```
+
+How it fits together: `brew bundle` installs programs. `install.sh` links the configs from here into `~` and
+`~/.config`. `themes/apply.sh` generates the colored copies. `dot` checks all of it.
 
 ## Thanks
 
