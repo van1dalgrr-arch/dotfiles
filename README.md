@@ -84,3 +84,7 @@ swift icons/wallpaper.swift /tmp/wp/                                       # в�
 | `rose-pine` | горы, сосны, луна | `icons/wallpaper.swift` |
 | `kanagawa` | Фудзи, море сэйгайха, касуми, печать 波 | `icons/wallpaper-kanagawa.swift` |
 | `vesper` | минимализм: почти чёрный, точечная сетка, контуры, мягкий свет | `icons/wallpaper-minimal.swift` |
+
+## Лицензия
+
+MIT — бери, копируй, меняй под себя. Тема Vesper — по мотивам [Vesper](https://github.com/raunofreiberg/vesper) (MIT).

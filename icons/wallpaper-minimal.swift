@@ -35,14 +35,14 @@ struct Look {
 
 // Кадры: час → свет. Пятно медленно обходит экран, как солнце, но остаётся почти невидимым
 let frames: [(hour: CGFloat, look: Look)] = [
-    (0.0,  Look(glow: 0x3b82f6, glowA: 0.13, gx: 0.80, gy: 0.22, glow2: 0x1e3a8a, glow2A: 0.12, lines: 0.8)),  // ночь — синий
-    (5.0,  Look(glow: 0xa855f7, glowA: 0.15, gx: 0.18, gy: 0.18, glow2: 0x1e3a8a, glow2A: 0.10, lines: 0.85)), // предрассвет — фиолет
-    (7.0,  Look(glow: 0xf97316, glowA: 0.11, gx: 0.20, gy: 0.28, glow2: 0xa855f7, glow2A: 0.12, lines: 0.9)),  // рассвет — розоватый
-    (10.0, Look(glow: 0xf0ece4, glowA: 0.10, gx: 0.40, gy: 0.70, glow2: 0x3b82f6, glow2A: 0.06, lines: 1.0)),  // утро — белый свет
-    (13.0, Look(glow: 0xf0ece4, glowA: 0.12, gx: 0.55, gy: 0.82, glow2: 0xa855f7, glow2A: 0.06, lines: 1.0)),  // день
-    (17.0, Look(glow: 0xf0ece4, glowA: 0.10, gx: 0.74, gy: 0.55, glow2: 0xa855f7, glow2A: 0.10, lines: 0.95)), // вечер
-    (19.0, Look(glow: 0xec4899, glowA: 0.11, gx: 0.82, gy: 0.30, glow2: 0xa855f7, glow2A: 0.12, lines: 0.9)),  // закат — розовый
-    (21.0, Look(glow: 0xa855f7, glowA: 0.14, gx: 0.80, gy: 0.24, glow2: 0x3b82f6, glow2A: 0.07, lines: 0.85)), // сумерки
+    (0.0,  Look(glow: 0x3b82f6, glowA: 0.065, gx: 0.80, gy: 0.22, glow2: 0x1e3a8a, glow2A: 0.060, lines: 0.60)),  // ночь — синий
+    (5.0,  Look(glow: 0xa855f7, glowA: 0.075, gx: 0.18, gy: 0.18, glow2: 0x1e3a8a, glow2A: 0.050, lines: 0.64)), // предрассвет — фиолет
+    (7.0,  Look(glow: 0xf97316, glowA: 0.055, gx: 0.20, gy: 0.28, glow2: 0xa855f7, glow2A: 0.060, lines: 0.68)),  // рассвет — розоватый
+    (10.0, Look(glow: 0xf0ece4, glowA: 0.050, gx: 0.40, gy: 0.70, glow2: 0x3b82f6, glow2A: 0.030, lines: 0.75)),  // утро — белый свет
+    (13.0, Look(glow: 0xf0ece4, glowA: 0.060, gx: 0.55, gy: 0.82, glow2: 0xa855f7, glow2A: 0.030, lines: 0.75)),  // день
+    (17.0, Look(glow: 0xf0ece4, glowA: 0.050, gx: 0.74, gy: 0.55, glow2: 0xa855f7, glow2A: 0.050, lines: 0.71)), // вечер
+    (19.0, Look(glow: 0xec4899, glowA: 0.055, gx: 0.82, gy: 0.30, glow2: 0xa855f7, glow2A: 0.060, lines: 0.68)),  // закат — розовый
+    (21.0, Look(glow: 0xa855f7, glowA: 0.070, gx: 0.80, gy: 0.24, glow2: 0x3b82f6, glow2A: 0.035, lines: 0.64)), // сумерки
 ]
 let lightIndex = 4, darkIndex = 0
 
@@ -59,8 +59,8 @@ func render(_ L: Look) -> CGImage {
     }
 
     // фон: почти чёрный, чуть светлее к центру
-    ctx.setFillColor(rgb(0x0b0b0c)); ctx.fill(CGRect(x: 0, y: 0, width: W, height: H))
-    let lift = CGGradient(colorsSpace: cs, colors: [rgb(0x141416), rgb(0x0b0b0c)] as CFArray, locations: [0, 1])!
+    ctx.setFillColor(rgb(0x08080a)); ctx.fill(CGRect(x: 0, y: 0, width: W, height: H))
+    let lift = CGGradient(colorsSpace: cs, colors: [rgb(0x101012), rgb(0x08080a)] as CFArray, locations: [0, 1])!
     ctx.drawRadialGradient(lift, startCenter: CGPoint(x: W * 0.5, y: H * 0.55), startRadius: 0,
                            endCenter: CGPoint(x: W * 0.5, y: H * 0.55), endRadius: hypot(W, H) * 0.6, options: [])
 
