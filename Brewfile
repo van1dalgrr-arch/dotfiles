@@ -50,6 +50,7 @@ brew "uv"
 cask "raycast"
 brew "yazi"
 brew "glow"
+brew "chafa"            # картинки в терминале (превью в wall)
 brew "atuin"
 brew "shellcheck"
 brew "shfmt"

@@ -36,16 +36,42 @@ theme() {
     exec zsh
 }
 
-# wall — сменить живые обои: wall (выбор в fzf) · wall orbit · wall minimal · wall kanagawa
-# Обои — icons/wallpaper-<имя>.swift, собираются в ~/Pictures/Wallpapers/<имя>.heic при первом выборе
+# wall — сменить живые обои: wall (выбор с превью-картинкой) · wall eclipse · wall orbit …
+# Обои — icons/wallpaper-<имя>.swift. Новые (с runWallpaper) собираются вместе с wallpaper-kit.swift.
+# Готовые HEIC — ~/Pictures/Wallpapers/<имя>.heic, превью — ~/.cache/wallpapers/<имя>.png
+_wall_names() {
+    command ls ~/dotfiles/icons/wallpaper-*.swift | sed 's|.*/wallpaper-||; s|\.swift$||' | grep -vx kit
+}
+# _wall_build <имя> <выход> [ширина высота] — собрать HEIC (или PNG-превью)
+_wall_build() {
+    local src=~/dotfiles/icons/wallpaper-$1.swift out=$2; shift 2
+    if grep -q runWallpaper $src; then
+        local tmp=~/.cache/wallpapers/build-$1.swift
+        command cat ~/dotfiles/icons/wallpaper-kit.swift $src >| $tmp
+        swift $tmp $out "$@" >/dev/null 2>&1
+    elif [[ $out == *.png ]]; then          # старые генераторы: кадр 13:00 из папки превью
+        local dir=$(mktemp -d)
+        swift $src $dir/ "$@" >/dev/null 2>&1 && command cp -f $dir/4-*.png $out
+        command rm -rf $dir
+    else
+        swift $src $out "$@" >/dev/null 2>&1
+    fi
+}
 wall() {
-    local name=$1
+    mkdir -p ~/.cache/wallpapers ~/Pictures/Wallpapers
+    local name=$1 n
     if [[ -z $name ]]; then
-        name=$(command ls ~/dotfiles/icons/wallpaper-*.swift | sed 's|.*/wallpaper-||; s|\.swift$||' | \
-            fzf --header="обои" --height=40%) || return
+        for n in $(_wall_names); do          # недостающие превью — один раз
+            [[ -f ~/.cache/wallpapers/$n.png ]] || { echo "превью: $n…"; _wall_build $n ~/.cache/wallpapers/$n.png 960 624; }
+        done
+        name=$(_wall_names | fzf --header="обои · enter — поставить" --height=90% \
+            --preview 'chafa --animate=off -s ${FZF_PREVIEW_COLUMNS}x${FZF_PREVIEW_LINES} ~/.cache/wallpapers/{}.png' \
+            --preview-window=right:75%) || return
     fi
     local src=~/dotfiles/icons/wallpaper-$name.swift heic=~/Pictures/Wallpapers/$name.heic
-    [[ -f $src ]] || { echo "нет обоев: $name"; return 1; }
-    [[ -f $heic && $heic -nt $src ]] || { echo "рисую $name…"; swift $src $heic >/dev/null || return; }
+    [[ -f $src ]] || { echo "нет обоев: $name (есть: $(_wall_names | tr '\n' ' '))"; return 1; }
+    if [[ ! -f $heic || $src -nt $heic || ~/dotfiles/icons/wallpaper-kit.swift -nt $heic ]]; then
+        echo "рисую $name…"; _wall_build $name $heic || return
+    fi
     python3 ~/dotfiles/themes/set-wallpaper.py $heic
 }
