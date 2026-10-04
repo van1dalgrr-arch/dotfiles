@@ -16,7 +16,14 @@ jobs:
       - name: shellcheck
         run: |
           shellcheck -S warning -e SC1090 \
-            bin/dot install.sh uninstall.sh macos.sh themes/apply.sh git/hooks/_chain git/hooks/pre-commit
+            bin/dot lib/*.sh install.sh uninstall.sh macos.sh themes/apply.sh tests/smoke.sh \
+            git/hooks/_chain git/hooks/pre-commit
+
+      - name: Brewfile syntax
+        run: ruby -c Brewfile && ruby -c Brewfile.devops
+
+      - name: smoke tests (dot project doctor, tools, secrets)
+        run: tests/smoke.sh
 
       - name: zsh syntax
         run: |
@@ -46,6 +53,12 @@ jobs:
             swiftc -typecheck /tmp/w.swift && echo "ok $f"
           done
           for f in icons/icons.swift icons/folder.swift zed/icon-theme/build.swift; do swiftc -typecheck "$f" && echo "ok $f"; done
+
+      - name: scripts parse with system bash 3.2
+        run: for f in bin/dot lib/*.sh install.sh uninstall.sh macos.sh tests/smoke.sh; do /bin/bash -n "$f" && echo "ok $f"; done
+
+      - name: smoke tests (+ macos.sh preview, read-only)
+        run: tests/smoke.sh
 
       - name: every theme applies in a clean HOME
         run: |
