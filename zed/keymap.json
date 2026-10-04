@@ -1,0 +1,50 @@
+// Zed keymap
+//
+// For information on binding keys, see the Zed
+// documentation: https://zed.dev/docs/key-bindings
+//
+// To see the default key bindings run `zed: open default keymap`
+// from the command palette.
+[
+  {
+    "context": "Workspace",
+    "bindings": {
+      // Терминал — открыть/закрыть и сразу в фокус
+      "cmd-j": "terminal_panel::ToggleFocus",
+
+      // Панель проекта (файлы) слева
+      "cmd-1": "project_panel::ToggleFocus",
+
+      // Outline (структура файла: функции, методы, типы)
+      "cmd-2": "outline_panel::ToggleFocus",
+
+      // Левый док целиком (проект/git — что там открыто)
+      "cmd-0": "workspace::ToggleLeftDock",
+
+      // Правый док (AI-агент)
+      "cmd-9": "workspace::ToggleRightDock",
+    },
+  },
+  {
+    "context": "Editor",
+    "bindings": {
+      // Git blame прямо в строке кода
+      "cmd-shift-b": "editor::ToggleGitBlameInline",
+
+      // Вкл/выкл инлайн-подсказки типов (gopls hints)
+      "cmd-shift-i": "editor::ToggleInlayHints",
+
+      // Вкл/выкл направляющие отступов
+      "cmd-shift-l": "editor::ToggleIndentGuides",
+
+      // Панель диагностики (ошибки/варнинги по всему проекту)
+      "cmd-shift-d": "editor::ToggleDiagnostics",
+    },
+  },
+  {
+    "context": "Editor && vim_mode == insert",
+    "bindings": {
+      // "j k": "vim::NormalBefore"
+    },
+  },
+]

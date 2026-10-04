@@ -16,6 +16,7 @@
 | eza | `eza/theme.yml` |
 | fastfetch | `fastfetch/config.jsonc` |
 | tldr (tealdeer) | `tealdeer/config.toml` |
+| Zed (лёгкий редактор, ~300 МБ против 1–2 ГБ у VS Code) | `zed/settings.json`, `zed/keymap.json` |
 
 ## Установка на новый Mac
 

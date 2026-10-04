@@ -45,5 +45,9 @@ link btop/themes/rose-pine.theme   "$HOME/.config/btop/themes/rose-pine.theme"
 link bat/themes/rose-pine.tmTheme   "$HOME/.config/bat/themes/rose-pine.tmTheme" && bat cache --build >/dev/null
 link ghostty/shaders/cursor_trail.glsl "$HOME/.config/ghostty/shaders/cursor_trail.glsl"
 
+link zed/settings.json               "$HOME/.config/zed/settings.json"
+link zed/keymap.json                 "$HOME/.config/zed/keymap.json"
+[ -e /opt/homebrew/bin/zed ] || ln -s /Applications/Zed.app/Contents/MacOS/cli /opt/homebrew/bin/zed   # `zed .` из терминала
+
 # Тема терминала и обоев (по умолчанию rose-pine; сменить — `theme`)
 bash "$DOTFILES/themes/apply.sh"
