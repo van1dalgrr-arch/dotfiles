@@ -130,6 +130,7 @@ The palette, stars, glow and HEIC builder live in `icons/wallpaper-kit.swift`. T
 
 | | |
 |---|---|
+| [How it works (RU)](docs/how-it-works.ru.md) | architecture, diagrams, the "why" behind every piece, and recipes |
 | [Wallpapers](docs/wallpapers.md) | all 25 live wallpapers with previews, and how to make your own |
 | [Themes](docs/themes.md) | how `theme` recolors everything from one palette file |
 | [Hotkeys](docs/hotkeys.md) | AeroSpace, Ghostty and Zed shortcuts |
