@@ -60,7 +60,7 @@ ram|кто ест память (по приложениям): ram 15
 up|запустить проект: compose-зависимости + air/go run с .env
 pl|все проекты ~/dev: стек, ветка, изменения, давность
 theme|сменить тему терминала и обоев: theme kanagawa / theme rose-pine
-wall|сменить обои с превью: wall · eclipse, orbit, rings, mesh, ridges, circuit, code…
+wall|сменить обои с превью: wall · petals, neon, rain, eclipse, orbit, code…
 EOF
 }
 
