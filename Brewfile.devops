@@ -1,0 +1,13 @@
+# Необязательный DevOps-набор: Kubernetes локально, IaC. Всё — одиночные бинарники под arm64,
+# в фоне ничего не запускают и памяти не занимают. Кластеры и облако сами не создаются.
+#   brew bundle --file Brewfile.devops
+# Уже в основном Brewfile: kubectl, helm, k9s, kubectx, stern, trivy, act, hadolint, sops, age.
+
+# Kubernetes
+brew "kind"             # кластер в Docker (OrbStack): kind create cluster — только вручную
+brew "kustomize"        # новее встроенного `kubectl kustomize`
+
+# Infrastructure as Code
+brew "opentofu"         # открытый форк Terraform: команда tofu
+brew "terraform-docs"   # README из переменных и outputs модуля
+# tflint (линтер .tf) убрали из homebrew-core → dot tools install devops (go/tools.devops.txt)

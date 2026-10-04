@@ -1,3 +1,8 @@
+# Обязательное: без этого dotfiles не работают как задумано. `brew bundle` / `dot install`.
+# Необязательный DevOps-набор — в Brewfile.devops (brew bundle --file Brewfile.devops).
+# Версии пакетов Homebrew не закрепляет (только последние); Go-утилиты закреплены в go/tools.txt.
+# `dot doctor` сверяет установленное с обоими файлами, `dot doctor --deep` — ещё и лишнее.
+
 # Терминал
 cask "ghostty"
 brew "starship"
@@ -25,7 +30,8 @@ brew "gh"
 brew "git-delta"
 brew "lazygit"
 
-# Go
+# Go (версию проекта задаёт go.mod: нужный тулчейн Go скачает сам)
+brew "go"
 brew "goimports"
 brew "golangci-lint"
 brew "delve"
@@ -63,10 +69,17 @@ brew "yq"
 brew "direnv"
 brew "git-lfs"
 
+# Секреты: шифрование файлов в git (docs/secrets.md)
+brew "sops"
+brew "age"
+
 # Python
 brew "uv"
 
 # Приложения
+# Zed и VS Code часто ставят с сайта — тогда brew их не трогает (иначе bundle падает на «уже есть»)
+cask "zed" unless File.exist?("/Applications/Zed.app")
+cask "visual-studio-code" unless File.exist?("/Applications/Visual Studio Code.app")
 cask "raycast"
 brew "yazi"
 brew "glow"
