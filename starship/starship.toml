@@ -11,7 +11,7 @@ format = """
 [](iris)$os[](bg:overlay fg:iris)$directory[](fg:overlay)\
 ( [](pine)$git_branch$git_status[](pine))\
 ( [](foam)$golang$python$docker_context[](foam))\
-$fill$memory_usage$cmd_duration$time
+$fill$cmd_duration$time
 [╰─](muted)$character"""
 
 [fill]
@@ -74,14 +74,6 @@ only_with_files = true
 min_time = 1000
 style = "fg:gold"
 format = "[󱎫 $duration ]($style)"
-
-# Показывается только когда занято ≥ 80% памяти — сигнал закрыть лишнее
-[memory_usage]
-disabled = false
-threshold = 80
-symbol = "󰍛"
-style = "fg:love"
-format = "[$symbol ${ram_pct} ]($style)"
 
 [time]
 disabled = false

@@ -8,8 +8,11 @@
   //  ВНЕШНИЙ ВИД
   // ────────────────────────────────────────────────────────────
 
-  // В стиле терминала. Светлая: "Atom One Light"
+  // Тема следует за macOS: тёмная — Rosé Pine, светлая — Atom One Light
   "workbench.colorTheme": "Rosé Pine",
+  "window.autoDetectColorScheme": true,
+  "workbench.preferredDarkColorTheme": "Rosé Pine",
+  "workbench.preferredLightColorTheme": "Atom One Light",
   "workbench.iconTheme": "material-icon-theme",
   "workbench.productIconTheme": "material-product-icons",
 
