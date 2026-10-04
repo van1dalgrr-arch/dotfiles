@@ -183,6 +183,8 @@ Space — `eclipse` `orbit` `rings` `aurora` `horizon` `startrails`<br>
 Tech — `code` `circuit` `ridges` `minimal` `halftone` `iso` `helix` `topo`<br>
 Everything else — `petals` `prism` `ocean` `glass` `crystal` `vinyl` `neon` `rain` `bauhaus` `mesh` `kanagawa`
 
+**[See all 25 in the gallery →](docs/wallpapers.md)**
+
 Each wallpaper is a short Swift script in `icons/`. It renders 12 frames per day, and every parameter
 (color, light, positions) is computed continuously from the hour, so macOS blends smoothly from one
 frame to the next. Wallpapers are applied to all Spaces at once.
