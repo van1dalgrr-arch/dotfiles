@@ -27,7 +27,7 @@ ram() {
     {
         rss = $1; $1 = ""; path = substr($0, 2)
         if (path ~ /Virtualization\.VirtualMachine/) name = "Docker (VM)"
-        else if (path ~ /com\.apple\.WebKit/) name = "Safari / WebKit"
+        else if (path ~ /com\.apple\.WebKit/) name = "Safari"   # вкладки Safari живут в процессах WebKit
         else if (match(path, /[^\/]+\.app\//)) name = substr(path, RSTART, RLENGTH - 5)
         else { k = split(path, p, "/"); name = p[k] }
         mem[name] += rss; cnt[name]++
