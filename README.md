@@ -167,7 +167,7 @@ theme vesper     # apply directly
 How it works: every config in the repo is written in Rosé Pine colors, and a theme is just a map
 of "which color becomes which" across 19 roles (`themes/<name>.sh`). `themes/apply.sh` recolors copies
 of the configs into `~/.config` and `~/.cache` in a single pass — the repo itself never changes when you switch.
-It recolors Ghostty, the prompt, syntax highlighting, fzf, bat, delta, eza, lazygit, btop, window borders,
+It recolors Ghostty, the prompt, syntax highlighting, fzf, bat, delta, eza, lazygit, btop,
 Dock and folder icons, and the wallpaper. VS Code keeps its own theme.
 
 ## Wallpapers
@@ -220,7 +220,7 @@ dotfiles/
 ├── git/            .gitconfig, delta, gitleaks hooks, global ignore
 ├── fastfetch/      Arch-logo greeting in new windows
 ├── vscode/         settings and extension list
-├── borders/ btop/ bat/ eza/ lazygit/ atuin/ tealdeer/ starship/
+├── btop/ bat/ eza/ lazygit/ atuin/ tealdeer/ starship/
 ├── Brewfile        everything installed via brew
 ├── install.sh      symlinks
 └── macos.sh        system defaults (optional)

@@ -27,7 +27,7 @@ for r in "${roles[@]}"; do
     map+="$from=$to,"
 done
 
-# Один проход perl: #rrggbb, 0xrrggbb, 0xffrrggbb (borders), hex("rrggbb") (swift) → цвет темы;
+# Один проход perl: #rrggbb, 0xrrggbb, 0xffrrggbb, hex("rrggbb") (swift) → цвет темы;
 # цепочек замен не бывает
 recolor() {
     MAP="$map" perl -pe '
@@ -72,11 +72,6 @@ bat cache --build >/dev/null 2>&1 || true
 # ─── delta (git diff): цвета подключаются в .gitconfig через [include] ───
 recolor "$DOTFILES/git/delta.gitconfig" "$GEN/delta.gitconfig.tmp"
 sed 's/syntax-theme = .*/syntax-theme = dotfiles/' "$GEN/delta.gitconfig.tmp" > "$GEN/delta.gitconfig" && rm "$GEN/delta.gitconfig.tmp"
-
-# ─── рамка активного окна ───
-if pgrep -x borders >/dev/null; then
-    bash "$DOTFILES/borders/bordersrc" >/dev/null 2>&1 &
-fi
 
 echo "$name" > "$HOME/.config/dotfiles/theme"
 
