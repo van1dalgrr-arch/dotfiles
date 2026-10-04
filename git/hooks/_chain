@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+# Глобальные хуки (core.hooksPath) отключают .git/hooks проекта —
+# этот скрипт запускает хук проекта с тем же именем, если он есть.
+hook="$(git rev-parse --git-common-dir)/hooks/$(basename "$0")"
+[ -x "$hook" ] && exec "$hook" "$@"
+exit 0

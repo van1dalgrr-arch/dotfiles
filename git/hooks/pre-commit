@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+# Перед каждым коммитом: gitleaks ищет пароли, токены и ключи в том, что коммитится.
+# Ложное срабатывание — комментарий `gitleaks:allow` в строке или `git commit --no-verify`.
+if command -v gitleaks >/dev/null; then
+    if ! gitleaks git --pre-commit --staged --redact -v --no-banner --log-level warn; then
+        printf '\n\033[38;2;235;111;146m✋ похоже на секрет в коммите — убери его (в .env) и попробуй снова\033[0m\n'
+        printf '\033[38;2;110;106;134m   точно не секрет? допиши в строку комментарий gitleaks:allow\033[0m\n\n'
+        exit 1
+    fi
+fi
+exec "$(dirname "$0")/_chain" "$@"
