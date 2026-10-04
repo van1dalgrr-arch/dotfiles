@@ -84,7 +84,7 @@ if [ "${NO_WALLPAPER:-}" != 1 ]; then
         mkdir -p "$(dirname "$THEME_WALLPAPER")"
         swift "$DOTFILES/$THEME_WALLPAPER_SRC" "$THEME_WALLPAPER" >/dev/null
     fi
-    osascript -e "tell application \"System Events\" to tell every desktop to set picture to POSIX file \"$THEME_WALLPAPER\"" >/dev/null
+    python3 "$DOTFILES/themes/set-wallpaper.py" "$THEME_WALLPAPER" >/dev/null   # на все рабочие столы
 fi
 
 # ─── иконки приложений и папки ~/dev в цветах темы ───
