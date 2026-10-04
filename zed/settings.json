@@ -8,11 +8,11 @@
   //  ВНЕШНИЙ ВИД
   // ────────────────────────────────────────────────────────────
 
-  // тёмная — своя Vesper Dev (zed/themes/), светлая — One Light; меняются вместе с macOS
+  // тёмная — своя Dev Night (zed/themes/, фиолетово-синяя), светлая — One Light; меняются вместе с macOS
   "theme": {
     "mode": "system",
     "light": "One Light",
-    "dark": "Vesper Dev",
+    "dark": "Dev Night",
   },
   "icon_theme": "Material Icon Theme",
 
@@ -229,7 +229,7 @@
   "git": {
     "git_gutter": "tracked_files",
     "gutter_debounce": 100,
-    // кто и когда менял текущую строку (как GitLens); cmd-shift-b — выкл
+    // кто и когда менял текущую строку (как GitLens); cmd-alt-b — вкл/выкл
     "inline_blame": {
       "enabled": true,
       "delay_ms": 600,

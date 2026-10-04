@@ -36,6 +36,7 @@ recolor() {
     ' "$1" > "$2"
 }
 
+THEME_GHOSTTY_EXTRA=""
 source "$theme"
 
 # ─── Ghostty: тема + цвета курсора/выделения/иконки (подключается через config-file) ───
@@ -47,6 +48,7 @@ selection-background = #$T_HL_MED
 unfocused-split-fill = #$T_BASE
 macos-icon-ghost-color = #$T_ROSE
 macos-icon-screen-color = #$T_BASE,#$T_OVERLAY
+${THEME_GHOSTTY_EXTRA:-}
 EOF
 
 # шлейф курсора: цвета в шейдере заданы vec3 с комментарием // #hex
