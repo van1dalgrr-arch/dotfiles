@@ -21,7 +21,7 @@ func hex(_ s: String) -> NSColor {
 
 let base = hex("191724"), surface = hex("26233a")
 let iris = hex("c4a7e7"), rose = hex("ebbcba"), foam = hex("9ccfd8")
-let gold = hex("f6c177"), love = hex("eb6f92")
+let gold = hex("f6c177"), love = hex("eb6f92"), text = hex("e0def4")
 
 let apps: [App] = [
     App(path: "/Applications/Visual Studio Code.app", glyph: "\u{F0A1E}", color: foam),
@@ -29,7 +29,12 @@ let apps: [App] = [
     App(path: "/Applications/Telegram.app",           glyph: "\u{F2C6}",  color: iris),
     App(path: "/Applications/Discord.app",            glyph: "\u{F066F}", color: rose),
     App(path: "/Applications/Spotify.app",            glyph: "\u{F1BC}",  color: love),
-    App(path: "/Applications/Docker.app",             glyph: "\u{F0868}", color: foam),
+    App(path: "/Applications/OrbStack.app",           glyph: "\u{F0868}", color: iris),
+    App(path: "/Applications/Zed.app",                glyph: "Z",          color: text),
+    App(path: "/Applications/ChatGPT.app",            glyph: "\u{F06A9}", color: foam),
+    App(path: "/Applications/Claude.app",             glyph: "\u{F06C4}", color: rose),
+    App(path: "/Applications/Яндекс Музыка.app",      glyph: "\u{F075A}", color: gold),
+    App(path: "/Applications/Happ.app",               glyph: "\u{F132}",  color: love),
 ]
 
 let fontName = "JetBrainsMono Nerd Font"
