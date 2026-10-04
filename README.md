@@ -42,3 +42,16 @@ docker context use desktop-linux   # вернуться на Docker Desktop
 
 Старые образы остались в Docker Desktop. Перенести: OrbStack → Settings → Migrate from Docker Desktop
 (или просто пересобрать `docker compose build`).
+
+## Живые обои
+
+`icons/wallpaper.swift` рисует горы и сосны в Rosé Pine в 8 вариантах освещения
+(ночь → рассвет → день → закат → сумерки) и собирает их в динамический HEIC.
+Кадры по времени суток переключает сама macOS, в фоне ничего не работает.
+
+```bash
+swift icons/wallpaper.swift ~/Pictures/Wallpapers/rose-pine-dynamic.heic   # собрать
+swift icons/wallpaper.swift /tmp/wp/                                       # все кадры в PNG — посмотреть
+```
+
+Цвета каждого времени суток — структуры `Look` в начале файла, расписание — массив `frames`.
