@@ -37,7 +37,7 @@
     "auto_reveal_entries": true,
     "indent_size": 16,
     "scrollbar": {
-      "show": "hover",
+      "show": "auto",   // "hover" новые версии Zed не понимают — из-за него не грузился весь конфиг
     },
     "show_diagnostics": "all",
   },
@@ -451,6 +451,39 @@
   },
 
   "auto_update": true,
+
+  // Vesper красив, но почти одноцветный (функции, типы и числа — один персик).
+  // Свои цвета кода в той же гамме — только для Vesper, One Light не трогаем.
+  "theme_overrides": {
+    "Vesper": {
+      "syntax": {
+        "keyword": { "color": "#c4a7e7" },
+        "function": { "color": "#ffc799" },
+        "constructor": { "color": "#9ccfd8" },
+        "type": { "color": "#9ccfd8" },
+        "string": { "color": "#99ffe4" },
+        "string.escape": { "color": "#ffc799" },
+        "string.regex": { "color": "#ffc799" },
+        "string.special": { "color": "#99ffe4" },
+        "number": { "color": "#f5a191" },
+        "constant": { "color": "#f5a191" },
+        "boolean": { "color": "#f5a191" },
+        "property": { "color": "#b9aeda" },
+        "attribute": { "color": "#b9aeda" },
+        "tag": { "color": "#9ccfd8" },
+        "label": { "color": "#c4a7e7" },
+        "variable": { "color": "#e8e8e8" },
+        "variable.special": { "color": "#ff8080" },
+        "operator": { "color": "#9a9a9a" },
+        "punctuation": { "color": "#7a7a7a" },
+        "punctuation.bracket": { "color": "#8a8a8a" },
+        "punctuation.delimiter": { "color": "#7a7a7a" },
+        "comment": { "color": "#6e6e6e", "font_style": "italic" },
+        "comment.doc": { "color": "#7e7e7e", "font_style": "italic" },
+        "title": { "color": "#ffc799", "font_weight": 700 },
+      },
+    },
+  },
 
   // ставятся сами при первом запуске (и на новом маке)
   "auto_install_extensions": {
