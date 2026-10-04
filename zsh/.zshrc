@@ -356,35 +356,6 @@ dlogs() {
     [ -n "$c" ] && docker logs -f --tail 200 "$c"
 }
 
-# gonew myapi — новый проект на Gin с air и git
-gonew() {
-    [ -z "$1" ] && { echo "usage: gonew <name>"; return 1; }
-    cd "$DEV" || return
-    mkdir -p "$1" && cd "$1" || return
-    go mod init "$1" && go get github.com/gin-gonic/gin
-    mkdir -p cmd/api internal
-    command cat > cmd/api/main.go <<'GO'
-package main
-
-import (
-	"net/http"
-
-	"github.com/gin-gonic/gin"
-)
-
-func main() {
-	r := gin.Default()
-	r.GET("/ping", func(c *gin.Context) {
-		c.JSON(http.StatusOK, gin.H{"message": "pong"})
-	})
-	r.Run(":8080")
-}
-GO
-    air init >/dev/null && sed -i '' 's|cmd = "go build -o ./tmp/main ."|cmd = "go build -o ./tmp/main ./cmd/api"|' .air.toml
-    printf "tmp/\nbin/\n.env\n" > .gitignore
-    go mod tidy && git init -q && echo "готово: запусти air → http://localhost:8080/ping"
-}
-
 # up — запустить проект одной командой: OrbStack (если спит) → зависимости из compose
 # (сервисы без build: — postgres, redis…) → приложение с .env (air, иначе go run)
 up() {
@@ -443,6 +414,7 @@ weather() { curl -s "wttr.in/${1}?lang=ru&F" ; }
 source "$HOME/dotfiles/zsh/cheatsheet.zsh"
 source "$HOME/dotfiles/zsh/ram.zsh"
 source "$HOME/dotfiles/zsh/update.zsh"
+source "$HOME/dotfiles/zsh/gonew.zsh"
 
 # ────────────────────────────────────────────────────────────
 # ПРИВЕТСТВИЕ: логотип Arch + коротко о системе (~35 мс).
