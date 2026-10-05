@@ -10,6 +10,7 @@ Config for the [Ghostty](https://ghostty.org) terminal: no titlebar, quick termi
 | `shaders/cursor_smooth.glsl` | smooth cursor: the real one is hidden, this shader draws and glides it |
 | `shaders/cursor_trail.glsl` | glowing trail on big cursor jumps; colors recolored by `theme` |
 | `shaders/.prefix.glsl` | Ghostty's shader header, only for `make check` to compile the shaders |
+| `quick-terminal.applescript` | toggles the quick terminal; called by AeroSpace on `` ctrl+` `` |
 | `config.ghostty.pre-clean` | old backup, not used |
 
 **Installed by `install.sh` as symlinks:**
@@ -23,6 +24,6 @@ Config for the [Ghostty](https://ghostty.org) terminal: no titlebar, quick termi
 
 ## Quick terminal
 
-Works from any app only if Ghostty has **Accessibility** permission (System Settings → Privacy & Security). `dot doctor` checks it.
+`` ctrl+` `` is caught by AeroSpace (it already has Accessibility), which runs `quick-terminal.applescript` to toggle Ghostty's quick terminal. So it works from any app and Ghostty needs no extra permission.
 
 [← dotfiles](../README.md)

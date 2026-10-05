@@ -73,7 +73,8 @@ quick-terminal-autohide = true
 quick-terminal-space-behavior = move
 # открывается на том мониторе, где мышь
 quick-terminal-screen = mouse
-keybind = global:ctrl+backquote=toggle_quick_terminal
+# ctrl+` ловит AeroSpace и вызывает ghostty/quick-terminal.applescript — работает из любого приложения
+# без «Универсального доступа» для Ghostty (свой global:-хоткей убран, иначе сработали бы оба)
 # cmd+q только закрывает окна — Ghostty живёт в фоне, ctrl+` работает всегда
 # (выйти совсем: меню Ghostty → Quit)
 keybind = super+q=close_all_windows

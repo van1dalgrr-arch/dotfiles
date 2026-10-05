@@ -15,6 +15,6 @@ Config for [AeroSpace](https://github.com/nikitabobko/AeroSpace), the i3-style t
 
 ## Notes
 
-AeroSpace starts at login and launches Ghostty in the background, which keeps the quick terminal (`` ctrl+` ``) available. Ghostty windows float on the current workspace: tiling them broke the quick terminal. Apply changes: `alt-shift-c`. Hotkey list: [docs/hotkeys.md](../docs/hotkeys.md).
+AeroSpace starts at login and launches Ghostty in the background, which keeps the quick terminal (`` ctrl+` ``) available. Ghostty windows float on the current workspace: tiling them broke the quick terminal. It also catches `` ctrl+` `` and runs `ghostty/quick-terminal.applescript` to toggle Ghostty's quick terminal. Apply changes: `alt-shift-c`. Hotkey list: [docs/hotkeys.md](../docs/hotkeys.md).
 
 [← dotfiles](../README.md)

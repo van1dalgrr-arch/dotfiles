@@ -34,6 +34,8 @@ outer.top        = 10
 outer.right      = 10
 
 [mode.main.binding]
+# выпадающий терминал Ghostty из любого приложения (Ghostty не нужен «Универсальный доступ»)
+ctrl-backtick = 'exec-and-forget osascript ~/dotfiles/ghostty/quick-terminal.applescript'
 # Терминал / файлы / закрыть окно
 alt-enter = 'exec-and-forget open -na Ghostty'
 alt-e     = 'exec-and-forget open -na Ghostty --args -e yazi'
