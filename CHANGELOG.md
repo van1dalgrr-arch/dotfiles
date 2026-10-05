@@ -58,6 +58,9 @@
 - `bootstrap.sh`: Command Line Tools, Homebrew, clone and `make install` in one `curl | bash`; `--dry-run` shows the plan
 - `macos.sh apps`: code files (.json, .yaml, .sh, .sql, .env…) open in Zed; `macos.sh login`: Raycast at login
 
+**Completion**
+- Tab completion for `dot` (commands, `doctor --deep`, `tools`, `macos` groups), `theme`, `wall`, `backdrop` and `awake`; themes and wallpapers are read from the repo
+
 **Tests**
 - `tests/smoke.sh` (`make test`), run in CI on Linux and macOS; Brewfile syntax and bash 3.2 parse checks
 

@@ -25,6 +25,9 @@ plugins=(
     fzf-tab
 )
 
+# свои автодополнения (dot, theme, wall, backdrop, awake) — до compinit, который вызывает oh-my-zsh
+fpath=("$HOME/dotfiles/zsh/completions" $fpath)
+
 if [[ -f $ZSH/oh-my-zsh.sh ]]; then
     source "$ZSH/oh-my-zsh.sh"
 else
