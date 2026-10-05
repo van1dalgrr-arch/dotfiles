@@ -1,11 +1,4 @@
-# ============================================================
-#   gonew myapi [--gh] — новый Go-проект на Gin в ~/dev, сразу «как надо»:
-#   cmd/api + internal, конфиг из env, Postgres (pgx), /health с проверкой базы и тестом,
-#   graceful shutdown, compose, двухэтапный Dockerfile, миграции, Makefile (make help),
-#   air, golangci-lint, CI на GitHub Actions (тесты, линтер, govulncheck, Docker).
-#   --gh — сразу приватный репозиторий на GitHub и push (CI запустится сам).
-#   Потом: up — поднять базу и запустить с hot reload.
-# ============================================================
+# gonew myapi [--gh] — новый Go-проект в ~/dev со всем нужным (состав — docs/guide.ru.md); --gh — сразу на GitHub
 
 gonew() {
     local name=$1 gh=0

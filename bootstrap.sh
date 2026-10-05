@@ -1,15 +1,6 @@
 #!/bin/bash
-# ============================================================
-#   Новый Mac → настроенный одной командой:
-#     curl -fsSL https://raw.githubusercontent.com/van1dalgrr-arch/dotfiles/main/bootstrap.sh | bash
-#   Шаги (уже сделанное пропускается, запускать повторно безопасно):
-#     1. Command Line Tools (git, clang) — macOS покажет окно установки
-#     2. Homebrew — спросит пароль администратора
-#     3. ~/dotfiles — git clone (или git pull, если уже есть)
-#     4. make install — программы из Brewfile, симлинки, oh-my-zsh, Go-утилиты, тема
-#   Настройки macOS не трогает: после — ./macos.sh (план) и ./macos.sh --yes.
-#   --dry-run — только показать, что будет сделано.
-# ============================================================
+# Новый Mac → настроенный: curl -fsSL https://raw.githubusercontent.com/van1dalgrr-arch/dotfiles/main/bootstrap.sh | bash
+# Command Line Tools → Homebrew → git clone ~/dotfiles → make install. Сделанное пропускается; --dry-run — план.
 set -euo pipefail
 
 REPO="${DOTFILES_REPO:-https://github.com/van1dalgrr-arch/dotfiles}"

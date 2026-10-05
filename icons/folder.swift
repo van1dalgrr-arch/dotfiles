@@ -1,12 +1,6 @@
 #!/usr/bin/env swift
-// ============================================================
-//   Стеклянные иконки папок — в стиле иконок Dock (icons.swift):
-//   тёмное стекло в форме папки, внутри свечение акцентов темы, белый значок.
-//   swift folder.swift apply            — поставить на все папки из списка
-//   swift folder.swift preview <папка>  — PNG для просмотра
-//   swift folder.swift reset            — вернуть стандартные
-//   Цвета — hex Rosé Pine, themes/apply.sh перекрашивает их под текущую тему.
-// ============================================================
+// Стеклянные иконки папок: swift folder.swift apply | preview <папка> | reset.
+// Цвета — hex Rosé Pine, themes/apply.sh перекрашивает их под текущую тему.
 import AppKit
 import CoreText
 

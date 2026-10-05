@@ -1,10 +1,5 @@
 # shellcheck shell=bash disable=SC2154  # цвета — из lib/ui.sh
-# ============================================================
-#   dot tools — Go-утилиты с закреплёнными версиями из go/tools.txt
-#     dot tools            что стоит и совпадает ли с закреплённым
-#     dot tools install    поставить недостающее / не той версии (остальное не трогает)
-#     dot tools [install] devops   то же для необязательного go/tools.devops.txt (tflint)
-# ============================================================
+# dot tools [install] [devops] — Go-утилиты ровно тех версий, что в go/tools.txt
 
 TOOLS_FILE="$DOTFILES/go/tools.txt"
 gobin() { printf '%s' "${GOBIN:-${GOPATH:-$HOME/go}/bin}"; }

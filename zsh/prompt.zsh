@@ -1,16 +1,5 @@
-# ============================================================
-#   Промпт на чистом zsh, в рамке — как в Linux-райсах, без starship.
-#   Всё, что можно, считается встроенными средствами zsh:
-#   вне git-репозитория — ни одного процесса, внутри — один `git status`.
-#   Цвета — из палитры темы (T_*).
-#
-#   ╭─[dev@van1dal]─[logsence/internal/handler]─[ main +1 !2 ?3 ≡1 ⇡1]─[ 1.27 󰡨 ⎈ orbstack]   󱎫 3s · 13:42
-#   ╰─$
-#
-#   ⎈ контекст kubectl — только когда он важен: в проекте с k8s/, Chart.yaml, kustomization
-#   или после команды kubectl/k/helm/k9s/kind в этом окне (читается файл, kubectl не запускается).
-#   После Enter старый промпт сворачивается до «$ команда» — история чистая.
-# ============================================================
+# Промпт на чистом zsh: вне git — ни одного процесса, в git — один `git status`. Цвета — T_* темы.
+# ⎈ контекст kubectl — только в k8s-проекте или после kubectl/helm в этом окне (читается файл).
 
 zmodload zsh/datetime
 autoload -Uz add-zle-hook-widget add-zsh-hook
@@ -96,10 +85,9 @@ _prompt_context() {
     print -n "${(j: :)s}"
 }
 
-# сегмент рамки: ─[ … ]
 _seg() { [[ -n $1 ]] && print -n "$(_p $T_MUTED)─[%f$1$(_p $T_MUTED)]"; }
 
-# время выполнения; заодно — была ли команда про Kubernetes (тогда показываем ⎈ контекст)
+# время команды; заодно — была ли она про Kubernetes (тогда показываем ⎈)
 _prompt_preexec() {
     _prompt_t0=$EPOCHREALTIME
     [[ $1 == (kubectl|k|helm|k9s|kind|kx|kn|kubectx|kubens|stern|klogs)(| *) ]] && _prompt_kube_used=1
@@ -117,7 +105,6 @@ _prompt_precmd() {
         unset _prompt_t0
     fi
 
-    # пустая строка между командами (но не над самым первым промптом)
     [[ -n $_prompt_drawn ]] && print
     _prompt_drawn=1
 

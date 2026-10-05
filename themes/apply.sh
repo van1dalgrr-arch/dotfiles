@@ -1,12 +1,6 @@
 #!/usr/bin/env bash
-# ============================================================
-#   Применить тему ко всему терминалу и обоям:  themes/apply.sh kanagawa
-#
-#   Конфиги в репозитории написаны цветами Rosé Pine (эталон). Для другой темы
-#   они «переводятся» по таблице themes/rose-pine.sh → themes/<тема>.sh
-#   (роль к роли) и кладутся в ~/.config / ~/.cache — репозиторий не меняется.
-#   VS Code тема не трогает.
-# ============================================================
+# themes/apply.sh <тема> — перекрасить всё: конфиги написаны в цветах Rosé Pine и переводятся
+# роль к роли (themes/rose-pine.sh → themes/<тема>.sh) в копии в ~/.config и ~/.cache; репозиторий не меняется.
 set -euo pipefail
 
 DOTFILES="$(cd "$(dirname "$0")/.." && pwd)"
@@ -31,8 +25,7 @@ make_map() {
 }
 map=$(make_map "$theme")
 
-# Один проход perl: #rrggbb, 0xrrggbb, 0xffrrggbb, hex("rrggbb") (swift) → цвет темы;
-# цепочек замен не бывает
+# один проход perl по #rrggbb, 0x…, hex("…") — цепочек замен не бывает
 recolor() {
     MAP="$map" perl -pe '
         BEGIN { %m = map { split /=/ } split /,/, lc $ENV{MAP} }

@@ -1,15 +1,10 @@
-# ============================================================
-#   Тема терминала: палитра T_* из ~/dotfiles/themes/<тема>.sh
-#   theme            — выбрать тему (fzf с превью цветов)
-#   theme kanagawa   — сразу применить
-# ============================================================
+# Тема (theme), обои (wall, wall add), фон терминала (backdrop), palette. Как пользоваться — docs/guide.ru.md
 
 DOTFILES_THEME=$(command cat ~/.config/dotfiles/theme 2>/dev/null || echo rose-pine)
 [[ -f ~/dotfiles/themes/$DOTFILES_THEME.sh ]] || DOTFILES_THEME=rose-pine
 source ~/dotfiles/themes/$DOTFILES_THEME.sh
 
-# Светлый режим macOS → светлая палитра Dev Day (Ghostty переключается сам, zsh — при старте).
-# Вручную: DOTFILES_APPEARANCE=light|dark в ~/.zshenv
+# светлый режим macOS → палитра Dev Day (zsh — при старте); вручную: DOTFILES_APPEARANCE=light|dark
 if [[ ${DOTFILES_APPEARANCE:-$(defaults read -g AppleInterfaceStyle 2>/dev/null || echo light)} == light ]]; then
     source ~/dotfiles/themes/light/day.sh
     DOTFILES_LIGHT=1
@@ -48,7 +43,6 @@ theme() {
     exec zsh
 }
 
-# palette — цвета текущей темы: роли T_* и 16 цветов терминала (для скриншотов и чтобы подобрать цвет)
 palette() {
     local r=$'\e[0m' role hex
     print "\n  ${THEME_TITLE:-$DOTFILES_THEME}${DOTFILES_LIGHT:+ · Dev Day (светлый режим)}\n"
@@ -61,11 +55,8 @@ palette() {
     for i in {8..15}; do print -P -n -- "  %K{$i}    %k"; done; print "\n"
 }
 
-# wall — сменить обои: wall (выбор с превью-картинкой) · wall eclipse · wall sakura …
-#   wall add <фото> [имя] — своё фото: увеличивается под экран без мыла (icons/photo-wallpaper.swift)
-# Живые обои — icons/wallpaper-<имя>.swift (новые с runWallpaper собираются вместе с wallpaper-kit.swift).
-# Фото — ~/dotfiles/wallpapers/photos/<имя>.jpg (в .gitignore: на GitHub не уходят).
-# Готовые HEIC — ~/Pictures/Wallpapers/<имя>.heic, превью — ~/.cache/wallpapers/<имя>.png
+# wall: живые обои — icons/wallpaper-<имя>.swift, фото — wallpapers/photos/ (в .gitignore).
+# Готовые HEIC — ~/Pictures/Wallpapers, превью для fzf — ~/.cache/wallpapers
 _wall_photos=~/dotfiles/wallpapers/photos
 _wall_names() {
     command ls ~/dotfiles/icons/wallpaper-*.swift | sed 's|.*/wallpaper-||; s|\.swift$||' | grep -vx kit
@@ -124,10 +115,7 @@ wall() {
     [[ -n $bd && $bd != off ]] && backdrop $bd
 }
 
-# backdrop — фон Ghostty из текущих обоев (как wall, только за текстом терминала):
-#   backdrop (выбор с превью) · backdrop glow · backdrop off
-#   haze — облака света обоев · glow — свет из углов · aurora — сияние снизу · glass — обои сквозь стекло
-#   Цвета берутся из обоев, тёмное прозрачно — фон подходит и тёмной теме, и светлой Dev Day.
+# backdrop: фон Ghostty из цветов текущих обоев; тёмное прозрачно — годится и для светлой темы
 _backdrop_styles=(glow aurora haze glass)
 _backdrop_build() {     # стиль → ~/.cache/dotfiles-theme/backdrop/<стиль>.png
     local dir=~/.cache/dotfiles-theme/backdrop src=~/dotfiles/icons/backdrop.swift

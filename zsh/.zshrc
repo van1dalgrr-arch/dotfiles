@@ -1,20 +1,13 @@
-# ============================================================
-#                         ZSH CONFIG
-#                  macOS • Go • Git • Dev
-# ============================================================
+# zsh: macOS · Go · Git · Docker. Как пользоваться — docs/guide.ru.md
 
-# ────────────────────────────────────────────────────────────
-# PATH
-# ────────────────────────────────────────────────────────────
+# ── PATH
 
 typeset -U path PATH                             # без повторов, даже если .zshrc читается дважды
 export PATH="/opt/homebrew/bin:/opt/homebrew/sbin:$PATH"
 export PATH="$PATH:${GOPATH:-$HOME/go}/bin"   # без вызова `go env` — быстрее старт
 export PATH="$HOME/dotfiles/bin:$PATH"           # dot — управление dotfiles
 
-# ────────────────────────────────────────────────────────────
-# OH MY ZSH
-# ────────────────────────────────────────────────────────────
+# ── OH MY ZSH
 
 export ZSH="$HOME/.oh-my-zsh"
 
@@ -36,16 +29,11 @@ else
     print -P "%F{yellow}нет oh-my-zsh → ~/dotfiles/install.sh%f"
 fi
 
-# ────────────────────────────────────────────────────────────
-# ТЕМА (палитра T_*, theme — переключить)
-# ────────────────────────────────────────────────────────────
+# ── ТЕМА (палитра T_*, theme — переключить)
 
 source "$HOME/dotfiles/zsh/theme.zsh"
 
-# ────────────────────────────────────────────────────────────
-# ПРОМПТ: свой на чистом zsh (zsh/prompt.zsh). Вернуть starship:
-# PROMPT_ENGINE=starship в ~/.zshenv
-# ────────────────────────────────────────────────────────────
+# ── ПРОМПТ: свой, zsh/prompt.zsh (starship: PROMPT_ENGINE=starship в ~/.zshenv)
 
 if [[ $PROMPT_ENGINE == starship ]] && (( $+commands[starship] )); then
     eval "$(starship init zsh)"
@@ -53,9 +41,7 @@ else
     source "$HOME/dotfiles/zsh/prompt.zsh"
 fi
 
-# ────────────────────────────────────────────────────────────
-# FZF
-# ────────────────────────────────────────────────────────────
+# ── FZF
 
 (( $+commands[fzf] )) && source <(fzf --zsh)
 
@@ -63,7 +49,6 @@ export FZF_DEFAULT_COMMAND="fd --type f --hidden --exclude .git"
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 export FZF_ALT_C_COMMAND="fd --type d --hidden --exclude .git"
 
-# цвета — из палитры темы
 export FZF_DEFAULT_OPTS=" \
 --height=40% --layout=reverse --border=rounded --info=inline \
 --color=bg+:#${T_OVERLAY},bg:-1,spinner:#${T_ROSE},hl:#${T_LOVE} \
@@ -73,15 +58,11 @@ export FZF_DEFAULT_OPTS=" \
 export FZF_CTRL_T_OPTS="--preview 'bat --color=always --style=numbers --line-range=:300 {}'"
 export FZF_ALT_C_OPTS="--preview 'eza --tree --level=2 --icons --color=always {}'"
 
-# ────────────────────────────────────────────────────────────
-# ZOXIDE
-# ────────────────────────────────────────────────────────────
+# ── ZOXIDE
 
 (( $+commands[zoxide] )) && eval "$(zoxide init zsh)"
 
-# ────────────────────────────────────────────────────────────
-# FZF-TAB (Tab → меню с превью) / ATUIN (Ctrl+R → история)
-# ────────────────────────────────────────────────────────────
+# ── FZF-TAB (Tab → меню с превью) / ATUIN (Ctrl+R → история)
 
 zstyle ':fzf-tab:*' fzf-flags --height=50% --border=rounded
 zstyle ':fzf-tab:*' switch-group '<' '>'
@@ -91,9 +72,7 @@ zstyle ':fzf-tab:complete:(cat|bat|nvim|code):*' fzf-preview 'bat --color=always
 
 (( $+commands[atuin] )) && eval "$(atuin init zsh --disable-up-arrow --disable-ai)"   # без AI: ? — шпаргалка
 
-# ────────────────────────────────────────────────────────────
-# MODERN CLI
-# ────────────────────────────────────────────────────────────
+# ── MODERN CLI
 
 alias ls="eza --icons --group-directories-first"
 alias ll="eza -lah --icons --group-directories-first --git"
@@ -103,9 +82,7 @@ alias lt="eza --tree --level=2 --icons"
 alias cat="bat"
 alias top="btop"
 
-# ────────────────────────────────────────────────────────────
-# NAVIGATION
-# ────────────────────────────────────────────────────────────
+# ── NAVIGATION
 
 alias ..="cd .."
 alias ...="cd ../.."
@@ -113,9 +90,7 @@ alias ....="cd ../../.."
 
 alias q="exit"
 
-# ────────────────────────────────────────────────────────────
-# GO
-# ────────────────────────────────────────────────────────────
+# ── GO
 
 alias gor="go run ."
 alias gob="go build ."
@@ -130,9 +105,7 @@ alias gotc="go test -cover ./..."
 alias gorun="air"   # hot-reload (air init — создать .air.toml)
 alias gdbg="dlv debug ."
 
-# ────────────────────────────────────────────────────────────
-# GIT
-# ────────────────────────────────────────────────────────────
+# ── GIT
 
 alias gs="git status"
 alias ga="git add"
@@ -148,9 +121,7 @@ alias gg="lazygit"
 alias gd="git diff"
 alias gds="git diff --staged"
 
-# ────────────────────────────────────────────────────────────
-# DOCKER
-# ────────────────────────────────────────────────────────────
+# ── DOCKER
 
 alias d="docker"
 alias dc="docker compose"
@@ -165,9 +136,7 @@ alias dprune="docker system prune -f"
 alias lzd="lazydocker"
 alias dcup='docker compose --env-file .env -f deploy/docker-compose.yml up --build'
 
-# ────────────────────────────────────────────────────────────
-# KUBERNETES
-# ────────────────────────────────────────────────────────────
+# ── KUBERNETES
 
 alias k="kubectl"
 # Дополнение kubectl кэшируется и пересобирается только после обновления kubectl
@@ -180,37 +149,26 @@ if (( $+commands[kubectl] )); then
 fi
 unset _kc
 
-# ────────────────────────────────────────────────────────────
-# PYTHON (uv)
-# ────────────────────────────────────────────────────────────
+# ── PYTHON (uv)
 
 alias py="python3"
 alias venv="uv venv && source .venv/bin/activate"
 
-# ────────────────────────────────────────────────────────────
-# DIRENV (.envrc в папке проекта)
-# ────────────────────────────────────────────────────────────
+# ── DIRENV (.envrc в папке проекта)
 
 (( $+commands[direnv] )) && eval "$(direnv hook zsh)"
 
-# ────────────────────────────────────────────────────────────
-# ВЕРСИИ: Go — из Homebrew, версию проекта задаёт go.mod (go/toolchain, Go скачает сам).
-# mise не нужен; если поставить его для других языков — подхватится здесь.
-# ────────────────────────────────────────────────────────────
+# ── ВЕРСИИ: Go из Homebrew, версию проекта задаёт go.mod; mise — только если установлен
 
 (( $+commands[mise] )) && eval "$(mise activate zsh)"
 
-# ────────────────────────────────────────────────────────────
-# SYSTEM
-# ────────────────────────────────────────────────────────────
+# ── SYSTEM
 
 alias ff="fastfetch"
 alias neofetch="fastfetch"
 alias ports="lsof -i -P | grep LISTEN"
 
-# awake on — Mac не засыпает даже с закрытой крышкой (чтобы работать с Claude с телефона)
-# awake off — как обычно · awake — показать. Нужен пароль администратора (pmset).
-# Осторожно: с закрытой крышкой не класть в рюкзак — греется и садит батарею.
+# awake on|off — не засыпать с закрытой крышкой (pmset, нужен пароль). Не класть так в рюкзак — греется
 awake() {
     case $1 in
         on)  sudo pmset -a disablesleep 1 && print -P "%F{#$T_FOAM}☕ не засыпает, даже с закрытой крышкой%f · выключить: awake off" ;;
@@ -223,17 +181,13 @@ awake() {
     esac
 }
 
-# ────────────────────────────────────────────────────────────
-# SAFETY
-# ────────────────────────────────────────────────────────────
+# ── SAFETY
 
 alias rm="rm -i"
 alias cp="cp -i"
 alias mv="mv -i"
 
-# ────────────────────────────────────────────────────────────
-# HISTORY
-# ────────────────────────────────────────────────────────────
+# ── HISTORY
 
 HISTFILE="$HOME/.zsh_history"
 
@@ -246,26 +200,20 @@ setopt HIST_IGNORE_DUPS
 setopt HIST_IGNORE_SPACE
 setopt HIST_REDUCE_BLANKS
 
-# ────────────────────────────────────────────────────────────
-# COMPLETION
-# ────────────────────────────────────────────────────────────
+# ── COMPLETION
 
 # compinit уже вызывает oh-my-zsh, здесь только стиль
 zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'
 zstyle ':completion:*' menu select
 zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
 
-# ────────────────────────────────────────────────────────────
-# OPTIONS
-# ────────────────────────────────────────────────────────────
+# ── OPTIONS
 
 setopt AUTO_CD
 setopt CORRECT
 setopt INTERACTIVE_COMMENTS
 
-# ────────────────────────────────────────────────────────────
-# PLUGINS (syntax-highlighting — строго последним)
-# ────────────────────────────────────────────────────────────
+# ── PLUGINS (syntax-highlighting — строго последним)
 
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=#${T_MUTED}"
 [ -f /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh ] && \
@@ -274,9 +222,7 @@ ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=#${T_MUTED}"
 [ -f /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ] && \
     source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
-# подсветка ввода — цвета из палитры темы:
-# команды — фиолетовые жирные, пути — синие, флаги — серые, строки — сиреневые,
-# связки (| && ;) и перенаправления — розовые, несуществующая команда — подчёркнута
+# подсветка ввода в цветах темы; несуществующая команда — подчёркнута
 ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern)
 typeset -A ZSH_HIGHLIGHT_STYLES
 ZSH_HIGHLIGHT_STYLES[command]="fg=#${T_ROSE},bold"
@@ -314,9 +260,7 @@ ZSH_HIGHLIGHT_PATTERNS+=('rm -rf *' "fg=#${T_BASE},bg=#${T_LOVE},bold")
 ZSH_HIGHLIGHT_PATTERNS+=('git push --force*' "fg=#${T_BASE},bg=#${T_LOVE},bold")
 ZSH_HIGHLIGHT_PATTERNS+=('docker system prune*' "fg=#${T_BASE},bg=#${T_LOVE},bold")
 
-# ────────────────────────────────────────────────────────────
-# ФУНКЦИИ
-# ────────────────────────────────────────────────────────────
+# ── ФУНКЦИИ
 
 # yazi: при выходе остаёмся в папке, где закрыли
 y() {
@@ -326,7 +270,6 @@ y() {
     rm -f -- "$tmp"
 }
 
-# p — выбрать проект из ~/dev через fzf и перейти в него (p kino — сразу с фильтром)
 export DEV="$HOME/dev"
 alias dev='cd $DEV'
 p() {
@@ -335,7 +278,6 @@ p() {
     [ -n "$d" ] && cd "$DEV/$d"
 }
 
-# pl — все проекты ~/dev одним экраном: стек, ветка, несохранённое, давность коммита
 pl() {
     local r=$'\e[0m' dim="$(_c $T_MUTED)" txt="$(_c $T_TEXT)" foam="$(_c $T_FOAM)"
     local pine="$(_c $T_PINE)" gold="$(_c $T_GOLD)" love="$(_c $T_LOVE)" iris="$(_c $T_IRIS)"
@@ -351,7 +293,6 @@ pl() {
     local row age stack branch st ab dirty
     for row in ${(On)rows}; do
         ts=${row%%$'\t'*}; d=${row#*$'\t'}; name=${d:t}
-        # стек: Go и/или Docker
         local -a dock=($d/(Dockerfile|*compose*.y(a|)ml)(N))
         stack="  "; [[ -f $d/go.mod ]] && stack="$foam"$'\U000f07d3'" "
         (( $#dock )) && stack+="$pine"$'\U000f0868'" " || stack+="  "
@@ -378,23 +319,19 @@ pl() {
 
 mkcd() { mkdir -p "$1" && cd "$1"; }
 
-# killport 8080 — убить процесс на порту
 killport() { lsof -ti tcp:"$1" | xargs kill -9 2>/dev/null && echo "порт $1 свободен" || echo "на порту $1 ничего нет"; }
 
-# dsh — зайти в контейнер, выбрав его через fzf
 dsh() {
     local c=$(docker ps --format '{{.Names}}\t{{.Image}}\t{{.Status}}' | fzf --header="контейнер" | cut -f1)
     [ -n "$c" ] && docker exec -it "$c" sh -c '[ -x /bin/bash ] && exec bash || exec sh'
 }
 
-# dlogs — логи контейнера через fzf
 dlogs() {
     local c=$(docker ps --format '{{.Names}}' | fzf --header="логи")
     [ -n "$c" ] && docker logs -f --tail 200 "$c"
 }
 
-# up — запустить проект одной командой: OrbStack (если спит) → зависимости из compose
-# (сервисы без build: — postgres, redis…) → приложение с .env (air, иначе go run)
+# up: OrbStack → сервисы compose без build: (postgres…) → приложение с .env (air или go run)
 up() {
     local compose=( (compose|docker-compose).y(a|)ml(N) )
     if [ -n "$compose" ]; then
@@ -419,15 +356,13 @@ up() {
     [ -n "$compose" ] && echo "зависимости работают дальше · остановить: dcd"
 }
 
-# fkill — выбрать процесс(ы) через fzf и убить (Tab — несколько)
 fkill() {
     local pids=$(ps -axo pid,%cpu,%mem,comm | sed 1d | \
         fzf -m --header="убить процесс · tab — несколько" --query="$1" | awk '{print $1}')
     [ -n "$pids" ] && echo "$pids" | xargs kill -${2:-15} && echo "убито: $(echo $pids | tr '\n' ' ')"
 }
 
-# gco — переключить ветку через fzf, в превью последние коммиты
-# (заменяет алиас gco из oh-my-zsh; gco main — сразу, если ветка одна)
+# gco заменяет одноимённый алиас oh-my-zsh
 unalias gco 2>/dev/null
 gco() {
     local b=$(git branch --all --sort=-committerdate --format='%(refname:short)' | grep -v HEAD | \
@@ -435,18 +370,13 @@ gco() {
     [ -n "$b" ] && git switch "${b#origin/}"
 }
 
-# port 8080 — кто слушает порт
 port() { lsof -nP -iTCP:"$1" -sTCP:LISTEN; }
 
-# serve — раздать текущую папку по http (serve 9000)
 serve() { echo "→ http://localhost:${1:-8000}"; python3 -m http.server "${1:-8000}"; }
 
-# weather — погода (weather Moscow)
 weather() { curl -s "wttr.in/${1}?lang=ru&F" ; }
 
-# ────────────────────────────────────────────────────────────
-# ШПАРГАЛКА: ? или Ctrl+/
-# ────────────────────────────────────────────────────────────
+# ── ШПАРГАЛКА: ? или Ctrl+/
 
 source "$HOME/dotfiles/zsh/cheatsheet.zsh"
 source "$HOME/dotfiles/zsh/ram.zsh"
@@ -455,22 +385,16 @@ source "$HOME/dotfiles/zsh/gonew.zsh"
 source "$HOME/dotfiles/zsh/backend.zsh"
 source "$HOME/dotfiles/zsh/reminders.zsh"
 
-# ────────────────────────────────────────────────────────────
-# ПРИВЕТСТВИЕ: логотип macOS + коротко о системе (~35 мс).
-# Только в новом окне Ghostty и если оно большое — не в quick terminal, Zed, VS Code
-# ────────────────────────────────────────────────────────────
+# ── ПРИВЕТСТВИЕ: только в новом большом окне Ghostty (не quick terminal, не Zed)
 
-# Показываем перед первым приглашением, а не при чтении .zshrc: новое окно Ghostty
-# в первые миллисекунды ещё маленькое (80×24), и проверка размера ошибочно не проходила
+# перед первым приглашением, а не при чтении .zshrc: в первые мс окно ещё 80×24 и проверка размера не проходила
 _greeting() {
     add-zsh-hook -d precmd _greeting                     # только один раз
-    # не SHLVL: Ghostty запускается через AeroSpace и наследует SHLVL=3+, проверка никогда не проходила.
-    # Флаг в окружении: новое окно — с приветствием, вложенный zsh внутри него — без.
+    # не SHLVL: Ghostty от AeroSpace наследует SHLVL=3+; флаг в окружении — вложенный zsh без приветствия
     [[ $TERM_PROGRAM == ghostty && -z $DOTFILES_GREETED && $LINES -ge 12 && $COLUMNS -ge 60 && -z $NO_GREETING ]] || return
     export DOTFILES_GREETED=1
     (( $+commands[fastfetch] )) || return
     fastfetch -c "$HOME/dotfiles/fastfetch/greeting.jsonc"
-    # совет: случайная функция из шпаргалки — постепенно запоминаются свои команды
     local -a tips=(${(f)"$(_cheat_funcs)"})
     local tip=${tips[RANDOM % $#tips + 1]}
     print -P "\n  $(_c $T_GOLD)󰌵  ${tip%%|*}%f  $(_c $T_MUTED)${tip#*|}  · ? — все команды%f"
@@ -478,6 +402,3 @@ _greeting() {
 }
 add-zsh-hook precmd _greeting
 
-# ============================================================
-#                         END
-# ============================================================

@@ -1,11 +1,5 @@
 # shellcheck shell=bash
-# ============================================================
-#   dot doctor [--deep] — всё ли на месте. Только читает, ничего не меняет.
-#     обычный режим — быстрые проверки (~1 с)
-#     --deep       — ещё версии, закреплённые ревизии, расхождения с Brewfile,
-#                    brew doctor, JSONC Zed, история dotfiles на утечки (~20 с)
-#   Обязательное (Brewfile) отсутствует → ✗ и exit 1. Необязательное (Brewfile.devops) → ○.
-# ============================================================
+# dot doctor [--deep] — только читает. Нет обязательного (Brewfile) → ✗ и exit 1, необязательного → ○
 
 # brew в doctor не должен ходить в сеть и обновлять себя
 export HOMEBREW_NO_AUTO_UPDATE=1 HOMEBREW_NO_INSTALL_CLEANUP=1 HOMEBREW_NO_ENV_HINTS=1
@@ -19,12 +13,10 @@ tool() {
     else optional "$name" "$hint"; fi
 }
 
-# имена пакетов из Brewfile-а
 brewfile_names() { grep -E '^(brew|cask) ' "$1" | sed -E 's/^(brew|cask) "([^"]+)".*/\2/; s|.*/||'; }
 
-# установлен ли пакет: через brew, приложением в /Applications или командой в PATH
-# (kubectl от OrbStack, Zed и VS Code с сайта). $installed — список brew, $apps — /Applications
-# в нижнем регистре: cask visual-studio-code ↔ «visual studio code.app».
+# пакет считается установленным, если он есть в brew, в /Applications (cask visual-studio-code ↔
+# «Visual Studio Code.app») или в PATH (kubectl от OrbStack)
 pkg_present() {
     local name=$1
     grep -qx "$name" <<<"$installed" || grep -qiE "^(${name}|${name//-/ })" <<<"$apps" || has "$name"

@@ -1,9 +1,6 @@
-# ============================================================
-#   Backend-команды: база, уязвимости, нагрузка, Kubernetes.
-# ============================================================
+# Backend: база (db), уязвимости (vuln), нагрузка (load), Kubernetes
 
-# db — pgcli к базе текущего проекта: DATABASE_URL из окружения или .env,
-# иначе локальный Postgres из compose (пароль DB_PASSWORD, база = имя папки). db <url> — явно.
+# db: DATABASE_URL из окружения или .env, иначе Postgres из compose (база = имя папки)
 db() {
     local url=${1:-$DATABASE_URL}
     if [[ -z $url && -f .env ]]; then
@@ -16,14 +13,13 @@ db() {
     pgcli "$url"
 }
 
-# vuln — уязвимости: зависимости Go (govulncheck) и всё остальное в проекте (trivy: пакеты, секреты, Dockerfile)
 vuln() {
     [[ -f go.mod ]] && { print -P "%F{#$T_ROSE}󰚰  govulncheck%f"; govulncheck ./...; }
     print -P "\n%F{#$T_ROSE}󰚰  trivy%f"
     trivy fs --quiet --scanners vuln,secret,misconfig .
 }
 
-# load — нагрузочный тест: load [url] [секунд] [соединений]  (по умолчанию /health, 10 с, 50)
+# load [url] [секунд] [соединений] — по умолчанию /health, 10 с, 50
 load() {
     oha -z ${2:-10}s -c ${3:-50} ${1:-http://localhost:${PORT:-8080}/health}
 }
@@ -34,7 +30,6 @@ alias kn='kubens'
 alias klogs='stern'
 alias j='fx'
 
-# dot project doctor короче: pd (или pd ~/dev/logsence)
 alias pd='dot project doctor'
 # OpenTofu (Brewfile.devops): tf plan / tf apply — только вручную
 alias tf='tofu'   # j file.json или curl … | j — интерактивный просмотр JSON

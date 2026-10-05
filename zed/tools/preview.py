@@ -1,10 +1,5 @@
 #!/usr/bin/env python3
-# ============================================================
-#   Превью тем Dev Night / Dev Day без запуска Zed: окно «как в Zed» (дерево файлов с
-#   иконками, вкладки, Go-код, статус-бар), цвета — прямо из themes/dev-night.json.
-#     python3 zed/tools/preview.py            → docs/zed-themes.png (обе темы рядом)
-#   Рисует встроенный в macOS WebKit (icons/html2png.swift), окон не открывает.
-# ============================================================
+# Превью Dev Night / Dev Day без Zed → docs/zed-themes.png (рисует WebKit через icons/html2png.swift)
 import json, os, re, subprocess, tempfile, html
 
 HERE = os.path.dirname(os.path.abspath(__file__))

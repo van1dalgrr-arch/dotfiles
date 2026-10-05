@@ -1,9 +1,4 @@
-// ============================================================
-//   HTML → PNG встроенным в macOS WebKit (вместо headless Chrome — без лишних браузеров).
-//     swift html2png.swift <страница.html> <выход.png> [ширина высота]
-//   Шрифты — системные и установленные (JetBrainsMono Nerd Font и т.п.), картинка в 2×.
-//   Используется zed/tools/preview.py и для картинок в docs/.
-// ============================================================
+// HTML → PNG встроенным WebKit, без браузеров: swift html2png.swift <in.html> <out.png> [ширина высота]
 import AppKit
 import WebKit
 

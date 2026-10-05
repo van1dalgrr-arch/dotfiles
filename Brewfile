@@ -1,7 +1,4 @@
-# Обязательное: без этого dotfiles не работают как задумано. `brew bundle` / `dot install`.
-# Необязательный DevOps-набор — в Brewfile.devops (brew bundle --file Brewfile.devops).
-# Версии пакетов Homebrew не закрепляет (только последние); Go-утилиты закреплены в go/tools.txt.
-# `dot doctor` сверяет установленное с обоими файлами, `dot doctor --deep` — ещё и лишнее.
+# Обязательное (brew bundle). Необязательный DevOps-набор — Brewfile.devops; Go-утилиты — go/tools.txt
 
 # Терминал
 cask "ghostty"

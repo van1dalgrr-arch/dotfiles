@@ -1,12 +1,6 @@
 #!/usr/bin/env python3
-# ============================================================
-#   Dev Night / Dev Day для GoLand (и любой IDE JetBrains) — цветовые схемы редактора .icls,
-#   собираются из Zed-темы (zed/dev-night-theme), чтобы цвета везде совпадали.
-#     python3 jetbrains/build.py   →  jetbrains/Dev Night.icls, jetbrains/Dev Day.icls
-#                                     + jetbrains/dist/dev-night-theme-<версия>.jar — плагин-тема
-#                                       (интерфейс IDE + схема редактора) для Marketplace / Install from Disk
-#   В .icls нет прозрачности: полупрозрачные цвета Zed смешиваются с фоном.
-# ============================================================
+# GoLand / JetBrains из Zed-темы: .icls (цвета кода) + jar-плагин (интерфейс + код) в jetbrains/dist.
+# В .icls нет прозрачности — полупрозрачные цвета смешиваются с фоном.
 import json, os, zipfile
 from xml.sax.saxutils import quoteattr
 

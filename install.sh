@@ -1,20 +1,17 @@
 #!/usr/bin/env bash
-# Раскладывает конфиги из этого репозитория по системе через симлинки.
-# Если на месте уже лежит обычный файл, он сохраняется как <файл>.bak.
-# Повторный запуск безопасен: уже стоящее не переставляется. Программы ставит `brew bundle`, не он.
+# Симлинки на конфиги (обычный файл на месте → <файл>.bak), закреплённые клоны, Go-утилиты, тема.
+# Повторный запуск безопасен. Программы ставит `brew bundle`.
 set -euo pipefail
 
 DOTFILES="$(cd "$(dirname "$0")" && pwd)"
 
-# Закреплённые ревизии того, что ставится через git clone (обновить — поменять здесь).
-# Уже склонированное не трогается: oh-my-zsh обновляет себя сам.
+# закреплённые ревизии git clone; уже склонированное не трогается (oh-my-zsh обновляется сам)
 OMZ_REV=74965c96098134b192f00084f966b4b02438a739
 FZF_TAB_REV=24105b15714bfec37989ed5c5b6e60f572253019
 
 [ "$(uname -s)" = Darwin ] || { echo "только macOS"; exit 1; }
 [ "$(uname -m)" = arm64 ] || echo "внимание: не arm64 (Rosetta?) — пути /opt/homebrew рассчитаны на Apple Silicon"
 
-# clone_pinned <url> <папка> <commit> — склонировать и встать на закреплённый commit
 clone_pinned() {
     [ -d "$2" ] && return 0
     git clone -q --filter=blob:none "$1" "$2"
@@ -78,7 +75,6 @@ else echo "пропуск Go-утилит: нет go (brew bundle)"; fi
 
 command -v bat >/dev/null && bat cache --build >/dev/null
 command -v code >/dev/null && xargs -n1 code --install-extension < "$DOTFILES/vscode/extensions.txt"
-# `zed .` из терминала
 if [ -d /Applications/Zed.app ] && [ ! -e /opt/homebrew/bin/zed ] && [ -w /opt/homebrew/bin ]; then
     ln -s /Applications/Zed.app/Contents/MacOS/cli /opt/homebrew/bin/zed
 fi
