@@ -72,7 +72,7 @@ your `*.bak` files, and `--purge` also deletes the generated theme files. Homebr
 | **Terminal** | [Ghostty](https://ghostty.org) with a drop-down window on `` ctrl+` `` and a glowing cursor trail |
 | **Windows** | [AeroSpace](https://github.com/nikitabobko/AeroSpace) — i3-style tiling, hotkeys work on any keyboard layout |
 | **Prompt** | custom zsh: path from the repo root, git status, Go version from `go.mod`, command duration |
-| **Editor** | [Zed](https://zed.dev) with my own Dev Night theme and icons, Delve debugger, golangci-lint in the editor, tasks on `ctrl-r` |
+| **Editor** | [Zed](https://zed.dev) with my own themes, Dev Night (dark) and Dev Day (light), that switch with macOS, plus icons. Delve debugger, golangci-lint in the editor, tasks on `ctrl-r` |
 | **Themes** | `theme vesper` / `kanagawa` / `rose-pine` — recolors the whole terminal, app icons and wallpaper |
 | **Wallpapers** | `wall` — pick one of 25 live wallpapers with an image preview right in the terminal |
 | **Git** | delta for diffs, lazygit, gitleaks before every commit |

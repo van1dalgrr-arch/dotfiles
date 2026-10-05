@@ -13,7 +13,7 @@ import CoreText
 let dir = URL(fileURLWithPath: CommandLine.arguments[0]).deletingLastPathComponent().path
 let font = CTFontCreateWithName("JetBrainsMono Nerd Font" as CFString, 1000, nil)
 
-// палитра Dev Night (zed/themes/dev-night.json)
+// палитра Dev Night (themes/dev-night.json)
 let violet = "#a855f7", blue = "#3b82f6", sky = "#0ea5e9", pink = "#ec4899", gold = "#eab308"
 let orange = "#f97316", peri = "#818cf8", lilac = "#c084fc", muted = "#858aa3", red = "#ef4444"
 

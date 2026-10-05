@@ -24,6 +24,10 @@
 **Shell**
 - `.zshrc` no longer breaks when a tool or oh-my-zsh is missing; `typeset -U path`; optional mise hook
 
+**Zed**
+- New light theme **Dev Day**, generated from Dev Night by `zed/extension/light.py` so the two stay in sync. It switches with macOS appearance
+- Themes and icons are now a single Zed extension in `zed/extension/` (id `dev-night`, MIT), ready to publish to the Zed registry
+
 **Tests**
 - `tests/smoke.sh` (`make test`), run in CI on Linux and macOS; Brewfile syntax and bash 3.2 parse checks
 

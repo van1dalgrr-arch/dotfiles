@@ -209,7 +209,7 @@ doc_editors() {
         if has python3; then
             for f in "$DOTFILES"/zed/*.json; do jsonc_ok "$f" || bad="$bad ${f##*/}"; done
         fi
-        for f in "$DOTFILES"/zed/themes/*.json "$DOTFILES"/zed/icon-theme/icon_themes/*.json; do
+        for f in "$DOTFILES"/zed/extension/themes/*.json "$DOTFILES"/zed/extension/icon_themes/*.json; do
             jq empty "$f" 2>/dev/null || bad="$bad ${f##*/}"
         done
         if [ -z "$bad" ]; then pass "конфиги и темы Zed разбираются"

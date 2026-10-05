@@ -8,16 +8,16 @@
   //  ВНЕШНИЙ ВИД
   // ────────────────────────────────────────────────────────────
 
-  // тёмная — своя Dev Night (zed/themes/, фиолетово-синяя), светлая — One Light; меняются вместе с macOS
+  // свои темы из расширения zed/extension: тёмная Dev Night, светлая Dev Day; меняются вместе с macOS
   "theme": {
     "mode": "system",
-    "light": "One Light",
+    "light": "Dev Day",
     "dark": "Dev Night",
   },
-  // иконки файлов: своя тема (zed/icon-theme — значки как в терминале); в светлом режиме — Material
+  // иконки файлов: своя тема (zed/extension — значки как в терминале), в обоих режимах
   "icon_theme": {
     "mode": "system",
-    "light": "Material Icon Theme",
+    "light": "Dev Night Icons",
     "dark": "Dev Night Icons",
   },
 

@@ -1,0 +1,9 @@
+id = "dev-night"
+name = "Dev Night"
+version = "0.2.0"
+schema_version = 1
+description = "Dev Night (dark) and Dev Day (light): saturated violet and blue on near-black or near-white, plus Nerd Font file icons."
+authors = ["van1dalgrr-arch <van1dalgrr@gmail.com>"]
+repository = "https://github.com/van1dalgrr-arch/dotfiles"
+themes = ["themes/dev-night.json"]
+icon_themes = ["icon_themes/dev-night-icons.json"]
