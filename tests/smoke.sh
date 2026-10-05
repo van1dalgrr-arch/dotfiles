@@ -22,7 +22,7 @@ check() {
         passed=$((passed + 1)); echo "ok   $name"
     else
         failed=$((failed + 1)); echo "FAIL $name (код $code, ждали $want${needle:+, строку «${needle}»})"
-        sed 's/^/     /' <<<"$out" | tail -15
+        sed 's/^/     /' <<<"$out" | grep -E "✗|!" | head -10
     fi
 }
 

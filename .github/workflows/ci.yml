@@ -45,6 +45,12 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      # на macOS-раннере go нет в PATH, а project doctor справедливо считает это ошибкой
+      - uses: actions/setup-go@v5
+        with:
+          go-version: stable
+          cache: false
+
       - name: Swift generators compile
         run: |
           for f in icons/wallpaper-*.swift; do
