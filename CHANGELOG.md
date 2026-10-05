@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- **Ghostty reloads by itself** after `theme`, `wall`, `backdrop` and `update` (AppleScript `reload_config`), no more `cmd+shift+,`
+- `backdrop` reuses a background already built for the same wallpaper: the menu opens in ~30 ms instead of 1.2 s
+- `wall` labels each entry as live wallpaper or photo; `up` gives up on OrbStack after a minute instead of waiting forever; `killport` sends TERM first and KILL only after 2 s
 - **Quick terminal from any app** without granting Ghostty Accessibility: AeroSpace catches `` ctrl+` `` and toggles it through Ghostty's AppleScript (`ghostty/quick-terminal.applescript`)
 - **Photo wallpapers:** `wall add <photo> [name]`. Photos are denoised, upscaled to the screen (two-step Lanczos), cropped and sharpened by `icons/photo-wallpaper.swift`. They live in the git-ignored `wallpapers/photos/`
 - Photos for wallpapers are backed up to a private repo (`dotfiles-photos`); `wall add` pushes new ones automatically

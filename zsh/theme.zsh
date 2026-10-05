@@ -10,6 +10,9 @@ if [[ ${DOTFILES_APPEARANCE:-$(defaults read -g AppleInterfaceStyle 2>/dev/null 
     DOTFILES_LIGHT=1
 fi
 
+# Ghostty перечитывает конфиг сам (AppleScript-действие reload_config) — без cmd+shift+,
+_ghostty_reload() { pgrep -xq ghostty && osascript -e 'tell application "Ghostty" to if (count terminals) > 0 then perform action "reload_config" on first terminal' >/dev/null 2>&1; }
+
 # _c ROLE_HEX — ANSI-цвет текста из hex (для своих функций: ram, pl, шпаргалка)
 _c() { printf '\e[38;2;%d;%d;%dm' 0x${1[1,2]} 0x${1[3,4]} 0x${1[5,6]}; }
 
@@ -39,7 +42,6 @@ theme() {
     # тема поставила свои обои — фон терминала пересобрать под их цвета
     local bd=$(command cat ~/.config/dotfiles/backdrop 2>/dev/null)
     [[ -n $bd && $bd != off ]] && backdrop $bd >/dev/null
-    print -P "%F{8}Ghostty: cmd+shift+, — перечитать конфиг%f"
     exec zsh
 }
 
@@ -100,9 +102,12 @@ wall() {
         for n in $(_wall_names); do          # недостающие превью — один раз
             [[ -f ~/.cache/wallpapers/$n.png ]] || { echo "превью: $n…"; _wall_build $n ~/.cache/wallpapers/$n.png 960 624; }
         done
-        name=$(_wall_names | fzf --header="обои · enter — поставить" --height=90% \
-            --preview 'chafa --animate=off -s ${FZF_PREVIEW_COLUMNS}x${FZF_PREVIEW_LINES} ~/.cache/wallpapers/{}.png' \
+        name=$(for n in $(_wall_names); do
+                   [[ -f ~/dotfiles/icons/wallpaper-$n.swift ]] && print "$n\t живые" || print "$n\t фото"
+               done | fzf --header="обои · enter — поставить" --height=90% --delimiter='\t' \
+            --preview 'chafa --animate=off -s ${FZF_PREVIEW_COLUMNS}x${FZF_PREVIEW_LINES} ~/.cache/wallpapers/{1}.png' \
             --preview-window=right:75%) || return
+        name=${name%%$'\t'*}
     fi
     local src=~/dotfiles/icons/wallpaper-$name.swift heic=~/Pictures/Wallpapers/$name.heic photo=$(_wall_photo $name)
     [[ -f $src || -n $photo ]] || { echo "нет обоев: $name (есть: $(_wall_names | tr '\n' ' '))"; return 1; }
@@ -128,7 +133,9 @@ _backdrop_build() {     # стиль → ~/.cache/dotfiles-theme/backdrop/<ст�
     if [[ ! -x $dir/backdrop || $src -nt $dir/backdrop ]]; then
         echo "собираю генератор фона (один раз)…"; swiftc -O $src -o $dir/backdrop 2>/dev/null || return
     fi
-    $dir/backdrop $wp $1 $dir/$1.png >/dev/null
+    local out=$dir/$1.png stamp=$dir/.$1.src
+    [[ -f $out && $out -nt $wp && $out -nt $dir/backdrop && $(<$stamp 2>/dev/null) == $wp ]] && return 0
+    $dir/backdrop $wp $1 $out >/dev/null && print -r -- $wp >| $stamp
 }
 backdrop() {
     local style=$1 cfg=~/.config/ghostty/backdrop.ghostty s
@@ -148,5 +155,6 @@ backdrop() {
             "background-image-fit = cover" "background-image-repeat = false" >| $cfg
     fi
     print $style >| ~/.config/dotfiles/backdrop
-    print -P "%F{#$T_FOAM}фон: $style%f %F{#$T_MUTED}· Ghostty: cmd+shift+, — перечитать конфиг%f"
+    _ghostty_reload
+    print -P "%F{#$T_FOAM}фон: $style%f"
 }

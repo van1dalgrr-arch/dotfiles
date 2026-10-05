@@ -20,7 +20,7 @@ Config for the [Ghostty](https://ghostty.org) terminal: no titlebar, quick termi
 
 ## Generated, not in git
 
-`theme` writes `~/.config/ghostty/theme.ghostty` and two themes (`dotfiles-dark`, `dotfiles-light`): Ghostty follows macOS dark/light mode. `backdrop` writes `~/.config/ghostty/backdrop.ghostty`. Reload after changes: `cmd+shift+,`.
+`theme` writes `~/.config/ghostty/theme.ghostty` and two themes (`dotfiles-dark`, `dotfiles-light`): Ghostty follows macOS dark/light mode. `backdrop` writes `~/.config/ghostty/backdrop.ghostty`. After `theme`, `wall`, `backdrop` and `update` Ghostty reloads by itself (AppleScript `reload_config`); after editing the config by hand: `cmd+shift+,`.
 
 ## Quick terminal
 

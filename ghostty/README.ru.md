@@ -20,7 +20,7 @@
 
 ## Генерируется, не в git
 
-`theme` пишет `~/.config/ghostty/theme.ghostty` и две темы (`dotfiles-dark`, `dotfiles-light`) — Ghostty следует светлому/тёмному режиму macOS. `backdrop` пишет `~/.config/ghostty/backdrop.ghostty`. Перечитать после изменений: `cmd+shift+,`.
+`theme` пишет `~/.config/ghostty/theme.ghostty` и две темы (`dotfiles-dark`, `dotfiles-light`) — Ghostty следует светлому/тёмному режиму macOS. `backdrop` пишет `~/.config/ghostty/backdrop.ghostty`. После `theme`, `wall`, `backdrop` и `update` Ghostty перечитывает конфиг сам (AppleScript `reload_config`); после ручной правки конфига — `cmd+shift+,`.
 
 ## Выпадающий терминал
 

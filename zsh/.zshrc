@@ -319,7 +319,13 @@ pl() {
 
 mkcd() { mkdir -p "$1" && cd "$1"; }
 
-killport() { lsof -ti tcp:"$1" | xargs kill -9 2>/dev/null && echo "порт $1 свободен" || echo "на порту $1 ничего нет"; }
+# killport: сначала просим завершиться (TERM — успеет сохраниться), через 2 с добиваем KILL
+killport() {
+    local pids=($(lsof -ti tcp:"$1")); (( $#pids )) || { echo "на порту $1 ничего нет"; return; }
+    kill $pids 2>/dev/null; sleep 2
+    pids=($(lsof -ti tcp:"$1")); (( $#pids )) && kill -9 $pids 2>/dev/null
+    echo "порт $1 свободен"
+}
 
 dsh() {
     local c=$(docker ps --format '{{.Names}}\t{{.Image}}\t{{.Status}}' | fzf --header="контейнер" | cut -f1)
@@ -337,7 +343,8 @@ up() {
     if [ -n "$compose" ]; then
         if ! docker info >/dev/null 2>&1; then
             echo "󰡨 запускаю OrbStack…"; open -ga OrbStack
-            until docker info >/dev/null 2>&1; do sleep 1; done
+            local i; for i in {1..60}; do docker info >/dev/null 2>&1 && break; sleep 1; done
+            docker info >/dev/null 2>&1 || { echo "OrbStack не запустился за минуту — open -a OrbStack"; return 1; }
         fi
         local deps=(${(f)"$(docker compose config --format json | jq -r '.services | to_entries[] | select(.value.build == null) | .key')"})
         if (( $#deps )); then

@@ -114,4 +114,6 @@ if [ "${NO_ICONS:-}" != 1 ]; then
     killall Dock 2>/dev/null || true
 fi
 
+# Ghostty перечитывает конфиг сам (AppleScript), если запущен
+pgrep -xq ghostty && osascript -e 'tell application "Ghostty" to if (count terminals) > 0 then perform action "reload_config" on first terminal' >/dev/null 2>&1 || true
 echo "тема: $THEME_TITLE"

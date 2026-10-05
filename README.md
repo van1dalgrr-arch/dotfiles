@@ -240,7 +240,7 @@ backdrop glow     # apply directly · backdrop off — no background
 The backdrop is made from your **current wallpaper**: only its colored light is kept and the dark parts
 become transparent, so it works on the dark theme and on light Dev Day alike. **glow** is light from the corners,
 **aurora** is waves along the bottom edge, **haze** is the wallpaper's light softly blurred, and **glass** shows the wallpaper itself, faint and vignetted.
-`wall` rebuilds the backdrop for the new wallpaper. Ghostty picks it up after `cmd+shift+,`.
+`wall` rebuilds the backdrop for the new wallpaper, and Ghostty reloads by itself (over AppleScript), no `cmd+shift+,` needed.
 The generator is `icons/backdrop.swift` (Core Image, no extra tools).
 
 ## Docs
