@@ -32,6 +32,10 @@
 - Ghostty and the shell follow macOS appearance. The light palette **Dev Day** (`themes/light/day.sh`) matches the Zed theme
 - `apply.sh` generates `dotfiles-dark` / `dotfiles-light` Ghostty themes plus light copies for eza, bat, lazygit, starship and delta (`DELTA_FEATURES=+day`)
 
+**Zed extensions**
+- github-actions (workflow LSP: action inputs, `${{ }}` expressions), postgres-language-server (lints SQL migrations without a database), typos, mermaid
+- Kubernetes schema for `k8s/`, `deploy/k8s/` and `manifests/` YAML
+
 **Tests**
 - `tests/smoke.sh` (`make test`), run in CI on Linux and macOS; Brewfile syntax and bash 3.2 parse checks
 

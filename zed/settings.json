@@ -179,6 +179,8 @@
     "Shell Script": [".env", ".env.*", ".envrc"],
     "TOML": [".air.toml"],
     "JSONC": ["**/.zed/*.json", "**/zed/*.json", "tsconfig*.json"],
+    // workflow-файлы — своим LSP (расширение github-actions): входы экшенов, ${{ выражения }}, контексты
+    "GitHub Actions": [".github/workflows/*.yml", ".github/workflows/*.yaml"],
   },
 
   // ────────────────────────────────────────────────────────────
@@ -358,6 +360,8 @@
             ],
             "https://json.schemastore.org/golangci-lint.json": [".golangci.{yml,yaml}"],
             "https://json.schemastore.org/kustomization.json": ["kustomization.{yml,yaml}"],
+            // манифесты Kubernetes: автодополнение и проверка полей Deployment, Service…
+            "kubernetes": ["k8s/**/*.{yml,yaml}", "deploy/k8s/**/*.{yml,yaml}", "manifests/**/*.{yml,yaml}"],
           },
         },
       },
@@ -394,5 +398,9 @@
     "helm": true,
     "nginx": true,
     "log": true,             // подсветка логов
+    "github-actions": true,  // LSP для .github/workflows: проверка входов экшенов и ${{ }}
+    "postgres-language-server": true,  // SQL миграций: ошибки синтаксиса и опасные миграции, без базы
+    "typos": true,           // опечатки в коде и комментариях (мало ложных срабатываний)
+    "mermaid": true,         // подсветка ```mermaid-диаграмм в Markdown
   },
 }
