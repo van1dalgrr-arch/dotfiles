@@ -65,7 +65,12 @@ keybind = cmd+shift+e=equalize_splits
 
 # --- Quick terminal (выпадающий по хоткею) ---
 quick-terminal-position = top
-quick-terminal-animation-duration = 0.15
+# плавный выезд/уход: 0.15 было резко, 0.3 — мягко, но без ощущения тормозов
+quick-terminal-animation-duration = 0.3
+# прячется, когда кликаешь в другое приложение
+quick-terminal-autohide = true
+# выезжает на текущем рабочем столе, а не перекидывает туда, где был в прошлый раз
+quick-terminal-space-behavior = move
 # открывается на том мониторе, где мышь
 quick-terminal-screen = mouse
 keybind = global:ctrl+backquote=toggle_quick_terminal
