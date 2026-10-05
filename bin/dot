@@ -6,6 +6,7 @@
 #     dot install               brew bundle + симлинки + Go-утилиты + тема
 #     dot update                обслуживание (brew, Go-утилиты, Docker, иконки)
 #     dot tools [install]       Go-утилиты с закреплёнными версиями (go/tools.txt)
+#     dot clean [--yes]         освободить место: кэши, мусор Docker (без --yes — план)
 #     dot macos [--yes] [группа] настройки macOS: без --yes только показывает
 #     dot theme [имя]           сменить тему          dot wall [имя]   сменить обои
 #     dot check                 проверки, как в CI    dot edit         открыть репозиторий в Zed
@@ -14,7 +15,7 @@
 set -uo pipefail
 DOTFILES="${DOTFILES:-$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)}"
 
-for lib in ui tools doctor project; do
+for lib in ui tools doctor project clean; do
     # shellcheck source=/dev/null
     . "$DOTFILES/lib/$lib.sh"
 done
@@ -23,6 +24,7 @@ case "${1:-help}" in
     doctor)  shift; doctor "$@" ;;
     project) shift; project "$@" ;;
     tools)   shift; tools "$@" ;;
+    clean)   shift; clean "$@" ;;
     install) brew bundle --file "$DOTFILES/Brewfile" && "$DOTFILES/install.sh" ;;
     update)  zsh -ic update ;;
     macos)   shift; "$DOTFILES/macos.sh" "$@" ;;
@@ -30,6 +32,6 @@ case "${1:-help}" in
     wall)    shift; zsh -ic "wall $*" ;;
     check)   make -C "$DOTFILES" check ;;
     edit)    zed "$DOTFILES" ;;
-    help|-h|--help) sed -n '3,12p' "$0" | sed 's/^# \{0,1\}//' ;;
-    *)       sed -n '3,12p' "$0" | sed 's/^# \{0,1\}//' >&2; exit 2 ;;
+    help|-h|--help) sed -n '3,13p' "$0" | sed 's/^# \{0,1\}//' ;;
+    *)       sed -n '3,13p' "$0" | sed 's/^# \{0,1\}//' >&2; exit 2 ;;
 esac

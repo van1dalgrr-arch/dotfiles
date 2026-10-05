@@ -219,6 +219,14 @@ doc_editors() {
     fi
 }
 
+doc_disk() {
+    section "Диск"
+    local free
+    free=$(disk_free_gb)
+    if [ "$free" -ge "$DISK_MIN_GB" ]; then pass "свободно $free ГБ (порог $DISK_MIN_GB)"
+    else warning "свободно $free ГБ — меньше $DISK_MIN_GB" "→ dot clean"; fi
+}
+
 doc_shell() {
     section "Shell"
     [ -f "$HOME/.oh-my-zsh/oh-my-zsh.sh" ] && pass "oh-my-zsh" || failed "нет oh-my-zsh" "→ ./install.sh"
@@ -253,6 +261,6 @@ doctor() {
         esac
     done
     [ "$(uname -s)" = Darwin ] || { echo "dot doctor — только для macOS" >&2; return 2; }
-    doc_links; doc_brew; doc_go; doc_docker; doc_k8s; doc_iac; doc_git; doc_editors; doc_shell
+    doc_links; doc_brew; doc_go; doc_docker; doc_k8s; doc_iac; doc_git; doc_editors; doc_disk; doc_shell
     summary
 }

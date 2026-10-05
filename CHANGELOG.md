@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased
+
+- `dot clean [--yes] [--trash]`: frees space from caches (Homebrew, Go build, gopls, golangci-lint, JetBrains) and Docker junk; plan first, like `macos.sh`
+- Free-disk guard: the greeting and `dot doctor` warn when less than `DISK_MIN_GB` (100 GB by default) is free
+- Chrome dropped: previews render with WebKit (`icons/html2png.swift`), Safari takes workspace 3
+
 ## v1.2.0 — 2026-10-06
 
 **Reproducibility**
