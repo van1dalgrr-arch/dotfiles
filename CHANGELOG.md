@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## v1.2.0 — 2026-10-06
 
 **Reproducibility**
 - `go` is now in the Brewfile (it was only installed as a dependency)
