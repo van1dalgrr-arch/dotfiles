@@ -65,6 +65,9 @@
 - `pull --rebase`, autosquash and updateRefs, `push.followTags`, verbose commits with a message template, version-sorted tags, untracked cache
 - Aliases `undo`, `amend`, `wip`/`unwip`, `fixup` (fzf), `recent`, `gone`/`tidy`, listed in the `?` cheatsheet
 
+**gonew 2.0**
+- New projects come with CI (tests, lint, govulncheck, Docker), a `/health` test with a fake DB, golang-migrate migrations, `make help`, a README with the CI badge; `--gh` creates a private GitHub repo and pushes
+
 **Tests**
 - `tests/smoke.sh` (`make test`), run in CI on Linux and macOS; Brewfile syntax and bash 3.2 parse checks
 
