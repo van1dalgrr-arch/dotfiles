@@ -1,5 +1,10 @@
 # Themes
 
+<img src="themes.jpg" alt="vesper, kanagawa, rose-pine and the light Dev Day" width="100%">
+
+<sub>vesper (default), kanagawa, rose-pine, and Dev Day, which switches on with macOS light mode. Rendered from each theme's real palette and prompt colors.</sub>
+
+
 ```bash
 theme            # pick in fzf, palette preview on the right
 theme vesper     # apply directly

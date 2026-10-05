@@ -241,7 +241,7 @@ The generator is `icons/backdrop.swift` (Core Image, no extra tools).
 | [How it works (RU)](docs/how-it-works.ru.md) | architecture, diagrams, the "why" behind every piece, and recipes |
 | [Recovery (RU)](docs/recovery.ru.md) | the Mac was wiped: restore checklist, what comes back by itself, what doesn't |
 | [Wallpapers](docs/wallpapers.md) | all 25 live wallpapers with previews, and how to make your own |
-| [Themes](docs/themes.md) | how `theme` recolors everything from one palette file |
+| [Themes](docs/themes.md) | all themes side by side, and how `theme` recolors everything from one palette file |
 | [GoLand / JetBrains](jetbrains/README.md) | Dev Night and Dev Day as editor color schemes (`.icls`), one-click import |
 | [Hotkeys](docs/hotkeys.md) | AeroSpace, Ghostty and Zed shortcuts |
 | [Troubleshooting](docs/troubleshooting.md) | icons, theme, drop-down terminal, doctor statuses, Go versions, `macos.sh`, aliases |
