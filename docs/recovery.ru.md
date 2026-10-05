@@ -5,15 +5,13 @@
 
 ## Восстановление (~1 час, в основном ожидание загрузок)
 
-1. Инструменты Xcode (git, компилятор): `xcode-select --install`
-2. Homebrew: одна строка с [brew.sh](https://brew.sh), потом `eval "$(/opt/homebrew/bin/brew shellenv)"`
-3. dotfiles:
+1. Одна команда в Терминале — инструменты Xcode, Homebrew, dotfiles и все программы:
    ```bash
-   git clone https://github.com/van1dalgrr-arch/dotfiles ~/dotfiles
-   cd ~/dotfiles && make install
+   curl -fsSL https://raw.githubusercontent.com/van1dalgrr-arch/dotfiles/main/bootstrap.sh | bash
    ```
-4. Настройки macOS: `./macos.sh` (план) → `./macos.sh --yes`, потом выйти и зайти в систему
-5. Открыть Ghostty → `dot doctor`. Всё должно быть ✓, у каждого ✗ написано, как починить
+   (macOS покажет окно установки инструментов Xcode — «Установить»; Homebrew спросит пароль)
+2. Настройки macOS: `~/dotfiles/macos.sh` (план) → `./macos.sh --yes`, потом выйти и зайти в систему
+3. Открыть Ghostty → `dot doctor`. Всё должно быть ✓, у каждого ✗ написано, как починить
 
 Необязательно: `make devops` (kind, OpenTofu, tflint…).
 

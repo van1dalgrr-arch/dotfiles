@@ -5,7 +5,7 @@
 #     ./macos.sh --yes                применить
 #     ./macos.sh [--yes] finder dock  только выбранные группы
 #     ./macos.sh -v                   показать и то, что уже настроено
-#   Группы: keyboard trackpad finder saving screenshots dock appearance apps
+#   Группы: keyboard trackpad finder saving screenshots dock appearance apps login
 #   Повторный запуск безопасен: совпадающие значения пропускаются.
 #   Перезапускаются только Finder / Dock / SystemUIServer. Без logout и reboot —
 #   клавиатура, трекпад и тёмная тема вступят в силу после перелогина.
@@ -13,7 +13,7 @@
 # ============================================================
 set -uo pipefail
 
-ALL="keyboard trackpad finder saving screenshots dock appearance apps"
+ALL="keyboard trackpad finder saving screenshots dock appearance apps login"
 apply=0 verbose=0 groups="" changed=0 restart=""
 
 if [ -t 1 ]; then
@@ -120,6 +120,23 @@ apps() {
     [ -n "$out" ] && printf '%s\n' "$out"
     n=$(grep -c '^  ~' <<<"$out")
     changed=$((changed + n)); [ "$n" -gt 0 ] && group_changed=1
+    return 0
+}
+
+# автозапуск при входе. AeroSpace стартует сам (start-at-login в aerospace.toml) и поднимает Ghostty,
+# OrbStack — по требованию (up, open -a OrbStack): 8 GB памяти, VM не нужна всё время
+login() {
+    local app name have
+    have=$(osascript -e 'tell application "System Events" to get the name of every login item' 2>/dev/null)
+    # shellcheck disable=SC2043  # список на вырост: добавить приложение — ещё один путь
+    for app in /Applications/Raycast.app; do
+        [ -d "$app" ] || continue
+        name=$(basename "$app" .app)
+        case ", $have, " in *", $name, "*) [ "$verbose" = 1 ] && printf '  %s✓ %s при входе%s\n' "$c_dim" "$name" "$r"; continue ;; esac
+        changed=$((changed + 1)); group_changed=1
+        printf '  %s~%s %-46s %s—%s → %sпри входе%s\n' "$c_new" "$r" "$name: запускать при входе" "$c_dim" "$r" "$c_new" "$r"
+        [ "$apply" = 1 ] && osascript -e "tell application \"System Events\" to make login item at end with properties {path:\"$app\", hidden:true}" >/dev/null
+    done
     return 0
 }
 

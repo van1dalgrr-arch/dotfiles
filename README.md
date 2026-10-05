@@ -37,19 +37,17 @@ A few things that came out of that:
 
 ## Install
 
-On a clean Mac, starting from nothing:
+On a clean Mac, one command:
 
 ```bash
-xcode-select --install                                   # git, clang
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-eval "$(/opt/homebrew/bin/brew shellenv)"
-
-git clone https://github.com/van1dalgrr-arch/dotfiles ~/dotfiles
-cd ~/dotfiles
-make install         # brew bundle + ./install.sh
-exec zsh
-dot doctor           # everything should be ✓
+curl -fsSL https://raw.githubusercontent.com/van1dalgrr-arch/dotfiles/main/bootstrap.sh | bash
 ```
+
+It installs the Command Line Tools and Homebrew, clones this repo to `~/dotfiles` and runs `make install`.
+Anything already there is skipped, so it's safe to run again. `bootstrap.sh --dry-run` shows the plan.
+Then: `exec zsh`, `./macos.sh` (preview) → `./macos.sh --yes`, and `dot doctor`, where everything should be ✓.
+
+The same by hand: `xcode-select --install` → [Homebrew](https://brew.sh) → `git clone … ~/dotfiles` → `make install`.
 
 `./install.sh` is safe to run again. It:
 
@@ -182,7 +180,7 @@ on its own: `kind create cluster` and `tf apply` are always up to you.
 ./macos.sh --yes finder dock   # only some groups
 ```
 
-Groups: `keyboard` (fast repeat, no autocorrect or smart quotes), `trackpad` (tap to click), `finder` (extensions,
+Groups: `apps` (code files open in Zed; macOS asks to confirm each type, so run it at the Mac), `login` (Raycast at login; AeroSpace starts itself and Ghostty), `keyboard` (fast repeat, no autocorrect or smart quotes), `trackpad` (tap to click), `finder` (extensions,
 hidden files, path and status bar, list view, folders first, search the current folder, no `.DS_Store` on
 network or USB drives), `saving` (to disk rather than iCloud, expanded dialogs), `screenshots`
 (PNG in `~/Pictures/Screenshots`, no shadow or thumbnail), `dock` (autohide, no recents, Spaces stay in place for AeroSpace),
@@ -273,6 +271,7 @@ dotfiles/
 ├── tests/smoke.sh   smoke tests for dot (make test, CI)
 ├── btop/ bat/ eza/ lazygit/ atuin/ tealdeer/ starship/ pgcli/
 ├── Brewfile         required apps and CLIs   ·  Brewfile.devops: optional
+├── bootstrap.sh     clean Mac → everything, one curl command
 ├── install.sh       symlinks, pinned clones and Go tools, theme   ·  uninstall.sh
 └── macos.sh         system settings (prints a plan, applies only with --yes)
 ```
