@@ -25,7 +25,6 @@ _dot() {
         'install:brew bundle + симлинки + тема'
         'update:обслуживание: brew, Go-утилиты, Docker, иконки'
         'tools:Go-утилиты с закреплёнными версиями'
-        'clean:освободить место (без --yes — план)'
         'macos:настройки macOS (без --yes — только план)'
         'theme:сменить тему'
         'wall:сменить обои'
@@ -38,7 +37,6 @@ _dot() {
         doctor)  _arguments '--deep[подробно: версии, ревизии, лишние пакеты]' ;;
         project) (( CURRENT == 3 )) && { local -a p=('doctor:что есть в проекте и чего не хватает'); _describe 'проект' p; } || _directories ;;
         tools)   local -a t=(status install devops); _describe 'действие' t ;;
-        clean)   _arguments '--yes[почистить]' '--trash[и Корзину (необратимо)]' ;;
         macos)   shift words; (( CURRENT-- )); _dot_macos_groups ;;
         theme)   _dot_themes ;;
         wall)    _dot_walls ;;

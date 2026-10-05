@@ -115,9 +115,6 @@ dot doctor           # ~1 s: symlinks, Brewfile, Go, Docker, Kubernetes, IaC, gi
 dot doctor --deep    # ~20 s: + versions, pinned revisions, packages outside the Brewfile, brew doctor, Zed JSONC, …
 ```
 
-It only reads, never changes anything. It also warns when less than 100 GB of disk is free (so does the greeting).
-`dot clean` shows what can be freed safely (Homebrew, Go build, gopls, golangci-lint and JetBrains caches, Docker junk) and frees it with `--yes`.
-
 It only reads, never changes anything. `✓` ok · `!` worth a look · `✗` broken (exit code 1) · `○` optional and not installed.
 Every problem line ends with the command that fixes it. Exit codes: `0` ok (warnings allowed), `1` errors, `2` bad usage.
 

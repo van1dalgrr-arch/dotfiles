@@ -30,7 +30,6 @@ check "help"                 0 "dot doctor"        -- "$DOT" help
 check "неизвестная команда"  2 ""                  -- "$DOT" nope
 check "doctor: плохой флаг"  2 "--deep"            -- "$DOT" doctor --bogus
 check "tools: плохой арг."   2 ""                  -- "$DOT" tools bogus
-check "clean: плохой арг."   2 ""                  -- "$DOT" clean bogus
 check "project без doctor"   2 ""                  -- "$DOT" project
 check "project: нет папки"   2 "нет папки"         -- "$DOT" project doctor "$TMP/none"
 
