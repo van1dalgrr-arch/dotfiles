@@ -5,3 +5,6 @@ __pycache__/
 
 # собранный плагин GoLand — в GitHub Releases, не в git
 jetbrains/dist/
+
+# мои фото для wall (wall add) — только локально, в публичный репозиторий не идут
+wallpapers/photos/

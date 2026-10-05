@@ -64,9 +64,9 @@ palette() {
 # wall — сменить обои: wall (выбор с превью-картинкой) · wall eclipse · wall sakura …
 #   wall add <фото> [имя] — своё фото: увеличивается под экран без мыла (icons/photo-wallpaper.swift)
 # Живые обои — icons/wallpaper-<имя>.swift (новые с runWallpaper собираются вместе с wallpaper-kit.swift).
-# Фото — ~/Pictures/Wallpapers/photos/<имя>.jpg (не в git: чужие фото в публичный репозиторий не кладём).
+# Фото — ~/dotfiles/wallpapers/photos/<имя>.jpg (в .gitignore: на GitHub не уходят).
 # Готовые HEIC — ~/Pictures/Wallpapers/<имя>.heic, превью — ~/.cache/wallpapers/<имя>.png
-_wall_photos=~/Pictures/Wallpapers/photos
+_wall_photos=~/dotfiles/wallpapers/photos
 _wall_names() {
     command ls ~/dotfiles/icons/wallpaper-*.swift | sed 's|.*/wallpaper-||; s|\.swift$||' | grep -vx kit
     print -l $_wall_photos/*.(jpg|jpeg|png|heic|webp)(N:t:r)
