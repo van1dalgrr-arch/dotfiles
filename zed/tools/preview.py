@@ -3,14 +3,14 @@
 #   Превью тем Dev Night / Dev Day без запуска Zed: окно «как в Zed» (дерево файлов с
 #   иконками, вкладки, Go-код, статус-бар), цвета — прямо из themes/dev-night.json.
 #     python3 zed/tools/preview.py            → docs/zed-themes.png (обе темы рядом)
-#   Нужен Google Chrome (рисует headless, окон не открывает).
+#   Рисует встроенный в macOS WebKit (icons/html2png.swift), окон не открывает.
 # ============================================================
 import json, os, re, subprocess, tempfile, html
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.abspath(os.path.join(HERE, "..", ".."))
 OUT = os.path.join(ROOT, "docs", "zed-themes.png")
-CHROME = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
+RENDER = os.path.join(ROOT, "icons", "html2png.swift")
 
 CODE = '''package main
 
@@ -130,8 +130,6 @@ body{{margin:0;padding:28px;background:#6b6b78;display:flex;gap:28px;font:13px/1
 
 with tempfile.NamedTemporaryFile("w", suffix=".html", delete=False) as f:
     f.write(page)
-subprocess.run([CHROME, "--headless", "--disable-gpu", "--hide-scrollbars", "--force-device-scale-factor=2",
-                "--allow-file-access-from-files", f"--screenshot={OUT}", "--window-size=1760,700",
-                "file://" + f.name], check=True, capture_output=True)
+subprocess.run(["swift", RENDER, f.name, OUT, "1760", "700"], check=True, capture_output=True)
 os.unlink(f.name)
 print("→", OUT)

@@ -25,7 +25,6 @@ let gold = hex("f6c177"), love = hex("eb6f92"), text = hex("e0def4")
 
 let apps: [App] = [
     App(path: "/Applications/Visual Studio Code.app", glyph: "\u{F0A1E}", color: foam),
-    App(path: "/Applications/Google Chrome.app",      glyph: "\u{F268}",  color: gold),
     App(path: "/Applications/Telegram.app",           glyph: "\u{F2C6}",  color: iris),
     App(path: "/Applications/Discord.app",            glyph: "\u{F066F}", color: rose),
     App(path: "/Applications/Spotify.app",            glyph: "\u{F1BC}",  color: love),

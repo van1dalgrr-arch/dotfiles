@@ -31,7 +31,7 @@
 
 - [ ] GitHub: `gh auth login` (вход по HTTPS через браузер, SSH-ключей нет)
 - [ ] Проекты: `mkdir ~/dev && cd ~/dev && gh repo clone <имя>` для каждого (`gh repo list` — все свои)
-- [ ] Войти: Telegram, Discord, Яндекс Музыка, Chrome, Claude, ChatGPT
+- [ ] Войти: Telegram, Discord, Яндекс Музыка, Claude, ChatGPT
 - [ ] VPN (Happ / WireGuard): заново добавить конфиги
 - [ ] Raycast: импортировать настройки, если сохранял экспорт (Settings → Advanced → Export)
 - [ ] Zed: войти в аккаунт (для AI)
@@ -40,7 +40,7 @@
 ## Приложения не из Brewfile
 
 Ставятся с сайтов или из App Store, `dot doctor --deep` показывает их как «нет в Brewfile»:
-Telegram, Discord, Яндекс Музыка, Happ, Chrome, Spotify, ChatGPT, Claude, GitHub Desktop, JetBrains Toolbox, UTM, iTerm, Rectangle, Hammerspoon.
+Telegram, Discord, Яндекс Музыка, Happ, Spotify, ChatGPT, Claude, GitHub Desktop, JetBrains Toolbox, UTM, iTerm, Rectangle, Hammerspoon.
 Нужное постоянно — лучше внести в `Brewfile` (`cask "telegram"` и т.п.), тогда тоже вернётся само.
 
 ## Что пропадает
