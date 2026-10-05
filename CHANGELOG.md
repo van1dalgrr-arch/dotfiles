@@ -69,6 +69,7 @@
 - New projects come with CI (tests, lint, govulncheck, Docker), a `/health` test with a fake DB, golang-migrate migrations, `make help`, a README with the CI badge; `--gh` creates a private GitHub repo and pushes
 
 **Tests**
+- `pre-push` in this repo runs `make check` and the smoke tests; a broken change doesn't reach GitHub (`--no-verify` to skip)
 - `tests/smoke.sh` (`make test`), run in CI on Linux and macOS; Brewfile syntax and bash 3.2 parse checks
 
 ## v1.1.0 — 2026-10-05

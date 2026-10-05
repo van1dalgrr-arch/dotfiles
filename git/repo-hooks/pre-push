@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+# pre-push этого репозитория (dotfiles): перед push — те же проверки, что в CI.
+# Сломанное не уйдёт на GitHub. Срочно и осознанно: git push --no-verify
+# Подключается install.sh ссылкой в .git/hooks; глобальный хук git/hooks/pre-push вызывает его.
+cd "$(git rev-parse --show-toplevel)" || exit 1
+printf '\033[38;2;168;85;247m▸ dotfiles: проверки перед push\033[0m\n'
+if ! out=$(make check 2>&1); then
+    printf '%s\n' "$out" | tail -15
+    printf '\033[38;2;239;68;68m✘ make check не прошёл — push отменён\033[0m (git push --no-verify — если очень надо)\n'
+    exit 1
+fi
+if ! out=$(tests/smoke.sh 2>&1); then
+    printf '%s\n' "$out" | grep -E 'FAIL|ok ·|fail' | tail -10
+    printf '\033[38;2;239;68;68m✘ тесты упали — push отменён\033[0m\n'
+    exit 1
+fi
+printf '\033[38;2;59;130;246m✓ check и тесты прошли\033[0m\n'

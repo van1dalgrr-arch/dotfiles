@@ -41,6 +41,7 @@ link() {
 
 link zsh/.zshrc                      "$HOME/.zshrc"
 link git/.gitconfig                  "$HOME/.gitconfig"
+link git/repo-hooks/pre-push         "$DOTFILES/.git/hooks/pre-push"   # проверки перед push в сам dotfiles
 link ghostty/config.ghostty          "$HOME/.config/ghostty/config.ghostty"
 link ghostty/shaders/cursor_smooth.glsl "$HOME/.config/ghostty/shaders/cursor_smooth.glsl"
 link starship/starship.toml          "$HOME/.config/starship.toml"
