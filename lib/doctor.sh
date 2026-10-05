@@ -201,6 +201,15 @@ doc_editors() {
     elif "$ghostty" +validate-config >/dev/null 2>&1; then pass "конфиг Ghostty валиден"
     else failed "в конфиге Ghostty ошибка" "→ ghostty +validate-config"; fi
 
+    # выпадающий терминал (ctrl+`) из любого приложения — только с «Универсальным доступом».
+    # Проверка честная, только изнутри Ghostty: дочерний процесс наследует его разрешения
+    if [ "${TERM_PROGRAM:-}" = ghostty ] && has python3; then
+        if python3 -c "import ctypes; ax = ctypes.cdll.LoadLibrary('/System/Library/Frameworks/ApplicationServices.framework/ApplicationServices'); exit(0 if ax.AXIsProcessTrusted() else 1)" 2>/dev/null; then
+            pass "Ghostty: «Универсальный доступ» есть — ctrl+\` работает везде"
+        else
+            warning "у Ghostty нет «Универсального доступа» — ctrl+\` только внутри Ghostty" "→ Настройки → Конфиденциальность → Универсальный доступ → Ghostty"
+        fi
+    fi
     if [ -d /Applications/Zed.app ]; then pass "Zed"
     else failed "Zed не установлен" "→ brew install --cask zed"; fi
     has zed || warning "нет команды zed" "→ ./install.sh создаст /opt/homebrew/bin/zed"
