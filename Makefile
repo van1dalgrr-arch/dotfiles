@@ -19,6 +19,9 @@ check:
 	ruby -c Brewfile >/dev/null && ruby -c Brewfile.devops >/dev/null
 	for f in zed/dev-night-theme/themes/*.json zed/dev-night-icons/icon_themes/*.json; do jq empty $$f || exit 1; done
 	python3 -m py_compile themes/set-wallpaper.py zed/tools/light.py zed/tools/preview.py jetbrains/build.py
+	@# шейдеры Ghostty — тем же компилятором, что внутри Ghostty (если glslang стоит: brew install glslang)
+	@if command -v glslangValidator >/dev/null; then for f in ghostty/shaders/*.glsl; do \
+		cat ghostty/shaders/.prefix.glsl $$f > /tmp/ghostty-shader.frag && glslangValidator -G -S frag /tmp/ghostty-shader.frag -o /dev/null >/dev/null || { echo "шейдер не компилируется: $$f"; exit 1; }; done; fi
 	gitleaks git --no-banner --redact .
 	@echo "✓ всё чисто"
 

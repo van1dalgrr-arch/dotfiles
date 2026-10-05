@@ -30,11 +30,16 @@ macos-icon-ghost-color = #ebbcba
 macos-icon-screen-color = #191724,#26233a
 
 # --- Cursor ---
-cursor-style = block
+# черта, как в VS Code (в промпте Ghostty всё равно ставит черту; vim и т.п. сами просят блок)
+cursor-style = bar
 # цвета курсора, выделения и фона сплитов — в темах (themes/apply.sh → ~/.config/ghostty/themes),
 # иначе светлая тема не смогла бы их поменять
 cursor-style-blink = true
-# Светящийся шлейф при прыжках курсора (выключить — закомментировать)
+# Плавный курсор как в VS Code: настоящий скрыт, его рисует и ведёт шейдер cursor_smooth.
+# Выключить: убрать cursor-opacity и строку с cursor_smooth.glsl
+cursor-opacity = 0
+custom-shader = shaders/cursor_smooth.glsl
+# Светящийся шлейф при больших прыжках курсора (выключить — закомментировать)
 custom-shader = shaders/cursor_trail.glsl
 
 # --- Keys ---
