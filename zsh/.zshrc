@@ -86,7 +86,7 @@ zstyle ':fzf-tab:complete:cd:*' fzf-preview 'eza -1 --icons --color=always $real
 zstyle ':fzf-tab:complete:z:*' fzf-preview 'eza -1 --icons --color=always $realpath'
 zstyle ':fzf-tab:complete:(cat|bat|nvim|code):*' fzf-preview 'bat --color=always --line-range=:100 $realpath 2>/dev/null || eza -1 --icons --color=always $realpath'
 
-(( $+commands[atuin] )) && eval "$(atuin init zsh --disable-up-arrow)"
+(( $+commands[atuin] )) && eval "$(atuin init zsh --disable-up-arrow --disable-ai)"   # без AI: ? — шпаргалка
 
 # ────────────────────────────────────────────────────────────
 # MODERN CLI
