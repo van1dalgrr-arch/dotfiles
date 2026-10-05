@@ -44,6 +44,9 @@
 **Reminders**
 - Under the greeting of a new window, only when there is something: `update` not run for 7+ days, repos in `~/dev` with unpushed commits (any branch) or uncommitted files. Repo status is cached and refreshed in the background, adding about 8 ms to the greeting
 
+**GoLand / JetBrains**
+- Dev Night and Dev Day as `.icls` editor color schemes, generated from the Zed theme by `jetbrains/build.py` (Go, Markdown, console, diff, search highlights)
+
 **Tests**
 - `tests/smoke.sh` (`make test`), run in CI on Linux and macOS; Brewfile syntax and bash 3.2 parse checks
 

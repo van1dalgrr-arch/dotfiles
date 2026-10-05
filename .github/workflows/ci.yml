@@ -33,7 +33,7 @@ jobs:
       - name: json / python
         run: |
           for f in zed/dev-night-theme/themes/*.json zed/dev-night-icons/icon_themes/*.json; do jq empty "$f" && echo "ok $f"; done
-          python3 -m py_compile themes/set-wallpaper.py zed/tools/light.py zed/tools/preview.py
+          python3 -m py_compile themes/set-wallpaper.py zed/tools/light.py zed/tools/preview.py jetbrains/build.py
 
       - name: gitleaks
         uses: gitleaks/gitleaks-action@v2
