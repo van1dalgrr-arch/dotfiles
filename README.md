@@ -11,7 +11,7 @@ MacBook Air M2 · 8 GB · zsh · Ghostty · AeroSpace · Zed
 ![license](https://img.shields.io/badge/license-MIT-101010?style=flat-square)
 ![ci](https://github.com/van1dalgrr-arch/dotfiles/actions/workflows/ci.yml/badge.svg)
 
-<img src="docs/desktop.jpg" alt="Ghostty and Zed tiled by AeroSpace over a sakura wallpaper, the terminal glowing in its colors" width="100%">
+<img src="docs/desktop.jpg" alt="Ghostty and Zed tiled by AeroSpace over the prism wallpaper, the terminal glowing in its colors" width="100%">
 
 <sub>Ghostty + Zed tiled by AeroSpace. The terminal's glow is built from the wallpaper's colors. Rendered from real command output.</sub>
 
