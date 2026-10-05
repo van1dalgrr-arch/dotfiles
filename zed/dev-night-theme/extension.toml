@@ -1,0 +1,8 @@
+id = "dev-night-theme"
+name = "Dev Night Theme"
+version = "0.2.0"
+schema_version = 1
+description = "Dev Night (dark) and Dev Day (light): saturated violet and blue accents on a near-black or near-white background."
+authors = ["van1dalgrr-arch <van1dalgrr@gmail.com>"]
+repository = "https://github.com/van1dalgrr-arch/dotfiles"
+themes = ["themes/dev-night.json"]

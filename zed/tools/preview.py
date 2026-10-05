@@ -2,7 +2,7 @@
 # ============================================================
 #   Превью тем Dev Night / Dev Day без запуска Zed: окно «как в Zed» (дерево файлов с
 #   иконками, вкладки, Go-код, статус-бар), цвета — прямо из themes/dev-night.json.
-#     python3 preview.py            → docs/zed-themes.png (обе темы рядом)
+#     python3 zed/tools/preview.py            → docs/zed-themes.png (обе темы рядом)
 #   Нужен Google Chrome (рисует headless, окон не открывает).
 # ============================================================
 import json, os, re, subprocess, tempfile, html
@@ -70,7 +70,7 @@ def highlight(theme):
     return lines
 
 def icon(name):
-    return f'<img src="file://{HERE}/icons/{name}.svg">'
+    return f'<img src="file://{HERE}/../dev-night-icons/icons/{name}.svg">'
 
 def window(theme):
     s = theme["style"]
@@ -108,7 +108,7 @@ def window(theme):
     <span style="color:{s.get('success', s['text.accent'])}">✓ 0 проблем</span></div>
 </div>'''
 
-family = json.load(open(os.path.join(HERE, "themes", "dev-night.json")))
+family = json.load(open(os.path.join(HERE, "..", "dev-night-theme", "themes", "dev-night.json")))
 page = f'''<!doctype html><meta charset="utf-8"><style>
 body{{margin:0;padding:28px;background:#6b6b78;display:flex;gap:28px;font:13px/1 -apple-system,sans-serif}}
 .win{{width:820px;border:1px solid;border-radius:12px;overflow:hidden;box-shadow:0 20px 50px #0006}}

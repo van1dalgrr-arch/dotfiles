@@ -1,14 +1,14 @@
 #!/usr/bin/env python3
 # ============================================================
 #   Dev Day — светлая пара к Dev Night, собирается из неё же.
-#   Меняешь Dev Night → python3 light.py → обе темы в themes/dev-night.json остаются согласованы.
+#   Меняешь Dev Night → python3 zed/tools/light.py → обе темы в themes/dev-night.json остаются согласованы.
 #   Фон — почти белый, акценты те же (фиолетовый, синий, розовый), но на тон глубже,
 #   чтобы читались на белом (yellow-500 на белом не виден → amber-700 и т.п.).
 # ============================================================
 import json, os, re
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-PATH = os.path.join(HERE, "themes", "dev-night.json")
+PATH = os.path.join(HERE, "..", "dev-night-theme", "themes", "dev-night.json")
 
 # тёмный цвет → светлый (без альфы; альфа-суффикс сохраняется)
 MAP = {

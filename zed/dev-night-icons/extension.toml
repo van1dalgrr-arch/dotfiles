@@ -1,0 +1,8 @@
+id = "dev-night-icons"
+name = "Dev Night Icons"
+version = "0.2.0"
+schema_version = 1
+description = "Nerd Font file icons in saturated violet, blue and pink, matching the Dev Night theme. Works on dark and light backgrounds."
+authors = ["van1dalgrr-arch <van1dalgrr@gmail.com>"]
+repository = "https://github.com/van1dalgrr-arch/dotfiles"
+icon_themes = ["icon_themes/dev-night-icons.json"]

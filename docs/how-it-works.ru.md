@@ -180,8 +180,9 @@ pgx, `/health` с пингом базы, graceful shutdown, compose, двухэ�
 | `zed/tasks.json` | `ctrl-r`: up, air, тесты, тест под курсором, покрытие, compose, curl |
 | `zed/debug.json` | `f5`: отладка через Delve — `cmd/api`, пакет, тест под курсором |
 | `zed/snippets/go.json` | `iferr`, `ginh`, `htest`, … |
-| `zed/extension/` | расширение Zed: темы Dev Night + Dev Day (`light.py` собирает светлую из тёмной) и иконки |
-| `zed/extension/build.swift` | иконки: вытаскивает значки из Nerd Font в SVG |
+| `zed/dev-night-theme/`, `zed/dev-night-icons/` | два расширения Zed: темы Dev Night + Dev Day и иконки (как в каталоге Zed) |
+| `zed/tools/light.py`, `preview.py` | собрать Dev Day из Dev Night; картинка-превью обеих тем |
+| `zed/tools/build-icons.swift` | иконки: вытаскивает значки из Nerd Font в SVG |
 
 Тема иконок — это **dev-расширение**: `install.sh` кладёт ссылку на папку в
 `~/Library/Application Support/Zed/extensions/installed/`, и Zed считает её установленным расширением.

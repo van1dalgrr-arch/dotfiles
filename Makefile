@@ -17,8 +17,8 @@ check:
 	for f in $(SCRIPTS); do /bin/bash -n $$f || exit 1; done   # системный bash 3.2 на чистом Mac
 	for f in zsh/.zshrc zsh/*.zsh; do zsh -n $$f || exit 1; done
 	ruby -c Brewfile >/dev/null && ruby -c Brewfile.devops >/dev/null
-	for f in zed/extension/themes/*.json zed/extension/icon_themes/*.json; do jq empty $$f || exit 1; done
-	python3 -m py_compile themes/set-wallpaper.py zed/extension/light.py zed/extension/preview.py
+	for f in zed/dev-night-theme/themes/*.json zed/dev-night-icons/icon_themes/*.json; do jq empty $$f || exit 1; done
+	python3 -m py_compile themes/set-wallpaper.py zed/tools/light.py zed/tools/preview.py
 	gitleaks git --no-banner --redact .
 	@echo "✓ всё чисто"
 

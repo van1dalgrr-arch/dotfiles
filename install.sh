@@ -62,8 +62,9 @@ link zed/tasks.json                  "$HOME/.config/zed/tasks.json"
 link pgcli/config                    "$HOME/.config/pgcli/config"
 link zed/debug.json                  "$HOME/.config/zed/debug.json"
 link zed/snippets/go.json            "$HOME/.config/zed/snippets/go.json"
-# свои темы Dev Night / Dev Day и иконки — одно локальное расширение Zed: ссылка на папку в репозитории
-link zed/extension                   "$HOME/Library/Application Support/Zed/extensions/installed/dev-night"
+# свои темы Dev Night / Dev Day и иконки — два локальных расширения Zed (как в каталоге Zed): ссылки на папки
+link zed/dev-night-theme             "$HOME/Library/Application Support/Zed/extensions/installed/dev-night-theme"
+link zed/dev-night-icons             "$HOME/Library/Application Support/Zed/extensions/installed/dev-night-icons"
 
 # oh-my-zsh без его установщика (тот переписывает ~/.zshrc) + плагин fzf-tab
 clone_pinned https://github.com/ohmyzsh/ohmyzsh "$HOME/.oh-my-zsh" "$OMZ_REV"

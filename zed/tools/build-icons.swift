@@ -3,17 +3,18 @@
 //   Тема иконок Zed «Dev Night Icons» — те же значки Nerd Font, что в терминале
 //   (eza / ls), в цветах темы Dev Night. docker-compose / compose — красные.
 //
-//   swift build.swift   — пересобрать icons/*.svg и icon_themes/dev-night-icons.json
+//   swift zed/tools/build-icons.swift — пересобрать ../dev-night-icons (icons/*.svg и icon_themes/dev-night-icons.json)
 //   Значки берутся из шрифта JetBrainsMono Nerd Font и сохраняются векторными SVG.
 // ============================================================
 
 import AppKit
 import CoreText
 
-let dir = URL(fileURLWithPath: CommandLine.arguments[0]).deletingLastPathComponent().path
+let dir = URL(fileURLWithPath: CommandLine.arguments[0]).deletingLastPathComponent()
+    .appendingPathComponent("../dev-night-icons").standardized.path
 let font = CTFontCreateWithName("JetBrainsMono Nerd Font" as CFString, 1000, nil)
 
-// палитра Dev Night (themes/dev-night.json)
+// палитра Dev Night (../dev-night-theme/themes/dev-night.json)
 let violet = "#a855f7", blue = "#3b82f6", sky = "#0ea5e9", pink = "#ec4899", gold = "#eab308"
 let orange = "#f97316", peri = "#818cf8", lilac = "#c084fc", muted = "#858aa3", red = "#ef4444"
 

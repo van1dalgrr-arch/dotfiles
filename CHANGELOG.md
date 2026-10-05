@@ -25,8 +25,8 @@
 - `.zshrc` no longer breaks when a tool or oh-my-zsh is missing; `typeset -U path`; optional mise hook
 
 **Zed**
-- New light theme **Dev Day**, generated from Dev Night by `zed/extension/light.py` so the two stay in sync. It switches with macOS appearance
-- Themes and icons are now a single Zed extension in `zed/extension/` (id `dev-night`, MIT), ready to publish to the Zed registry
+- New light theme **Dev Day**, generated from Dev Night by `zed/tools/light.py` so the two stay in sync. It switches with macOS appearance
+- Themes and icons are two Zed extensions, `zed/dev-night-theme` and `zed/dev-night-icons` (MIT), laid out the way the Zed registry wants; generators live in `zed/tools/`
 
 **Light mode**
 - Ghostty and the shell follow macOS appearance. The light palette **Dev Day** (`themes/light/day.sh`) matches the Zed theme

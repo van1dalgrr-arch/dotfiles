@@ -8,13 +8,13 @@
   //  ВНЕШНИЙ ВИД
   // ────────────────────────────────────────────────────────────
 
-  // свои темы из расширения zed/extension: тёмная Dev Night, светлая Dev Day; меняются вместе с macOS
+  // свои темы из расширения zed/dev-night-theme: тёмная Dev Night, светлая Dev Day; меняются вместе с macOS
   "theme": {
     "mode": "system",
     "light": "Dev Day",
     "dark": "Dev Night",
   },
-  // иконки файлов: своя тема (zed/extension — значки как в терминале), в обоих режимах
+  // иконки файлов: своя тема (zed/dev-night-icons — значки как в терминале), в обоих режимах
   "icon_theme": {
     "mode": "system",
     "light": "Dev Night Icons",
