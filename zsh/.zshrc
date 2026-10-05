@@ -207,6 +207,21 @@ alias ports="lsof -i -P | grep LISTEN"
 # t — tmux-сессия main: подключиться, если есть, иначе создать (с телефона по SSH: t → claude)
 alias t="tmux new -A -s main"
 
+# awake on — Mac не засыпает даже с закрытой крышкой (чтобы работать с телефона по SSH)
+# awake off — как обычно · awake — показать. Нужен пароль администратора (pmset).
+# Осторожно: с закрытой крышкой не класть в рюкзак — греется и садит батарею.
+awake() {
+    case $1 in
+        on)  sudo pmset -a disablesleep 1 && print -P "%F{#$T_FOAM}☕ не засыпает, даже с закрытой крышкой%f · выключить: awake off" ;;
+        off) sudo pmset -a disablesleep 0 && print -P "%F{#$T_MUTED}💤 засыпает как обычно%f" ;;
+        *)   if pmset -g | command grep -q 'SleepDisabled[[:space:]]*1'; then
+                 print -P "%F{#$T_FOAM}☕ awake: включено%f — не спит с закрытой крышкой · awake off"
+             else
+                 print -P "%F{#$T_MUTED}💤 awake: выключено%f — с закрытой крышкой засыпает · awake on"
+             fi ;;
+    esac
+}
+
 # ────────────────────────────────────────────────────────────
 # SAFETY
 # ────────────────────────────────────────────────────────────

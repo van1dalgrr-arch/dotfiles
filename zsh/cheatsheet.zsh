@@ -67,6 +67,8 @@ load|нагрузочный тест: load [url] [сек] [соединений]
 pd|dot project doctor — что есть в проекте и чего не хватает
 theme|сменить тему терминала и обоев: theme kanagawa / theme rose-pine
 palette|цвета текущей темы: роли и 16 цветов терминала
+awake|awake on — не засыпать с закрытой крышкой (SSH с телефона) · awake off
+t|tmux-сессия main: подключиться или создать (с телефона: t → claude)
 wall|сменить обои с превью: wall · petals, neon, rain, eclipse, orbit, code…
 EOF
 }
