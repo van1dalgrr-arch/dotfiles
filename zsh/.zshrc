@@ -435,6 +435,7 @@ source "$HOME/dotfiles/zsh/ram.zsh"
 source "$HOME/dotfiles/zsh/update.zsh"
 source "$HOME/dotfiles/zsh/gonew.zsh"
 source "$HOME/dotfiles/zsh/backend.zsh"
+source "$HOME/dotfiles/zsh/reminders.zsh"
 
 # ────────────────────────────────────────────────────────────
 # ПРИВЕТСТВИЕ: логотип macOS + коротко о системе (~35 мс).
@@ -455,6 +456,7 @@ _greeting() {
     local -a tips=(${(f)"$(_cheat_funcs)"})
     local tip=${tips[RANDOM % $#tips + 1]}
     print -P "\n  $(_c $T_GOLD)󰌵  ${tip%%|*}%f  $(_c $T_MUTED)${tip#*|}  · ? — все команды%f"
+    _reminders                                           # update давно не запускался, незапушенное
 }
 add-zsh-hook precmd _greeting
 

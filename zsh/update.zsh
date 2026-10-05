@@ -30,6 +30,7 @@ update() {
     _step "иконки и тема"
     NO_WALLPAPER=1 ~/dotfiles/themes/apply.sh | tail -2
 
+    mkdir -p ~/.cache/dotfiles && touch ~/.cache/dotfiles/last-update   # для напоминания в приветствии
     local after=$(df -k / | awk 'NR==2 {print $4}')
     local freed=$(( (after - before) / 1024 ))
     print "\n${ok}✓ готово${r}  ${dim}освобождено: ${freed} МБ · свободно: $(( after / 1048576 )) ГБ${r}"

@@ -41,6 +41,9 @@
 - kubectl context `⎈` in the prompt when it matters (k8s project, or after kubectl/helm in that window), read from the kubeconfig file
 - Ghostty without a titlebar and with a block cursor, like a terminal in a tiling WM; macOS logo in the greeting; `palette` shows the theme colors
 
+**Reminders**
+- Under the greeting of a new window, only when there is something: `update` not run for 7+ days, repos in `~/dev` with unpushed commits (any branch) or uncommitted files. Repo status is cached and refreshed in the background, adding about 8 ms to the greeting
+
 **Tests**
 - `tests/smoke.sh` (`make test`), run in CI on Linux and macOS; Brewfile syntax and bash 3.2 parse checks
 
