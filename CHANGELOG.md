@@ -28,6 +28,10 @@
 - New light theme **Dev Day**, generated from Dev Night by `zed/extension/light.py` so the two stay in sync. It switches with macOS appearance
 - Themes and icons are now a single Zed extension in `zed/extension/` (id `dev-night`, MIT), ready to publish to the Zed registry
 
+**Light mode**
+- Ghostty and the shell follow macOS appearance. The light palette **Dev Day** (`themes/light/day.sh`) matches the Zed theme
+- `apply.sh` generates `dotfiles-dark` / `dotfiles-light` Ghostty themes plus light copies for eza, bat, lazygit, starship and delta (`DELTA_FEATURES=+day`)
+
 **Tests**
 - `tests/smoke.sh` (`make test`), run in CI on Linux and macOS; Brewfile syntax and bash 3.2 parse checks
 

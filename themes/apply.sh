@@ -17,15 +17,19 @@ theme="$DOTFILES/themes/$name.sh"
 GEN="$HOME/.cache/dotfiles-theme"
 mkdir -p "$GEN" "$HOME/.config/dotfiles" "$HOME/.config/ghostty"
 
-# ─── таблица перевода цветов ───
+# ─── таблица перевода цветов: эталон rose-pine → палитра (роль к роли) ───
 roles=(BASE SURFACE OVERLAY HL_LOW HL_MED HL_HIGH MUTED SUBTLE TEXT LOVE GOLD ROSE PINE FOAM IRIS
        DIFF_ADD DIFF_ADD_EMPH DIFF_DEL DIFF_DEL_EMPH)
-map=""
-for r in "${roles[@]}"; do
-    from=$(source "$DOTFILES/themes/rose-pine.sh"; eval echo "\$T_$r")
-    to=$(source "$theme"; eval echo "\$T_$r")
-    map+="$from=$to,"
-done
+make_map() {
+    local r from to m=""
+    for r in "${roles[@]}"; do
+        from=$(source "$DOTFILES/themes/rose-pine.sh"; eval echo "\$T_$r")
+        to=$(source "$1"; eval echo "\$T_$r")
+        m+="$from=$to,"
+    done
+    printf '%s' "$m"
+}
+map=$(make_map "$theme")
 
 # Один проход perl: #rrggbb, 0xrrggbb, 0xffrrggbb, hex("rrggbb") (swift) → цвет темы;
 # цепочек замен не бывает
@@ -39,16 +43,25 @@ recolor() {
 THEME_GHOSTTY_EXTRA=""
 source "$theme"
 
-# ─── Ghostty: тема + цвета курсора/выделения/иконки (подключается через config-file) ───
+# ─── Ghostty: две темы — тёмная (выбранная) и светлая Dev Day; переключаются вместе с macOS ───
+# Все цвета — внутри файлов тем: явные значения в конфиге перекрыли бы светлую тему.
+mkdir -p "$HOME/.config/ghostty/themes"
+builtin_theme="/Applications/Ghostty.app/Contents/Resources/ghostty/themes/$THEME_GHOSTTY"
+{
+    echo "# сгенерировано themes/apply.sh ($name) — не править руками"
+    if [ -f "$builtin_theme" ]; then command cat "$builtin_theme"
+    else printf 'background = #%s\nforeground = #%s\n' "$T_BASE" "$T_TEXT"; fi
+    printf 'cursor-color = #%s\nselection-background = #%s\nunfocused-split-fill = #%s\n' "$T_ROSE" "$T_HL_MED" "$T_BASE"
+    printf '%s\n' "${THEME_GHOSTTY_EXTRA:-}"
+} > "$HOME/.config/ghostty/themes/dotfiles-dark"
+( source "$DOTFILES/themes/light/day.sh"
+  printf '# сгенерировано themes/apply.sh — Dev Day (themes/light/day.sh)\n%s\n' "$GHOSTTY_LIGHT" ) \
+    > "$HOME/.config/ghostty/themes/dotfiles-light"
 command cat > "$HOME/.config/ghostty/theme.ghostty" <<EOF
 # сгенерировано themes/apply.sh ($name) — не править руками
-theme = $THEME_GHOSTTY
-cursor-color = #$T_ROSE
-selection-background = #$T_HL_MED
-unfocused-split-fill = #$T_BASE
+theme = light:dotfiles-light,dark:dotfiles-dark
 macos-icon-ghost-color = #$T_ROSE
 macos-icon-screen-color = #$T_BASE,#$T_OVERLAY
-${THEME_GHOSTTY_EXTRA:-}
 EOF
 
 # шлейф курсора: цвета в шейдере заданы vec3 с комментарием // #hex
@@ -72,6 +85,19 @@ bat cache --build >/dev/null 2>&1 || true
 # ─── delta (git diff): цвета подключаются в .gitconfig через [include] ───
 recolor "$DOTFILES/git/delta.gitconfig" "$GEN/delta.gitconfig.tmp"
 sed 's/syntax-theme = .*/syntax-theme = dotfiles/' "$GEN/delta.gitconfig.tmp" > "$GEN/delta.gitconfig" && rm "$GEN/delta.gitconfig.tmp"
+
+# ─── светлые копии (Dev Day) для светлого режима macOS: zsh/theme.zsh выбирает их при старте ───
+map=$(make_map "$DOTFILES/themes/light/day.sh")
+L="$GEN/light"; mkdir -p "$L/eza"
+recolor "$DOTFILES/starship/starship.toml" "$L/starship.toml"
+recolor "$DOTFILES/eza/theme.yml" "$L/eza/theme.yml"
+recolor "$DOTFILES/lazygit/config.yml" "$L/lazygit.yml"
+recolor "$DOTFILES/bat/themes/rose-pine.tmTheme" "$HOME/.config/bat/themes/dotfiles-light.tmTheme"
+bat cache --build >/dev/null 2>&1 || true
+# delta: светлые цвета — отдельной «фичей» [delta "day"], включается DELTA_FEATURES=+day
+recolor "$DOTFILES/git/delta.gitconfig" "$L/delta.tmp"
+sed -e 's/^\[delta\]/[delta "day"]/' -e 's/syntax-theme = .*/syntax-theme = dotfiles-light/' "$L/delta.tmp" >> "$GEN/delta.gitconfig"
+rm "$L/delta.tmp"
 
 echo "$name" > "$HOME/.config/dotfiles/theme"
 

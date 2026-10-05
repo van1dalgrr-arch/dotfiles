@@ -8,15 +8,24 @@ DOTFILES_THEME=$(command cat ~/.config/dotfiles/theme 2>/dev/null || echo rose-p
 [[ -f ~/dotfiles/themes/$DOTFILES_THEME.sh ]] || DOTFILES_THEME=rose-pine
 source ~/dotfiles/themes/$DOTFILES_THEME.sh
 
+# Светлый режим macOS → светлая палитра Dev Day (Ghostty переключается сам, zsh — при старте).
+# Вручную: DOTFILES_APPEARANCE=light|dark в ~/.zshenv
+if [[ ${DOTFILES_APPEARANCE:-$(defaults read -g AppleInterfaceStyle 2>/dev/null || echo light)} == light ]]; then
+    source ~/dotfiles/themes/light/day.sh
+    DOTFILES_LIGHT=1
+fi
+
 # _c ROLE_HEX — ANSI-цвет текста из hex (для своих функций: ram, pl, шпаргалка)
 _c() { printf '\e[38;2;%d;%d;%dm' 0x${1[1,2]} 0x${1[3,4]} 0x${1[5,6]}; }
 
 # Перекрашенные apply.sh копии конфигов (если тему ещё не применяли — эталонные)
 _tg=~/.cache/dotfiles-theme
+(( DOTFILES_LIGHT )) && [[ -d $_tg/light ]] && { _tg=$_tg/light; export DELTA_FEATURES=+day; }
 [[ -f $_tg/starship.toml ]] && export STARSHIP_CONFIG=$_tg/starship.toml
 [[ -f $_tg/eza/theme.yml ]] && export EZA_CONFIG_DIR=$_tg/eza || export EZA_CONFIG_DIR=~/.config/eza
 [[ -f $_tg/lazygit.yml ]] && export LG_CONFIG_FILE=$_tg/lazygit.yml
 [[ -f ~/.config/bat/themes/dotfiles.tmTheme ]] && export BAT_THEME=dotfiles || export BAT_THEME=rose-pine
+(( DOTFILES_LIGHT )) && [[ -f ~/.config/bat/themes/dotfiles-light.tmTheme ]] && export BAT_THEME=dotfiles-light
 unset _tg
 
 theme() {
