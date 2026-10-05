@@ -5,7 +5,7 @@
 #     ./macos.sh --yes                применить
 #     ./macos.sh [--yes] finder dock  только выбранные группы
 #     ./macos.sh -v                   показать и то, что уже настроено
-#   Группы: keyboard trackpad finder saving screenshots dock appearance
+#   Группы: keyboard trackpad finder saving screenshots dock appearance apps
 #   Повторный запуск безопасен: совпадающие значения пропускаются.
 #   Перезапускаются только Finder / Dock / SystemUIServer. Без logout и reboot —
 #   клавиатура, трекпад и тёмная тема вступят в силу после перелогина.
@@ -13,7 +13,7 @@
 # ============================================================
 set -uo pipefail
 
-ALL="keyboard trackpad finder saving screenshots dock appearance"
+ALL="keyboard trackpad finder saving screenshots dock appearance apps"
 apply=0 verbose=0 groups="" changed=0 restart=""
 
 if [ -t 1 ]; then
@@ -110,6 +110,17 @@ dock() {
     pref com.apple.dock minimize-to-application bool true              "Dock: сворачивать в иконку приложения"
     pref com.apple.dock mineffect string scale                         "Dock: простая анимация сворачивания"
     pref com.apple.dock mru-spaces bool false                          "не переставлять рабочие столы (AeroSpace)"
+}
+
+# файлы кода (.go .md .json .yaml .sh .sql .env …) открываются в Zed — macos/default-apps.swift
+# macOS 26 спрашивает подтверждение на каждое расширение — применять, сидя за Mac
+apps() {
+    local out n
+    out=$(swift "$(dirname "$0")/macos/default-apps.swift" "$([ "$apply" = 1 ] && echo apply || echo check)" 2>&1)
+    [ -n "$out" ] && printf '%s\n' "$out"
+    n=$(grep -c '^  ~' <<<"$out")
+    changed=$((changed + n)); [ "$n" -gt 0 ] && group_changed=1
+    return 0
 }
 
 appearance() {
