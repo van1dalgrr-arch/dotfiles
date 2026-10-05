@@ -8,6 +8,7 @@
 	email = van1dalgrr@gmail.com
 [push]
 	autoSetupRemote = true
+	followTags = true          # теги уходят вместе с коммитами
 [core]
 	pager = delta
 	excludesFile = ~/dotfiles/git/ignore
@@ -23,6 +24,8 @@
 [diff]
 	colorMoved = default
 	algorithm = histogram
+	mnemonicPrefix = true     # i/ w/ c/ вместо a/ b/ — видно, что с чем сравнивается
+	renames = copies
 [init]
 	defaultBranch = main
 [fetch]
@@ -35,8 +38,30 @@
 	autocorrect = prompt
 [rebase]
 	autoStash = true
+	autoSquash = true          # fixup!-коммиты сами встают на место при rebase -i
+	updateRefs = true          # стек веток переезжает вместе
+[pull]
+	rebase = true              # без лишних merge-коммитов при pull
+[commit]
+	verbose = true             # в редакторе коммита виден сам diff
+	template = ~/dotfiles/git/commit-template
+[tag]
+	sort = version:refname     # v1.10 после v1.9, а не после v1.1
+[core]
+	untrackedCache = true      # быстрее git status в больших репозиториях
 [column]
 	ui = auto
+# Свои команды: git undo, git amend, …  (шпаргалка: ?)
+[alias]
+	undo = reset --soft HEAD~1                       # отменить последний коммит, изменения остаются
+	amend = commit --amend --no-edit                 # дописать в последний коммит
+	wip = !git add -A && git commit -qm "wip" && git log -1 --oneline   # быстро сохранить всё
+	unwip = !git log -1 --format=%s | grep -qx wip && git reset -q HEAD~1 && echo "wip снят"
+	fixup = !git commit --fixup=$(git log --oneline -20 | fzf --header="к какому коммиту" | cut -d' ' -f1)
+	last = log -1 --stat
+	recent = for-each-ref --sort=-committerdate --count=10 --format='%(committerdate:relative)%09%(refname:short)' refs/heads   # последние ветки
+	gone = !git branch -vv | awk '/: gone]/{print $1}'   # ветки, удалённые на GitHub (после merge)
+	tidy = !git gone | xargs -r git branch -d          # удалить их локально (только слитые: -d)
 # цвета delta: эталон (Rosé Pine), поверх — перекрашенные под текущую тему (themes/apply.sh)
 [include]
 	path = ~/dotfiles/git/delta.gitconfig

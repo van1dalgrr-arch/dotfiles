@@ -61,6 +61,10 @@
 **Completion**
 - Tab completion for `dot` (commands, `doctor --deep`, `tools`, `macos` groups), `theme`, `wall`, `backdrop` and `awake`; themes and wallpapers are read from the repo
 
+**Git**
+- `pull --rebase`, autosquash and updateRefs, `push.followTags`, verbose commits with a message template, version-sorted tags, untracked cache
+- Aliases `undo`, `amend`, `wip`/`unwip`, `fixup` (fzf), `recent`, `gone`/`tidy`, listed in the `?` cheatsheet
+
 **Tests**
 - `tests/smoke.sh` (`make test`), run in CI on Linux and macOS; Brewfile syntax and bash 3.2 parse checks
 

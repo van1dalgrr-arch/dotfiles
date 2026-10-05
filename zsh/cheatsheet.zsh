@@ -39,6 +39,12 @@ Shell|alt-c|перейти в папку (fzf)
 Shell|tab|автодополнение с превью (fzf-tab), < > — группы
 Shell|ctrl-/|эта шпаргалка
 Shell|z <часть пути>|прыжок в папку (zoxide)
+Git|git undo|отменить последний коммит (изменения остаются)
+Git|git amend|дописать в последний коммит, без нового сообщения
+Git|git wip / git unwip|быстро сохранить всё коммитом wip / снять его
+Git|git fixup|поправка к старому коммиту (fzf), сольётся при rebase -i
+Git|git recent|последние 10 веток по дате
+Git|git gone / git tidy|ветки, удалённые на GitHub / удалить их локально
 EOF
 }
 
@@ -79,6 +85,7 @@ _cheat_lines() {
         AeroSpace "$(_c $T_IRIS)"
         Ghostty   "$(_c $T_ROSE)"
         Shell     "$(_c $T_FOAM)"
+        Git       "$(_c $T_GOLD)"
         func      "$(_c $T_PINE)"
         alias     "$(_c $T_SUBTLE)"
     )
