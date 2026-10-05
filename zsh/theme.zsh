@@ -61,16 +61,26 @@ palette() {
     for i in {8..15}; do print -P -n -- "  %K{$i}    %k"; done; print "\n"
 }
 
-# wall — сменить живые обои: wall (выбор с превью-картинкой) · wall eclipse · wall orbit …
-# Обои — icons/wallpaper-<имя>.swift. Новые (с runWallpaper) собираются вместе с wallpaper-kit.swift.
+# wall — сменить обои: wall (выбор с превью-картинкой) · wall eclipse · wall sakura …
+#   wall add <фото> [имя] — своё фото: увеличивается под экран без мыла (icons/photo-wallpaper.swift)
+# Живые обои — icons/wallpaper-<имя>.swift (новые с runWallpaper собираются вместе с wallpaper-kit.swift).
+# Фото — ~/Pictures/Wallpapers/photos/<имя>.jpg (не в git: чужие фото в публичный репозиторий не кладём).
 # Готовые HEIC — ~/Pictures/Wallpapers/<имя>.heic, превью — ~/.cache/wallpapers/<имя>.png
+_wall_photos=~/Pictures/Wallpapers/photos
 _wall_names() {
     command ls ~/dotfiles/icons/wallpaper-*.swift | sed 's|.*/wallpaper-||; s|\.swift$||' | grep -vx kit
+    print -l $_wall_photos/*.(jpg|jpeg|png|heic|webp)(N:t:r)
 }
+_wall_photo() { local f=($_wall_photos/$1.(jpg|jpeg|png|heic|webp)(N)); print -r -- ${f[1]}; }
 # _wall_build <имя> <выход> [ширина высота] — собрать HEIC (или PNG-превью)
 _wall_build() {
-    local src=~/dotfiles/icons/wallpaper-$1.swift out=$2; shift 2
-    if grep -q runWallpaper $src; then
+    local src=~/dotfiles/icons/wallpaper-$1.swift out=$2 photo=$(_wall_photo $1); shift 2
+    if [[ ! -f $src && -n $photo ]]; then         # фото: генератор компилируется один раз
+        local gen=~/.cache/wallpapers/photo-wallpaper
+        [[ -x $gen && $gen -nt ~/dotfiles/icons/photo-wallpaper.swift ]] || \
+            swiftc -O ~/dotfiles/icons/photo-wallpaper.swift -o $gen 2>/dev/null || return
+        $gen $photo $out "$@" >/dev/null
+    elif grep -q runWallpaper $src; then
         local tmp=~/.cache/wallpapers/build-$1.swift
         command cat ~/dotfiles/icons/wallpaper-kit.swift $src >| $tmp
         swift $tmp $out "$@" >/dev/null 2>&1
@@ -83,8 +93,16 @@ _wall_build() {
     fi
 }
 wall() {
-    mkdir -p ~/.cache/wallpapers ~/Pictures/Wallpapers
+    mkdir -p ~/.cache/wallpapers ~/Pictures/Wallpapers $_wall_photos
     local name=$1 n
+    if [[ $name == add ]]; then                 # wall add <фото> [имя]
+        local file=$2 nm=${3:-${2:t:r}}
+        [[ -f $file ]] || { echo "usage: wall add <фото> [имя]"; return 1; }
+        nm=${nm:l}; nm=${nm// /-}
+        command cp -f $file $_wall_photos/$nm.${file:e:l} && echo "добавлено: $nm"
+        command rm -f ~/Pictures/Wallpapers/$nm.heic ~/.cache/wallpapers/$nm.png
+        name=$nm
+    fi
     if [[ -z $name ]]; then
         for n in $(_wall_names); do          # недостающие превью — один раз
             [[ -f ~/.cache/wallpapers/$n.png ]] || { echo "превью: $n…"; _wall_build $n ~/.cache/wallpapers/$n.png 960 624; }
@@ -93,9 +111,10 @@ wall() {
             --preview 'chafa --animate=off -s ${FZF_PREVIEW_COLUMNS}x${FZF_PREVIEW_LINES} ~/.cache/wallpapers/{}.png' \
             --preview-window=right:75%) || return
     fi
-    local src=~/dotfiles/icons/wallpaper-$name.swift heic=~/Pictures/Wallpapers/$name.heic
-    [[ -f $src ]] || { echo "нет обоев: $name (есть: $(_wall_names | tr '\n' ' '))"; return 1; }
-    if [[ ! -f $heic || $src -nt $heic || ~/dotfiles/icons/wallpaper-kit.swift -nt $heic ]]; then
+    local src=~/dotfiles/icons/wallpaper-$name.swift heic=~/Pictures/Wallpapers/$name.heic photo=$(_wall_photo $name)
+    [[ -f $src || -n $photo ]] || { echo "нет обоев: $name (есть: $(_wall_names | tr '\n' ' '))"; return 1; }
+    [[ -f $src ]] || src=$photo
+    if [[ ! -f $heic || $src -nt $heic || ( $src == *.swift && ~/dotfiles/icons/wallpaper-kit.swift -nt $heic ) || ( $src != *.swift && ~/dotfiles/icons/photo-wallpaper.swift -nt $heic ) ]]; then
         echo "рисую $name…"; _wall_build $name $heic || return
     fi
     python3 ~/dotfiles/themes/set-wallpaper.py $heic

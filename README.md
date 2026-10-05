@@ -202,6 +202,11 @@ Everything else — `petals` `prism` `ocean` `glass` `crystal` `vinyl` `neon` `r
 
 **[See all 25 in the gallery →](docs/wallpapers.md)**
 
+**Your own photos** work too: `wall add ~/Downloads/photo.jpg sakura`. Small or compressed photos are cleaned of
+JPEG artifacts, upscaled to the screen in two Lanczos steps, cropped to its aspect and lightly sharpened
+(`icons/photo-wallpaper.swift`), then show up in the `wall` list. Photos stay in `~/Pictures/Wallpapers/photos`
+and are not committed, because other people's photos don't belong in a public repo.
+
 Each wallpaper is a short Swift script in `icons/`. It renders 12 frames per day, and every parameter
 (color, light, positions) is computed continuously from the hour, so macOS blends smoothly from one
 frame to the next. Wallpapers are applied to all Spaces at once.

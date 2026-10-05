@@ -5,7 +5,7 @@
 # ============================================================
 
 _dot_themes()  { local -a t=(~/dotfiles/themes/*.sh(N:t:r)); t=(${t:#apply}); _describe 'тема' t; }
-_dot_walls()   { local -a w=(~/dotfiles/icons/wallpaper-*.swift(N:t:r)); w=(${w#wallpaper-}); w=(${w:#kit}); _describe 'обои' w; }
+_dot_walls()   { local -a w=(~/dotfiles/icons/wallpaper-*.swift(N:t:r)); w=(${w#wallpaper-}); w=(${w:#kit} ~/Pictures/Wallpapers/photos/*.(jpg|jpeg|png|heic|webp)(N:t:r) add); _describe 'обои' w; }
 _dot_backdrops() { local -a s=(glow:'свет из углов' aurora:'сияние снизу' haze:'размытый свет обоев' glass:'обои сквозь стекло' off:'без фона'); _describe 'стиль' s; }
 _dot_macos_groups() {
     local -a g=(keyboard trackpad finder saving screenshots dock appearance apps login)
