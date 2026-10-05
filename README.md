@@ -11,9 +11,11 @@ MacBook Air M2 · 8 GB · zsh · Ghostty · AeroSpace · Zed
 ![license](https://img.shields.io/badge/license-MIT-101010?style=flat-square)
 ![ci](https://github.com/van1dalgrr-arch/dotfiles/actions/workflows/ci.yml/badge.svg)
 
-<img src="docs/wallpapers.jpg" alt="Live wallpapers from this repo" width="100%">
+<img src="docs/desktop.jpg" alt="Ghostty and Zed tiled by AeroSpace over a sakura wallpaper, the terminal glowing in its colors" width="100%">
 
-<sub>25 live wallpapers — all drawn in Swift and changing throughout the day</sub>
+<sub>Ghostty + Zed tiled by AeroSpace. The terminal's glow is built from the wallpaper's colors. Rendered from real command output.</sub>
+
+**One command on a clean Mac:** `curl -fsSL https://raw.githubusercontent.com/van1dalgrr-arch/dotfiles/main/bootstrap.sh | bash`
 
 </div>
 
@@ -33,7 +35,6 @@ A few things that came out of that:
 
 > Comments in the configs and messages printed by the commands are in Russian — that's my native language.
 
-<p align="center"><img src="docs/terminal.png" width="85%" alt="Ghostty: fastfetch greeting and the framed pure-zsh prompt"/></p>
 
 ## Install
 
@@ -67,18 +68,17 @@ your `*.bak` files, and `--purge` also deletes the generated theme files. Homebr
 
 | | |
 |---|---|
-| **Terminal** | [Ghostty](https://ghostty.org) without a title bar (like a terminal in a tiling WM), block cursor with a glowing trail, drop-down window on `` ctrl+` `` |
+| **Terminal** | [Ghostty](https://ghostty.org) without a title bar (like in a tiling WM), a smooth gliding cursor like VS Code's, a drop-down window on `` ctrl+` `` from any app |
 | **Windows** | [AeroSpace](https://github.com/nikitabobko/AeroSpace) — i3-style tiling, hotkeys work on any keyboard layout |
 | **Prompt** | custom zsh in a frame: `╭─[user@host]─[path]─[git]─[Go · compose · ⎈ k8s context]`, command duration, collapses after Enter |
 | **Editor** | [Zed](https://zed.dev) with my own themes, Dev Night (dark) and Dev Day (light), that switch with macOS, plus icons. Delve debugger, golangci-lint in the editor, tasks on `ctrl-r` |
-| **Themes** | `theme vesper` / `kanagawa` / `rose-pine` — recolors the whole terminal, app icons and wallpaper |
+| **Themes** | `theme vesper` / `kanagawa` / `rose-pine`: recolors the whole terminal, app icons and wallpaper. **Light mode** (Dev Day) follows macOS |
 | **Backdrop** | `backdrop` — the wallpaper's light behind the terminal text: glow, aurora, haze or glass |
-| **Wallpapers** | `wall` — pick one of 25 live wallpapers with an image preview right in the terminal |
+| **Wallpapers** | `wall`: 25 live wallpapers drawn in Swift that change through the day, plus your own photos (`wall add`), upscaled without blur |
 | **Git** | delta for diffs, lazygit, gitleaks before every commit |
 | **Docker** | OrbStack, lazydocker, and `up` — start dependencies and run the project in one command |
+| **GoLand** | the same Dev Night / Dev Day themes as a JetBrains plugin and `.icls`, see [jetbrains/](jetbrains) |
 | **API & DB** | [Yaak](https://yaak.app) instead of Postman (light, Tauri), [TablePlus](https://tableplus.com) for databases, `pgcli` via `db` |
-
-<p align="center"><img src="docs/zed.png" width="90%" alt="Zed with the Dev Night theme and icons"/></p>
 
 <p align="center"><img src="docs/zed-themes.png" width="90%" alt="Dev Night and Dev Day side by side"/></p>
 <p align="center"><sub>Dev Night and Dev Day, rendered from the theme file by <code>zed/tools/preview.py</code></sub></p>
@@ -117,6 +117,8 @@ dot doctor --deep    # ~20 s: + versions, pinned revisions, packages outside the
 
 It only reads, never changes anything. `✓` ok · `!` worth a look · `✗` broken (exit code 1) · `○` optional and not installed.
 Every problem line ends with the command that fixes it. Exit codes: `0` ok (warnings allowed), `1` errors, `2` bad usage.
+
+<p align="center"><img src="docs/doctor.jpg" width="70%" alt="dot doctor output: sections with checkmarks and hints"/></p>
 
 ## Project doctor
 
@@ -190,6 +192,8 @@ Running it twice is safe: values that already match are skipped. It restarts onl
 and never logs you out. Keyboard, trackpad and dark mode apply after your next login.
 
 ## Wallpapers
+
+<img src="docs/wallpapers.jpg" alt="Live wallpapers from this repo" width="100%">
 
 ```bash
 wall             # list with an image preview, enter to apply
