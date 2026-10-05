@@ -85,9 +85,5 @@ brew "atuin"
 brew "shellcheck"
 brew "shfmt"
 brew "gitleaks"
-
-# Удалённый доступ с телефона (docs/remote.ru.md)
-brew "tmux"
-brew "mosh"
 tap "nikitabobko/tap"
 cask "nikitabobko/tap/aerospace"

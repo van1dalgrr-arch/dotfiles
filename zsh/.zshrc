@@ -204,10 +204,8 @@ alias venv="uv venv && source .venv/bin/activate"
 alias ff="fastfetch"
 alias neofetch="fastfetch"
 alias ports="lsof -i -P | grep LISTEN"
-# t — tmux-сессия main: подключиться, если есть, иначе создать (с телефона по SSH: t → claude)
-alias t="tmux new -A -s main"
 
-# awake on — Mac не засыпает даже с закрытой крышкой (чтобы работать с телефона по SSH)
+# awake on — Mac не засыпает даже с закрытой крышкой (чтобы работать с Claude с телефона)
 # awake off — как обычно · awake — показать. Нужен пароль администратора (pmset).
 # Осторожно: с закрытой крышкой не класть в рюкзак — греется и садит батарею.
 awake() {

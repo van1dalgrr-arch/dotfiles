@@ -40,8 +40,6 @@ link() {
 }
 
 link zsh/.zshrc                      "$HOME/.zshrc"
-link zsh/.zshenv                     "$HOME/.zshenv"
-link tmux/tmux.conf                  "$HOME/.config/tmux/tmux.conf"
 link git/.gitconfig                  "$HOME/.gitconfig"
 link ghostty/config.ghostty          "$HOME/.config/ghostty/config.ghostty"
 link starship/starship.toml          "$HOME/.config/starship.toml"
