@@ -17,7 +17,7 @@ Ghostty reads its config on launch — press `cmd-shift-,` and open a new window
 <summary>The drop-down terminal doesn't open</summary>
 
 Ghostty has to be running in the background (AeroSpace starts it at login; `cmd+q` only closes its windows)
-and needs **Accessibility** permission. Without it `ctrl+\`` works only while Ghostty is focused, and other apps
+and needs **Accessibility** permission. Without it `` ctrl+` `` works only while Ghostty is focused, and other apps
 (Zed, VS Code) take the key for their own terminal panel. `dot doctor` checks it when run inside Ghostty.
 Fix: System Settings → Privacy & Security → Accessibility → turn on Ghostty (or add it with +), then `cmd+shift+,`.
 If it still doesn't react, quit and reopen Ghostty once.

@@ -264,6 +264,8 @@ False positive? Add a `gitleaks:allow` comment on the line, or use `git commit -
 
 ## Layout
 
+Every folder has its own `README.md` (English) and `README.ru.md` (Russian): what's inside, where it's linked, how to change it.
+
 ```
 dotfiles/
 ├── bin/dot          entry point: doctor, project doctor, tools, install, update, theme, wall
