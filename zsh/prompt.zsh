@@ -1,13 +1,15 @@
 # ============================================================
-#   Промпт на чистом zsh — в духе Arch-райсов, без starship.
+#   Промпт на чистом zsh, в рамке — как в Linux-райсах, без starship.
 #   Всё, что можно, считается встроенными средствами zsh:
 #   вне git-репозитория — ни одного процесса, внутри — один `git status`.
 #   Цвета — из палитры темы (T_*).
 #
-#     󰣇  logsence/internal/handler on  main +1 !2 ?3 ≡1 ⇡1   1.25 󰡨      󱎫 3s · 13:42
-#   ❯
+#   ╭─[dev@van1dal]─[logsence/internal/handler]─[ main +1 !2 ?3 ≡1 ⇡1]─[ 1.27 󰡨 ⎈ orbstack]   󱎫 3s · 13:42
+#   ╰─$
 #
-#   После Enter старый промпт сворачивается до «❯ команда» — история чистая.
+#   ⎈ контекст kubectl — только когда он важен: в проекте с k8s/, Chart.yaml, kustomization
+#   или после команды kubectl/k/helm/k9s/kind в этом окне (читается файл, kubectl не запускается).
+#   После Enter старый промпт сворачивается до «$ команда» — история чистая.
 # ============================================================
 
 zmodload zsh/datetime
@@ -56,7 +58,7 @@ _prompt_git() {
     [[ -z $branch ]] && return
     [[ $branch == "(detached)" ]] && branch="${oid[1,7]}"
 
-    local s="$(_p $T_SUBTLE)on $(_p $T_GOLD) $branch"
+    local s="$(_p $T_GOLD) $branch"
     (( staged ))    && s+=" $(_p $T_FOAM)+$staged"
     (( changed ))   && s+=" $(_p $T_ROSE)!$changed"
     (( conflicts )) && s+=" $(_p $T_LOVE)=$conflicts"
@@ -64,25 +66,44 @@ _prompt_git() {
     (( stash ))     && s+=" $(_p $T_MUTED)≡$stash"
     (( ahead ))     && s+=" $(_p $T_FOAM)⇡$ahead"
     (( behind ))    && s+=" $(_p $T_LOVE)⇣$behind"
-    print -n " $s"
+    print -n "$s"
+}
+
+# контекст kubectl из ~/.kube/config (или $KUBECONFIG) — чтением файла, без запуска kubectl
+_prompt_kube() {
+    local cfg=${KUBECONFIG%%:*}; cfg=${cfg:-$HOME/.kube/config}
+    [[ -r $cfg ]] || return
+    local ctx=${${(M)${(f)"$(<$cfg)"}:#current-context:*}#current-context: }
+    ctx=${ctx//\"/}
+    [[ -n $ctx ]] && print -n "$(_p $T_ROSE)⎈ $ctx"
 }
 
 # контекст проекта — только чтение файлов и переменных, без запуска программ
 _prompt_context() {
-    local root=$1 s=""
+    local root=$1 base=${1:-$PWD}
+    local -a s
     if [[ -n $root && -f $root/go.mod ]]; then
         local gv=${${(M)${(f)"$(<$root/go.mod)"}:#go [0-9]*}#go }
-        [[ -n $gv ]] && s+=" $(_p $T_FOAM) $gv"
+        [[ -n $gv ]] && s+="$(_p $T_FOAM) $gv"
     fi
-    local -a compose=(${root:-$PWD}/(compose|docker-compose).y(a|)ml(N))
-    (( $#compose )) && s+=" $(_p $T_FOAM)󰡨"
-    [[ -n $VIRTUAL_ENV ]] && s+=" $(_p $T_GOLD) ${VIRTUAL_ENV:t}"
-    [[ -n $SSH_CONNECTION ]] && s+=" $(_p $T_LOVE)%n@%m"
-    print -n "${s:+ $(_p $T_HL_HIGH)·$s}"
+    local -a compose=($base/(compose|docker-compose).y(a|)ml(N))
+    (( $#compose )) && s+="$(_p $T_FOAM)󰡨"
+    local -a k8s=($base/(k8s|manifests|Chart.yaml|kustomization.y(a|)ml)(N) $base/deploy/k8s(N))
+    if (( $#k8s || _prompt_kube_used )); then
+        local kube=$(_prompt_kube); [[ -n $kube ]] && s+="$kube"
+    fi
+    [[ -n $VIRTUAL_ENV ]] && s+="$(_p $T_GOLD) ${VIRTUAL_ENV:t}"
+    print -n "${(j: :)s}"
 }
 
-# время выполнения
-_prompt_preexec() { _prompt_t0=$EPOCHREALTIME; }
+# сегмент рамки: ─[ … ]
+_seg() { [[ -n $1 ]] && print -n "$(_p $T_MUTED)─[%f$1$(_p $T_MUTED)]"; }
+
+# время выполнения; заодно — была ли команда про Kubernetes (тогда показываем ⎈ контекст)
+_prompt_preexec() {
+    _prompt_t0=$EPOCHREALTIME
+    [[ $1 == (kubectl|k|helm|k9s|kind|kx|kn|kubectx|kubens|stern|klogs)(| *) ]] && _prompt_kube_used=1
+}
 
 _prompt_precmd() {
     local code=$?
@@ -114,14 +135,18 @@ _prompt_precmd() {
     local jobs_part="%(1j. $(_p $T_GOLD)✦ %j.)"
     local git_part=""; [[ -n $root ]] && git_part=$(_prompt_git)
 
-    PROMPT="$(_p $T_ROSE)󰣇 %f $(_prompt_dir $root)$git_part$(_prompt_context $root)$jobs_part$status_part%f
-$(_p $T_ROSE)%(?..$(_p $T_LOVE))❯%f "
+    # кто@где — настоящие имя и хост; по SSH хост красный, чтобы не перепутать машину
+    local host_color=$T_FOAM; [[ -n $SSH_CONNECTION ]] && host_color=$T_LOVE
+    local who="%B$(_p $T_ROSE)%n%b$(_p $T_MUTED)@%B$(_p $host_color)%m%b"
+
+    PROMPT="$(_p $T_MUTED)╭─[%f$who$(_p $T_MUTED)]$(_seg "$(_prompt_dir $root)")$(_seg "$git_part")$(_seg "$(_prompt_context $root)")$jobs_part$status_part%f
+$(_p $T_MUTED)╰─%(?.$(_p $T_ROSE).$(_p $T_LOVE))%(!.#.$)%f "
     RPROMPT="${took:+$(_p $T_GOLD)󱎫 $took $(_p $T_HL_HIGH)· }$(_p $T_MUTED)%D{%H:%M}%f"
 }
 
-# «транзиентный» промпт: после Enter остаётся только ❯ команда
+# «транзиентный» промпт: после Enter остаётся только $ команда
 _prompt_collapse() {
-    PROMPT="$(_p $T_ROSE)❯%f "
+    PROMPT="$(_p $T_ROSE)%(!.#.$)%f "
     RPROMPT=""
     zle .reset-prompt
 }

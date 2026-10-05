@@ -36,6 +36,11 @@
 - github-actions (workflow LSP: action inputs, `${{ }}` expressions), postgres-language-server (lints SQL migrations without a database), typos, mermaid
 - Kubernetes schema for `k8s/`, `deploy/k8s/` and `manifests/` YAML
 
+**Terminal look**
+- Two-line framed prompt: `╭─[user@host]─[path]─[git]─[context]` / `╰─$`, real user and host (red over SSH)
+- kubectl context `⎈` in the prompt when it matters (k8s project, or after kubectl/helm in that window), read from the kubeconfig file
+- Ghostty without a titlebar and with a block cursor, like a terminal in a tiling WM; macOS logo in the greeting; `palette` shows the theme colors
+
 **Tests**
 - `tests/smoke.sh` (`make test`), run in CI on Linux and macOS; Brewfile syntax and bash 3.2 parse checks
 

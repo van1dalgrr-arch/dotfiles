@@ -15,6 +15,9 @@ background-blur = 30
 window-padding-x = 22
 window-padding-y = 18
 window-padding-balance = true
+# Окно без заголовка — как терминал в тайловом WM: только текст и отступы.
+# Двигать плавающее окно: ctrl+cmd + тянуть (macos.sh, группа appearance)
+macos-titlebar-style = hidden
 # Красная кнопка закрывает окно, Ghostty остаётся в фоне — ctrl+` работает всегда
 quit-after-last-window-closed = false
 unfocused-split-opacity = 0.85
@@ -27,7 +30,7 @@ macos-icon-ghost-color = #ebbcba
 macos-icon-screen-color = #191724,#26233a
 
 # --- Cursor ---
-cursor-style = bar
+cursor-style = block
 # цвета курсора, выделения и фона сплитов — в темах (themes/apply.sh → ~/.config/ghostty/themes),
 # иначе светлая тема не смогла бы их поменять
 cursor-style-blink = true

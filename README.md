@@ -33,7 +33,7 @@ A few things that came out of that:
 
 > Comments in the configs and messages printed by the commands are in Russian — that's my native language.
 
-<p align="center"><img src="docs/terminal.png" width="85%" alt="Ghostty: Arch-style greeting and the pure-zsh prompt"/></p>
+<p align="center"><img src="docs/terminal.png" width="85%" alt="Ghostty: fastfetch greeting and the framed pure-zsh prompt"/></p>
 
 ## Install
 
@@ -69,9 +69,9 @@ your `*.bak` files, and `--purge` also deletes the generated theme files. Homebr
 
 | | |
 |---|---|
-| **Terminal** | [Ghostty](https://ghostty.org) with a drop-down window on `` ctrl+` `` and a glowing cursor trail |
+| **Terminal** | [Ghostty](https://ghostty.org) without a title bar (like a terminal in a tiling WM), block cursor with a glowing trail, drop-down window on `` ctrl+` `` |
 | **Windows** | [AeroSpace](https://github.com/nikitabobko/AeroSpace) — i3-style tiling, hotkeys work on any keyboard layout |
-| **Prompt** | custom zsh: path from the repo root, git status, Go version from `go.mod`, command duration |
+| **Prompt** | custom zsh in a frame: `╭─[user@host]─[path]─[git]─[Go · compose · ⎈ k8s context]`, command duration, collapses after Enter |
 | **Editor** | [Zed](https://zed.dev) with my own themes, Dev Night (dark) and Dev Day (light), that switch with macOS, plus icons. Delve debugger, golangci-lint in the editor, tasks on `ctrl-r` |
 | **Themes** | `theme vesper` / `kanagawa` / `rose-pine` — recolors the whole terminal, app icons and wallpaper |
 | **Wallpapers** | `wall` — pick one of 25 live wallpapers with an image preview right in the terminal |

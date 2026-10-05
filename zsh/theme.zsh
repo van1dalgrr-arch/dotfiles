@@ -45,6 +45,19 @@ theme() {
     exec zsh
 }
 
+# palette — цвета текущей темы: роли T_* и 16 цветов терминала (для скриншотов и чтобы подобрать цвет)
+palette() {
+    local r=$'\e[0m' role hex
+    print "\n  ${THEME_TITLE:-$DOTFILES_THEME}${DOTFILES_LIGHT:+ · Dev Day (светлый режим)}\n"
+    for role in BASE SURFACE OVERLAY MUTED SUBTLE TEXT LOVE GOLD ROSE PINE FOAM IRIS; do
+        hex=${(P)${:-T_$role}}
+        printf '  \e[48;2;%d;%d;%dm      %s  %s%-8s %s#%s%s\n' 0x${hex[1,2]} 0x${hex[3,4]} 0x${hex[5,6]} "$r" "$(_c $T_TEXT)" "$role" "$(_c $T_MUTED)" "$hex" "$r"
+    done
+    print
+    local i; for i in {0..7}; do print -n "  %K{$i}    %k" | print -P -n -- "$(cat)"; done; print
+    for i in {8..15}; do print -P -n -- "  %K{$i}    %k"; done; print "\n"
+}
+
 # wall — сменить живые обои: wall (выбор с превью-картинкой) · wall eclipse · wall orbit …
 # Обои — icons/wallpaper-<имя>.swift. Новые (с runWallpaper) собираются вместе с wallpaper-kit.swift.
 # Готовые HEIC — ~/Pictures/Wallpapers/<имя>.heic, превью — ~/.cache/wallpapers/<имя>.png
