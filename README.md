@@ -243,6 +243,7 @@ The generator is `icons/backdrop.swift` (Core Image, no extra tools).
 
 | | |
 |---|---|
+| [How to use it (RU)](docs/guide.ru.md) | every command and feature, day to day: themes, wallpapers, backdrop, prompt, git, Go, Docker, Mac upkeep |
 | [How it works (RU)](docs/how-it-works.ru.md) | architecture, diagrams, the "why" behind every piece, and recipes |
 | [Recovery (RU)](docs/recovery.ru.md) | the Mac was wiped: restore checklist, what comes back by itself, what doesn't |
 | [Wallpapers](docs/wallpapers.md) | all 25 live wallpapers with previews, and how to make your own |
