@@ -61,6 +61,7 @@ check "tools.txt разбор"     0 "gopls golang.org/x/tools/gopls v" -- bash 
 if [ "$(uname -s)" = Darwin ]; then
     check "macos.sh: план"       0 "finder"    -- "$DOTFILES/macos.sh" finder
     check "macos.sh: группа"     2 "неизвестно" -- "$DOTFILES/macos.sh" bogus
+    check "bootstrap: план"      0 "make install" -- env DOTFILES="$TMP/fresh" "$DOTFILES/bootstrap.sh" --dry-run
 fi
 
 echo

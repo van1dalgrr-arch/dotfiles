@@ -54,6 +54,10 @@
 **Terminal backdrop**
 - `backdrop` sets a Ghostty background made from the current wallpaper: glow, aurora, haze, glass or off. Only the wallpaper's colored light is kept, so it suits both dark and light mode. `wall` regenerates it
 
+**New Mac**
+- `bootstrap.sh`: Command Line Tools, Homebrew, clone and `make install` in one `curl | bash`; `--dry-run` shows the plan
+- `macos.sh apps`: code files (.json, .yaml, .sh, .sql, .env…) open in Zed; `macos.sh login`: Raycast at login
+
 **Tests**
 - `tests/smoke.sh` (`make test`), run in CI on Linux and macOS; Brewfile syntax and bash 3.2 parse checks
 
