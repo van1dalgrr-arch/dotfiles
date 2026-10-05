@@ -109,6 +109,7 @@ if [ "${NO_WALLPAPER:-}" != 1 ]; then
         swift "$DOTFILES/$THEME_WALLPAPER_SRC" "$THEME_WALLPAPER" >/dev/null
     fi
     python3 "$DOTFILES/themes/set-wallpaper.py" "$THEME_WALLPAPER" >/dev/null   # на все рабочие столы
+    printf '%s\n' "$THEME_WALLPAPER" > "$HOME/.config/dotfiles/wall-path"        # для backdrop
 fi
 
 # ─── иконки приложений и папки ~/dev в цветах темы ───

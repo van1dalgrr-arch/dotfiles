@@ -41,6 +41,9 @@ theme() {
                         0x${T_ROSE:0:2} 0x${T_ROSE:2:2} 0x${T_ROSE:4:2} 0x${T_FOAM:0:2} 0x${T_FOAM:2:2} 0x${T_FOAM:4:2}') || return
     fi
     ~/dotfiles/themes/apply.sh "$pick" || return
+    # тема поставила свои обои — фон терминала пересобрать под их цвета
+    local bd=$(command cat ~/.config/dotfiles/backdrop 2>/dev/null)
+    [[ -n $bd && $bd != off ]] && backdrop $bd >/dev/null
     print -P "%F{8}Ghostty: cmd+shift+, — перечитать конфиг%f"
     exec zsh
 }
