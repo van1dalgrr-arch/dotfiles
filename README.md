@@ -81,6 +81,9 @@ your `*.bak` files, and `--purge` also deletes the generated theme files. Homebr
 
 <p align="center"><img src="docs/zed.png" width="90%" alt="Zed with the Dev Night theme and icons"/></p>
 
+<p align="center"><img src="docs/zed-themes.png" width="90%" alt="Dev Night and Dev Day side by side"/></p>
+<p align="center"><sub>Dev Night and Dev Day, rendered from the theme file by <code>zed/extension/preview.py</code></sub></p>
+
 ## Day to day
 
 Forgot a command? Press `?` (or `ctrl+/`) — a cheatsheet with every hotkey, function and alias pops up.
