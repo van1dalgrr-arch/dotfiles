@@ -78,7 +78,8 @@ wall add ~/Downloads/фото.jpg rain     # rain — имя, под котор�
 
 Маленькое или сжатое фото обработается само: убирается шум JPEG, увеличивается под экран
 (2560×1664), обрезается по центру, добавляется лёгкая резкость. Фото лежат в
-`~/dotfiles/wallpapers/photos/` — эта папка в `.gitignore`, на GitHub не уходит.
+`~/dotfiles/wallpapers/photos/` — в публичный dotfiles она не попадает (`.gitignore`), но сама является
+**приватным** репозиторием `dotfiles-photos`: `wall add` сразу отправляет туда новое фото — это резервная копия.
 
 ### Фон терминала — `backdrop`
 
@@ -287,7 +288,7 @@ curl -fsSL https://raw.githubusercontent.com/van1dalgrr-arch/dotfiles/main/boots
 ```
 
 Что потом сделать руками (аккаунты, проекты, разрешения) — [recovery.ru.md](recovery.ru.md).
-Твои фото для обоев не в git — их надо перенести самому (папка `wallpapers/photos/`).
+Твои фото для обоев — из приватной копии: `gh repo clone dotfiles-photos ~/dotfiles/wallpapers/photos`.
 
 ---
 

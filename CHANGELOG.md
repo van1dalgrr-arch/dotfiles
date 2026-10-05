@@ -4,6 +4,7 @@
 
 - **Quick terminal from any app** without granting Ghostty Accessibility: AeroSpace catches `` ctrl+` `` and toggles it through Ghostty's AppleScript (`ghostty/quick-terminal.applescript`)
 - **Photo wallpapers:** `wall add <photo> [name]`. Photos are denoised, upscaled to the screen (two-step Lanczos), cropped and sharpened by `icons/photo-wallpaper.swift`. They live in the git-ignored `wallpapers/photos/`
+- Photos for wallpapers are backed up to a private repo (`dotfiles-photos`); `wall add` pushes new ones automatically
 - **Chrome dropped:** previews render with the WebKit built into macOS (`icons/html2png.swift`); Safari takes workspace 3
 - **Docs:** a README in every folder, in English and Russian; `docs/guide.ru.md` lists every command; comments trimmed to the useful ones
 - **Screenshots** rendered from real output: a tiled desktop (Ghostty + Zed, glow from the wallpaper) and `dot doctor`; `FORCE_COLOR=1` keeps `dot` colors when piped

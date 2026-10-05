@@ -91,6 +91,8 @@ wall() {
         [[ -f $file ]] || { echo "usage: wall add <фото> [имя]"; return 1; }
         nm=${nm:l}; nm=${nm// /-}
         command cp -f $file $_wall_photos/$nm.${file:e:l} && echo "добавлено: $nm"
+        # резервная копия: папка фото — приватный репозиторий dotfiles-photos; отправляем в фоне
+        [[ -d $_wall_photos/.git ]] && ( git -C $_wall_photos add -A && git -C $_wall_photos commit -qm "wall add $nm" && git -C $_wall_photos push -q ) >/dev/null 2>&1 &!
         command rm -f ~/Pictures/Wallpapers/$nm.heic ~/.cache/wallpapers/$nm.png
         name=$nm
     fi

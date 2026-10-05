@@ -10,6 +10,6 @@ Photos for photo wallpapers (`wall add <photo> [name]`).
 
 ## Note
 
-Since the photos aren't in git, copy this folder yourself when moving to a new Mac.
+The folder is git-ignored here, but it is itself a clone of the **private** repo `dotfiles-photos`: `wall add` pushes every new photo there as a backup. On a new Mac: `gh repo clone dotfiles-photos ~/dotfiles/wallpapers/photos`.
 
 [← dotfiles](../README.md)

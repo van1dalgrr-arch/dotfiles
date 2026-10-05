@@ -31,6 +31,7 @@
 
 - [ ] GitHub: `gh auth login` (вход по HTTPS через браузер, SSH-ключей нет)
 - [ ] Проекты: `mkdir ~/dev && cd ~/dev && gh repo clone <имя>` для каждого (`gh repo list` — все свои)
+- [ ] Фото для обоев: `gh repo clone dotfiles-photos ~/dotfiles/wallpapers/photos`
 - [ ] Войти: Telegram, Discord, Яндекс Музыка, Claude, ChatGPT
 - [ ] VPN (Happ / WireGuard): заново добавить конфиги
 - [ ] Raycast: импортировать настройки, если сохранял экспорт (Settings → Advanced → Export)
