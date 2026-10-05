@@ -8,15 +8,22 @@ Both are generated from the [Zed theme](../zed/dev-night-theme) by `build.py`, s
 
 ## Install
 
-1. Download [`Dev Night.icls`](Dev%20Night.icls) (and/or [`Dev Day.icls`](Dev%20Day.icls)).
-2. GoLand → **Settings → Editor → Color Scheme** → ⚙️ → **Import Scheme…** → pick the file.
-3. Select **Dev Night** in the scheme list → OK.
+**Plugin (UI theme + editor colors), recommended**
 
-Recommended font: JetBrains Mono, 14. Pair it with the **Dark** UI theme (or **Light** for Dev Day).
-To switch with macOS appearance: **Settings → Appearance → Sync with OS**, then pick Dev Night for dark and Dev Day for light.
+1. Download `dev-night-theme-1.0.0.jar` from the [latest release](https://github.com/van1dalgrr-arch/dotfiles/releases/tag/jetbrains-v1.0.0).
+2. GoLand → **Settings → Plugins** → ⚙️ → **Install Plugin from Disk…** → pick the `.jar` → restart.
+3. **Settings → Appearance → Theme** → **Dev Night** (or Dev Day).
+
+Coming to JetBrains Marketplace: then it's just **Settings → Plugins → Marketplace → "Dev Night"**.
+
+**Editor colors only**
+
+GoLand → **Settings → Editor → Color Scheme** → ⚙️ → **Import Scheme…** → [`Dev Night.icls`](Dev%20Night.icls) or [`Dev Day.icls`](Dev%20Day.icls).
+
+To follow macOS dark/light: **Settings → Appearance → Sync with OS**, Dev Night for dark, Dev Day for light.
 
 ## Build
 
 ```bash
-python3 jetbrains/build.py   # regenerates both .icls from the Zed theme
+python3 jetbrains/build.py   # both .icls + the plugin jar in jetbrains/dist/, from the Zed theme
 ```

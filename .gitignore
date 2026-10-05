@@ -2,3 +2,6 @@
 *.pre-clean
 .DS_Store
 __pycache__/
+
+# собранный плагин GoLand — в GitHub Releases, не в git
+jetbrains/dist/

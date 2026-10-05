@@ -3,9 +3,11 @@
 #   Dev Night / Dev Day для GoLand (и любой IDE JetBrains) — цветовые схемы редактора .icls,
 #   собираются из Zed-темы (zed/dev-night-theme), чтобы цвета везде совпадали.
 #     python3 jetbrains/build.py   →  jetbrains/Dev Night.icls, jetbrains/Dev Day.icls
+#                                     + jetbrains/dist/dev-night-theme-<версия>.jar — плагин-тема
+#                                       (интерфейс IDE + схема редактора) для Marketplace / Install from Disk
 #   В .icls нет прозрачности: полупрозрачные цвета Zed смешиваются с фоном.
 # ============================================================
-import json, os
+import json, os, zipfile
 from xml.sax.saxutils import quoteattr
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -149,7 +151,90 @@ def scheme(t):
     out += ["  </attributes>", "</scheme>", ""]
     return "\n".join(out)
 
-for theme in json.load(open(SRC))["themes"]:
-    path = os.path.join(HERE, f'{theme["name"]}.icls')
-    open(path, "w").write(scheme(theme))
-    print("→", os.path.relpath(path, os.path.join(HERE, "..")))
+VERSION = "1.0.0"
+PLUGIN_ID = "io.github.van1dalgrr.devnight"
+
+def ui(t):
+    """Цвета интерфейса IDE (новый UI) из той же темы."""
+    s = t["style"]; bg = s["background"]; c = lambda k: "#" + blend(s[k], bg)
+    accent = "#" + blend(s["players"][0]["cursor"], bg)
+    sel = "#" + blend(s["players"][0]["selection"], bg)
+    return {
+        "*": {
+            "background": c("background"), "foreground": c("text"),
+            "infoForeground": c("text.muted"), "disabledForeground": c("text.disabled"),
+            "selectionBackground": sel, "selectionForeground": c("text"),
+            "selectionInactiveBackground": c("element.selected"),
+            "hoverBackground": c("element.hover"), "borderColor": c("border"),
+            "separatorColor": c("border"), "focusColor": accent, "focusedBorderColor": accent,
+            "acceleratorForeground": c("text.muted"), "lineSeparatorColor": c("border.variant"),
+        },
+        "Component": {"focusColor": accent, "borderColor": c("border")},
+        "MainToolbar": {"background": c("title_bar.background")},
+        "MainWindow.Tab": {"selectedBackground": c("tab.active_background")},
+        "ToolWindow": {"background": c("panel.background"), "Header.background": c("panel.background"),
+                       "Header.inactiveBackground": c("panel.background")},
+        "EditorTabs": {"background": c("tab_bar.background"), "underlinedTabBackground": c("tab.active_background"),
+                       "underlineColor": accent, "inactiveUnderlineColor": c("text.muted")},
+        "StatusBar": {"background": c("status_bar.background"), "borderColor": c("border")},
+        "Popup": {"background": c("elevated_surface.background"), "borderColor": c("border")},
+        "Tree": {"selectionBackground": sel, "selectionInactiveBackground": c("element.selected")},
+        "List": {"selectionBackground": sel, "selectionInactiveBackground": c("element.selected")},
+        "Button": {"default.startBackground": accent, "default.endBackground": accent,
+                   "default.foreground": "#ffffff"},
+        "Link": {"activeForeground": c("link_text.hover")},
+        "ProgressBar": {"progressColor": accent},
+        "Notification": {"background": c("elevated_surface.background")},
+    }
+
+PLUGIN_XML = f"""<idea-plugin>
+  <id>{PLUGIN_ID}</id>
+  <name>Dev Night Theme</name>
+  <version>{VERSION}</version>
+  <vendor email="van1dalgrr@gmail.com" url="https://github.com/van1dalgrr-arch/dotfiles">van1dalgrr-arch</vendor>
+  <description><![CDATA[
+    <p><b>Dev Night</b> (dark) and <b>Dev Day</b> (light): saturated violet and blue accents on a near-black
+    or near-white background. Made for Go, readable for everything else.</p>
+    <ul>
+      <li>UI theme and editor color scheme in one plugin</li>
+      <li>Go-aware highlighting: packages, builtins, method receivers, types</li>
+      <li>Matching themes for Zed and the terminal in the same repository</li>
+    </ul>
+    <p>Pair Dev Night and Dev Day with <i>Settings → Appearance → Sync with OS</i>.</p>
+  ]]></description>
+  <change-notes><![CDATA[<p>First release: Dev Night and Dev Day.</p>]]></change-notes>
+  <idea-version since-build="233"/>
+  <depends>com.intellij.modules.platform</depends>
+  <extensions defaultExtensionNs="com.intellij">
+    <themeProvider id="dev-night" path="/themes/dev_night.theme.json"/>
+    <themeProvider id="dev-day" path="/themes/dev_day.theme.json"/>
+  </extensions>
+</idea-plugin>
+"""
+
+# значок плагина: полумесяц в цветах темы
+ICON = """<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40">
+  <defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#a855f7"/><stop offset="1" stop-color="#3b82f6"/></linearGradient></defs>
+  <rect width="40" height="40" rx="9" fill="#101010"/>
+  <path d="M25.5 9.5a11 11 0 1 0 5 16.6A9 9 0 0 1 25.5 9.5z" fill="url(#g)"/>
+</svg>
+"""
+
+root = os.path.join(HERE, "..")
+os.makedirs(os.path.join(HERE, "dist"), exist_ok=True)
+jar = os.path.join(HERE, "dist", f"dev-night-theme-{VERSION}.jar")
+with zipfile.ZipFile(jar, "w", zipfile.ZIP_DEFLATED) as z:
+    z.writestr("META-INF/plugin.xml", PLUGIN_XML)
+    z.writestr("META-INF/pluginIcon.svg", ICON)
+    for theme in json.load(open(SRC))["themes"]:
+        icls = scheme(theme)
+        path = os.path.join(HERE, f'{theme["name"]}.icls')
+        open(path, "w").write(icls)
+        print("→", os.path.relpath(path, root))
+        slug = theme["name"].lower().replace(" ", "_")
+        z.writestr(f"themes/{slug}.xml", icls)
+        z.writestr(f"themes/{slug}.theme.json", json.dumps({
+            "name": theme["name"], "dark": theme["appearance"] == "dark", "author": "van1dalgrr-arch",
+            "editorScheme": f"/themes/{slug}.xml", "ui": ui(theme)}, indent=2))
+print("→", os.path.relpath(jar, root))
