@@ -96,4 +96,45 @@ wall() {
         echo "рисую $name…"; _wall_build $name $heic || return
     fi
     python3 ~/dotfiles/themes/set-wallpaper.py $heic
+    print -r -- $heic >| ~/.config/dotfiles/wall-path
+    # фон терминала берёт цвета из обоев — пересобрать под новые
+    local bd=$(command cat ~/.config/dotfiles/backdrop 2>/dev/null)
+    [[ -n $bd && $bd != off ]] && backdrop $bd
+}
+
+# backdrop — фон Ghostty из текущих обоев (как wall, только за текстом терминала):
+#   backdrop (выбор с превью) · backdrop glow · backdrop off
+#   haze — облака света обоев · glow — свет из углов · aurora — сияние снизу · glass — обои сквозь стекло
+#   Цвета берутся из обоев, тёмное прозрачно — фон подходит и тёмной теме, и светлой Dev Day.
+_backdrop_styles=(glow aurora haze glass)
+_backdrop_build() {     # стиль → ~/.cache/dotfiles-theme/backdrop/<стиль>.png
+    local dir=~/.cache/dotfiles-theme/backdrop src=~/dotfiles/icons/backdrop.swift
+    local wp=$(command cat ~/.config/dotfiles/wall-path 2>/dev/null)
+    [[ -f $wp ]] || wp=$(osascript -e 'tell application "System Events" to get picture of current desktop' 2>/dev/null)
+    [[ -f $wp ]] || { echo "не нашёл текущие обои — сначала wall"; return 1; }
+    mkdir -p $dir
+    if [[ ! -x $dir/backdrop || $src -nt $dir/backdrop ]]; then
+        echo "собираю генератор фона (один раз)…"; swiftc -O $src -o $dir/backdrop 2>/dev/null || return
+    fi
+    $dir/backdrop $wp $1 $dir/$1.png >/dev/null
+}
+backdrop() {
+    local style=$1 cfg=~/.config/ghostty/backdrop.ghostty s
+    if [[ -z $style ]]; then
+        for s in $_backdrop_styles; do _backdrop_build $s || return; done
+        style=$(print -l $_backdrop_styles off | fzf --header="фон терминала · сейчас: $(command cat ~/.config/dotfiles/backdrop 2>/dev/null || echo off)" \
+            --height=90% --preview-window=right:75% \
+            --preview '[[ {} == off ]] && echo "без фона" || chafa --animate=off -s ${FZF_PREVIEW_COLUMNS}x${FZF_PREVIEW_LINES} ~/.cache/dotfiles-theme/backdrop/{}.png') || return
+    fi
+    if [[ $style == off ]]; then
+        print "# фон выключен (backdrop off)" >| $cfg
+    else
+        (( ${_backdrop_styles[(Ie)$style]} )) || { echo "стили: $_backdrop_styles off"; return 1; }
+        _backdrop_build $style || return
+        print -l "# сгенерировано backdrop ($style) — не править руками" \
+            "background-image = $HOME/.cache/dotfiles-theme/backdrop/$style.png" \
+            "background-image-fit = cover" "background-image-repeat = false" >| $cfg
+    fi
+    print $style >| ~/.config/dotfiles/backdrop
+    print -P "%F{#$T_FOAM}фон: $style%f %F{#$T_MUTED}· Ghostty: cmd+shift+, — перечитать конфиг%f"
 }

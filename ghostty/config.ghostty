@@ -75,3 +75,5 @@ keybind = super+q=close_all_windows
 
 # --- Тема: themes/apply.sh пишет сюда тему и цвета (перекрывает значения выше) ---
 config-file = ?theme.ghostty
+# --- Фон из обоев: backdrop пишет сюда картинку (backdrop off — убрать) ---
+config-file = ?backdrop.ghostty

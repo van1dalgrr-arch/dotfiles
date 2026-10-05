@@ -74,6 +74,7 @@ your `*.bak` files, and `--purge` also deletes the generated theme files. Homebr
 | **Prompt** | custom zsh in a frame: `╭─[user@host]─[path]─[git]─[Go · compose · ⎈ k8s context]`, command duration, collapses after Enter |
 | **Editor** | [Zed](https://zed.dev) with my own themes, Dev Night (dark) and Dev Day (light), that switch with macOS, plus icons. Delve debugger, golangci-lint in the editor, tasks on `ctrl-r` |
 | **Themes** | `theme vesper` / `kanagawa` / `rose-pine` — recolors the whole terminal, app icons and wallpaper |
+| **Backdrop** | `backdrop` — the wallpaper's light behind the terminal text: glow, aurora, haze or glass |
 | **Wallpapers** | `wall` — pick one of 25 live wallpapers with an image preview right in the terminal |
 | **Git** | delta for diffs, lazygit, gitleaks before every commit |
 | **Docker** | OrbStack, lazydocker, and `up` — start dependencies and run the project in one command |
@@ -219,6 +220,21 @@ runWallpaper { hour in
 ```
 
 The palette, stars, glow and HEIC builder live in `icons/wallpaper-kit.swift`. Then run `wall <name>`.
+
+## Terminal backdrop
+
+```bash
+backdrop          # pick a style with a preview
+backdrop glow     # apply directly · backdrop off — no background
+```
+
+<img src="docs/backdrop.jpg" alt="Backdrop styles: haze, glow, aurora, glass" width="100%">
+
+The backdrop is made from your **current wallpaper**: only its colored light is kept and the dark parts
+become transparent, so it works on the dark theme and on light Dev Day alike. **glow** is light from the corners,
+**aurora** is waves along the bottom edge, **haze** is the wallpaper's light softly blurred, and **glass** shows the wallpaper itself, faint and vignetted.
+`wall` rebuilds the backdrop for the new wallpaper. Ghostty picks it up after `cmd+shift+,`.
+The generator is `icons/backdrop.swift` (Core Image, no extra tools).
 
 ## Docs
 

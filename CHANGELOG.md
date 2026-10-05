@@ -51,6 +51,9 @@
 - Ghostty cursor glides to its new position like VS Code's smooth caret (`ghostty/shaders/cursor_smooth.glsl`): theme color, native blink, inverted glyph for block, hollow when unfocused. The trail on big jumps stays
 - `make check` compiles the Ghostty shaders with glslang (Ghostty's own header) when it's installed
 
+**Terminal backdrop**
+- `backdrop` sets a Ghostty background made from the current wallpaper: glow, aurora, haze, glass or off. Only the wallpaper's colored light is kept, so it suits both dark and light mode. `wall` regenerates it
+
 **Tests**
 - `tests/smoke.sh` (`make test`), run in CI on Linux and macOS; Brewfile syntax and bash 3.2 parse checks
 
