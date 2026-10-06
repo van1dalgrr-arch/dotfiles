@@ -5,7 +5,7 @@
 #     ./macos.sh --yes                применить
 #     ./macos.sh [--yes] finder dock  только выбранные группы
 #     ./macos.sh -v                   показать и то, что уже настроено
-#   Группы: keyboard trackpad finder saving screenshots dock appearance apps login
+#   Группы: keyboard trackpad finder saving screenshots dock appearance apps login security
 #   Повторный запуск безопасен: совпадающие значения пропускаются.
 #   Перезапускаются только Finder / Dock / SystemUIServer. Без logout и reboot —
 #   клавиатура, трекпад и тёмная тема вступят в силу после перелогина.
@@ -13,7 +13,7 @@
 # ============================================================
 set -uo pipefail
 
-ALL="keyboard trackpad finder saving screenshots dock appearance apps login"
+ALL="keyboard trackpad finder saving screenshots dock appearance apps login security"
 apply=0 verbose=0 groups="" changed=0 restart=""
 
 if [ -t 1 ]; then
@@ -136,6 +136,26 @@ login() {
         changed=$((changed + 1)); group_changed=1
         printf '  %s~%s %-46s %s—%s → %sпри входе%s\n' "$c_new" "$r" "$name: запускать при входе" "$c_dim" "$r" "$c_new" "$r"
         [ "$apply" = 1 ] && osascript -e "tell application \"System Events\" to make login item at end with properties {path:\"$app\", hidden:true}" >/dev/null
+    done
+    return 0
+}
+
+# файрвол: включён и в «невидимом» режиме (не отвечает на ping и сканы). Нужен sudo — спросит пароль при --yes
+security() {
+    local fw=/usr/libexec/ApplicationFirewall/socketfilterfw cur
+    for what in globalstate stealthmode; do
+        case $what in
+            globalstate) cur=$("$fw" --getglobalstate 2>/dev/null) ;;
+            stealthmode) cur=$("$fw" --getstealthmode 2>/dev/null) ;;
+        esac
+        case $cur in
+            *enabled*|*"is on"*) [ "$verbose" = 1 ] && printf '  %s✓ файрвол: %s%s\n' "$c_dim" "$what" "$r"; continue ;;
+        esac
+        changed=$((changed + 1)); group_changed=1
+        local desc="файрвол: включить"; [ "$what" = stealthmode ] && desc="файрвол: невидимый режим (без ответа на ping)"
+        local pad=$((46 - $(printf '%s' "$desc" | wc -m))); [ "$pad" -lt 1 ] && pad=1
+        printf '  %s~%s %s%*s%sвыкл →%s %sвкл%s\n' "$c_new" "$r" "$desc" "$pad" '' "$c_dim" "$r" "$c_new" "$r"
+        [ "$apply" = 1 ] && sudo "$fw" "--set$what" on >/dev/null
     done
     return 0
 }

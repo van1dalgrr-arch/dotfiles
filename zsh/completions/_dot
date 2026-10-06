@@ -16,7 +16,7 @@ _dot_fx() {
     else local -a e=(glow:'свечение текста' cursor:'плавный курсор' trail:'шлейф' sparks:'искры при наборе' focus:'вспышка фокуса' none:'ничего'); _describe 'эффект' e; fi
 }
 _dot_macos_groups() {
-    local -a g=(keyboard trackpad finder saving screenshots dock appearance apps login)
+    local -a g=(keyboard trackpad finder saving screenshots dock appearance apps login security)
     _arguments '(-y --yes)'{-y,--yes}'[применить]' '(-v --verbose)'{-v,--verbose}'[показать и уже настроенное]' '*:группа:(${g})'
 }
 

@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- **`dot doctor` checks macOS itself:** FileVault, firewall, SIP, Gatekeeper, Time Machine (no backups → warning), free disk; `--deep` adds battery capacity and pending macOS/Safari/CLT updates
+- `./macos.sh security`: firewall on + stealth mode (plan first, `--yes` asks for sudo)
+- `glslang` is in the Brewfile (`make check` compiles the Ghostty shaders with it)
 - **`lean`** for 8 GB: a report (memory pressure, heavy apps, third-party agents that start by themselves, a hint when Ghostty has piled up cache after many theme/backdrop changes); `lean on` quits heavy apps from `~/.config/dotfiles/lean` (default OrbStack, Telegram, Discord, Spotify, G Hub; OrbStack only when no containers run) and shows memory before/after; `lean off` reopens them
 - **Five atmospheric wallpapers:** `mistcity`, `hanami`, `snowfall`, `cosmea`, `steppe` — fog, dusk and snow, painted in code at screen resolution with depth of field and film grain (`wallpaper-kit` gained `haze`, `soften`, `filmic`, `blurLayer`, towers and wires)
 - **Any wallpaper in the terminal:** `backdrop <name>` takes any `wall` name — a live scene or your photo — and puts a dark, readable version behind the terminal (`icons/terminal-grade.swift`); brightness is normalized so text reads at any hour; a new terminal window refreshes it in the background when the 2-hour slot changes

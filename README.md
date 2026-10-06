@@ -113,8 +113,8 @@ Type a command that doesn't exist and the prompt tells you if it's available in 
 ## Diagnostics: `dot doctor`
 
 ```bash
-dot doctor           # ~1 s: symlinks, Brewfile, Go, Docker, Kubernetes, IaC, git hooks, Ghostty, Zed, shell
-dot doctor --deep    # ~20 s: + versions, pinned revisions, packages outside the Brewfile, brew doctor, Zed JSONC, …
+dot doctor           # ~1 s: symlinks, Brewfile, Go, Docker, Kubernetes, IaC, git hooks, Ghostty, Zed, shell, macOS security & backups
+dot doctor --deep    # ~45 s: + versions, pinned revisions, packages outside the Brewfile, brew doctor, Zed JSONC, macOS updates, …
 ```
 
 It only reads, never changes anything. `✓` ok · `!` worth a look · `✗` broken (exit code 1) · `○` optional and not installed.
@@ -188,7 +188,7 @@ Groups: `apps` (code files open in Zed; macOS asks to confirm each type, so run 
 hidden files, path and status bar, list view, folders first, search the current folder, no `.DS_Store` on
 network or USB drives), `saving` (to disk rather than iCloud, expanded dialogs), `screenshots`
 (PNG in `~/Pictures/Screenshots`, no shadow or thumbnail), `dock` (autohide, no recents, Spaces stay in place for AeroSpace),
-`appearance` (dark, `ctrl-cmd` drag windows).
+`appearance` (dark, `ctrl-cmd` drag windows), `security` (firewall on, stealth mode; asks for sudo).
 
 Running it twice is safe: values that already match are skipped. It restarts only Finder, Dock or SystemUIServer,
 and never logs you out. Keyboard, trackpad and dark mode apply after your next login.

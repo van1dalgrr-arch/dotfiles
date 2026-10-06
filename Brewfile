@@ -84,3 +84,6 @@ brew "shfmt"
 brew "gitleaks"
 tap "nikitabobko/tap"
 cask "nikitabobko/tap/aerospace"
+
+# make check: компилирует шейдеры Ghostty тем же компилятором, что и Ghostty
+brew "glslang"

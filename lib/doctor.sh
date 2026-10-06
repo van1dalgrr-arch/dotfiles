@@ -238,6 +238,51 @@ doc_shell() {
     else warning "повторы в PATH: $dups" "→ typeset -U path в .zshrc"; fi
 }
 
+# macOS: защита и обслуживание. Только чтение, без sudo; список обновлений — в --deep (softwareupdate ходит в сеть ~30 с)
+doc_macos() {
+    section "macOS"
+    info "macOS $(sw_vers -productVersion)"
+    case $(fdesetup status 2>/dev/null) in
+        *"is On"*) pass "FileVault: диск зашифрован" ;;
+        *) warning "FileVault выключен" "→ Настройки → Конфиденциальность и безопасность → FileVault" ;;
+    esac
+    case $(/usr/libexec/ApplicationFirewall/socketfilterfw --getglobalstate 2>/dev/null) in
+        *enabled*) pass "файрвол включён" ;;
+        *) warning "файрвол выключен" "→ ./macos.sh --yes security" ;;
+    esac
+    case $(csrutil status 2>/dev/null) in
+        *enabled*) pass "SIP включён" ;;
+        *) warning "SIP выключен" "→ включить из Recovery: csrutil enable" ;;
+    esac
+    case $(spctl --status 2>/dev/null) in
+        *enabled*) pass "Gatekeeper включён" ;;
+        *) warning "Gatekeeper выключен" "→ sudo spctl --master-enable" ;;
+    esac
+    # Time Machine: есть ли диск и когда был последний бэкап
+    if tmutil destinationinfo 2>/dev/null | grep -q "^Name"; then
+        local last days
+        last=$(tmutil latestbackup 2>/dev/null | sed -E 's|.*/([0-9]{4}-[0-9]{2}-[0-9]{2})-.*|\1|')
+        if [[ $last =~ ^[0-9]{4}-[0-9]{2}-[0-9]{2}$ ]]; then
+            days=$(( ( $(date +%s) - $(date -j -f %Y-%m-%d "$last" +%s) ) / 86400 ))
+            if [ "$days" -le 7 ]; then pass "Time Machine: последний бэкап $last"
+            else warning "Time Machine: последний бэкап $days дн. назад ($last)" "→ подключи диск бэкапов"; fi
+        else warning "Time Machine настроен, но бэкапа не видно" "→ подключи диск бэкапов"; fi
+    else
+        warning "бэкапов нет: Time Machine не настроен" "→ Настройки → Основные → Time Machine"
+    fi
+    local free_gb
+    free_gb=$(df -g / | awk 'NR == 2 { print $4 }')
+    if [ "${free_gb:-0}" -ge 20 ]; then pass "свободно на диске: $free_gb ГБ"
+    else warning "на диске осталось $free_gb ГБ" "→ dot update (чистит Docker и кэши brew)"; fi
+    [ "$deep" = 1 ] || return 0
+    local cap updates
+    cap=$(system_profiler SPPowerDataType 2>/dev/null | awk -F': ' '/Maximum Capacity/ { print $2; exit }')
+    [ -n "$cap" ] && info "батарея: ёмкость $cap от новой"
+    updates=$(softwareupdate -l 2>/dev/null | sed -n 's/^.*Title: \([^,]*\), Version: \([^,]*\).*/\1/p' | paste -sd, - | sed 's/,/, /g')
+    if [ -n "$updates" ]; then warning "доступны обновления: $updates" "→ Настройки → Основные → Обновление ПО"
+    else pass "обновления macOS не нужны"; fi
+}
+
 doctor() {
     local deep=0 a
     for a in "$@"; do
@@ -247,6 +292,6 @@ doctor() {
         esac
     done
     [ "$(uname -s)" = Darwin ] || { echo "dot doctor — только для macOS" >&2; return 2; }
-    doc_links; doc_brew; doc_go; doc_docker; doc_k8s; doc_iac; doc_git; doc_editors; doc_shell
+    doc_links; doc_brew; doc_go; doc_docker; doc_k8s; doc_iac; doc_git; doc_editors; doc_shell; doc_macos
     summary
 }
