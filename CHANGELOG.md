@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- **`dot snapshot`** before a macOS upgrade and **`dot snapshot diff`** after: installed brew packages and apps with versions, macos.sh settings, login items, background agents, tool versions, AeroSpace permission — shows what reset. Checklist: `docs/macos-upgrade.ru.md`
 - **`dot doctor` checks macOS itself:** FileVault, firewall, SIP, Gatekeeper, Time Machine (no backups → warning), free disk; `--deep` adds battery capacity and pending macOS/Safari/CLT updates
 - `./macos.sh security`: firewall on + stealth mode (plan first, `--yes` asks for sudo)
 - `glslang` is in the Brewfile (`make check` compiles the Ghostty shaders with it)

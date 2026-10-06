@@ -39,6 +39,7 @@ _dot() {
         'theme:сменить тему'
         'wall:сменить обои'
         'fx:эффекты Ghostty (шейдеры)'
+        'snapshot:снимок системы до/после обновления macOS'
         'check:проверки, как в CI'
         'edit:открыть dotfiles в Zed'
         'help:справка'
@@ -52,6 +53,7 @@ _dot() {
         theme)   _dot_themes ;;
         wall)    _dot_walls ;;
         fx)      shift words; (( CURRENT-- )); _dot_fx ;;
+        snapshot) local -a a=(save:'сохранить снимок' diff:'что поменялось между снимками' list:'список снимков'); _describe 'действие' a ;;
     esac
 }
 

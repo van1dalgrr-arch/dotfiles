@@ -8,6 +8,7 @@ Guides and pictures for the README.
 |---|---|
 | `guide.ru.md` | **how to use it**: every command by area (RU) |
 | `how-it-works.ru.md` | how it's built inside, with diagrams (RU) |
+| `macos-upgrade.ru.md` | major macOS upgrade checklist: before (push, backup, `dot snapshot`) and after (CLT, `dot snapshot diff`, permissions) |
 | `recovery.ru.md` | the Mac was wiped: restore checklist (RU) |
 | `themes.md` | themes side by side, how `theme` recolors everything |
 | `wallpapers.md` | gallery of the 30 live wallpapers |

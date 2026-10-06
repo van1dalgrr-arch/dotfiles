@@ -9,13 +9,14 @@
 #     dot macos [--yes] [группа] настройки macOS: без --yes только показывает
 #     dot theme [имя]           сменить тему          dot wall [имя]   сменить обои
 #     dot fx [on|off|set …]     эффекты Ghostty       dot check        проверки, как в CI
+#     dot snapshot [diff]       снимок системы до/после обновления macOS; diff — что поменялось
 #     dot edit                  открыть репозиторий в Zed
 #   Код выхода: 0 — ок (предупреждения не считаются), 1 — есть ошибки, 2 — неверный вызов.
 # ============================================================
 set -uo pipefail
 DOTFILES="${DOTFILES:-$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)}"
 
-for lib in ui tools doctor project; do
+for lib in ui tools doctor project snapshot; do
     # shellcheck source=/dev/null
     . "$DOTFILES/lib/$lib.sh"
 done
@@ -30,8 +31,9 @@ case "${1:-help}" in
     theme)   shift; "$DOTFILES/themes/apply.sh" "$@" ;;
     wall)    shift; zsh -ic "wall $*" ;;
     fx)      shift; "$DOTFILES/ghostty/fx.sh" "$@" ;;
+    snapshot) shift; snapshot "$@" ;;
     check)   make -C "$DOTFILES" check ;;
     edit)    zed "$DOTFILES" ;;
-    help|-h|--help) sed -n '3,13p' "$0" | sed 's/^# \{0,1\}//' ;;
-    *)       sed -n '3,13p' "$0" | sed 's/^# \{0,1\}//' >&2; exit 2 ;;
+    help|-h|--help) sed -n '3,14p' "$0" | sed 's/^# \{0,1\}//' ;;
+    *)       sed -n '3,14p' "$0" | sed 's/^# \{0,1\}//' >&2; exit 2 ;;
 esac

@@ -101,6 +101,7 @@ Forgot a command? Press `?` (or `ctrl+/`) — a cheatsheet with every hotkey, fu
 | `gco` | switch branches with fzf |
 | `killport 8080` | free a port |
 | `update` | weekly maintenance: brew, pinned Go tools, Docker junk, tldr, re-apply icons |
+| `dot snapshot` | snapshot the system before a macOS upgrade; `dot snapshot diff` after shows what reset ([checklist](docs/macos-upgrade.ru.md)) |
 | `pd` | `dot project doctor`: what the current project has and what it's missing |
 | `db` | pgcli into the project database (from `DATABASE_URL` / `.env`) |
 | `vuln` | vulnerabilities: govulncheck for Go deps + trivy for the rest |
