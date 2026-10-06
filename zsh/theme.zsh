@@ -193,3 +193,13 @@ fx() {
     (( $#on ))  && ~/dotfiles/ghostty/fx.sh on $on >/dev/null
     ~/dotfiles/ghostty/fx.sh list
 }
+
+# Фон-сцена следует за временем суток: новое окно сверяет 2-часовой слот и, если он сменился,
+# пересобирает фон в фоне (сам Ghostty перечитает конфиг). Без форков: только чтение двух файлов.
+() {
+    local bd=${$(<~/.config/dotfiles/backdrop 2>/dev/null)}
+    (( ${_backdrop_scenes[(Ie)$bd]} )) || return 0
+    local h=${(%):-%D{%H}} stamp=~/.cache/dotfiles-theme/backdrop/.$bd.hour
+    (( ${$(<$stamp 2>/dev/null):--1} == h / 2 * 2 )) && return 0
+    ( backdrop $bd >/dev/null 2>&1 ) &!
+}
