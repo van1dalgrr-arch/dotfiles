@@ -2,8 +2,7 @@
 # Минимализм: почти чёрный, оттенки серого, насыщенные акценты — фиолетовый и синий (не пастель, без мяты).
 THEME_TITLE="Vesper"
 THEME_GHOSTTY="Vesper"
-THEME_WALLPAPER="$HOME/Pictures/Wallpapers/vesper-orbit.heic"
-THEME_WALLPAPER_SRC="icons/wallpaper-orbit.swift"   # минимализм: icons/wallpaper-minimal.swift
+THEME_WALL="mistcity"   # обои темы (туманный город) — любые из wall, icons/wallpaper-<имя>.swift
 
 T_BASE=101010      T_SURFACE=161616   T_OVERLAY=1c1c1c
 T_HL_LOW=161616    T_HL_MED=2a2a2a    T_HL_HIGH=343434     # выделение — просто светлее фона

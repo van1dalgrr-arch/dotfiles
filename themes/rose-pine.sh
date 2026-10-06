@@ -3,8 +3,7 @@
 # другие темы — таблица «цвет Rosé Pine → свой цвет» по тем же ролям.
 THEME_TITLE="Rosé Pine"
 THEME_GHOSTTY="Rose Pine"
-THEME_WALLPAPER="$HOME/Pictures/Wallpapers/rose-pine-dynamic.heic"
-THEME_WALLPAPER_SRC="icons/wallpaper.swift"
+THEME_WALL="hanami"   # обои темы (сакура в сумерках) — любые из wall, icons/wallpaper-<имя>.swift
 
 T_BASE=191724      T_SURFACE=1f1d2e   T_OVERLAY=26233a
 T_HL_LOW=21202e    T_HL_MED=403d52    T_HL_HIGH=524f67

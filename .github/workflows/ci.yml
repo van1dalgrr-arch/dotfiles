@@ -55,7 +55,7 @@ jobs:
         run: |
           for f in icons/wallpaper-*.swift; do
             case $f in *-kit.swift) continue ;; esac
-            if grep -q runWallpaper "$f"; then cat icons/wallpaper-kit.swift "$f" > /tmp/w.swift; else cp "$f" /tmp/w.swift; fi
+            cat icons/wallpaper-kit.swift "$f" > /tmp/w.swift
             swiftc -typecheck /tmp/w.swift && echo "ok $f"
           done
           for f in icons/icons.swift icons/folder.swift icons/backdrop.swift icons/html2png.swift icons/photo-wallpaper.swift ghostty/activate.swift icons/terminal-grade.swift zed/tools/build-icons.swift; do swiftc -typecheck "$f" && echo "ok $f"; done

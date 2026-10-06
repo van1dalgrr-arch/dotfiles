@@ -73,16 +73,10 @@ _wall_build() {
         [[ -x $gen && $gen -nt ~/dotfiles/icons/photo-wallpaper.swift ]] || \
             swiftc -O ~/dotfiles/icons/photo-wallpaper.swift -o $gen 2>/dev/null || return
         $gen $photo $out "$@" >/dev/null
-    elif grep -q runWallpaper $src; then
+    else                                          # живые обои: kit + сцена
         local tmp=~/.cache/wallpapers/build-$1.swift
         command cat ~/dotfiles/icons/wallpaper-kit.swift $src >| $tmp
         swift $tmp $out "$@" >/dev/null 2>&1
-    elif [[ $out == *.png ]]; then          # старые генераторы: кадр 13:00 из папки превью
-        local dir=$(mktemp -d)
-        swift $src $dir/ "$@" >/dev/null 2>&1 && command cp -f $dir/4-*.png $out
-        command rm -rf $dir
-    else
-        swift $src $out "$@" >/dev/null 2>&1
     fi
 }
 wall() {

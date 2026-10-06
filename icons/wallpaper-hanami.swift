@@ -13,55 +13,6 @@ func hanamiKeys(_ hour: CGFloat) -> (top: Int, low: Int, petal: Int, lampOn: CGF
     return (keys[0].1, keys[0].2, keys[0].3, keys[0].4)
 }
 
-// ветка: изогнутая сужающаяся линия, ветвится; на концах и вдоль — облачка цветов
-struct Twig { var p: CGPoint; var angle: CGFloat; var len: CGFloat; var width: CGFloat; var depth: Int }
-
-func blossomTree(_ ctx: CGContext, roots: [Twig], bark: Int, petal: Int, shade: Int, scale k: CGFloat, rng: inout Rng) {
-    var stack = roots
-    var clusters: [(CGPoint, CGFloat)] = []
-    while let b = stack.popLast() {
-        // путь ветки — несколько шагов со случайным изгибом
-        var p = b.p, a = b.angle
-        let steps = 7
-        ctx.setStrokeColor(rgb(bark)); ctx.setLineCap(.round)
-        for s in 0..<steps {
-            a += (rng.next() - 0.5) * 0.35
-            let q = CGPoint(x: p.x + cos(a) * b.len / CGFloat(steps), y: p.y + sin(a) * b.len / CGFloat(steps))
-            ctx.setLineWidth(max(0.8 * S, b.width * (1 - CGFloat(s) / CGFloat(steps) * 0.55)))
-            ctx.move(to: p); ctx.addLine(to: q); ctx.strokePath()
-            p = q
-            if b.depth >= 3 && rng.next() < 0.3 { clusters.append((p, (14 + rng.next() * 18) * k * S)) }
-        }
-        if b.depth >= 2 { clusters.append((p, (16 + rng.next() * 22) * k * S)) }
-        if b.depth < 6 {
-            let n = b.depth < 3 ? 3 : 2
-            for _ in 0..<n {
-                stack.append(Twig(p: p, angle: a + (rng.next() - 0.5) * 1.3, len: b.len * (0.5 + rng.next() * 0.22),
-                                  width: b.width * 0.62, depth: b.depth + 1))
-            }
-        }
-    }
-    // цветы: в каждом облачке — горстка мелких цветков; в тени облачка темнее, по краю светлее
-    for (c, r) in clusters {
-        let count = Int(r / S * 0.75)
-        for _ in 0..<count {
-            let ang = rng.next() * 2 * .pi, d = sqrt(rng.next()) * r
-            let fp = CGPoint(x: c.x + cos(ang) * d, y: c.y + sin(ang) * d * 0.8)
-            let fr = (2.6 + rng.next() * 2.6) * k * S
-            let lightSide = (sin(ang) * 0.5 + 0.5) * (d / r)               // верх облачка ловит свет
-            let col = mix(shade, petal, min(1, 0.1 + lightSide * 0.9 + rng.next() * 0.3))
-            ctx.setFillColor(rgb(col, 0.9))
-            // пять лепестков — пять кружков вокруг центра
-            for j in 0..<5 {
-                let pa = CGFloat(j) / 5 * 2 * .pi + ang
-                ctx.fillEllipse(in: CGRect(x: fp.x + cos(pa) * fr * 0.55 - fr * 0.5, y: fp.y + sin(pa) * fr * 0.55 - fr * 0.5, width: fr, height: fr))
-            }
-            ctx.setFillColor(rgb(mix(col, 0xd06a9a, 0.35), 0.8))
-            ctx.fillEllipse(in: CGRect(x: fp.x - fr * 0.18, y: fp.y - fr * 0.18, width: fr * 0.36, height: fr * 0.36))
-        }
-    }
-}
-
 runWallpaper { hour in
     let ctx = canvas()
     let (top, low, petal, lampOn) = hanamiKeys(hour)
