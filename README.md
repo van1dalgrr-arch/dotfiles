@@ -75,7 +75,7 @@ your `*.bak` files, and `--purge` also deletes the generated theme files. Homebr
 | **Themes** | `theme vesper` / `kanagawa` / `rose-pine`: recolors the whole terminal, app icons and wallpaper. **Light mode** (Dev Day) follows macOS |
 | **Effects** | `fx` — Ghostty shaders: smooth cursor, trail, sparks as you type, focus flash, neon glow; colored by the theme |
 | **Backdrop** | `backdrop` — the wallpaper's light behind the terminal text (glow, aurora, haze, glass) or a dark terminal-only scene (mistcity, hanami, snowfall, cosmea, steppe) |
-| **Wallpapers** | `wall`: 11 live scenes (dark anime, Japan, twilight, fog) drawn in Swift that change through the day, plus your own photos (`wall add`), upscaled without blur |
+| **Wallpapers** | `wall`: 30 live wallpapers drawn in Swift that change through the day, plus your own photos (`wall add`), upscaled without blur |
 | **Git** | delta for diffs, lazygit, gitleaks before every commit |
 | **Docker** | OrbStack, lazydocker, and `up` — start dependencies and run the project in one command |
 | **GoLand** | the same Dev Night / Dev Day themes as a JetBrains plugin and `.icls`, see [jetbrains/](jetbrains) |
@@ -198,38 +198,37 @@ and never logs you out. Keyboard, trackpad and dark mode apply after your next l
 
 ```bash
 wall             # list with an image preview, enter to apply
-wall torii       # apply directly
+wall eclipse     # apply directly
 ```
 
-Dark anime — `ghoulnight` `rainalley`<br>
-Japan — `torii` `sakuranight` `hanami`<br>
-Twilight — `twilight` `crossing`<br>
-Fog & weather — `mistcity` `snowfall` `cosmea` `steppe`
+Atmosphere — `mistcity` `hanami` `snowfall` `cosmea` `steppe`<br>
+Space — `eclipse` `orbit` `rings` `aurora` `horizon` `startrails`<br>
+Tech — `code` `circuit` `ridges` `minimal` `halftone` `iso` `helix` `topo`<br>
+Everything else — `petals` `prism` `ocean` `glass` `crystal` `vinyl` `neon` `rain` `bauhaus` `mesh` `kanagawa`
 
-**[See all 11 in the gallery →](docs/wallpapers.md)**
+**[See all 30 in the gallery →](docs/wallpapers.md)**
 
 **Your own photos** work too: `wall add ~/Downloads/photo.jpg sakura`. Small or compressed photos are cleaned of
 JPEG artifacts, upscaled to the screen in two Lanczos steps, cropped to its aspect and lightly sharpened
 (`icons/photo-wallpaper.swift`), then show up in the `wall` list. Photos stay in `wallpapers/photos/`, which is
 git-ignored: they live next to the config but never reach the public repo.
 
-Each wallpaper is a Swift script in `icons/` that paints the scene in code at screen resolution. It renders 12 frames
-per day, and every parameter (sky, light, lit windows, lanterns) is computed continuously from the hour, so macOS blends
-smoothly from one frame to the next. Wallpapers are applied to all Spaces at once, and `backdrop <name>` puts a dark,
-readable version of any of them (photos too) behind the terminal.
+Each wallpaper is a short Swift script in `icons/`. It renders 12 frames per day, and every parameter
+(color, light, positions) is computed continuously from the hour, so macOS blends smoothly from one
+frame to the next. Wallpapers are applied to all Spaces at once.
 
 Want your own? Create `icons/wallpaper-<name>.swift`:
 
 ```swift
 runWallpaper { hour in
-    let ctx = canvas()
-    haze(ctx, 0x8a95a5, bottom: 0.6, top: 0.1)                       // fog
-    lamp(ctx, CGPoint(x: W / 2, y: H * 0.3), 6 * S, 0xffc27a, 1)     // a warm light in it
-    return filmic(bloom(ctx.makeImage()!))                           // glow, grain, vignette
+    let ctx = canvas()                     // near-black canvas
+    let (a, b) = tint(hour)                // colors for this time of day
+    radialGlow(ctx, CGPoint(x: W / 2, y: H / 2), 400 * S, a, 0.3)
+    return bloom(ctx.makeImage()!)
 }
 ```
 
-Fog, depth of field, grain, towers, wires and sakura branches live in `icons/wallpaper-kit.swift`. Then run `wall <name>`.
+The palette, stars, glow and HEIC builder live in `icons/wallpaper-kit.swift`. Then run `wall <name>`.
 
 ## Terminal backdrop
 
@@ -253,7 +252,7 @@ The generator is `icons/backdrop.swift` (Core Image, no extra tools).
 | [How to use it (RU)](docs/guide.ru.md) | every command and feature, day to day: themes, wallpapers, backdrop, prompt, git, Go, Docker, Mac upkeep |
 | [How it works (RU)](docs/how-it-works.ru.md) | architecture, diagrams, the "why" behind every piece, and recipes |
 | [Recovery (RU)](docs/recovery.ru.md) | the Mac was wiped: restore checklist, what comes back by itself, what doesn't |
-| [Wallpapers](docs/wallpapers.md) | all 11 live wallpapers with previews, and how to make your own |
+| [Wallpapers](docs/wallpapers.md) | all 30 live wallpapers with previews, and how to make your own |
 | [Themes](docs/themes.md) | all themes side by side, and how `theme` recolors everything from one palette file |
 | [GoLand / JetBrains](jetbrains/README.md) | Dev Night and Dev Day as editor color schemes (`.icls`), one-click import |
 | [Hotkeys](docs/hotkeys.md) | AeroSpace, Ghostty and Zed shortcuts |

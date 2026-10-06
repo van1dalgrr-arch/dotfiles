@@ -88,16 +88,13 @@ echo "$name" > "$HOME/.config/dotfiles/theme"
 
 # ─── обои: собрать, если ещё нет, и поставить ───
 if [ "${NO_WALLPAPER:-}" != 1 ]; then
-    # тот же HEIC, что собирает wall: сцена = wallpaper-kit.swift + icons/wallpaper-<имя>.swift
-    heic="$HOME/Pictures/Wallpapers/$THEME_WALL.heic" src="$DOTFILES/icons/wallpaper-$THEME_WALL.swift"
-    if [ ! -f "$heic" ] || [ "$src" -nt "$heic" ]; then
-        echo "рисую обои $THEME_WALL…"
-        mkdir -p "$(dirname "$heic")" "$HOME/.cache/wallpapers"
-        cat "$DOTFILES/icons/wallpaper-kit.swift" "$src" > "$HOME/.cache/wallpapers/build-$THEME_WALL.swift"
-        swift "$HOME/.cache/wallpapers/build-$THEME_WALL.swift" "$heic" >/dev/null 2>&1
+    if [ ! -f "$THEME_WALLPAPER" ]; then
+        echo "рисую обои…"
+        mkdir -p "$(dirname "$THEME_WALLPAPER")"
+        swift "$DOTFILES/$THEME_WALLPAPER_SRC" "$THEME_WALLPAPER" >/dev/null
     fi
-    python3 "$DOTFILES/themes/set-wallpaper.py" "$heic" >/dev/null   # на все рабочие столы
-    printf '%s\n' "$heic" > "$HOME/.config/dotfiles/wall-path"        # для backdrop
+    python3 "$DOTFILES/themes/set-wallpaper.py" "$THEME_WALLPAPER" >/dev/null   # на все рабочие столы
+    printf '%s\n' "$THEME_WALLPAPER" > "$HOME/.config/dotfiles/wall-path"        # для backdrop
 fi
 
 # ─── иконки приложений и папки ~/dev в цветах темы ───

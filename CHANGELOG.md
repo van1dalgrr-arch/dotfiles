@@ -2,7 +2,6 @@
 
 ## Unreleased
 
-- **Wallpapers remade.** The 25 old abstract ones are gone; 11 painted scenes instead: dark anime (`ghoulnight`, `rainalley`), Japan (`torii`, `sakuranight`, `hanami`), twilight (`twilight`, `crossing`) and fog & weather (`mistcity`, `snowfall`, `cosmea`, `steppe`). Themes use them too: rose-pine → `hanami`, vesper → `mistcity`, kanagawa → `torii`; `apply.sh` builds a theme's wallpaper through the kit like `wall` does
 - **Five atmospheric wallpapers:** `mistcity`, `hanami`, `snowfall`, `cosmea`, `steppe` — fog, dusk and snow, painted in code at screen resolution with depth of field and film grain (`wallpaper-kit` gained `haze`, `soften`, `filmic`, `blurLayer`, towers and wires)
 - **Any wallpaper in the terminal:** `backdrop <name>` takes any `wall` name — a live scene or your photo — and puts a dark, readable version behind the terminal (`icons/terminal-grade.swift`); brightness is normalized so text reads at any hour; a new terminal window refreshes it in the background when the 2-hour slot changes
 - **Quick terminal fixed:** `` ctrl+` `` now gives it keyboard focus without raising Ghostty's other windows (`ghostty/activate.swift` activates only the key window; AppleScript `activate` pulled the regular Ghostty window over the current app). Before, focus stayed in the previous app, so typing went there and the terminal never auto-hid

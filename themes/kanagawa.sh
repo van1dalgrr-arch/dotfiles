@@ -2,7 +2,8 @@
 # По мотивам «Большой волны в Канагаве» Хокусая: тушь, индиго, бумага, киноварь.
 THEME_TITLE="Kanagawa"
 THEME_GHOSTTY="Kanagawa Wave"
-THEME_WALL="torii"   # обои темы (тории в тумане) — любые из wall, icons/wallpaper-<имя>.swift
+THEME_WALLPAPER="$HOME/Pictures/Wallpapers/kanagawa-dynamic.heic"
+THEME_WALLPAPER_SRC="icons/wallpaper-kanagawa.swift"
 
 T_BASE=1f1f28      T_SURFACE=2a2a37   T_OVERLAY=363646     # sumiInk 3/4/5
 T_HL_LOW=2a2a37    T_HL_MED=2d4f67    T_HL_HIGH=54546d     # waveBlue2 — выделение

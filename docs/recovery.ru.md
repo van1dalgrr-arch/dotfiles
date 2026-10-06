@@ -21,7 +21,7 @@
 |---|---|
 | Программы: Ghostty, OrbStack, AeroSpace, Raycast, Yaak, TablePlus, Zed, VS Code, все CLI | `Brewfile` |
 | Конфиги: zsh, промпт, git, Ghostty, AeroSpace, Zed, VS Code, btop, lazygit… | `install.sh` (симлинки) |
-| Тема, обои, иконки приложений и папок | `theme vesper`, `wall torii` (рисуются из Swift-файлов) |
+| Тема, обои, иконки приложений и папок | `theme vesper`, `wall eclipse` (рисуются из Swift-файлов) |
 | Темы Zed Dev Night / Dev Day и иконки | `zed/dev-night-theme`, `zed/dev-night-icons` |
 | gopls, air, govulncheck, gofumpt тех же версий | `go/tools.txt` |
 | Расширения VS Code | `vscode/extensions.txt` |
