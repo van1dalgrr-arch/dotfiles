@@ -1,4 +1,4 @@
-#compdef dot theme wall backdrop awake fx
+#compdef dot theme wall backdrop awake fx lean
 # ============================================================
 #   Автодополнение (Tab) для своих команд: dot, theme, wall, backdrop, awake.
 #   Темы, обои и стили берутся из репозитория — новые появляются в Tab сами.
@@ -26,6 +26,7 @@ _dot() {
         wall)     _dot_walls; return ;;
         backdrop) _dot_backdrops; return ;;
         fx)       _dot_fx; return ;;
+        lean)     local -a l=(on:'закрыть тяжёлое из списка' off:'вернуть закрытое'); _describe 'действие' l; return ;;
         awake)    local -a a=(on:'не засыпать с закрытой крышкой' off:'как обычно'); _describe 'режим' a; return ;;
     esac
     local -a cmds=(

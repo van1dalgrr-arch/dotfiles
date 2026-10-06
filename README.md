@@ -96,6 +96,7 @@ Forgot a command? Press `?` (or `ctrl+/`) — a cheatsheet with every hotkey, fu
 | `gonew myapi` | new Gin project with air and git |
 | `got` / `gotw` | run tests with gotestsum / rerun them on every save |
 | `ram` | what's eating memory — grouped by app, not by process |
+| `lean` | memory on 8 GB: report with background agents · `lean on` quits heavy apps from a list (OrbStack only with no containers) · `lean off` brings them back |
 | `dsh` / `dlogs` | shell into a container / follow its logs (picked with fzf) |
 | `gco` | switch branches with fzf |
 | `killport 8080` | free a port |

@@ -64,3 +64,67 @@ ram() {
     done
     print
 }
+
+# lean — разгрузить память на 8 ГБ: отчёт · lean on — закрыть тяжёлое · lean off — вернуть закрытое
+# Список приложений: ~/.config/dotfiles/lean (по одному на строку), иначе — по умолчанию ниже.
+_lean_default=(OrbStack Telegram Discord Spotify lghub)
+_lean_apps() { local f=~/.config/dotfiles/lean; [[ -s $f ]] && print -l ${(f)"$(<$f)"} || print -l $_lean_default; }
+_lean_rss() { ps -axo rss=,comm= | awk -v a="/$1.app/" 'index($0, a) { s += $1 } END { printf "%d", s / 1024 }'; }
+_lean_free() { memory_pressure -Q 2>/dev/null | awk -F': ' '/percentage/{gsub("%","",$2); print $2}'; }
+
+lean() {
+    local r=$'\e[0m' dim="$(_c $T_MUTED)" txt="$(_c $T_TEXT)" foam="$(_c $T_FOAM)" gold="$(_c $T_GOLD)" love="$(_c $T_LOVE)"
+    local state=~/.cache/dotfiles/lean-quit app mb
+    case $1 in
+    on)
+        local before=$(_lean_free) quit=()
+        mkdir -p ${state:h}
+        for app in ${(f)"$(_lean_apps)"}; do
+            pgrep -qf "/$app.app/Contents/MacOS/" || continue
+            if [[ $app == OrbStack ]] && [[ -n $(docker ps -q 2>/dev/null) ]]; then
+                print "  ${gold}○${r} OrbStack оставлен — запущены контейнеры ${dim}(docker ps)${r}"; continue
+            fi
+            mb=$(_lean_rss $app)
+            osascript -e "with timeout of 10 seconds" -e "quit app \"$app\"" -e "end timeout" >/dev/null 2>&1 \
+                && { quit+=($app); print "  ${foam}✓${r} закрыт ${txt}$app${r} ${dim}(~$mb МБ)${r}"; } \
+                || print "  ${love}✗${r} $app не закрылся ${dim}(спросил о сохранении?)${r}"
+        done
+        (( $#quit )) || { print "  ${dim}закрывать нечего — из списка ничего не запущено${r}"; return 0; }
+        print -l $quit >| $state
+        sleep 3
+        local after=$(_lean_free)
+        print "\n  свободно: ${before}% → ${foam}${after}%${r}  ${dim}· вернуть: lean off${r}" ;;
+    off)
+        [[ -s $state ]] || { print "  ${dim}нечего возвращать${r}"; return 0; }
+        for app in ${(f)"$(<$state)"}; do open -g -a "$app" 2>/dev/null && print "  ${foam}↺${r} $app"; done
+        command rm -f $state ;;
+    "")
+        ram 8
+        print "  ${txt}можно закрыть${r} ${dim}(lean on · список: ~/.config/dotfiles/lean)${r}"
+        local any=0
+        for app in ${(f)"$(_lean_apps)"}; do
+            pgrep -qf "/$app.app/Contents/MacOS/" || continue
+            any=1; printf '    %-14s %s~%s МБ%s\n' $app "$dim" "$(_lean_rss $app)" "$r"
+        done
+        (( any )) || print "    ${dim}ничего из списка не запущено${r}"
+        # фоновые помощники сторонних приложений: стартуют сами и висят всегда
+        local -a agents=(${(f)"$(launchctl list | awk 'NR > 1 && $3 !~ /^(com\.apple\.|application\.|com\.openssh\.)/ { print $3 }')"})
+        local -A known=(
+            [com.microsoft.teams2.agent]="Microsoft Teams" [com.microsoft.update.agent]="Microsoft AutoUpdate"
+            [com.logi.ghub]="Logi G Hub" [com.spotify.client.startuphelper]="Spotify — автозапуск"
+            [com.anchorfree.hss-mac.startatloginhelper]="Hotspot Shield — автозапуск" [com.openai.chat-helper]="ChatGPT — помощник"
+            [com.wireguard.macos.login-item-helper]="WireGuard — автозапуск" [com.raycast.macos.updater]="Raycast — обновления"
+            [com.anthropic.claudefordesktop.ShipIt]="Claude — обновления")
+        if (( $#agents )); then
+            print "\n  ${txt}стартует само в фоне${r} ${dim}(если не нужно — Настройки → Основные → Объекты входа)${r}"
+            for app in $agents; do print "    ${known[$app]:-$app}"; done
+        fi
+        # Ghostty копит кэш шейдеров и картинок фона после множества theme/wall/backdrop/fx
+        mb=$(ps -axo rss=,comm= | awk '/MacOS\/ghostty$/ { printf "%d", $1 / 1024 }')
+        (( ${mb:-0} > 600 )) && print "\n  ${gold}!${r} Ghostty занимает ${mb} МБ — после многих смен темы/фона он копит кэш; перезапуск вернёт ~300 МБ"
+        local swap=$(sysctl -n vm.swapusage | awk '{gsub("M","",$6); printf "%d", $6}')
+        (( swap > 1024 )) && print "  ${gold}!${r} swap ${swap} МБ — memory уже не хватало; lean on поможет"
+        print ;;
+    *)  print "lean · lean on · lean off"; return 2 ;;
+    esac
+}

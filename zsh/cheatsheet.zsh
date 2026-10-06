@@ -59,6 +59,7 @@ port|кто слушает порт: port 8080
 serve|раздать текущую папку по http
 weather|погода в терминале
 ram|кто ест память (по приложениям): ram 15
+lean|разгрузить память: lean — отчёт · lean on — закрыть тяжёлое · lean off — вернуть
 update|обслуживание: brew, Go-инструменты, мусор Docker, иконки
 dot|dot doctor [--deep] — всё ли на месте · dot project doctor — проверить проект · dot tools/macos
 up|запустить проект: compose-зависимости + air/go run с .env
