@@ -4,7 +4,7 @@
 
 - **Five atmospheric wallpapers:** `mistcity`, `hanami`, `snowfall`, `cosmea`, `steppe` — fog, dusk and snow, painted in code at screen resolution with depth of field and film grain (`wallpaper-kit` gained `haze`, `soften`, `filmic`, `blurLayer`, towers and wires)
 - **Terminal scenes:** `backdrop mistcity` (and the other four) puts a dark, readable version of the scene behind the terminal; brightness is normalized so text reads at any hour; a new terminal window refreshes it in the background when the 2-hour slot changes
-- **Quick terminal fixed:** `` ctrl+` `` now gives it keyboard focus. Before, macOS kept focus in the previous app, so typing went there and the terminal never auto-hid (it got "stuck")
+- **Quick terminal fixed:** `` ctrl+` `` now gives it keyboard focus without raising Ghostty's other windows (`ghostty/activate.swift` activates only the key window; AppleScript `activate` pulled the regular Ghostty window over the current app). Before, focus stayed in the previous app, so typing went there and the terminal never auto-hid
 - Ghostty windows have their close / minimize / zoom buttons back (transparent titlebar instead of hidden)
 - **Terminal effects: `fx`.** New shaders: `sparks` (sparks as you type), `focus` (the focused window flashes along its edges), `glow` (soft neon halo on bright text). `fx` toggles any of them, plus the smooth `cursor` and `trail`
 - Shaders take colors from the terminal theme (`iCursorColor`, `iPalette`) instead of baked-in hex: the trail now follows light mode, and `theme` no longer generates a shader copy

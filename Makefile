@@ -2,7 +2,7 @@
 # make check — те же проверки, что в CI · make test — смоук-тесты dot · make update — обслуживание
 .PHONY: install devops check test update
 
-SCRIPTS = bin/dot lib/*.sh bootstrap.sh install.sh git/repo-hooks/pre-push uninstall.sh macos.sh themes/apply.sh tests/smoke.sh git/hooks/_chain git/hooks/pre-commit ghostty/fx.sh
+SCRIPTS = bin/dot lib/*.sh bootstrap.sh install.sh git/repo-hooks/pre-push uninstall.sh macos.sh themes/apply.sh tests/smoke.sh git/hooks/_chain git/hooks/pre-commit ghostty/fx.sh ghostty/quick-terminal.sh
 
 install:
 	brew bundle

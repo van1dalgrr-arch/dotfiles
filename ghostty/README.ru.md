@@ -14,6 +14,8 @@
 | `shaders/focus.glsl` | `focus`: окно, получившее фокус, вспыхивает по краям — удобно с AeroSpace |
 | `shaders/glow.glsl` | `glow`: мягкое неоновое свечение яркого текста (в светлой теме выключено) |
 | `shaders/.prefix.glsl` | заголовок шейдеров Ghostty — только чтобы `make check` компилировал шейдеры |
+| `quick-terminal.sh` | это запускает AeroSpace по `` ctrl+` ``: один раз собирает хелпер активации и вызывает AppleScript |
+| `activate.swift` | активирует Ghostty, не поднимая все его окна: вперёд выходит только выпадающий терминал |
 | `quick-terminal.applescript` | показать/спрятать выпадающий терминал; вызывает AeroSpace по `` ctrl+` `` |
 
 **`install.sh` ставит симлинками:**

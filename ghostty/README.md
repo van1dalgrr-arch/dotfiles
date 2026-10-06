@@ -14,6 +14,8 @@ Config for the [Ghostty](https://ghostty.org) terminal: transparent titlebar (on
 | `shaders/focus.glsl` | `focus`: the window that gets focus flashes along its edges — handy with AeroSpace |
 | `shaders/glow.glsl` | `glow`: soft neon halo around bright text (off in light mode) |
 | `shaders/.prefix.glsl` | Ghostty's shader header, only for `make check` to compile the shaders |
+| `quick-terminal.sh` | what AeroSpace runs on `` ctrl+` ``: builds the activation helper once, then runs the AppleScript |
+| `activate.swift` | activates Ghostty without raising all its windows, so only the quick terminal comes forward |
 | `quick-terminal.applescript` | toggles the quick terminal; called by AeroSpace on `` ctrl+` `` |
 
 **Installed by `install.sh` as symlinks:**
@@ -31,6 +33,6 @@ Shaders take their colors from the terminal theme (`iCursorColor`, `iPalette`), 
 
 ## Quick terminal
 
-`` ctrl+` `` is caught by AeroSpace (it already has Accessibility), which runs `quick-terminal.applescript` to toggle Ghostty's quick terminal. So it works from any app and Ghostty needs no extra permission.
+`` ctrl+` `` is caught by AeroSpace (it already has Accessibility), which runs `quick-terminal.sh` to toggle Ghostty's quick terminal. So it works from any app and Ghostty needs no extra permission.
 
 [← dotfiles](../README.md)

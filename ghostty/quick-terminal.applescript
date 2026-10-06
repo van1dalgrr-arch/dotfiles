@@ -2,7 +2,9 @@
 -- поэтому Ghostty это разрешение не нужно).
 -- macOS не даёт фоновому приложению забрать фокус самому: после toggle выпадающий терминал выезжал,
 -- но клавиатура оставалась в прошлом приложении, и автоскрытие не срабатывало — терминал «залипал».
--- Поэтому, если Ghostty не впереди, после показа явно фокусируем выпадающий терминал.
+-- Поэтому, если Ghostty не впереди, после показа активируем его хелпером (только ключевое окно,
+-- без подъёма обычных окон Ghostty — их поднимала AppleScript-команда activate) и фокусируем терминал.
+-- Запускается из ghostty/quick-terminal.sh, первый аргумент — путь к хелперу активации.
 
 -- выпадающий терминал — тот, что не лежит ни в одном окне
 on quickTerminal()
@@ -22,6 +24,9 @@ on quickTerminal()
 	return missing value
 end quickTerminal
 
+on run argv
+set activator to ""
+if (count argv) > 0 then set activator to item 1 of argv
 tell application "Ghostty"
 	if (count terminals) = 0 then
 		-- после входа терминалов ещё нет: создаём окно, открываем выпадающий и закрываем окно
@@ -38,8 +43,7 @@ end tell
 
 -- Ghostty был в фоне: значит, терминал должен появиться — отдать ему фокус
 delay 0.05
+if activator is not "" then do shell script quoted form of activator
 set q to quickTerminal()
-tell application "Ghostty"
-	activate
-	if q is not missing value then focus q
-end tell
+if q is not missing value then tell application "Ghostty" to focus q
+end run
