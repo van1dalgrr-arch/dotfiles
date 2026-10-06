@@ -58,7 +58,7 @@ jobs:
             if grep -q runWallpaper "$f"; then cat icons/wallpaper-kit.swift "$f" > /tmp/w.swift; else cp "$f" /tmp/w.swift; fi
             swiftc -typecheck /tmp/w.swift && echo "ok $f"
           done
-          for f in icons/icons.swift icons/folder.swift icons/backdrop.swift icons/html2png.swift icons/photo-wallpaper.swift ghostty/activate.swift zed/tools/build-icons.swift; do swiftc -typecheck "$f" && echo "ok $f"; done
+          for f in icons/icons.swift icons/folder.swift icons/backdrop.swift icons/html2png.swift icons/photo-wallpaper.swift ghostty/activate.swift icons/terminal-grade.swift zed/tools/build-icons.swift; do swiftc -typecheck "$f" && echo "ok $f"; done
 
       - name: scripts parse with system bash 3.2
         run: for f in bin/dot lib/*.sh bootstrap.sh install.sh uninstall.sh macos.sh tests/smoke.sh; do /bin/bash -n "$f" && echo "ok $f"; done

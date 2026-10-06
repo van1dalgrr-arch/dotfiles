@@ -95,11 +95,9 @@ func bloom(_ img: CGImage, near: CGFloat = 8, far: CGFloat = 40, strength: CGFlo
 func runWallpaper(_ render: (CGFloat) -> CGImage) {
     let out = kitArgs.count > 1 ? kitArgs[1] : "wallpaper.heic"
     if out.hasSuffix(".png") {
-        // превью — кадр на 13:00; WALL_HOUR — другой час; WALL_TERMINAL=1 — фон для терминала (backdrop)
-        let env = ProcessInfo.processInfo.environment
-        let hour = env["WALL_HOUR"].flatMap { Double($0) }.map { CGFloat($0) } ?? 13
-        var img = render(hour)
-        if env["WALL_TERMINAL"] == "1" { img = terminalGrade(img) }
+        // превью — кадр на 13:00; WALL_HOUR — другой час (backdrop берёт кадр текущего часа)
+        let hour = ProcessInfo.processInfo.environment["WALL_HOUR"].flatMap { Double($0) }.map { CGFloat($0) } ?? 13
+        let img = render(hour)
         let dest = CGImageDestinationCreateWithURL(URL(fileURLWithPath: out) as CFURL, "public.png" as CFString, 1, nil)!
         CGImageDestinationAddImage(dest, ci.createCGImage(CIImage(cgImage: img), from: extent, format: .RGBA8, colorSpace: cs)!, nil)
         CGImageDestinationFinalize(dest)
@@ -211,30 +209,3 @@ func blurLayer(_ blur: CGFloat, _ draw: (CGContext) -> Void) -> CGImage {
                             from: extent, format: .RGBA16, colorSpace: cs)!
 }
 
-// фон для терминала: та же сцена, но тёмная и спокойная — текст должен читаться в любом месте.
-// Яркость сжата вниз, цвет приглушён, слева (где текст) и сверху ещё темнее, мелочь чуть размыта.
-func terminalGrade(_ img: CGImage) -> CGImage {
-    let soft = CIImage(cgImage: img).clampedToExtent().applyingFilter("CIGaussianBlur", parameters: [kCIInputRadiusKey: 2.5 * S]).cropped(to: extent)
-    // средняя яркость кадра → общий уровень ~0.27: и дневной, и ночной кадр одинаково спокойные
-    var avg = [UInt8](repeating: 0, count: 4)
-    ci.render(soft.applyingFilter("CIAreaAverage", parameters: [kCIInputExtentKey: CIVector(cgRect: extent)]), toBitmap: &avg, rowBytes: 4,
-              bounds: CGRect(x: 0, y: 0, width: 1, height: 1), format: .RGBA8, colorSpace: cs)
-    let luma = (0.2126 * CGFloat(avg[0]) + 0.7152 * CGFloat(avg[1]) + 0.0722 * CGFloat(avg[2])) / 255
-    let gain = min(1.8, max(0.3, 0.27 / max(luma, 0.01)))
-    let graded = soft
-        .applyingFilter("CIColorControls", parameters: [kCIInputSaturationKey: 1.4, kCIInputContrastKey: 0.95])
-        .applyingFilter("CIColorMatrix", parameters: ["inputRVector": CIVector(x: gain, y: 0, z: 0, w: 0),
-            "inputGVector": CIVector(x: 0, y: gain, z: 0, w: 0), "inputBVector": CIVector(x: 0, y: 0, z: gain, w: 0)])
-        .applyingFilter("CIToneCurve", parameters: [                       // блики (окна, фонари) мягко прижаты
-            "inputPoint0": CIVector(x: 0, y: 0), "inputPoint1": CIVector(x: 0.2, y: 0.2), "inputPoint2": CIVector(x: 0.4, y: 0.37),
-            "inputPoint3": CIVector(x: 0.7, y: 0.5), "inputPoint4": CIVector(x: 1, y: 0.58)])
-    // тень под текстом: слева направо от 55% к 0%, сверху ещё немного
-    let shade = CIFilter(name: "CILinearGradient", parameters: [
-        "inputPoint0": CIVector(x: 0, y: H * 0.5), "inputPoint1": CIVector(x: W * 0.75, y: H * 0.5),
-        "inputColor0": CIColor(red: 0, green: 0, blue: 0, alpha: 0.32), "inputColor1": CIColor(red: 0, green: 0, blue: 0, alpha: 0)])!.outputImage!.cropped(to: extent)
-    let top = CIFilter(name: "CILinearGradient", parameters: [
-        "inputPoint0": CIVector(x: 0, y: H), "inputPoint1": CIVector(x: 0, y: H * 0.55),
-        "inputColor0": CIColor(red: 0, green: 0, blue: 0, alpha: 0.18), "inputColor1": CIColor(red: 0, green: 0, blue: 0, alpha: 0)])!.outputImage!.cropped(to: extent)
-    let out = top.composited(over: shade.composited(over: graded))
-    return ci.createCGImage(out, from: extent, format: .RGBA16, colorSpace: cs)!
-}
