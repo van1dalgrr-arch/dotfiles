@@ -124,7 +124,22 @@ wall() {
 
 # backdrop: фон Ghostty из цветов текущих обоев; тёмное прозрачно — годится и для светлой темы
 _backdrop_styles=(glow aurora haze glass)
+# сцены — отдельные фоны для терминала: те же живые обои, но тёмные и спокойные (кадр текущего часа)
+_backdrop_scenes=(mistcity hanami snowfall cosmea steppe)
+_backdrop_scene() {     # сцена → ~/.cache/dotfiles-theme/backdrop/<сцена>.png; пересобирается раз в 2 часа
+    local dir=~/.cache/dotfiles-theme/backdrop src=~/dotfiles/icons/wallpaper-$1.swift kit=~/dotfiles/icons/wallpaper-kit.swift
+    local out=$dir/$1.png stamp=$dir/.$1.hour hour=$(( $(date +%H) / 2 * 2 ))
+    mkdir -p $dir
+    [[ -f $out && $out -nt $src && $out -nt $kit && $(<$stamp 2>/dev/null) == $hour ]] && return 0
+    local bin=~/.cache/wallpapers/scene-$1
+    if [[ ! -x $bin || $src -nt $bin || $kit -nt $bin ]]; then
+        echo "собираю сцену $1 (один раз)…"
+        command cat $kit $src >| ~/.cache/wallpapers/scene-$1.swift && swiftc -O ~/.cache/wallpapers/scene-$1.swift -o $bin 2>/dev/null || return
+    fi
+    WALL_TERMINAL=1 WALL_HOUR=$hour $bin $out 1600 1000 >/dev/null && print $hour >| $stamp
+}
 _backdrop_build() {     # стиль → ~/.cache/dotfiles-theme/backdrop/<стиль>.png
+    (( ${_backdrop_scenes[(Ie)$1]} )) && { _backdrop_scene $1; return; }
     local dir=~/.cache/dotfiles-theme/backdrop src=~/dotfiles/icons/backdrop.swift
     local wp=$(command cat ~/.config/dotfiles/wall-path 2>/dev/null)
     [[ -f $wp ]] || wp=$(osascript -e 'tell application "System Events" to get picture of current desktop' 2>/dev/null)
@@ -140,15 +155,17 @@ _backdrop_build() {     # стиль → ~/.cache/dotfiles-theme/backdrop/<ст�
 backdrop() {
     local style=$1 cfg=~/.config/ghostty/backdrop.ghostty s
     if [[ -z $style ]]; then
-        for s in $_backdrop_styles; do _backdrop_build $s || return; done
-        style=$(print -l $_backdrop_styles off | fzf --header="фон терминала · сейчас: $(command cat ~/.config/dotfiles/backdrop 2>/dev/null || echo off)" \
+        mkdir -p ~/.cache/wallpapers
+        for s in $_backdrop_styles $_backdrop_scenes; do _backdrop_build $s || return; done
+        style=$(print -l $_backdrop_styles $_backdrop_scenes off | fzf --header="фон терминала · сейчас: $(command cat ~/.config/dotfiles/backdrop 2>/dev/null || echo off)" \
             --height=90% --preview-window=right:75% \
             --preview '[[ {} == off ]] && echo "без фона" || chafa --animate=off -s ${FZF_PREVIEW_COLUMNS}x${FZF_PREVIEW_LINES} ~/.cache/dotfiles-theme/backdrop/{}.png') || return
     fi
     if [[ $style == off ]]; then
         print "# фон выключен (backdrop off)" >| $cfg
     else
-        (( ${_backdrop_styles[(Ie)$style]} )) || { echo "стили: $_backdrop_styles off"; return 1; }
+        (( ${_backdrop_styles[(Ie)$style]} || ${_backdrop_scenes[(Ie)$style]} )) || { echo "стили: $_backdrop_styles · сцены: $_backdrop_scenes · off"; return 1; }
+        mkdir -p ~/.cache/wallpapers
         _backdrop_build $style || return
         print -l "# сгенерировано backdrop ($style) — не править руками" \
             "background-image = $HOME/.cache/dotfiles-theme/backdrop/$style.png" \

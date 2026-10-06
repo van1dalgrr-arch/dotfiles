@@ -6,7 +6,7 @@
 
 _dot_themes()  { local -a t=(~/dotfiles/themes/*.sh(N:t:r)); t=(${t:#apply}); _describe 'тема' t; }
 _dot_walls()   { local -a w=(~/dotfiles/icons/wallpaper-*.swift(N:t:r)); w=(${w#wallpaper-}); w=(${w:#kit} ~/dotfiles/wallpapers/photos/*.(jpg|jpeg|png|heic|webp)(N:t:r) add); _describe 'обои' w; }
-_dot_backdrops() { local -a s=(glow:'свет из углов' aurora:'сияние снизу' haze:'размытый свет обоев' glass:'обои сквозь стекло' off:'без фона'); _describe 'стиль' s; }
+_dot_backdrops() { local -a s=(glow:'свет из углов' aurora:'сияние снизу' haze:'размытый свет обоев' glass:'обои сквозь стекло' mistcity:'сцена: туманный город' hanami:'сцена: сакура' snowfall:'сцена: снегопад' cosmea:'сцена: космеи в тумане' steppe:'сцена: луг в дымке' off:'без фона'); _describe 'стиль' s; }
 _dot_fx() {
     if (( CURRENT == 2 )); then local -a a=(on:'включить' off:'выключить' set:'ровно этот набор' list:'что включено'); _describe 'действие' a
     else local -a e=(glow:'свечение текста' cursor:'плавный курсор' trail:'шлейф' sparks:'искры при наборе' focus:'вспышка фокуса' none:'ничего'); _describe 'эффект' e; fi

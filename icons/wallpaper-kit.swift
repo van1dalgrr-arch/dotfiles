@@ -94,14 +94,20 @@ func bloom(_ img: CGImage, near: CGFloat = 8, far: CGFloat = 40, strength: CGFlo
 // ─── сборка: 12 кадров, расписание apple_desktop:h24 ───
 func runWallpaper(_ render: (CGFloat) -> CGImage) {
     let out = kitArgs.count > 1 ? kitArgs[1] : "wallpaper.heic"
+    if out.hasSuffix(".png") {
+        // превью — кадр на 13:00; WALL_HOUR — другой час; WALL_TERMINAL=1 — фон для терминала (backdrop)
+        let env = ProcessInfo.processInfo.environment
+        let hour = env["WALL_HOUR"].flatMap { Double($0) }.map { CGFloat($0) } ?? 13
+        var img = render(hour)
+        if env["WALL_TERMINAL"] == "1" { img = terminalGrade(img) }
+        let dest = CGImageDestinationCreateWithURL(URL(fileURLWithPath: out) as CFURL, "public.png" as CFString, 1, nil)!
+        CGImageDestinationAddImage(dest, ci.createCGImage(CIImage(cgImage: img), from: extent, format: .RGBA8, colorSpace: cs)!, nil)
+        CGImageDestinationFinalize(dest)
+        return
+    }
     let hours: [CGFloat] = stride(from: 0, to: 24, by: 2).map { CGFloat($0) }
     let images = hours.map { h -> CGImage in
         ci.createCGImage(CIImage(cgImage: render(h)), from: extent, format: .RGBA8, colorSpace: cs)!
-    }
-    if out.hasSuffix(".png") {   // превью — кадр на 13:00
-        let dest = CGImageDestinationCreateWithURL(URL(fileURLWithPath: out) as CFURL, "public.png" as CFString, 1, nil)!
-        CGImageDestinationAddImage(dest, images[6], nil); CGImageDestinationFinalize(dest)
-        return
     }
     let schedule: [[String: Any]] = hours.enumerated().map { ["i": $0.offset, "t": Double($0.element / 24)] }
     let plist: [String: Any] = ["ap": ["l": 6, "d": 0], "ti": schedule]
@@ -117,4 +123,118 @@ func runWallpaper(_ render: (CGFloat) -> CGImage) {
         if i == 0 { CGImageDestinationAddImageAndMetadata(dest, img, meta, opts) } else { CGImageDestinationAddImage(dest, img, opts) }
     }
     guard CGImageDestinationFinalize(dest) else { print("не удалось записать \(out)"); exit(1) }
+}
+
+// ─── для атмосферных сцен (туман, снег, сумерки) ───
+// размыть уже нарисованное: дальние планы рисуются первыми и уходят в расфокус, ближние — резкие поверх
+func soften(_ ctx: CGContext, _ radius: CGFloat) {
+    guard radius > 0, let img = ctx.makeImage(),
+          let out = ci.createCGImage(blurred(img, radius * S), from: extent, format: .RGBA16, colorSpace: cs) else { return }
+    ctx.clear(extent); ctx.draw(out, in: extent)
+}
+// слой тумана: снизу плотнее (bottom), сверху реже (top) — между планами, как воздушная перспектива
+func haze(_ ctx: CGContext, _ c: Int, bottom: CGFloat, top: CGFloat, from y0: CGFloat = 0, to y1: CGFloat = H) {
+    let g = CGGradient(colorsSpace: cs, colors: [rgb(c, bottom), rgb(c, top)] as CFArray, locations: [0, 1])!
+    ctx.drawLinearGradient(g, start: CGPoint(x: 0, y: y0), end: CGPoint(x: 0, y: y1), options: [.drawsBeforeStartLocation, .drawsAfterEndLocation])
+}
+// плёночное зерно и виньетка: без них процедурная картинка выглядит «пластиковой»
+func filmic(_ img: CGImage, grain: CGFloat = 0.035, vignette: CGFloat = 0.55) -> CGImage {
+    let base = CIImage(cgImage: img)
+    let noise = CIFilter(name: "CIRandomGenerator")!.outputImage!.cropped(to: extent)
+        .applyingFilter("CIColorMatrix", parameters: [
+            "inputRVector": CIVector(x: 0, y: 1, z: 0, w: 0), "inputGVector": CIVector(x: 0, y: 1, z: 0, w: 0),
+            "inputBVector": CIVector(x: 0, y: 1, z: 0, w: 0), "inputAVector": CIVector(x: 0, y: 0, z: 0, w: grain),
+            "inputBiasVector": CIVector(x: 0, y: 0, z: 0, w: 0)])
+    let grained = noise.applyingFilter("CISoftLightBlendMode", parameters: [kCIInputBackgroundImageKey: base])
+    let out = grained.applyingFilter("CIVignetteEffect", parameters: [
+        kCIInputCenterKey: CIVector(x: W / 2, y: H / 2), kCIInputRadiusKey: max(W, H) * 0.62, kCIInputIntensityKey: vignette])
+    return ci.createCGImage(out.cropped(to: extent), from: extent, format: .RGBA16, colorSpace: cs)!
+}
+// тёплый огонёк (окно, фонарь) с ореолом в тумане
+func lamp(_ ctx: CGContext, _ p: CGPoint, _ r: CGFloat, _ c: Int, _ a: CGFloat) {
+    radialGlow(ctx, p, r * 9, c, a * 0.25)
+    ctx.setFillColor(rgb(mix(c, 0xffffff, 0.5), a)); ctx.fillEllipse(in: CGRect(x: p.x - r, y: p.y - r, width: r * 2, height: r * 2))
+}
+
+// ─── город: панельные высотки и провода (туманный город, снегопад) ───
+let warm = 0xffc27a
+
+// панельная высотка: фасад, окна сеткой, светлые полосы лоджий. fogMix — насколько она утонула в тумане
+func tower(_ ctx: CGContext, _ x: CGFloat, _ w: CGFloat, _ h: CGFloat, base y0: CGFloat, k: CGFloat,
+           facade: Int, fog: Int, fogMix: CGFloat, lit: CGFloat, rng: inout Rng) {
+    let body = mix(facade, fog, fogMix)
+    ctx.setFillColor(rgb(body)); ctx.fill(CGRect(x: x, y: y0, width: w, height: h))
+    // технический этаж и надстройка на крыше
+    ctx.setFillColor(rgb(mix(body, fog, 0.15))); ctx.fill(CGRect(x: x + w * 0.3, y: y0 + h, width: w * 0.25, height: 14 * k * S))
+    let floorH = 21 * k * S, winW = 9 * k * S, winH = 11 * k * S, step = 17 * k * S
+    let cols = Int((w - 10 * k * S) / step), rows = Int((h - 20 * k * S) / floorH)
+    let left = x + (w - CGFloat(cols) * step) / 2 + (step - winW) / 2
+    // лоджии — вертикальные светлые полосы через каждые 3 окна
+    ctx.setFillColor(rgb(mix(body, 0xffffff, 0.05)))
+    var c = 1
+    while c < cols { ctx.fill(CGRect(x: left + CGFloat(c) * step - 3 * k * S, y: y0, width: winW + 6 * k * S, height: h - 12 * k * S)); c += 3 }
+    ctx.setFillColor(rgb(mix(body, 0x000000, 0.12), 0.5))
+    for r in 0..<rows { ctx.fill(CGRect(x: x, y: y0 + 6 * k * S + CGFloat(r) * floorH, width: w, height: 1.2 * k * S)) }
+    for r in 0..<rows {
+        let floorMood = rng.next() < 0.25 ? 2.2 : 0.7          // на некоторых этажах окна горят чаще
+        for c in 0..<cols {
+            let wx = left + CGFloat(c) * step, wy = y0 + 10 * k * S + CGFloat(r) * floorH
+            let on = rng.next() < lit * floorMood, v = rng.next()
+            if on {
+                let col = mix(mix(warm, 0xffe2b0, v), fog, fogMix * 0.75)
+                ctx.setFillColor(rgb(col, 0.9)); ctx.fill(CGRect(x: wx, y: wy, width: winW, height: winH))
+            } else {
+                ctx.setFillColor(rgb(mix(mix(body, 0x000000, 0.25), fog, fogMix * 0.3), 0.55 + v * 0.3))
+                ctx.fill(CGRect(x: wx, y: wy, width: winW, height: winH))
+            }
+        }
+    }
+}
+
+// провод — провисающая цепная линия
+func wire(_ ctx: CGContext, _ a: CGPoint, _ b: CGPoint, sag: CGFloat, _ c: Int, _ alpha: CGFloat, _ width: CGFloat) {
+    let p = CGMutablePath(); p.move(to: a)
+    for i in 1...60 {
+        let t = CGFloat(i) / 60
+        p.addLine(to: CGPoint(x: lerp(a.x, b.x, t), y: lerp(a.y, b.y, t) - sag * 4 * t * (1 - t)))
+    }
+    ctx.addPath(p); ctx.setStrokeColor(rgb(c, alpha)); ctx.setLineWidth(width * S); ctx.strokePath()
+}
+// отдельный прозрачный слой с размытием — кусты, сугробы, дальние кроны
+func blurLayer(_ blur: CGFloat, _ draw: (CGContext) -> Void) -> CGImage {
+    let layer = CGContext(data: nil, width: Int(W), height: Int(H), bitsPerComponent: 16, bytesPerRow: 0,
+                          space: cs, bitmapInfo: CGImageAlphaInfo.premultipliedLast.rawValue)!
+    draw(layer)
+    let img = layer.makeImage()!
+    guard blur > 0 else { return img }
+    return ci.createCGImage(CIImage(cgImage: img).applyingFilter("CIGaussianBlur", parameters: [kCIInputRadiusKey: blur * S]).cropped(to: extent),
+                            from: extent, format: .RGBA16, colorSpace: cs)!
+}
+
+// фон для терминала: та же сцена, но тёмная и спокойная — текст должен читаться в любом месте.
+// Яркость сжата вниз, цвет приглушён, слева (где текст) и сверху ещё темнее, мелочь чуть размыта.
+func terminalGrade(_ img: CGImage) -> CGImage {
+    let soft = CIImage(cgImage: img).clampedToExtent().applyingFilter("CIGaussianBlur", parameters: [kCIInputRadiusKey: 2.5 * S]).cropped(to: extent)
+    // средняя яркость кадра → общий уровень ~0.27: и дневной, и ночной кадр одинаково спокойные
+    var avg = [UInt8](repeating: 0, count: 4)
+    ci.render(soft.applyingFilter("CIAreaAverage", parameters: [kCIInputExtentKey: CIVector(cgRect: extent)]), toBitmap: &avg, rowBytes: 4,
+              bounds: CGRect(x: 0, y: 0, width: 1, height: 1), format: .RGBA8, colorSpace: cs)
+    let luma = (0.2126 * CGFloat(avg[0]) + 0.7152 * CGFloat(avg[1]) + 0.0722 * CGFloat(avg[2])) / 255
+    let gain = min(1.8, max(0.3, 0.27 / max(luma, 0.01)))
+    let graded = soft
+        .applyingFilter("CIColorControls", parameters: [kCIInputSaturationKey: 1.4, kCIInputContrastKey: 0.95])
+        .applyingFilter("CIColorMatrix", parameters: ["inputRVector": CIVector(x: gain, y: 0, z: 0, w: 0),
+            "inputGVector": CIVector(x: 0, y: gain, z: 0, w: 0), "inputBVector": CIVector(x: 0, y: 0, z: gain, w: 0)])
+        .applyingFilter("CIToneCurve", parameters: [                       // блики (окна, фонари) мягко прижаты
+            "inputPoint0": CIVector(x: 0, y: 0), "inputPoint1": CIVector(x: 0.2, y: 0.2), "inputPoint2": CIVector(x: 0.4, y: 0.37),
+            "inputPoint3": CIVector(x: 0.7, y: 0.5), "inputPoint4": CIVector(x: 1, y: 0.58)])
+    // тень под текстом: слева направо от 55% к 0%, сверху ещё немного
+    let shade = CIFilter(name: "CILinearGradient", parameters: [
+        "inputPoint0": CIVector(x: 0, y: H * 0.5), "inputPoint1": CIVector(x: W * 0.75, y: H * 0.5),
+        "inputColor0": CIColor(red: 0, green: 0, blue: 0, alpha: 0.32), "inputColor1": CIColor(red: 0, green: 0, blue: 0, alpha: 0)])!.outputImage!.cropped(to: extent)
+    let top = CIFilter(name: "CILinearGradient", parameters: [
+        "inputPoint0": CIVector(x: 0, y: H), "inputPoint1": CIVector(x: 0, y: H * 0.55),
+        "inputColor0": CIColor(red: 0, green: 0, blue: 0, alpha: 0.18), "inputColor1": CIColor(red: 0, green: 0, blue: 0, alpha: 0)])!.outputImage!.cropped(to: extent)
+    let out = top.composited(over: shade.composited(over: graded))
+    return ci.createCGImage(out, from: extent, format: .RGBA16, colorSpace: cs)!
 }

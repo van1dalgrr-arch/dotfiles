@@ -6,6 +6,16 @@ or run `wall` to pick from a list with image previews.
 
 Previews show the 13:00 frame.
 
+## Atmosphere
+
+Moody, photo-like scenes: fog, dusk, snow. Painted in code at screen resolution, with depth of field and film grain.
+Previews show the hour that suits each scene best. `backdrop <name>` puts a dark, readable version behind the terminal.
+
+<table>
+<tr><td width="33%" valign="top"><img src="wallpapers/mistcity.jpg" alt="mistcity"/><br><b><code>mistcity</code></b><br><sub>Panel high-rises sinking into blue fog, wires, a fence and warm windows that light up floor by floor at night</sub></td><td width="33%" valign="top"><img src="wallpapers/hanami.jpg" alt="hanami"/><br><b><code>hanami</code></b><br><sub>Cherry blossom at dusk over a bridge and dark water; a lamp comes on at night</sub></td><td width="33%" valign="top"><img src="wallpapers/snowfall.jpg" alt="snowfall"/><br><b><code>snowfall</code></b><br><sub>A courtyard in a snowstorm: tall blocks in the haze, snow-laden branches, flakes in three depths</sub></td></tr>
+<tr><td width="33%" valign="top"><img src="wallpapers/cosmea.jpg" alt="cosmea"/><br><b><code>cosmea</code></b><br><sub>A field of pink cosmos fading into thick fog, a few tall stems in focus</sub></td><td width="33%" valign="top"><img src="wallpapers/steppe.jpg" alt="steppe"/><br><b><code>steppe</code></b><br><sub>Tall grass bent by the wind, the hill dissolving into mist</sub></td></tr>
+</table>
+
 ## Space
 
 <table>

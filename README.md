@@ -74,8 +74,8 @@ your `*.bak` files, and `--purge` also deletes the generated theme files. Homebr
 | **Editor** | [Zed](https://zed.dev) with my own themes, Dev Night (dark) and Dev Day (light), that switch with macOS, plus icons. Delve debugger, golangci-lint in the editor, tasks on `ctrl-r` |
 | **Themes** | `theme vesper` / `kanagawa` / `rose-pine`: recolors the whole terminal, app icons and wallpaper. **Light mode** (Dev Day) follows macOS |
 | **Effects** | `fx` — Ghostty shaders: smooth cursor, trail, sparks as you type, focus flash, neon glow; colored by the theme |
-| **Backdrop** | `backdrop` — the wallpaper's light behind the terminal text: glow, aurora, haze or glass |
-| **Wallpapers** | `wall`: 25 live wallpapers drawn in Swift that change through the day, plus your own photos (`wall add`), upscaled without blur |
+| **Backdrop** | `backdrop` — the wallpaper's light behind the terminal text (glow, aurora, haze, glass) or a dark terminal-only scene (mistcity, hanami, snowfall, cosmea, steppe) |
+| **Wallpapers** | `wall`: 30 live wallpapers drawn in Swift that change through the day, plus your own photos (`wall add`), upscaled without blur |
 | **Git** | delta for diffs, lazygit, gitleaks before every commit |
 | **Docker** | OrbStack, lazydocker, and `up` — start dependencies and run the project in one command |
 | **GoLand** | the same Dev Night / Dev Day themes as a JetBrains plugin and `.icls`, see [jetbrains/](jetbrains) |
@@ -201,11 +201,12 @@ wall             # list with an image preview, enter to apply
 wall eclipse     # apply directly
 ```
 
+Atmosphere — `mistcity` `hanami` `snowfall` `cosmea` `steppe`<br>
 Space — `eclipse` `orbit` `rings` `aurora` `horizon` `startrails`<br>
 Tech — `code` `circuit` `ridges` `minimal` `halftone` `iso` `helix` `topo`<br>
 Everything else — `petals` `prism` `ocean` `glass` `crystal` `vinyl` `neon` `rain` `bauhaus` `mesh` `kanagawa`
 
-**[See all 25 in the gallery →](docs/wallpapers.md)**
+**[See all 30 in the gallery →](docs/wallpapers.md)**
 
 **Your own photos** work too: `wall add ~/Downloads/photo.jpg sakura`. Small or compressed photos are cleaned of
 JPEG artifacts, upscaled to the screen in two Lanczos steps, cropped to its aspect and lightly sharpened
@@ -251,7 +252,7 @@ The generator is `icons/backdrop.swift` (Core Image, no extra tools).
 | [How to use it (RU)](docs/guide.ru.md) | every command and feature, day to day: themes, wallpapers, backdrop, prompt, git, Go, Docker, Mac upkeep |
 | [How it works (RU)](docs/how-it-works.ru.md) | architecture, diagrams, the "why" behind every piece, and recipes |
 | [Recovery (RU)](docs/recovery.ru.md) | the Mac was wiped: restore checklist, what comes back by itself, what doesn't |
-| [Wallpapers](docs/wallpapers.md) | all 25 live wallpapers with previews, and how to make your own |
+| [Wallpapers](docs/wallpapers.md) | all 30 live wallpapers with previews, and how to make your own |
 | [Themes](docs/themes.md) | all themes side by side, and how `theme` recolors everything from one palette file |
 | [GoLand / JetBrains](jetbrains/README.md) | Dev Night and Dev Day as editor color schemes (`.icls`), one-click import |
 | [Hotkeys](docs/hotkeys.md) | AeroSpace, Ghostty and Zed shortcuts |

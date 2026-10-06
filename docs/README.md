@@ -10,7 +10,7 @@ Guides and pictures for the README.
 | `how-it-works.ru.md` | how it's built inside, with diagrams (RU) |
 | `recovery.ru.md` | the Mac was wiped: restore checklist (RU) |
 | `themes.md` | themes side by side, how `theme` recolors everything |
-| `wallpapers.md` | gallery of the 25 live wallpapers |
+| `wallpapers.md` | gallery of the 30 live wallpapers |
 | `hotkeys.md` | AeroSpace, Ghostty and Zed shortcuts |
 | `troubleshooting.md` | common problems and fixes |
 | `*.png, *.jpg` | screenshots rendered from real output (no screen capture) |
