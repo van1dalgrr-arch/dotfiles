@@ -134,14 +134,12 @@ _backdrop_scene() {     # обои → ~/.cache/dotfiles-theme/backdrop/<имя>
     mkdir -p $dir ~/.cache/wallpapers
     [[ -f $src ]] || hour=photo                                   # фото от часа не зависит
     [[ -f $out && $out -nt $tool && ( ! -f $src || ( $out -nt $src && $out -nt $kit ) ) && $(<$stamp 2>/dev/null) == $hour ]] && return 0
-    [[ -x $grade && $grade -nt $tool ]] || swiftc -O $tool -o $grade 2>/dev/null || return
+    [[ -x $grade && $grade -nt $tool ]] || swiftc -O $tool -o $grade 2>/dev/null || { echo "не собрался terminal-grade"; return 1; }
     if [[ -f $src ]]; then
-        local bin=~/.cache/wallpapers/scene-$1
-        if [[ ! -x $bin || $src -nt $bin || $kit -nt $bin ]]; then
-            echo "собираю сцену $1 (один раз)…"
-            command cat $kit $src >| $bin.swift && swiftc -O $bin.swift -o $bin 2>/dev/null || return
-        fi
-        WALL_HOUR=$hour $bin $dir/.$1.raw.png 1600 1000 >/dev/null && $grade $dir/.$1.raw.png $out >/dev/null || return
+        # кадр сцены — той же сборкой, что у wall: понимает и kit-сцены (час из WALL_HOUR), и старые генераторы
+        echo "рисую $1…"
+        WALL_HOUR=$hour _wall_build $1 $dir/.$1.raw.png 1600 1000 && [[ -f $dir/.$1.raw.png ]] \
+            && $grade $dir/.$1.raw.png $out >/dev/null || { echo "не получилось нарисовать $1"; return 1; }
     else
         [[ -n $photo ]] || { echo "нет обоев: $1"; return 1; }
         $grade $photo $out >/dev/null || return
@@ -166,12 +164,14 @@ backdrop() {
     local style=$1 cfg=~/.config/ghostty/backdrop.ghostty s
     if [[ -z $style ]]; then
         mkdir -p ~/.cache/wallpapers
-        local scenes=($(_wall_names))
+        # стили из обоев — сразу (быстро); обои целиком собираются только при выборе.
+        # Превью обоев: готовый фон, если уже собирали, иначе — превью из wall
         for s in $_backdrop_styles; do _backdrop_build $s || return; done
-        for s in $scenes; do [[ -f ~/.cache/dotfiles-theme/backdrop/$s.png ]] || { echo "фон: $s…"; _backdrop_build $s || return; }; done
-        style=$(print -l $_backdrop_styles $scenes off | fzf --header="фон терминала · сейчас: $(command cat ~/.config/dotfiles/backdrop 2>/dev/null || echo off)" \
+        style=$( { print -l $_backdrop_styles; _wall_names; print off; } | fzf \
+            --header="фон терминала · сейчас: $(command cat ~/.config/dotfiles/backdrop 2>/dev/null || echo off) · сверху стили, ниже — любые обои" \
             --height=90% --preview-window=right:75% \
-            --preview '[[ {} == off ]] && echo "без фона" || chafa --animate=off -s ${FZF_PREVIEW_COLUMNS}x${FZF_PREVIEW_LINES} ~/.cache/dotfiles-theme/backdrop/{}.png') || return
+            --preview 'f=~/.cache/dotfiles-theme/backdrop/{}.png; [[ -f $f ]] || f=~/.cache/wallpapers/{}.png
+                       [[ {} == off ]] && echo "без фона" || { [[ -f $f ]] && chafa --animate=off -s ${FZF_PREVIEW_COLUMNS}x${FZF_PREVIEW_LINES} $f || echo "превью появится после выбора"; }') || return
     fi
     if [[ $style == off ]]; then
         print "# фон выключен (backdrop off)" >| $cfg
@@ -211,8 +211,9 @@ fx() {
 # пересобирает фон в фоне (сам Ghostty перечитает конфиг). Без форков: только чтение двух файлов.
 () {
     local bd=${$(<~/.config/dotfiles/backdrop 2>/dev/null)}
-    [[ -n $bd && -f ~/dotfiles/icons/wallpaper-$bd.swift ]] || return 0
+    # стили (glow, aurora…) от часа не зависят — даже если есть одноимённые обои
+    [[ -n $bd && -f ~/dotfiles/icons/wallpaper-$bd.swift ]] && (( ! ${_backdrop_styles[(Ie)$bd]} )) || return 0
     local h=${(%):-%D{%H}} stamp=~/.cache/dotfiles-theme/backdrop/.$bd.hour
-    (( ${$(<$stamp 2>/dev/null):--1} == h / 2 * 2 )) && return 0
+    [[ -f $stamp ]] && (( $(<$stamp) == h / 2 * 2 )) && return 0
     ( backdrop $bd >/dev/null 2>&1 ) &!
 }

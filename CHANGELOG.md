@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- **`backdrop` menu fixed:** it no longer pre-renders every wallpaper before showing the list (that took minutes and aborted on the classic generators). The list opens at once, styles on top; a wallpaper is rendered only when picked, through the same builder as `wall`. A style named like a wallpaper (`glass`, `aurora`) no longer trips the hourly refresh
 - **`dot snapshot`** before a macOS upgrade and **`dot snapshot diff`** after: installed brew packages and apps with versions, macos.sh settings, login items, background agents, tool versions, AeroSpace permission — shows what reset. Checklist: `docs/macos-upgrade.ru.md`
 - **`dot doctor` checks macOS itself:** FileVault, firewall, SIP, Gatekeeper, Time Machine (no backups → warning), free disk; `--deep` adds battery capacity and pending macOS/Safari/CLT updates
 - `./macos.sh security`: firewall on + stealth mode (plan first, `--yes` asks for sudo)
