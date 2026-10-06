@@ -8,7 +8,8 @@
 #     dot tools [install]       Go-утилиты с закреплёнными версиями (go/tools.txt)
 #     dot macos [--yes] [группа] настройки macOS: без --yes только показывает
 #     dot theme [имя]           сменить тему          dot wall [имя]   сменить обои
-#     dot check                 проверки, как в CI    dot edit         открыть репозиторий в Zed
+#     dot fx [on|off|set …]     эффекты Ghostty       dot check        проверки, как в CI
+#     dot edit                  открыть репозиторий в Zed
 #   Код выхода: 0 — ок (предупреждения не считаются), 1 — есть ошибки, 2 — неверный вызов.
 # ============================================================
 set -uo pipefail
@@ -28,8 +29,9 @@ case "${1:-help}" in
     macos)   shift; "$DOTFILES/macos.sh" "$@" ;;
     theme)   shift; "$DOTFILES/themes/apply.sh" "$@" ;;
     wall)    shift; zsh -ic "wall $*" ;;
+    fx)      shift; "$DOTFILES/ghostty/fx.sh" "$@" ;;
     check)   make -C "$DOTFILES" check ;;
     edit)    zed "$DOTFILES" ;;
-    help|-h|--help) sed -n '3,12p' "$0" | sed 's/^# \{0,1\}//' ;;
-    *)       sed -n '3,12p' "$0" | sed 's/^# \{0,1\}//' >&2; exit 2 ;;
+    help|-h|--help) sed -n '3,13p' "$0" | sed 's/^# \{0,1\}//' ;;
+    *)       sed -n '3,13p' "$0" | sed 's/^# \{0,1\}//' >&2; exit 2 ;;
 esac

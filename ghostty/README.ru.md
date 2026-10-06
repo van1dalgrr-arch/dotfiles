@@ -7,20 +7,27 @@
 | Файл | Что это |
 |---|---|
 | `config.ghostty` | шрифт, отступы, сплиты, выпадающий терминал, шейдеры, клавиши; подключает сгенерированную тему и фон |
-| `shaders/cursor_smooth.glsl` | плавный курсор: настоящий скрыт, шейдер рисует и ведёт его |
-| `shaders/cursor_trail.glsl` | светящийся шлейф на больших прыжках; цвета перекрашивает `theme` |
+| `fx.sh` | переключатель эффектов для `fx`: пишет `~/.config/ghostty/fx.ghostty` |
+| `shaders/cursor_smooth.glsl` | `cursor`: плавный курсор — настоящий скрыт, шейдер рисует и ведёт его |
+| `shaders/cursor_trail.glsl` | `trail`: светящийся шлейф на больших прыжках курсора |
+| `shaders/sparks.glsl` | `sparks`: при наборе из-под курсора вылетают искры |
+| `shaders/focus.glsl` | `focus`: окно, получившее фокус, вспыхивает по краям — удобно с AeroSpace |
+| `shaders/glow.glsl` | `glow`: мягкое неоновое свечение яркого текста (в светлой теме выключено) |
 | `shaders/.prefix.glsl` | заголовок шейдеров Ghostty — только чтобы `make check` компилировал шейдеры |
 | `quick-terminal.applescript` | показать/спрятать выпадающий терминал; вызывает AeroSpace по `` ctrl+` `` |
-| `config.ghostty.pre-clean` | старая копия, не используется |
 
 **`install.sh` ставит симлинками:**
 
 - `config.ghostty` → `~/.config/ghostty/config.ghostty`
-- `shaders/cursor_smooth.glsl` → `~/.config/ghostty/shaders/cursor_smooth.glsl`
 
 ## Генерируется, не в git
 
 `theme` пишет `~/.config/ghostty/theme.ghostty` и две темы (`dotfiles-dark`, `dotfiles-light`) — Ghostty следует светлому/тёмному режиму macOS. `backdrop` пишет `~/.config/ghostty/backdrop.ghostty`. После `theme`, `wall`, `backdrop` и `update` Ghostty перечитывает конфиг сам (AppleScript `reload_config`); после ручной правки конфига — `cmd+shift+,`.
+
+## Эффекты: `fx`
+
+`fx` (fzf: Tab — отметить, Enter — переключить) или `fx on sparks`, `fx off trail`, `fx set none`. По умолчанию: `cursor trail focus`.
+Цвета шейдеры берут из темы терминала (`iCursorColor`, `iPalette`), поэтому `theme` и светлый режим перекрашивают их сразу. Шейдеры используются прямо из репозитория, ничего не копируется.
 
 ## Выпадающий терминал
 

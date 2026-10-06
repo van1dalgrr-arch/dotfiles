@@ -1,4 +1,4 @@
-#compdef dot theme wall backdrop awake
+#compdef dot theme wall backdrop awake fx
 # ============================================================
 #   Автодополнение (Tab) для своих команд: dot, theme, wall, backdrop, awake.
 #   Темы, обои и стили берутся из репозитория — новые появляются в Tab сами.
@@ -7,6 +7,10 @@
 _dot_themes()  { local -a t=(~/dotfiles/themes/*.sh(N:t:r)); t=(${t:#apply}); _describe 'тема' t; }
 _dot_walls()   { local -a w=(~/dotfiles/icons/wallpaper-*.swift(N:t:r)); w=(${w#wallpaper-}); w=(${w:#kit} ~/dotfiles/wallpapers/photos/*.(jpg|jpeg|png|heic|webp)(N:t:r) add); _describe 'обои' w; }
 _dot_backdrops() { local -a s=(glow:'свет из углов' aurora:'сияние снизу' haze:'размытый свет обоев' glass:'обои сквозь стекло' off:'без фона'); _describe 'стиль' s; }
+_dot_fx() {
+    if (( CURRENT == 2 )); then local -a a=(on:'включить' off:'выключить' set:'ровно этот набор' list:'что включено'); _describe 'действие' a
+    else local -a e=(glow:'свечение текста' cursor:'плавный курсор' trail:'шлейф' sparks:'искры при наборе' focus:'вспышка фокуса' none:'ничего'); _describe 'эффект' e; fi
+}
 _dot_macos_groups() {
     local -a g=(keyboard trackpad finder saving screenshots dock appearance apps login)
     _arguments '(-y --yes)'{-y,--yes}'[применить]' '(-v --verbose)'{-v,--verbose}'[показать и уже настроенное]' '*:группа:(${g})'
@@ -17,6 +21,7 @@ _dot() {
         theme)    _dot_themes; return ;;
         wall)     _dot_walls; return ;;
         backdrop) _dot_backdrops; return ;;
+        fx)       _dot_fx; return ;;
         awake)    local -a a=(on:'не засыпать с закрытой крышкой' off:'как обычно'); _describe 'режим' a; return ;;
     esac
     local -a cmds=(
@@ -28,6 +33,7 @@ _dot() {
         'macos:настройки macOS (без --yes — только план)'
         'theme:сменить тему'
         'wall:сменить обои'
+        'fx:эффекты Ghostty (шейдеры)'
         'check:проверки, как в CI'
         'edit:открыть dotfiles в Zed'
         'help:справка'
@@ -40,6 +46,7 @@ _dot() {
         macos)   shift words; (( CURRENT-- )); _dot_macos_groups ;;
         theme)   _dot_themes ;;
         wall)    _dot_walls ;;
+        fx)      shift words; (( CURRENT-- )); _dot_fx ;;
     esac
 }
 

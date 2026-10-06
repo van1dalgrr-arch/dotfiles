@@ -57,14 +57,6 @@ macos-icon-ghost-color = #$T_ROSE
 macos-icon-screen-color = #$T_BASE,#$T_OVERLAY
 EOF
 
-# шлейф курсора: цвета в шейдере заданы vec3 с комментарием // #hex
-shader="$HOME/.config/ghostty/shaders/cursor_trail.glsl"
-mkdir -p "$(dirname "$shader")"
-[ -L "$shader" ] && rm "$shader"
-recolor "$DOTFILES/ghostty/shaders/cursor_trail.glsl" "$GEN/cursor_trail.glsl"
-perl -pe 's{vec3\([^)]*\)(;\s*//\s*#([0-9a-f]{6}))}{sprintf("vec3(%.3f, %.3f, %.3f)%s", (map { hex($_)/255 } unpack("(A2)3", $2)), $1)}ge' \
-    "$GEN/cursor_trail.glsl" > "$shader"
-
 # ─── starship, eza, lazygit, btop, bat — перекрашенные копии ───
 recolor "$DOTFILES/starship/starship.toml" "$GEN/starship.toml"
 mkdir -p "$GEN/eza"; recolor "$DOTFILES/eza/theme.yml" "$GEN/eza/theme.yml"

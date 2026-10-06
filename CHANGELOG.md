@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- **Terminal effects: `fx`.** New shaders: `sparks` (sparks as you type), `focus` (the focused window flashes along its edges), `glow` (soft neon halo on bright text). `fx` toggles any of them, plus the smooth `cursor` and `trail`
+- Shaders take colors from the terminal theme (`iCursorColor`, `iPalette`) instead of baked-in hex: the trail now follows light mode, and `theme` no longer generates a shader copy
 - **Ghostty reloads by itself** after `theme`, `wall`, `backdrop` and `update` (AppleScript `reload_config`), no more `cmd+shift+,`
 - `backdrop` reuses a background already built for the same wallpaper: the menu opens in ~30 ms instead of 1.2 s
 - `wall` labels each entry as live wallpaper or photo; `up` gives up on OrbStack after a minute instead of waiting forever; `killport` sends TERM first and KILL only after 2 s

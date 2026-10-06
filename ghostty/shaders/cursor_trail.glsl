@@ -1,8 +1,7 @@
-// Светящийся шлейф на больших прыжках курсора. Цвета — // #hex, их перекрашивает themes/apply.sh
+// Светящийся шлейф на больших прыжках курсора. Цвета — из темы терминала (iCursorColor и палитра),
+// поэтому шлейф сам перекрашивается при theme и при переходе macOS в светлый режим.
 
 const float DURATION = 0.28;                       // сек
-const vec3  ROSE     = vec3(0.922, 0.737, 0.729);  // #ebbcba
-const vec3  IRIS     = vec3(0.769, 0.655, 0.906);  // #c4a7e7
 
 float easeOut(float x) { return 1.0 - pow(1.0 - x, 3.0); }
 
@@ -34,7 +33,8 @@ void mainImage(out vec4 fragColor, in vec2 fragCoord) {
     float core  = 1.0 - smoothstep(width - 1.0, width + 1.0, d);
     float glow  = exp(-d / (cell * 0.6)) * 0.35;
 
-    vec3 color = mix(IRIS, ROSE, h);
+    // хвост — синий из палитры (4), голова — цвет курсора
+    vec3 color = mix(iPalette[4], iCursorColor, h);
     float a = clamp((core * 0.85 + glow) * fade, 0.0, 1.0);
     fragColor.rgb = mix(fragColor.rgb, color, a);
 }

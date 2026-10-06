@@ -40,7 +40,6 @@ link zsh/.zshrc                      "$HOME/.zshrc"
 link git/.gitconfig                  "$HOME/.gitconfig"
 link git/repo-hooks/pre-push         "$DOTFILES/.git/hooks/pre-push"   # проверки перед push в сам dotfiles
 link ghostty/config.ghostty          "$HOME/.config/ghostty/config.ghostty"
-link ghostty/shaders/cursor_smooth.glsl "$HOME/.config/ghostty/shaders/cursor_smooth.glsl"
 link starship/starship.toml          "$HOME/.config/starship.toml"
 link btop/btop.conf                  "$HOME/.config/btop/btop.conf"
 link eza/theme.yml                   "$HOME/.config/eza/theme.yml"
@@ -81,3 +80,8 @@ fi
 
 # Тема терминала и обоев (по умолчанию rose-pine; сменить — `theme`)
 bash "$DOTFILES/themes/apply.sh"
+
+# Эффекты Ghostty (шейдеры прямо из репозитория; сменить — `fx`). Старые копии в ~/.config больше не нужны
+rm -f "$HOME/.config/ghostty/shaders/cursor_smooth.glsl" "$HOME/.config/ghostty/shaders/cursor_trail.glsl"
+rmdir "$HOME/.config/ghostty/shaders" 2>/dev/null || true
+bash "$DOTFILES/ghostty/fx.sh" apply

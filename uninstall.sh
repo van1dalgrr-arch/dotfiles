@@ -20,11 +20,11 @@ done < <(grep -E '^link ' "$DOTFILES/install.sh" | sed -E 's/^link +([^ ]+) +"?(
 
 if [ "$purge" = 1 ]; then
     for p in "$HOME/.cache/dotfiles-theme" "$HOME/.config/dotfiles" "$HOME/.config/ghostty/theme.ghostty" \
-             "$HOME/.config/ghostty/shaders/cursor_trail.glsl" "$HOME/.config/btop/themes/dotfiles.theme" \
+             "$HOME/.config/btop/themes/dotfiles.theme" \
              "$HOME/.config/bat/themes/dotfiles.tmTheme" \
              "$HOME/.config/bat/themes/dotfiles-light.tmTheme" "$HOME/.config/ghostty/themes/dotfiles-dark" \
              "$HOME/.config/ghostty/themes/dotfiles-light" \
-             "$HOME/.config/ghostty/backdrop.ghostty"; do
+             "$HOME/.config/ghostty/backdrop.ghostty" "$HOME/.config/ghostty/fx.ghostty" "$HOME/.config/dotfiles/fx"; do
         [ -e "$p" ] && run rm -rf "$p"
     done
 fi

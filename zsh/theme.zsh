@@ -158,3 +158,21 @@ backdrop() {
     _ghostty_reload
     print -P "%F{#$T_FOAM}фон: $style%f"
 }
+
+# fx: эффекты Ghostty (шейдеры). Без аргументов — fzf: отметить Tab'ом, Enter переключает отмеченные
+fx() {
+    (( $# )) && { ~/dotfiles/ghostty/fx.sh "$@"; return; }
+    local picked=(${(f)"$(~/dotfiles/ghostty/fx.sh list | fzf --ansi --multi --height=40% --reverse \
+        --header='эффекты терминала · Tab — отметить, Enter — включить/выключить отмеченные')"})
+    (( $#picked )) || return
+    local on=() off=() l e
+    for l in $picked; do
+        for e in glow cursor trail sparks focus; do
+            [[ $l == *" $e "* ]] || continue
+            [[ $l == *●* ]] && off+=($e) || on+=($e)
+        done
+    done
+    (( $#off )) && ~/dotfiles/ghostty/fx.sh off $off >/dev/null
+    (( $#on ))  && ~/dotfiles/ghostty/fx.sh on $on >/dev/null
+    ~/dotfiles/ghostty/fx.sh list
+}

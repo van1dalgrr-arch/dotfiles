@@ -70,6 +70,7 @@ pd|dot project doctor — что есть в проекте и чего не х�
 theme|сменить тему терминала и обоев: theme kanagawa / theme rose-pine
 palette|цвета текущей темы: роли и 16 цветов терминала
 backdrop|фон терминала из обоев: backdrop · glow, aurora, haze, glass, off
+fx|эффекты терминала: fx · on/off cursor, trail, sparks, focus, glow
 awake|awake on — не засыпать с закрытой крышкой (Claude с телефона) · awake off
 wall|сменить обои с превью: wall · petals, neon, rain, eclipse, orbit, code…
 EOF

@@ -208,8 +208,8 @@ doc_editors() {
         done
         if [ -z "$bad" ]; then pass "конфиги и темы Zed разбираются"
         else failed "Zed не прочитает:$bad" "→ проверь запятые и скобки"; fi
-        [ -f "$HOME/.config/ghostty/shaders/cursor_trail.glsl" ] && pass "шейдер курсора Ghostty" \
-            || warning "нет шейдера курсора" "→ dot theme"
+        [ -f "$HOME/.config/ghostty/fx.ghostty" ] && pass "эффекты Ghostty: $(cat "$HOME/.config/dotfiles/fx" 2>/dev/null)" \
+            || warning "эффекты Ghostty не настроены" "→ dot fx apply"
     fi
 }
 

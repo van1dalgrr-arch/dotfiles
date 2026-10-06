@@ -73,6 +73,7 @@ your `*.bak` files, and `--purge` also deletes the generated theme files. Homebr
 | **Prompt** | custom zsh in a frame: `╭─[user@host]─[path]─[git]─[Go · compose · ⎈ k8s context]`, command duration, collapses after Enter |
 | **Editor** | [Zed](https://zed.dev) with my own themes, Dev Night (dark) and Dev Day (light), that switch with macOS, plus icons. Delve debugger, golangci-lint in the editor, tasks on `ctrl-r` |
 | **Themes** | `theme vesper` / `kanagawa` / `rose-pine`: recolors the whole terminal, app icons and wallpaper. **Light mode** (Dev Day) follows macOS |
+| **Effects** | `fx` — Ghostty shaders: smooth cursor, trail, sparks as you type, focus flash, neon glow; colored by the theme |
 | **Backdrop** | `backdrop` — the wallpaper's light behind the terminal text: glow, aurora, haze or glass |
 | **Wallpapers** | `wall`: 25 live wallpapers drawn in Swift that change through the day, plus your own photos (`wall add`), upscaled without blur |
 | **Git** | delta for diffs, lazygit, gitleaks before every commit |

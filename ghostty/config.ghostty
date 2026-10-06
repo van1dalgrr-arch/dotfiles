@@ -35,12 +35,8 @@ cursor-style = bar
 # цвета курсора, выделения и фона сплитов — в темах (themes/apply.sh → ~/.config/ghostty/themes),
 # иначе светлая тема не смогла бы их поменять
 cursor-style-blink = true
-# Плавный курсор как в VS Code: настоящий скрыт, его рисует и ведёт шейдер cursor_smooth.
-# Выключить: убрать cursor-opacity и строку с cursor_smooth.glsl
-cursor-opacity = 0
-custom-shader = shaders/cursor_smooth.glsl
-# Светящийся шлейф при больших прыжках курсора (выключить — закомментировать)
-custom-shader = shaders/cursor_trail.glsl
+# Плавный курсор, шлейф, искры, вспышка фокуса, свечение — шейдеры в shaders/, включаются командой fx
+# (она пишет fx.ghostty в конце этого файла: cursor-opacity = 0 и custom-shader = …)
 
 # --- Keys ---
 macos-option-as-alt = left
@@ -83,3 +79,5 @@ keybind = super+q=close_all_windows
 config-file = ?theme.ghostty
 # --- Фон из обоев: backdrop пишет сюда картинку (backdrop off — убрать) ---
 config-file = ?backdrop.ghostty
+# --- Эффекты: fx пишет сюда шейдеры (fx set none — без эффектов) ---
+config-file = ?fx.ghostty
