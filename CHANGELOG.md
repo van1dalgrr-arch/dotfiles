@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- **Quick terminal fixed:** `` ctrl+` `` now gives it keyboard focus. Before, macOS kept focus in the previous app, so typing went there and the terminal never auto-hid (it got "stuck")
+- Ghostty windows have their close / minimize / zoom buttons back (transparent titlebar instead of hidden)
 - **Terminal effects: `fx`.** New shaders: `sparks` (sparks as you type), `focus` (the focused window flashes along its edges), `glow` (soft neon halo on bright text). `fx` toggles any of them, plus the smooth `cursor` and `trail`
 - Shaders take colors from the terminal theme (`iCursorColor`, `iPalette`) instead of baked-in hex: the trail now follows light mode, and `theme` no longer generates a shader copy
 - **Ghostty reloads by itself** after `theme`, `wall`, `backdrop` and `update` (AppleScript `reload_config`), no more `cmd+shift+,`

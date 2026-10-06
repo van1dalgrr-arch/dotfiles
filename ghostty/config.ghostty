@@ -15,9 +15,10 @@ background-blur = 30
 window-padding-x = 22
 window-padding-y = 18
 window-padding-balance = true
-# Окно без заголовка — как терминал в тайловом WM: только текст и отступы.
-# Двигать плавающее окно: ctrl+cmd + тянуть (macos.sh, группа appearance)
-macos-titlebar-style = hidden
+# Заголовок прозрачный: полосы нет, но кнопки закрыть/свернуть/развернуть на месте —
+# окно можно закрыть мышью. Двигать плавающее окно: ctrl+cmd + тянуть (macos.sh, группа appearance)
+macos-titlebar-style = transparent
+macos-titlebar-proxy-icon = hidden
 # Красная кнопка закрывает окно, Ghostty остаётся в фоне — ctrl+` работает всегда
 quit-after-last-window-closed = false
 unfocused-split-opacity = 0.85

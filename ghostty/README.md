@@ -2,7 +2,7 @@
 
 🇷🇺 [Русская версия](README.ru.md)
 
-Config for the [Ghostty](https://ghostty.org) terminal: no titlebar, quick terminal on `` ctrl+` ``, smooth cursor, backdrop from the wallpaper.
+Config for the [Ghostty](https://ghostty.org) terminal: transparent titlebar (only the window buttons), quick terminal on `` ctrl+` ``, smooth cursor, backdrop from the wallpaper.
 
 | File | What |
 |---|---|

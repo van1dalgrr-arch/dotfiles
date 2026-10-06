@@ -68,7 +68,7 @@ your `*.bak` files, and `--purge` also deletes the generated theme files. Homebr
 
 | | |
 |---|---|
-| **Terminal** | [Ghostty](https://ghostty.org) without a title bar (like in a tiling WM), a smooth gliding cursor like VS Code's, a drop-down window on `` ctrl+` `` from any app |
+| **Terminal** | [Ghostty](https://ghostty.org) with a transparent title bar (just the window buttons), a smooth gliding cursor like VS Code's, a drop-down window on `` ctrl+` `` from any app |
 | **Windows** | [AeroSpace](https://github.com/nikitabobko/AeroSpace) — i3-style tiling, hotkeys work on any keyboard layout |
 | **Prompt** | custom zsh in a frame: `╭─[user@host]─[path]─[git]─[Go · compose · ⎈ k8s context]`, command duration, collapses after Enter |
 | **Editor** | [Zed](https://zed.dev) with my own themes, Dev Night (dark) and Dev Day (light), that switch with macOS, plus icons. Delve debugger, golangci-lint in the editor, tasks on `ctrl-r` |
