@@ -1,0 +1,7 @@
+# закладки стартовой страницы Safari: «название  адрес», по порядку — клавиши 1–9
+# после правки: safari/build.sh (или любая theme / wall)
+github          https://github.com
+go docs         https://pkg.go.dev
+gin             https://gin-gonic.com/en/docs/
+localhost:8080  http://localhost:8080
+claude          https://claude.ai

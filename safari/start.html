@@ -1,0 +1,65 @@
+<!doctype html>
+<!-- стартовая страница Safari — шаблон: safari/build.sh подставляет цвета темы, закладки из safari/links и обои -->
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>Новая вкладка</title>
+<style>
+  :root {
+    --base: #%BASE%; --surface: #%SURFACE%; --muted: #%MUTED%;
+    --subtle: #%SUBTLE%; --text: #%TEXT%; --accent: #%ROSE%; --link: #%FOAM%;
+  }
+  * { margin: 0; box-sizing: border-box; }
+  html, body { height: 100%; }
+  body {
+    background: var(--base) url("wallpaper.jpg") center / cover no-repeat fixed;
+    color: var(--text);
+    font: 15px/1.5 "JetBrainsMono Nerd Font", "JetBrains Mono", ui-monospace, monospace;
+    display: grid; place-items: center;
+  }
+  /* затемнение снизу вверх: текст читается на любых обоях */
+  body::before {
+    content: ""; position: fixed; inset: 0;
+    background: linear-gradient(to top, color-mix(in srgb, var(--base) 85%, transparent), color-mix(in srgb, var(--base) 25%, transparent));
+  }
+  main { position: relative; text-align: center; padding: 16px; }
+  #time { font-size: clamp(64px, 12vw, 132px); font-weight: 200; letter-spacing: -0.04em; line-height: 1; }
+  #date { color: var(--subtle); margin-top: 12px; }
+  #date b { color: var(--accent); font-weight: 400; }
+  nav { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 48px; }
+  nav a {
+    color: var(--text); text-decoration: none; padding: 8px 14px; border-radius: 10px;
+    background: color-mix(in srgb, var(--surface) 70%, transparent);
+    border: 1px solid color-mix(in srgb, var(--text) 10%, transparent);
+    backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+    transition: border-color .15s, color .15s;
+  }
+  nav a:hover, nav a:focus-visible { border-color: var(--accent); color: var(--accent); outline: none; }
+  nav a span { color: var(--muted); margin-right: 6px; }
+</style>
+</head>
+<body>
+<main>
+  <div id="time">--:--</div>
+  <div id="date"></div>
+  <nav>
+%LINKS%
+  </nav>
+</main>
+<script>
+  const t = document.getElementById("time"), d = document.getElementById("date");
+  const hour = h => h < 5 ? "доброй ночи" : h < 12 ? "доброе утро" : h < 18 ? "добрый день" : "добрый вечер";
+  function tick() {
+    const n = new Date();
+    t.textContent = n.toLocaleTimeString("ru-RU", { hour: "2-digit", minute: "2-digit" });
+    d.innerHTML = `${n.toLocaleDateString("ru-RU", { weekday: "long", day: "numeric", month: "long" })} · <b>${hour(n.getHours())}</b>`;
+  }
+  tick(); setInterval(tick, 1000);
+  // 1–9 открывают закладки, когда фокус не в поле ввода
+  addEventListener("keydown", e => {
+    const links = document.querySelectorAll("nav a"), i = Number(e.key) - 1;
+    if (!e.metaKey && !e.ctrlKey && links[i]) location.href = links[i].href;
+  });
+</script>
+</body>
+</html>

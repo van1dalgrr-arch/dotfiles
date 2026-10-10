@@ -97,6 +97,9 @@ if [ "${NO_WALLPAPER:-}" != 1 ]; then
     printf '%s\n' "$THEME_WALLPAPER" > "$HOME/.config/dotfiles/wall-path"        # для backdrop
 fi
 
+# стартовая страница и таблица стилей Safari — в цветах темы
+"$DOTFILES/safari/build.sh" || true
+
 # ─── иконки приложений и папки ~/dev в цветах темы ───
 if [ "${NO_ICONS:-}" != 1 ]; then
     recolor "$DOTFILES/icons/icons.swift" "$GEN/icons.swift"

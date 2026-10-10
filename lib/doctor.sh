@@ -213,6 +213,21 @@ doc_editors() {
     fi
 }
 
+doc_safari() {
+    section "Safari"
+    local page="$HOME/.cache/dotfiles/safari/start.html" css="$HOME/.cache/dotfiles/safari/user.css"
+    [ -f "$page" ] && pass "стартовая страница собрана" || { warning "нет стартовой страницы" "→ safari/build.sh"; return 0; }
+    # писать в настройки Safari терминалу нельзя (песочница), а читать — можно
+    case $(defaults read com.apple.Safari HomePage 2>/dev/null) in
+        *"$page"*) pass "Safari открывает её как домашнюю" ;;
+        *) warning "Safari не знает о стартовой странице" "→ safari/README.md, шаг 1" ;;
+    esac
+    if [ "$(defaults read com.apple.Safari UserStyleSheetEnabled 2>/dev/null)" = 1 ] &&
+       [[ "$(defaults read com.apple.Safari UserStyleSheetLocationURLString 2>/dev/null)" == *"$css"* ]]; then
+        pass "таблица стилей подключена"
+    else warning "таблица стилей не подключена" "→ safari/README.md, шаг 2"; fi
+}
+
 doc_shell() {
     section "Shell"
     [ -f "$HOME/.oh-my-zsh/oh-my-zsh.sh" ] && pass "oh-my-zsh" || failed "нет oh-my-zsh" "→ ./install.sh"
@@ -293,6 +308,6 @@ doctor() {
         esac
     done
     [ "$(uname -s)" = Darwin ] || { echo "dot doctor — только для macOS" >&2; return 2; }
-    doc_links; doc_brew; doc_go; doc_docker; doc_k8s; doc_iac; doc_git; doc_editors; doc_shell; doc_macos
+    doc_links; doc_brew; doc_go; doc_docker; doc_k8s; doc_iac; doc_git; doc_editors; doc_safari; doc_shell; doc_macos
     summary
 }

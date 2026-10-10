@@ -74,6 +74,7 @@ your `*.bak` files, and `--purge` also deletes the generated theme files. Homebr
 | **Editor** | [Zed](https://zed.dev) with my own themes, Dev Night (dark) and Dev Day (light), that switch with macOS, plus icons. Delve debugger, golangci-lint in the editor, tasks on `ctrl-r` |
 | **Themes** | `theme vesper` / `kanagawa` / `rose-pine`: recolors the whole terminal, app icons and wallpaper. **Light mode** (Dev Day) follows macOS |
 | **Effects** | `fx` — Ghostty shaders: smooth cursor, trail, sparks as you type, focus flash, neon glow; colored by the theme |
+| **Safari** | start page with the current wallpaper, clock and bookmarks from a text file; JetBrains Mono for code on every site; recolored by `theme` |
 | **Backdrop** | `backdrop` — the wallpaper's light behind the terminal text (glow, aurora, haze, glass) or a dark terminal-only scene (mistcity, hanami, snowfall, cosmea, steppe) |
 | **Wallpapers** | `wall`: 30 live wallpapers drawn in Swift that change through the day, plus your own photos (`wall add`), upscaled without blur |
 | **Git** | delta for diffs, lazygit, gitleaks before every commit |
@@ -282,6 +283,7 @@ dotfiles/
 ├── themes/          theme palettes and apply.sh
 ├── icons/           wallpapers, app icons, folder icons (Swift)
 ├── ghostty/  aerospace/  zed/  vscode/  fastfetch/
+├── safari/          start page, bookmarks and style sheet for Safari
 ├── git/             .gitconfig, delta, gitleaks hooks, global ignore
 ├── go/              tools.txt / tools.devops.txt: pinned Go tools
 ├── tests/smoke.sh   smoke tests for dot (make test, CI)

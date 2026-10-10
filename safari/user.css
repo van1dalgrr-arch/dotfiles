@@ -1,0 +1,8 @@
+/* таблица стилей Safari для всех сайтов (Настройки → Дополнения → Таблица стилей)
+   шрифт и цвета подставляет safari/build.sh. Только безопасное: шрифт кода и цвет выделения */
+code, kbd, pre, samp, tt {
+  font-family: %MONO% !important;
+}
+::selection {
+  background: #%ROSE%66;
+}
