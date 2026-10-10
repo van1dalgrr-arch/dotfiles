@@ -217,5 +217,6 @@ else
     # shellcheck disable=SC2086  # список имён процессов
     [ -n "$restart" ] && killall $restart 2>/dev/null
     echo "готово: $changed изменений${restart:+ · перезапущены:$restart}"
-    echo "клавиатура, трекпад и тема — после перелогина (сам не перелогиниваю)"
+    case " ${groups:-$ALL} " in *" keyboard "*|*" trackpad "*|*" appearance "*)
+        echo "клавиатура, трекпад и тема — после перелогина (сам не перелогиниваю)" ;; esac
 fi
