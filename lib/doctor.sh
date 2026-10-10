@@ -218,9 +218,10 @@ doc_shell() {
     [ -f "$HOME/.oh-my-zsh/oh-my-zsh.sh" ] && pass "oh-my-zsh" || failed "нет oh-my-zsh" "→ ./install.sh"
     [ -d "$HOME/.oh-my-zsh/custom/plugins/fzf-tab" ] && pass "fzf-tab" || warning "нет fzf-tab" "→ ./install.sh"
     local t
-    t=$(perl -MTime::HiRes=time -e '$s=time; system("zsh -i -c exit >/dev/null 2>&1"); printf "%.2f", time-$s')
+    # лучший из трёх: первый запуск может пересобирать кэш дополнений и врать
+    t=$(perl -MTime::HiRes=time -e 'for(1..3){$s=time; system("zsh -i -c exit >/dev/null 2>&1"); $d=time-$s; $m=$d if !defined $m || $d<$m} printf "%.2f", $m')
     if awk "BEGIN{exit !($t < 0.35)}"; then pass "zsh стартует за ${t} с"
-    else warning "zsh стартует за ${t} с" "→ медленно, что-то тяжёлое в .zshrc (первый запуск после ребута всегда дольше)"; fi
+    else warning "zsh стартует за ${t} с" "→ медленно, что-то тяжёлое в .zshrc: замерь через zprof"; fi
     [ "$deep" = 1 ] || return 0
 
     # закреплённые ревизии из install.sh совпадают с тем, что стоит

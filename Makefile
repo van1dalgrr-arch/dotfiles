@@ -21,7 +21,7 @@ check:
 	python3 -m py_compile themes/set-wallpaper.py zed/tools/light.py zed/tools/preview.py jetbrains/build.py
 	@# шейдеры Ghostty — тем же компилятором, что внутри Ghostty (если glslang стоит: brew install glslang)
 	@if command -v glslangValidator >/dev/null; then for f in ghostty/shaders/*.glsl; do \
-		d=$$(mktemp -d); tmp=$$d/shader.frag; cat ghostty/shaders/.prefix.glsl $$f > $$tmp && glslangValidator -G -S frag $$tmp -o /dev/null >/dev/null; ok=$$?; rm -rf $$d; \
+		d=$$(mktemp -d); tmp=$$d/shader.frag; cat ghostty/shaders/.prefix.glsl $$f > $$tmp && glslangValidator -G -S frag $$tmp -o /dev/null >/dev/null 2>&1; ok=$$?; rm -rf $$d; \
 		[ $$ok = 0 ] || { echo "шейдер не компилируется: $$f"; exit 1; }; done; fi
 	gitleaks git --no-banner --redact .
 	@echo "✓ всё чисто"
