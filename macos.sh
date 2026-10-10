@@ -182,6 +182,8 @@ safari() {
     pref com.apple.Safari UserStyleSheetLocationURLString string "file://$dir/user.css" "таблица стилей: safari/user.css"
     pref com.apple.Safari ShowFullURLInSmartSearchField bool true      "полный адрес сайта"
     pref com.apple.Safari IncludeDevelopMenu bool true                 "меню «Разработка»"
+    # Safari 26 при запуске берёт меню отсюда и перезаписывает IncludeDevelopMenu
+    pref com.apple.Safari.SandboxBroker ShowDevelopMenu bool true      "меню «Разработка» (Safari 26)"
     pref com.apple.Safari WebKitDeveloperExtrasEnabledPreferenceKey bool true "инспектор веб-страниц"
     pref com.apple.Safari PreloadTopHit bool false                     "не грузить заранее первый результат (память)"
     pref com.apple.Safari AutoOpenSafeDownloads bool false             "не открывать загрузки сами"
