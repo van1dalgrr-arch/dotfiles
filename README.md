@@ -283,6 +283,7 @@ dotfiles/
 ├── themes/          theme palettes and apply.sh
 ├── icons/           wallpapers, app icons, folder icons (Swift)
 ├── ghostty/  aerospace/  zed/  vscode/  fastfetch/
+├── safari/          style sheet for Safari: JetBrains Mono for code
 ├── git/             .gitconfig, delta, gitleaks hooks, global ignore
 ├── go/              tools.txt / tools.devops.txt: pinned Go tools
 ├── tests/smoke.sh   smoke tests for dot (make test, CI)

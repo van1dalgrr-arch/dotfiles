@@ -204,6 +204,11 @@ doc_editors() {
     if [ -d /Applications/Zed.app ]; then pass "Zed"
     else failed "Zed не установлен" "→ brew install --cask zed"; fi
     has zed || warning "нет команды zed" "→ ./install.sh создаст /opt/homebrew/bin/zed"
+    # Safari: таблица стилей выбирается в самом Safari (песочница) — здесь только читаем
+    if [ "$(defaults read com.apple.Safari UserStyleSheetEnabled 2>/dev/null)" = 1 ] &&
+       [ "$(defaults read com.apple.Safari UserStyleSheetLocationURLString 2>/dev/null)" = "file://$DOTFILES/safari/user.css" ]; then
+        pass "Safari: шрифт кода из safari/user.css"
+    else warning "Safari: шрифт кода не подключён" "→ safari/README.ru.md"; fi
     if [ "$deep" = 1 ]; then
         local f bad=""
         if has python3; then
