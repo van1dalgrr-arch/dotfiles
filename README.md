@@ -189,7 +189,7 @@ Groups: `apps` (code files open in Zed; macOS asks to confirm each type, so run 
 hidden files, path and status bar, list view, folders first, search the current folder, no `.DS_Store` on
 network or USB drives), `saving` (to disk rather than iCloud, expanded dialogs), `screenshots`
 (PNG in `~/Pictures/Screenshots`, no shadow or thumbnail), `dock` (autohide, no recents, Spaces stay in place for AeroSpace),
-`appearance` (dark, `ctrl-cmd` drag windows), `security` (firewall on, stealth mode; asks for sudo), `safari` (full address, Develop menu and inspector,
+`appearance` (dark, `ctrl-cmd` drag windows), `security` (firewall on, stealth mode; asks for sudo), `safari` (full address, link status bar, Develop menu and inspector,
 no preloading, downloads don't open themselves; quits Safari first and needs Full Disk Access for the terminal).
 
 Running it twice is safe: values that already match are skipped. It restarts only Finder, Dock or SystemUIServer,

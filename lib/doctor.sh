@@ -45,6 +45,12 @@ doc_brew() {
     installed=$(brew list --formula -1 2>/dev/null; brew list --cask -1 2>/dev/null)
     apps=$(ls /Applications 2>/dev/null)
     for name in $(brewfile_names "$DOTFILES/Brewfile"); do pkg_present "$name" || missing="$missing $name"; done
+    # приложения из App Store (mas "Имя", id: N) — по id из mas list
+    local masids id
+    masids=$(has mas && mas list 2>/dev/null | awk '{print $1}')
+    for id in $(sed -nE 's/^mas "[^"]+", id: ([0-9]+).*/\1/p' "$DOTFILES/Brewfile"); do
+        grep -qx "$id" <<<"$masids" || missing="$missing $(sed -nE "s/^mas \"([^\"]+)\", id: $id.*/\1/p" "$DOTFILES/Brewfile" | tr ' ' '-')"
+    done
     if [ -z "$missing" ]; then pass "Brewfile: всё установлено"
     else failed "Brewfile: не установлено:$missing" "→ brew bundle"; fi
 

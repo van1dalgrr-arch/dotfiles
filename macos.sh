@@ -173,6 +173,7 @@ safari() {
         pgrep -xq Safari && osascript -e 'quit app "Safari"' && sleep 1
     fi
     pref com.apple.Safari ShowFullURLInSmartSearchField bool true      "полный адрес сайта"
+    pref com.apple.Safari ShowOverlayStatusBar bool true               "строка состояния: куда ведёт ссылка"
     pref com.apple.Safari IncludeDevelopMenu bool true                 "меню «Разработка»"
     # Safari 26 при запуске берёт меню отсюда и перезаписывает IncludeDevelopMenu
     pref com.apple.Safari.SandboxBroker ShowDevelopMenu bool true      "меню «Разработка» (Safari 26)"

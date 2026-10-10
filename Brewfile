@@ -46,6 +46,11 @@ brew "watchexec"
 brew "scc"
 brew "mkcert"
 
+# Safari: блокировщик рекламы из App Store (mas ставит через sudo — brew bundle спросит пароль).
+# Включить один раз: Safari → Настройки → Расширения → uBlock Origin Lite
+brew "mas"
+mas "uBlock Origin Lite", id: 6745342698
+
 cask "yaak"              # API-клиент вместо Postman (Tauri, лёгкий)
 cask "tableplus"         # GUI для Postgres/MySQL/Redis, нативный
 
