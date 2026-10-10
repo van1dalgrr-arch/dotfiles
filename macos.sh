@@ -160,11 +160,9 @@ security() {
     return 0
 }
 
-# Safari: стартовая страница и таблица стилей из safari/ (safari/build.sh). Его настройки — в песочнице:
-# читать можно, писать — только если у терминала «Полный доступ к диску». Safari закрывается: при выходе
-# он перезаписывает настройки своими
+# Safari: только его собственные настройки. Они в песочнице: читать можно, писать — только если у терминала
+# «Полный доступ к диску». Safari закрывается: при выходе он перезаписывает настройки своими
 safari() {
-    local dir="$HOME/.cache/dotfiles/safari"
     if [ "$apply" = 1 ]; then
         if ! defaults write com.apple.Safari DotfilesProbe -bool true 2>/dev/null; then
             printf '  %s✗ нет доступа к настройкам Safari%s → Настройки → Конфиденциальность → Полный доступ к диску → терминал\n' "$c_new" "$r"
@@ -172,14 +170,8 @@ safari() {
             return 0
         fi
         defaults delete com.apple.Safari DotfilesProbe 2>/dev/null
-        [ -f "$dir/start.html" ] || "$(dirname "$0")/safari/build.sh"
         pgrep -xq Safari && osascript -e 'quit app "Safari"' && sleep 1
     fi
-    pref com.apple.Safari HomePage string "file://$dir/start.html"     "домашняя: стартовая страница dotfiles"
-    pref com.apple.Safari NewWindowBehavior int 0                      "новое окно — домашняя страница"
-    pref com.apple.Safari NewTabBehavior int 0                         "новая вкладка — домашняя страница"
-    pref com.apple.Safari UserStyleSheetEnabled bool true              "таблица стилей: включена"
-    pref com.apple.Safari UserStyleSheetLocationURLString string "file://$dir/user.css" "таблица стилей: safari/user.css"
     pref com.apple.Safari ShowFullURLInSmartSearchField bool true      "полный адрес сайта"
     pref com.apple.Safari IncludeDevelopMenu bool true                 "меню «Разработка»"
     # Safari 26 при запуске берёт меню отсюда и перезаписывает IncludeDevelopMenu

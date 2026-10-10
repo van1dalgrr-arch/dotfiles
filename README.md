@@ -74,7 +74,6 @@ your `*.bak` files, and `--purge` also deletes the generated theme files. Homebr
 | **Editor** | [Zed](https://zed.dev) with my own themes, Dev Night (dark) and Dev Day (light), that switch with macOS, plus icons. Delve debugger, golangci-lint in the editor, tasks on `ctrl-r` |
 | **Themes** | `theme vesper` / `kanagawa` / `rose-pine`: recolors the whole terminal, app icons and wallpaper. **Light mode** (Dev Day) follows macOS |
 | **Effects** | `fx` — Ghostty shaders: smooth cursor, trail, sparks as you type, focus flash, neon glow; colored by the theme |
-| **Safari** | start page with the current wallpaper, clock and bookmarks from a text file; JetBrains Mono for code on every site; recolored by `theme` |
 | **Backdrop** | `backdrop` — the wallpaper's light behind the terminal text (glow, aurora, haze, glass) or a dark terminal-only scene (mistcity, hanami, snowfall, cosmea, steppe) |
 | **Wallpapers** | `wall`: 30 live wallpapers drawn in Swift that change through the day, plus your own photos (`wall add`), upscaled without blur |
 | **Git** | delta for diffs, lazygit, gitleaks before every commit |
@@ -190,7 +189,8 @@ Groups: `apps` (code files open in Zed; macOS asks to confirm each type, so run 
 hidden files, path and status bar, list view, folders first, search the current folder, no `.DS_Store` on
 network or USB drives), `saving` (to disk rather than iCloud, expanded dialogs), `screenshots`
 (PNG in `~/Pictures/Screenshots`, no shadow or thumbnail), `dock` (autohide, no recents, Spaces stay in place for AeroSpace),
-`appearance` (dark, `ctrl-cmd` drag windows), `security` (firewall on, stealth mode; asks for sudo).
+`appearance` (dark, `ctrl-cmd` drag windows), `security` (firewall on, stealth mode; asks for sudo), `safari` (full address, Develop menu and inspector,
+no preloading, downloads don't open themselves; quits Safari first and needs Full Disk Access for the terminal).
 
 Running it twice is safe: values that already match are skipped. It restarts only Finder, Dock or SystemUIServer,
 and never logs you out. Keyboard, trackpad and dark mode apply after your next login.
@@ -283,7 +283,6 @@ dotfiles/
 ├── themes/          theme palettes and apply.sh
 ├── icons/           wallpapers, app icons, folder icons (Swift)
 ├── ghostty/  aerospace/  zed/  vscode/  fastfetch/
-├── safari/          start page, bookmarks and style sheet for Safari
 ├── git/             .gitconfig, delta, gitleaks hooks, global ignore
 ├── go/              tools.txt / tools.devops.txt: pinned Go tools
 ├── tests/smoke.sh   smoke tests for dot (make test, CI)

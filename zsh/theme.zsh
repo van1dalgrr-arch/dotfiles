@@ -117,7 +117,6 @@ wall() {
     fi
     python3 ~/dotfiles/themes/set-wallpaper.py $heic
     print -r -- $heic >| ~/.config/dotfiles/wall-path
-    ~/dotfiles/safari/build.sh &!          # те же обои на стартовой странице Safari
     # фон терминала берёт цвета из обоев — пересобрать под новые
     local bd=$(command cat ~/.config/dotfiles/backdrop 2>/dev/null)
     [[ -n $bd && $bd != off ]] && backdrop $bd
