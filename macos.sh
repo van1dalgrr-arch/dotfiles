@@ -5,7 +5,7 @@
 #     ./macos.sh --yes                применить
 #     ./macos.sh [--yes] finder dock  только выбранные группы
 #     ./macos.sh -v                   показать и то, что уже настроено
-#   Группы: keyboard trackpad finder saving screenshots dock appearance apps login security
+#   Группы: keyboard trackpad finder saving screenshots dock appearance apps login security safari
 #   Повторный запуск безопасен: совпадающие значения пропускаются.
 #   Перезапускаются только Finder / Dock / SystemUIServer. Без logout и reboot —
 #   клавиатура, трекпад и тёмная тема вступят в силу после перелогина.
@@ -13,8 +13,8 @@
 # ============================================================
 set -uo pipefail
 
-ALL="keyboard trackpad finder saving screenshots dock appearance apps login security"
-apply=0 verbose=0 groups="" changed=0 restart=""
+ALL="keyboard trackpad finder saving screenshots dock appearance apps login security safari"
+apply=0 verbose=0 groups="" changed=0 restart="" blocked=0
 
 if [ -t 1 ]; then
     c_head=$'\e[38;2;168;85;247m' c_new=$'\e[38;2;59;130;246m' c_dim=$'\e[38;2;110;110;120m' r=$'\e[0m'
@@ -160,6 +160,33 @@ security() {
     return 0
 }
 
+# Safari: стартовая страница и таблица стилей из safari/ (safari/build.sh). Его настройки — в песочнице:
+# читать можно, писать — только если у терминала «Полный доступ к диску». Safari закрывается: при выходе
+# он перезаписывает настройки своими
+safari() {
+    local dir="$HOME/.cache/dotfiles/safari"
+    if [ "$apply" = 1 ]; then
+        if ! defaults write com.apple.Safari DotfilesProbe -bool true 2>/dev/null; then
+            printf '  %s✗ нет доступа к настройкам Safari%s → Настройки → Конфиденциальность → Полный доступ к диску → терминал\n' "$c_new" "$r"
+            blocked=1 group_changed=1
+            return 0
+        fi
+        defaults delete com.apple.Safari DotfilesProbe 2>/dev/null
+        [ -f "$dir/start.html" ] || "$(dirname "$0")/safari/build.sh"
+        pgrep -xq Safari && osascript -e 'quit app "Safari"' && sleep 1
+    fi
+    pref com.apple.Safari HomePage string "file://$dir/start.html"     "домашняя: стартовая страница dotfiles"
+    pref com.apple.Safari NewWindowBehavior int 0                      "новое окно — домашняя страница"
+    pref com.apple.Safari NewTabBehavior int 0                         "новая вкладка — домашняя страница"
+    pref com.apple.Safari UserStyleSheetEnabled bool true              "таблица стилей: включена"
+    pref com.apple.Safari UserStyleSheetLocationURLString string "file://$dir/user.css" "таблица стилей: safari/user.css"
+    pref com.apple.Safari ShowFullURLInSmartSearchField bool true      "полный адрес сайта"
+    pref com.apple.Safari IncludeDevelopMenu bool true                 "меню «Разработка»"
+    pref com.apple.Safari WebKitDeveloperExtrasEnabledPreferenceKey bool true "инспектор веб-страниц"
+    pref com.apple.Safari PreloadTopHit bool false                     "не грузить заранее первый результат (память)"
+    pref com.apple.Safari AutoOpenSafeDownloads bool false             "не открывать загрузки сами"
+}
+
 appearance() {
     pref NSGlobalDomain AppleInterfaceStyle string Dark                "тёмная тема"
     pref NSGlobalDomain NSWindowShouldDragOnGesture bool true          "⌃⌘ + тянуть — двигать окно за любое место"
@@ -183,7 +210,8 @@ for g in ${groups:-$ALL}; do
 done
 
 echo
-if [ "$changed" -eq 0 ]; then echo "всё уже настроено"
+if [ "$blocked" = 1 ]; then echo "не всё применено: см. ✗ выше"; fi
+if [ "$changed" -eq 0 ]; then [ "$blocked" = 1 ] || echo "всё уже настроено"
 elif [ "$apply" = 0 ]; then echo "изменений: $changed · применить: ./macos.sh --yes$groups"
 else
     # shellcheck disable=SC2086  # список имён процессов

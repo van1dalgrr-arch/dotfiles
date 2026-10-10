@@ -16,8 +16,9 @@ with the current wallpaper and theme colors, bookmarks from a text file, and Jet
 
 ## Setup, once
 
-macOS doesn't let the terminal write Safari's settings (they're sandboxed), so this is one minute by hand.
-`dot doctor` checks it afterwards.
+`./macos.sh safari` shows the plan, `./macos.sh --yes safari` applies it (quits Safari first). Safari's settings are
+sandboxed: the terminal needs **Full Disk Access** (System Settings → Privacy & Security), otherwise the script says so
+and stops. Without it, by hand:
 
 1. **Safari → Settings → General.** New windows and New tabs open with: **Homepage**.
    Homepage: `file:///Users/<you>/.cache/dotfiles/safari/start.html`
