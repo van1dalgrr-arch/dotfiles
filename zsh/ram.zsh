@@ -81,7 +81,7 @@ lean() {
         mkdir -p ${state:h}
         for app in ${(f)"$(_lean_apps)"}; do
             pgrep -qf "/$app.app/Contents/MacOS/" || continue
-            if [[ $app == OrbStack ]] && [[ -n $(docker ps -q 2>/dev/null) ]]; then
+            if [[ $app == OrbStack ]] && [[ -n $(command docker ps -q 2>/dev/null) ]]; then
                 print "  ${gold}○${r} OrbStack оставлен — запущены контейнеры ${dim}(docker ps)${r}"; continue
             fi
             mb=$(_lean_rss $app)

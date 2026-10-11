@@ -14,7 +14,7 @@ update() {
         dot tools install | command grep -v '^$'
     fi
 
-    if docker info >/dev/null 2>&1; then
+    if command docker info >/dev/null 2>&1; then   # проверка: не запускать OrbStack ради уборки
         _step "Docker: висячие образы и кэш сборки"
         docker image prune -f | tail -1
         docker builder prune -f --filter until=168h | tail -1

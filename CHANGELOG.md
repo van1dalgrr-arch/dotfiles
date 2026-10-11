@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- **`docker` starts OrbStack by itself:** any docker command (`docker ps`, `dps`, `dsh`…) launches OrbStack when it's off and waits for it (~4 s), instead of failing with "failed to connect to the docker API" — that happened 20 times in a week. `up` uses the same helper; `update` and `lean` only probe and never start it
 - **README rewritten:** contents bar, requirements, "Using it yourself" (git identity, Brewfile, macos.sh), health checks table, macOS settings as a table, Security and Development sections
 - **`dot doctor` notices settings drift:** runs `macos.sh` read-only and warns when a macOS upgrade put settings back; warns when `awake` is left on; checks App Store apps from the Brewfile (`mas` lines); zsh startup is the best of three runs (one cold run used to report 0.7 s)
 - **Safari:** `./macos.sh safari` — full address, link status bar, Develop menu (Safari 26 keeps it in `com.apple.Safari.SandboxBroker`), no preloading, downloads don't open themselves. Without Full Disk Access it says it can't check instead of reporting every key as changed. uBlock Origin Lite in the Brewfile via `mas`; `safari/user.css` puts JetBrains Mono in code on every site

@@ -123,6 +123,23 @@ alias gds="git diff --staged"
 
 # ── DOCKER
 
+# OrbStack запускается по требованию (8 ГБ памяти): любая docker-команда сама поднимет его, если он не запущен,
+# вместо «failed to connect to the docker API». Проверка — сокет, без вызова docker: ~0 мс, когда всё работает
+_docker_ready() {
+    [[ -S ~/.orbstack/run/docker.sock ]] && command docker info >/dev/null 2>&1 && return 0
+    print -P "%F{#$T_MUTED}󰡨 запускаю OrbStack…%f" >&2
+    open -ga OrbStack
+    local i; for i in {1..60}; do command docker info >/dev/null 2>&1 && return 0; sleep 1; done
+    echo "OrbStack не запустился за минуту — open -a OrbStack" >&2; return 1
+}
+docker() {
+    case $1 in
+        ""|-h|--help|version|--version|context|login|logout) ;;   # этим демон не нужен
+        *) [[ -S ~/.orbstack/run/docker.sock ]] || _docker_ready || return ;;
+    esac
+    command docker "$@"
+}
+
 alias d="docker"
 alias dc="docker compose"
 alias dps="docker ps"
@@ -341,11 +358,7 @@ dlogs() {
 up() {
     local compose=( (compose|docker-compose).y(a|)ml(N) )
     if [ -n "$compose" ]; then
-        if ! docker info >/dev/null 2>&1; then
-            echo "󰡨 запускаю OrbStack…"; open -ga OrbStack
-            local i; for i in {1..60}; do docker info >/dev/null 2>&1 && break; sleep 1; done
-            docker info >/dev/null 2>&1 || { echo "OrbStack не запустился за минуту — open -a OrbStack"; return 1; }
-        fi
+        _docker_ready || return 1
         local deps=(${(f)"$(docker compose config --format json | jq -r '.services | to_entries[] | select(.value.build == null) | .key')"})
         if (( $#deps )); then
             echo "󰆼 поднимаю: ${deps[*]}"
