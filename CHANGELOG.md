@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- **`orbstack`:** OrbStack in the terminal — a gradient banner in the theme colors, engine and container status, and an fzf menu: containers (logs, shell, restart, stop/start, inspect, remove), compose up/down for the current folder, images, stats, cleanup, engine on/off. Every action is also a subcommand (`orbstack logs [name]`, `orbstack sh`, `orbstack off`…); without a name you pick from a list with a live log preview
 - **`docker` starts OrbStack by itself:** any docker command (`docker ps`, `dps`, `dsh`…) launches OrbStack when it's off and waits for it (~4 s), instead of failing with "failed to connect to the docker API" — that happened 20 times in a week. `up` uses the same helper; `update` and `lean` only probe and never start it
 - **README rewritten:** contents bar, requirements, "Using it yourself" (git identity, Brewfile, macos.sh), health checks table, macOS settings as a table, Security and Development sections
 - **`dot doctor` notices settings drift:** runs `macos.sh` read-only and warns when a macOS upgrade put settings back; warns when `awake` is left on; checks App Store apps from the Brewfile (`mas` lines); zsh startup is the best of three runs (one cold run used to report 0.7 s)

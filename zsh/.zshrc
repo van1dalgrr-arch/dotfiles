@@ -403,6 +403,7 @@ source "$HOME/dotfiles/zsh/ram.zsh"
 source "$HOME/dotfiles/zsh/update.zsh"
 source "$HOME/dotfiles/zsh/gonew.zsh"
 source "$HOME/dotfiles/zsh/backend.zsh"
+source "$HOME/dotfiles/zsh/orb.zsh"
 source "$HOME/dotfiles/zsh/reminders.zsh"
 
 # ── ПРИВЕТСТВИЕ: только в новом большом окне Ghostty (не quick terminal, не Zed)

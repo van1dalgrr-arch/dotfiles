@@ -96,7 +96,7 @@ Fork it rather than installing mine as is. Before `make install`:
 | **Terminal look** | `fx` — Ghostty shaders (cursor, trail, sparks, focus flash, glow) · `backdrop` — the wallpaper's light behind the text |
 | **Browser** | Safari — the lightest on 8 GB. Settings in `macos.sh safari`, uBlock Origin Lite from the App Store via the Brewfile, JetBrains Mono for code on every site |
 | **Git** | delta for diffs, lazygit, gitleaks before every commit in every repo |
-| **Docker** | OrbStack, started on demand: any `docker` command launches it if it's off (no more "failed to connect"). lazydocker, and `up` — dependencies and the app in one command |
+| **Docker** | `orbstack` — banner, status and a menu to manage containers, images and the engine right in the terminal (or subcommands: `orbstack logs`, `sh`, `restart`…). OrbStack starts on demand: any `docker` command launches it if it's off (no more "failed to connect"). lazydocker, and `up` — dependencies and the app in one command |
 | **API & DB** | [Yaak](https://yaak.app) instead of Postman, [TablePlus](https://tableplus.com) for databases, `pgcli` via `db` |
 
 <p align="center"><img src="docs/zed-themes.png" width="90%" alt="Dev Night and Dev Day side by side"/></p>
