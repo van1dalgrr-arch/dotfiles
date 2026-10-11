@@ -169,7 +169,7 @@ Notifications go to Telegram from GitHub Actions every 5 minutes — no laptop n
 
 It lives in its own repo, [github-watcher](https://github.com/van1dalgrr-arch/github-watcher), and is installed
 as `gw` from `go/tools.txt`; `.zshrc` aliases `github` to it. **Its code was written by an AI (Claude)**;
-the Telegram bot with commands is the part I'm going to write myself.
+the Telegram bot with commands is the part we write together.
 
 ## Health checks
 

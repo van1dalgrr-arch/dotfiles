@@ -169,7 +169,7 @@ issues, запуски Actions с подсвеченными логами (ср�
 
 Живёт в отдельном репозитории [github-watcher](https://github.com/van1dalgrr-arch/github-watcher), ставится как `gw`
 из `go/tools.txt`, `.zshrc` делает `github` его псевдонимом. **Код написан нейросетью (Claude)**;
-Telegram-бота с командами я буду писать сам.
+Telegram-бота с командами пишем вместе.
 
 ## Проверки
 
