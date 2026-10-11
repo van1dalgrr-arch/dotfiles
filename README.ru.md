@@ -155,6 +155,22 @@ orbstack watch           # живая сборка: сохранил код → 
 А за самим OrbStack следить не нужно: любая команда `docker` запустит его, если он выключен. Подробнее:
 [контейнеры из терминала](docs/docker.ru.md) · [клавиши](docs/hotkeys.ru.md#orbstack--контейнеры).
 
+## GitHub: `github`
+
+```bash
+github                   # панель: CI по репозиториям, PR, issues, Actions с логами, лента событий
+github pr merge 42       # то же командами — для скриптов
+github telegram TOKEN    # уведомления на телефон
+```
+
+Такой же экран, как `orbstack`, только для GitHub: pull requests со статусом CI, merge и комментарии,
+issues, запуски Actions с подсвеченными логами (сразу к ошибке), перезапуск и лента событий.
+Уведомления приходят в Telegram из GitHub Actions каждые 5 минут — ноутбук держать включённым не нужно.
+
+Живёт в отдельном репозитории [github-watcher](https://github.com/van1dalgrr-arch/github-watcher), ставится как `gw`
+из `go/tools.txt`, `.zshrc` делает `github` его псевдонимом. **Код написан нейросетью (Claude)**;
+Telegram-бота с командами я буду писать сам.
+
 ## Проверки
 
 ### `dot doctor`

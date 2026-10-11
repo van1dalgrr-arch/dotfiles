@@ -155,6 +155,22 @@ tested in CI. It talks to the docker CLI, so it follows any context: OrbStack, C
 And OrbStack itself needs no babysitting: any `docker` command starts it when it's off. More:
 [containers from the terminal](docs/docker.md) · [keys](docs/hotkeys.md#orbstack--containers).
 
+## GitHub: `github`
+
+```bash
+github                   # dashboard: CI across repos, PRs, issues, Actions with logs, event feed
+github pr merge 42       # the same as commands for scripts
+github telegram TOKEN    # notifications on the phone
+```
+
+The same kind of screen as `orbstack`, but for GitHub: pull requests with CI status, merge and comments,
+issues, Actions runs with highlighted logs (jumps straight to the error), rerun, and an event feed.
+Notifications go to Telegram from GitHub Actions every 5 minutes — no laptop needs to stay on.
+
+It lives in its own repo, [github-watcher](https://github.com/van1dalgrr-arch/github-watcher), and is installed
+as `gw` from `go/tools.txt`; `.zshrc` aliases `github` to it. **Its code was written by an AI (Claude)**;
+the Telegram bot with commands is the part I'm going to write myself.
+
 ## Health checks
 
 ### `dot doctor`

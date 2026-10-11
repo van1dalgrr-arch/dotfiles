@@ -405,6 +405,8 @@ source "$HOME/dotfiles/zsh/gonew.zsh"
 source "$HOME/dotfiles/zsh/backend.zsh"
 # orbstack — панель контейнеров на Go (berth/, собирает install.sh)
 alias orbstack="berth"
+# github — GitHub в терминале: PR, issues, Actions с логами, лента (gw из go/tools.txt)
+alias github="gw"
 source "$HOME/dotfiles/zsh/reminders.zsh"
 
 # ── ПРИВЕТСТВИЕ: только в новом большом окне Ghostty (не quick terminal, не Zed)

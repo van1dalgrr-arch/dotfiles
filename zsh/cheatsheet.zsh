@@ -73,6 +73,7 @@ palette|цвета текущей темы: роли и 16 цветов терм
 backdrop|фон терминала: backdrop · glow, aurora, haze, glass · любые обои из wall · off
 fx|эффекты терминала: fx · on/off cursor, trail, sparks, focus, glow
 orbstack|контейнеры в терминале: запуск по шаблонам, логи, мониторинг, события · orbstack help
+github|GitHub в терминале: PR, issues, Actions с логами, лента событий · github --help
 awake|awake on — не засыпать с закрытой крышкой (Claude с телефона) · awake off
 wall|сменить обои с превью: wall · petals, neon, rain, eclipse, orbit, code…
 EOF
