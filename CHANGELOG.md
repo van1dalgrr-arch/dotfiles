@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+- **README rewritten:** contents bar, requirements, "Using it yourself" (git identity, Brewfile, macos.sh), health checks table, macOS settings as a table, Security and Development sections
+- **`dot doctor` notices settings drift:** runs `macos.sh` read-only and warns when a macOS upgrade put settings back; warns when `awake` is left on; checks App Store apps from the Brewfile (`mas` lines); zsh startup is the best of three runs (one cold run used to report 0.7 s)
+- **Safari:** `./macos.sh safari` — full address, link status bar, Develop menu (Safari 26 keeps it in `com.apple.Safari.SandboxBroker`), no preloading, downloads don't open themselves. Without Full Disk Access it says it can't check instead of reporting every key as changed. uBlock Origin Lite in the Brewfile via `mas`; `safari/user.css` puts JetBrains Mono in code on every site
+- `macos.sh`: `~/path` and the full path count as the same value; the relogin hint shows only for groups that need it
+- `make check` no longer prints temp file paths while compiling shaders
 - **`backdrop` menu fixed:** it no longer pre-renders every wallpaper before showing the list (that took minutes and aborted on the classic generators). The list opens at once, styles on top; a wallpaper is rendered only when picked, through the same builder as `wall`. A style named like a wallpaper (`glass`, `aurora`) no longer trips the hourly refresh
 - **`dot snapshot`** before a macOS upgrade and **`dot snapshot diff`** after: installed brew packages and apps with versions, macos.sh settings, login items, background agents, tool versions, AeroSpace permission — shows what reset. Checklist: `docs/macos-upgrade.ru.md`
 - **`dot doctor` checks macOS itself:** FileVault, firewall, SIP, Gatekeeper, Time Machine (no backups → warning), free disk; `--deep` adds battery capacity and pending macOS/Safari/CLT updates
