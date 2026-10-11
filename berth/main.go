@@ -40,7 +40,7 @@ const usage = `orbstack — контейнеры в терминале
 func main() {
 	args := os.Args[1:]
 	if len(args) == 0 {
-		p := tea.NewProgram(newModel(), tea.WithAltScreen())
+		p := tea.NewProgram(newModel(), tea.WithAltScreen(), tea.WithMouseCellMotion())
 		if _, err := p.Run(); err != nil {
 			fail(err)
 		}

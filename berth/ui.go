@@ -5,10 +5,12 @@ import (
 	"fmt"
 	"os"
 	"os/exec"
+	"path/filepath"
 	"strings"
 	"time"
 
 	"github.com/charmbracelet/bubbles/textinput"
+	"github.com/charmbracelet/bubbles/viewport"
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"
 )
@@ -22,6 +24,7 @@ const (
 	modeEdit
 	modeConfirm
 	modeHelp
+	modeView // просмотр: внутренности, Dockerfile, compose
 )
 
 // action is one thing you can do to a container. Every action explains itself and
@@ -57,30 +60,37 @@ type model struct {
 	confirm   string
 	onConfirm tea.Cmd
 
+	vp        viewport.Model
+	viewTitle string
+
 	flash    string
 	flashBad bool
 	compose  string
 }
 
 type (
-	tickMsg    time.Time
-	psMsg      struct {
+	tickMsg time.Time
+	psMsg   struct {
 		cs     []Container
 		engine Engine
 		err    error
 	}
-	statsMsg   map[string]Stat
-	logsMsg    struct {
+	statsMsg map[string]Stat
+	logsMsg  struct {
 		name  string
 		lines []string
 	}
-	eventMsg   Event
-	evDoneMsg  struct{}
-	doneMsg    struct {
+	eventMsg  Event
+	evDoneMsg struct{}
+	doneMsg   struct {
 		text string
 		err  error
 	}
-	engineMsg  struct{ err error }
+	engineMsg struct{ err error }
+	viewMsg   struct {
+		title, content string
+		err            error
+	}
 )
 
 func newModel() model {
@@ -159,7 +169,23 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	case tea.WindowSizeMsg:
 		m.w, m.h = msg.Width, msg.Height
 		m.input.Width = max(20, m.w-12)
+		_, bodyH, _, _ := m.layout()
+		m.vp.Width, m.vp.Height = max(10, m.w-4), max(3, bodyH-2)
 		return m, nil
+
+	case viewMsg:
+		if msg.err != nil {
+			m.setFlash("✗ "+msg.err.Error(), true)
+			return m, nil
+		}
+		_, bodyH, _, _ := m.layout()
+		m.vp = viewport.New(max(10, m.w-4), max(3, bodyH-2))
+		m.vp.SetContent(lipgloss.NewStyle().Width(m.vp.Width).Render(msg.content)) // длинные строки — переносом
+		m.viewTitle, m.mode = msg.title, modeView
+		return m, nil
+
+	case tea.MouseMsg:
+		return m.mouse(msg)
 
 	case tickMsg:
 		cmds := []tea.Cmd{fetchPS, tick()}
@@ -270,6 +296,21 @@ func (m model) key(k tea.KeyMsg) (tea.Model, tea.Cmd) {
 	case modeHelp:
 		m.mode = modeList
 		return m, nil
+	case modeView:
+		switch k.String() {
+		case "q", "esc", "left", "h":
+			m.mode = modeList
+			return m, nil
+		case "g", "home":
+			m.vp.GotoTop()
+			return m, nil
+		case "G", "end":
+			m.vp.GotoBottom()
+			return m, nil
+		}
+		var cmd tea.Cmd
+		m.vp, cmd = m.vp.Update(k)
+		return m, cmd
 	}
 
 	m.flash = ""
@@ -331,6 +372,18 @@ func (m model) key(k tea.KeyMsg) (tea.Model, tea.Cmd) {
 	case "d":
 		if ok {
 			m.ask(fmt.Sprintf("Удалить %s? Тома останутся. [y/N]", c.Name), dockerDo("✗ удалён "+c.Name, "rm", "-f", c.Name))
+		}
+	case "i":
+		if ok {
+			return m, openInspect(c.Name)
+		}
+	case "f":
+		if ok {
+			return m, openDockerfile(c.Name, m.w)
+		}
+	case "c":
+		if ok {
+			return m, openCompose(c.Name, m.w)
 		}
 	case "t":
 		if m.engine.Up {
@@ -430,19 +483,25 @@ func containerActions(c Container) []action {
 			action{"s", "Терминал", "Зайти внутрь контейнера (bash, если есть). exit — назад.", "docker exec -it " + c.Name + " sh",
 				func(m *model, c Container) tea.Cmd { return shell(c.Name) }},
 			action{"r", "Перезапустить", "Остановить и запустить с теми же настройками. Пригодится после правки конфига.", "docker restart " + c.Name,
-				func(m *model, c Container) tea.Cmd { return dockerDo("↻ перезапущен "+c.Name, "restart", c.Name) }},
+				func(m *model, c Container) tea.Cmd {
+					return dockerDo("↻ перезапущен "+c.Name, "restart", c.Name)
+				}},
 			action{"x", "Остановить", "Контейнер остановится, файлы и тома останутся — запустишь снова когда угодно.", "docker stop " + c.Name,
-				func(m *model, c Container) tea.Cmd { return dockerDo("■ остановлен "+c.Name, "stop", c.Name) }},
+				func(m *model, c Container) tea.Cmd {
+					return dockerDo("■ остановлен "+c.Name, "stop", c.Name)
+				}},
 		)
 	} else {
 		acts = append(acts, action{"x", "Запустить", "Запустить остановленный контейнер с теми же настройками.", "docker start " + c.Name,
 			func(m *model, c Container) tea.Cmd { return dockerDo("▶ запущен "+c.Name, "start", c.Name) }})
 	}
 	acts = append(acts,
-		action{"i", "Подробно", "Образ, порты, тома и переменные — в JSON.", "docker inspect " + c.Name,
-			func(m *model, c Container) tea.Cmd {
-				return interactive("", "inspect", "--format", "{{json .}}", c.Name)
-			}},
+		action{"i", "Внутренности", "Образ, состояние, команда запуска, порты, тома, сети и переменные окружения (пароли скрыты).", "docker inspect " + c.Name,
+			func(m *model, c Container) tea.Cmd { return openInspect(c.Name) }},
+		action{"f", "Dockerfile", "Как собран образ. Для контейнера из compose — его Dockerfile; для готового образа — слои, из которых он собран.", "cat Dockerfile · docker history " + c.Image,
+			func(m *model, c Container) tea.Cmd { return openDockerfile(c.Name, m.w) }},
+		action{"c", "Compose-файл", "Compose-файл проекта, из которого запущен контейнер.", "cat compose.yaml",
+			func(m *model, c Container) tea.Cmd { return openCompose(c.Name, m.w) }},
 		action{"d", "Удалить", "Удалить контейнер. Именованные тома (данные баз) останутся.", "docker rm -f " + c.Name,
 			func(m *model, c Container) tea.Cmd {
 				m.ask(fmt.Sprintf("Удалить %s? Тома останутся. [y/N]", c.Name), dockerDo("✗ удалён "+c.Name, "rm", "-f", c.Name))
@@ -539,30 +598,16 @@ func (m model) View() string {
 	if m.w == 0 {
 		return ""
 	}
-	var top []string
-	if m.h >= 34 {
-		top = append(top, "", banner(), "")
-	} else {
-		top = append(top, " "+title()+sMuted.Render("  контейнеры в терминале"))
-	}
-	top = append(top, " "+m.statusLine(), "")
-	header := strings.Join(top, "\n")
-
+	header, bodyH, tableH, paneH := m.layout()
 	footer := m.footer()
-	bodyH := m.h - lipgloss.Height(header) - lipgloss.Height(footer)
-
 	var body string
 	switch m.mode {
 	case modeHelp:
 		body = m.helpView(bodyH)
+	case modeView:
+		pct := fmt.Sprintf(" %3.0f%% ", m.vp.ScrollPercent()*100)
+		body = boxed(" "+m.viewTitle+" · ↑↓ прокрутка · esc — назад ·"+pct, m.vp.View(), m.w, bodyH)
 	default:
-		// таблица — по числу контейнеров (но не больше 2/3 экрана), всё остальное — логу и событиям
-		rows := len(m.cs) + 1
-		if len(m.cs) == 0 {
-			rows = 3
-		}
-		tableH := min(rows, bodyH*2/3)
-		paneH := max(6, bodyH-tableH-1)
 		var bottom string
 		switch m.mode {
 		case modeActions:
@@ -579,6 +624,27 @@ func (m model) View() string {
 		body = lipgloss.JoinVertical(lipgloss.Left, m.tableView(tableH), "", bottom)
 	}
 	return lipgloss.JoinVertical(lipgloss.Left, header, lipgloss.NewStyle().Height(bodyH).MaxHeight(bodyH).Render(body), footer)
+}
+
+// layout: шапка и высоты частей экрана — общий расчёт для View и кликов мышью.
+func (m model) layout() (header string, bodyH, tableH, paneH int) {
+	var top []string
+	if m.h >= 34 {
+		top = append(top, "", banner(), "")
+	} else {
+		top = append(top, " "+title()+sMuted.Render("  контейнеры в терминале"))
+	}
+	top = append(top, " "+m.statusLine(), "")
+	header = strings.Join(top, "\n")
+	bodyH = m.h - lipgloss.Height(header) - lipgloss.Height(m.footer())
+	// таблица — по числу контейнеров (но не больше 2/3 экрана), всё остальное — логу и событиям
+	rows := len(m.cs) + 1
+	if len(m.cs) == 0 {
+		rows = 3
+	}
+	tableH = min(rows, bodyH*2/3)
+	paneH = max(6, bodyH-tableH-1)
+	return
 }
 
 func (m model) statusLine() string {
@@ -799,6 +865,10 @@ var keyHelp = [][3]string{
 	{"r", "перезапуск", "docker restart"},
 	{"x", "стоп / старт", "docker stop / docker start"},
 	{"d", "удалить", "docker rm -f — именованные тома останутся"},
+	{"i", "внутренности", "образ, порты, тома, сети, переменные (docker inspect)"},
+	{"f", "Dockerfile", "как собран образ: Dockerfile из compose или слои образа"},
+	{"c", "compose", "compose-файл проекта, из которого запущен контейнер"},
+	{"мышь", "", "колесо — по списку, клик — выбрать контейнер"},
 	{"n", "новый", "postgres, redis, nginx, mongo, mysql, rabbitmq или свой образ; команду можно поправить"},
 	{"t", "мониторинг", "CPU, память и сеть всех контейнеров вживую (docker stats)"},
 	{"w", "живая сборка", "сохранил код — образ пересобран, контейнер перезапущен (docker compose watch)"},
@@ -824,7 +894,7 @@ func (m model) footer() string {
 		}
 		return " " + trunc(st.Render(m.flash), m.w-2)
 	}
-	keys := []string{"enter", "действия", "l", "логи", "s", "терминал", "r", "перезапуск", "x", "стоп/старт", "n", "новый", "t", "мониторинг", "w", "живая сборка", "?", "все клавиши", "q", "выход"}
+	keys := []string{"enter", "действия", "l", "логи", "s", "терминал", "r", "перезапуск", "x", "стоп/старт", "i", "внутри", "f", "Dockerfile", "n", "новый", "t", "мониторинг", "w", "живая сборка", "?", "все клавиши", "q", "выход"}
 	var parts []string
 	for i := 0; i < len(keys); i += 2 {
 		parts = append(parts, sKey.Render(keys[i])+" "+sMuted.Render(keys[i+1]))
@@ -847,4 +917,95 @@ func lastN[T any](s []T, n int) []T {
 		return s[len(s)-n:]
 	}
 	return s
+}
+
+// ---------- внутренности ----------
+
+func openInspect(name string) tea.Cmd {
+	return func() tea.Msg {
+		d, err := inspect(name)
+		if err != nil {
+			return viewMsg{err: err}
+		}
+		return viewMsg{title: "внутренности · " + name, content: inspectSummary(d)}
+	}
+}
+
+func openDockerfile(name string, w int) tea.Cmd {
+	return func() tea.Msg {
+		d, err := inspect(name)
+		if err != nil {
+			return viewMsg{err: err}
+		}
+		if path, err := dockerfileOf(d); err == nil {
+			return viewMsg{title: "Dockerfile · " + shortPath(path), content: highlight(path, "dockerfile", w-6)}
+		} else {
+			// нет Dockerfile под рукой — показать, как образ был собран, по его слоям
+			hist, herr := imageHistory(d.Config.Image)
+			if herr != nil {
+				return viewMsg{err: err}
+			}
+			note := sMuted.Render(err.Error()+"\nНиже — слои образа "+d.Config.Image+", сверху вниз: так он был собран.") + "\n\n"
+			return viewMsg{title: "слои образа · " + d.Config.Image, content: note + hist}
+		}
+	}
+}
+
+func openCompose(name string, w int) tea.Cmd {
+	return func() tea.Msg {
+		d, err := inspect(name)
+		if err != nil {
+			return viewMsg{err: err}
+		}
+		path, err := composeFileOf(d)
+		if err != nil {
+			return viewMsg{err: err}
+		}
+		return viewMsg{title: "compose · " + shortPath(path), content: highlight(path, "yaml", w-6)}
+	}
+}
+
+// ---------- мышь ----------
+
+func (m model) mouse(msg tea.MouseMsg) (tea.Model, tea.Cmd) {
+	if m.mode == modeView {
+		var cmd tea.Cmd
+		m.vp, cmd = m.vp.Update(msg)
+		return m, cmd
+	}
+	if m.mode != modeList {
+		return m, nil
+	}
+	switch {
+	case msg.Button == tea.MouseButtonWheelUp && msg.Action == tea.MouseActionPress:
+		if m.cur > 0 {
+			m.cur--
+			return m, m.followLogs()
+		}
+	case msg.Button == tea.MouseButtonWheelDown && msg.Action == tea.MouseActionPress:
+		if m.cur < len(m.cs)-1 {
+			m.cur++
+			return m, m.followLogs()
+		}
+	case msg.Button == tea.MouseButtonLeft && msg.Action == tea.MouseActionPress:
+		header, _, tableH, _ := m.layout()
+		rows := tableH - 1
+		offset := max(0, m.cur-rows+1)
+		i := msg.Y - lipgloss.Height(header) - 1 + offset
+		if msg.Y > lipgloss.Height(header) && i >= 0 && i < len(m.cs) && i < offset+rows {
+			if i == m.cur { // второй клик по выбранному — действия
+				m.acts, m.actCur, m.mode = containerActions(m.cs[i]), 0, modeActions
+				return m, nil
+			}
+			m.cur = i
+			return m, m.followLogs()
+		}
+	}
+	return m, nil
+}
+
+// shortPath: /долгий/путь/shop/compose.yaml → shop/compose.yaml
+func shortPath(p string) string {
+	dir, file := filepath.Split(p)
+	return filepath.Join(filepath.Base(dir), file)
 }

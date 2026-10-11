@@ -156,7 +156,79 @@ func TestRender(t *testing.T) {
 		{Time: time.Now().Add(-1 * time.Minute), Action: "start", Name: "berth-demo"},
 	}
 	mm, _ := m.Update(tea.WindowSizeMsg{Width: 118, Height: 40})
+	// BERTH_RENDER_VIEW=inspect|dockerfile|compose BERTH_RENDER_NAME=<контейнер> — снимок просмотрщика
+	if name := os.Getenv("BERTH_RENDER_NAME"); name != "" {
+		open := map[string]tea.Cmd{"inspect": openInspect(name), "dockerfile": openDockerfile(name, 118), "compose": openCompose(name, 118)}
+		mm, _ = mm.Update(open[os.Getenv("BERTH_RENDER_VIEW")]())
+	}
 	if err := os.WriteFile(out, []byte(mm.View()), 0o644); err != nil {
 		t.Fatal(err)
+	}
+}
+
+func TestDockerfileFromCompose(t *testing.T) {
+	dir := t.TempDir()
+	os.MkdirAll(dir+"/api", 0o755)
+	os.WriteFile(dir+"/api/Dockerfile.dev", []byte("FROM alpine\n"), 0o644)
+	os.WriteFile(dir+"/Dockerfile", []byte("FROM alpine\n"), 0o644)
+	compose := []byte(`services:
+  web:
+    build: .
+  api:
+    build:
+      context: ./api
+      dockerfile: Dockerfile.dev
+  db:
+    image: postgres:17
+`)
+	if p, err := dockerfileFromCompose(compose, dir, "web"); err != nil || p != dir+"/Dockerfile" {
+		t.Errorf("web: %q %v", p, err)
+	}
+	if p, err := dockerfileFromCompose(compose, dir, "api"); err != nil || p != dir+"/api/Dockerfile.dev" {
+		t.Errorf("api: %q %v", p, err)
+	}
+	if _, err := dockerfileFromCompose(compose, dir, "db"); err == nil {
+		t.Error("db is built from an image and has no Dockerfile")
+	}
+}
+
+func TestInspectSummaryHidesSecrets(t *testing.T) {
+	var d inspectData
+	d.Config.Image = "postgres:17"
+	d.Config.Env = []string{"POSTGRES_PASSWORD=hunter2", "API_TOKEN=abc", "PGDATA=/var/lib/postgresql/data"}
+	d.State.Status = "running"
+	s := inspectSummary(d)
+	for _, leak := range []string{"hunter2", "abc"} {
+		if strings.Contains(s, leak) {
+			t.Errorf("secret %q is shown:\n%s", leak, s)
+		}
+	}
+	if !strings.Contains(s, "/var/lib/postgresql/data") {
+		t.Error("ordinary variables should be shown")
+	}
+}
+
+func TestViewerAndMouse(t *testing.T) {
+	m := newModel()
+	m.loaded = true
+	m.engine = Engine{Up: true, Context: "orbstack", Version: "29"}
+	m.cs = parseContainers([]byte(`{"Names":"a","State":"running","Status":"Up"}
+{"Names":"b","State":"running","Status":"Up"}
+{"Names":"c","State":"exited","Status":"Exited"}`))
+	mm, _ := m.Update(tea.WindowSizeMsg{Width: 120, Height: 40})
+	// клик по третьей строке таблицы выбирает контейнер c
+	header, _, _, _ := mm.(model).layout()
+	y := lipgloss.Height(header) + 1 + 2
+	mm, _ = mm.Update(tea.MouseMsg{X: 5, Y: y, Button: tea.MouseButtonLeft, Action: tea.MouseActionPress})
+	if got := mm.(model).cs[mm.(model).cur].Name; got != "c" {
+		t.Errorf("click selected %q, want c", got)
+	}
+	mm, _ = mm.Update(viewMsg{title: "Dockerfile · test", content: "FROM alpine\nRUN echo hi"})
+	if mm.(model).mode != modeView || !strings.Contains(mm.View(), "FROM alpine") {
+		t.Error("viewer should open and show the content")
+	}
+	mm, _ = mm.Update(tea.KeyMsg{Type: tea.KeyEsc})
+	if mm.(model).mode != modeList {
+		t.Error("esc should close the viewer")
 	}
 }
