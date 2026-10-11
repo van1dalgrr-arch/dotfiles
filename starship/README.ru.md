@@ -12,4 +12,4 @@
 
 - `starship.toml` → `~/.config/starship.toml`
 
-[← dotfiles](../README.md) · [как пользоваться](../docs/guide.ru.md)
+[← dotfiles](../README.ru.md) · [как пользоваться](../docs/guide.ru.md)

@@ -15,4 +15,4 @@
 - `settings.json` → `~/Library/Application Support/Code/User/settings.json`
 - `keybindings.json` → `~/Library/Application Support/Code/User/keybindings.json`
 
-[← dotfiles](../README.md) · [как пользоваться](../docs/guide.ru.md)
+[← dotfiles](../README.ru.md) · [как пользоваться](../docs/guide.ru.md)

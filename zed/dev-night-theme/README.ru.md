@@ -18,4 +18,4 @@
 
 Правь Dev Night в `themes/dev-night.json`, потом `python3 zed/tools/light.py` (Dev Day) и `python3 zed/tools/preview.py` (картинка). Zed перечитает тему сам.
 
-[← dotfiles](../../README.md) · [как пользоваться](../../docs/guide.ru.md)
+[← dotfiles](../README.ru.md) · [как пользоваться](../../docs/guide.ru.md)

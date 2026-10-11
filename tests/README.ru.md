@@ -8,4 +8,4 @@
 |---|---|
 | `smoke.sh` | `make test`; ещё запускается в CI (Linux — переносимое, macOS — всё) и перед каждым push |
 
-[← dotfiles](../README.md) · [как пользоваться](../docs/guide.ru.md)
+[← dotfiles](../README.ru.md) · [как пользоваться](../docs/guide.ru.md)

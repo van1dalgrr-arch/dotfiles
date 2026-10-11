@@ -1,5 +1,7 @@
 # Как это устроено
 
+🇬🇧 [English version](how-it-works.md) · [все документы](README.ru.md)
+
 > Как **пользоваться** (все команды по разделам) — [guide.ru.md](guide.ru.md). Здесь — как это **устроено**.
 
 Документ для себя: что где лежит, как одно цепляется за другое и **почему сделано именно так**.
@@ -18,6 +20,7 @@ flowchart LR
     repo["~/dotfiles<br/>(git)"] -->|install.sh<br/>симлинки| cfg["~/.zshrc<br/>~/.config/…<br/>~/.gitconfig"]
     repo -->|themes/apply.sh<br/>перекрашивает копии| gen["~/.cache/dotfiles-theme<br/>~/.config/ghostty/theme.ghostty"]
     repo -->|swift icons/*.swift| art["обои HEIC<br/>иконки Dock и папок"]
+    repo -->|go build berth/| bin["~/go/bin/berth<br/>(orbstack)"]
     cfg --> apps["zsh · Ghostty · Zed · git · AeroSpace"]
     gen --> apps
 ```
@@ -35,7 +38,7 @@ flowchart LR
 Каждая строка `link <файл в репо> <куда в системе>` делает одно: если на месте уже лежит **обычный файл** —
 переименовывает его в `*.bak` (ничего не теряется), потом ставит симлинк. Потом клонирует oh-my-zsh и fzf-tab
 на закреплённых коммитах (`OMZ_REV`, `FZF_TAB_REV` вверху файла), ставит Go-утилиты точных версий из `go/tools.txt`
-(`dot tools install`) и в конце запускает `themes/apply.sh`. Повторный запуск безопасен.
+(`dot tools install`), собирает `orbstack` из `berth/` и в конце запускает `themes/apply.sh`. Повторный запуск безопасен.
 
 Почему симлинки, а не копирование: копии расходятся. Через месяц уже не помнишь, какая версия настоящая.
 Симлинк — один источник правды, и git видит каждое изменение.
@@ -53,7 +56,7 @@ flowchart TD
     E --> F[zsh/theme.zsh — палитра T_*]
     F --> G[zsh/prompt.zsh — промпт]
     G --> H[fzf, zoxide, atuin, direnv, автоподсказки, подсветка]
-    H --> I[свои функции: ram, update, gonew, backend, шпаргалка]
+    H --> I[свои функции: ram, update, gonew, backend, docker, шпаргалка]
     I --> J[первый промпт → _greeting → fastfetch]
 ```
 
@@ -61,7 +64,7 @@ flowchart TD
 
 | Файл | Что внутри |
 |---|---|
-| `.zshrc` | порядок загрузки, алиасы, `p`, `up`, `pl`, подсветка ввода |
+| `.zshrc` | порядок загрузки, алиасы, `p`, `up`, `pl`, обёртка `docker`, `alias orbstack=berth`, подсветка ввода |
 | `theme.zsh` | читает текущую тему, задаёт `T_ROSE`, `T_FOAM`… и переменные для bat/eza/lazygit; команды `theme` и `wall` |
 | `prompt.zsh` | промпт, сворачивание старых промптов, «команда не найдена» |
 | `cheatsheet.zsh` | `?` / `ctrl+/` |
@@ -118,7 +121,9 @@ T_DIFF_*                       — цвета diff
 ```
 
 `themes/apply.sh <имя>` строит таблицу «цвет Rosé Pine → цвет темы» и **одним проходом** perl
-перекрашивает копии конфигов (Ghostty, starship, eza, lazygit, btop, bat, delta, шейдер курсора, Swift-скрипты иконок).
+перекрашивает копии конфигов (starship, eza, lazygit, btop, bat, delta, Swift-скрипты иконок), а для Ghostty
+пишет две темы, тёмную и светлую. Шейдеры эффектов (`fx`) копии не требуют — берут цвета из темы терминала сами
+(`iCursorColor`, `iPalette`). zsh, промпт и fzf читают палитру `T_*` при старте оболочки.
 Один проход важен: если менять цвета по очереди, цвет A→B, а потом B→C превратит A в C.
 
 Репозиторий при смене темы **не меняется** — пишутся только копии в `~/.config` и `~/.cache`.
@@ -167,18 +172,63 @@ macOS **сбрасывает** такую иконку при обновлени
 ## 10. Docker, `up`, `gonew`
 
 Docker — через **OrbStack**: та же команда `docker`, но память берётся по требованию и отдаётся обратно.
+OrbStack не держится запущенным: его поднимает первая же команда, которой он нужен.
+
+**Обёртка `docker`** (функция в `.zshrc`). Перед любой командой `docker` проверяет сокет
+`~/.orbstack/run/docker.sock` — это одна проверка файла, ~0 мс. Сокета нет — `open -ga OrbStack`
+и ждёт до минуты, пока `docker info` не ответит. Команды, которым движок не нужен (`--version`, `context`,
+`login`), идут сразу. Почему это понадобилось: в истории команд `docker ps` падал с «failed to connect»
+20 раз за неделю. Служебные проверки (`update`, `lean`) вызывают `command docker`, мимо обёртки, —
+они только смотрят, работает ли Docker, и не должны его будить.
 
 `up` в папке проекта:
-1. будит OrbStack, если спит;
+1. будит OrbStack той же обёрткой;
 2. из `docker-compose.yml` поднимает только сервисы **без `build:`** — то есть зависимости (postgres, redis), и ждёт их healthcheck;
 3. запускает само приложение локально (`air` → `go run ./cmd/api` → `go run .`), подхватив `.env`.
 
 Приложение крутится локально, а не в контейнере, — так работает hot reload и отладчик.
+Если нужно именно в контейнере — живая сборка (`orbstack watch`, раздел 11).
 
 `gonew myapi` создаёт проект по шаблону из `zsh/gonew.zsh`: `cmd/api`, `internal/config`, `internal/handler`,
 pgx, `/health` с пингом базы, graceful shutdown, compose, двухэтапный Dockerfile (итоговый образ ~15 МБ), Makefile, air, golangci-lint.
 
-## 11. Zed
+## 11. `orbstack` — панель контейнеров на Go
+
+Исходники — `berth/` (отдельный Go-модуль внутри репозитория), бинарник — `~/go/bin/berth`,
+в zsh — `alias orbstack=berth`. Собирают `install.sh` и `update`; `dot doctor` предупредит, если бинарник
+старее исходников.
+
+```mermaid
+flowchart LR
+    U["клавиша / подкоманда"] --> M["Bubble Tea:<br/>Update → View"]
+    M -->|раз в 2 с| PS["docker ps -a<br/>--format json"]
+    M -->|в фоне| ST["docker stats<br/>--no-stream"]
+    M -->|поток| EV["docker events"]
+    M -->|по запросу| IN["docker inspect<br/>метки compose"]
+    IN --> CF["compose-файл → build →<br/>Dockerfile"]
+    M -->|отдаёт терминал| EX["docker logs -f · exec -it<br/>compose watch"]
+```
+
+- **Через docker CLI, а не Engine API.** CLI сам следует текущему `docker context` — OrbStack, Colima,
+  Docker Desktop работают без настройки, а программе не нужен тяжёлый SDK.
+- **Живой экран — модель Elm.** Таймер раз в 2 с запрашивает список контейнеров и лог выбранного;
+  `docker stats` идёт отдельно (он замеряет CPU ~2 с) и не тормозит интерфейс; `docker events` читается
+  потоком в канал, каждое событие — сообщение в `Update`.
+- **Терминал на время отдаётся docker'у** (`tea.ExecProcess`) для лога, оболочки и `compose watch`.
+  Bubble Tea в это время игнорирует ctrl+c, поэтому ctrl+c закрывает только docker и возвращает в панель.
+- **Dockerfile контейнера** находится по меткам, которые compose ставит каждому контейнеру:
+  `com.docker.compose.project.config_files` (где compose-файл) и `com.docker.compose.service` (какой сервис).
+  В compose-файле — `build.context` + `build.dockerfile`. Нет `build:` — показываются слои образа (`docker history`).
+- **Секреты не светятся:** во «внутренностях» значения переменных с `PASSWORD`, `SECRET`, `TOKEN`, `KEY` скрыты.
+- **Живая сборка** правит compose через `yaml.v3` на уровне узлов: блок `develop.watch` добавляется,
+  комментарии и порядок ключей остаются.
+- **Шаблоны** (`templates.go`) — это готовая строка `docker run`; её можно отредактировать, но выполнится
+  только команда, которая начинается с `docker`.
+
+Тесты (`berth/berth_test.go`) — разбор вывода docker, шаблоны, правка compose, поиск Dockerfile,
+скрытие секретов, отрисовка на трёх размерах окна, клик мышью. Входят в `make check` и CI.
+
+## 12. Zed
 
 | Файл | Зачем |
 |---|---|
@@ -195,19 +245,22 @@ pgx, `/health` с пингом базы, graceful shutdown, compose, двухэ�
 `~/Library/Application Support/Zed/extensions/installed/`, и Zed считает её установленным расширением.
 После правки темы Zed нужно перезапустить.
 
-## 12. Проверки: `dot doctor`, `make check`, CI
+## 13. Проверки: `dot doctor`, `make check`, CI
 
-- `dot doctor` — твоя машина: симлинки, Brewfile (обязательное ✗) и Brewfile.devops (необязательное ○), Go,
-  Docker/Compose, Kubernetes, IaC, git-хуки, Ghostty, Zed, скорость zsh. Каждая проблема — с подсказкой.
+- `dot doctor` — твоя машина: симлинки, Brewfile (обязательное ✗, включая приложения из App Store) и Brewfile.devops
+  (необязательное ○), Go и сборка `orbstack`, Docker/Compose, Kubernetes, IaC, git-хуки, Ghostty, Zed, шрифт Safari,
+  скорость zsh (лучший из трёх замеров), macOS: FileVault, файрвол, SIP, Gatekeeper, Time Machine, свободное место,
+  **настройки `macos.sh`, которые откатило обновление**, и забытый `awake on`. Каждая проблема — с подсказкой.
   `dot doctor --deep` — ещё версии, закреплённые ревизии, лишние пакеты вне Brewfile, `brew doctor`. Только читает.
 - `dot project doctor` (`pd`) — текущий Go-проект: go.mod, тесты, линтеры, Docker, миграции, безопасность `.env`.
-- Код `dot` — в `lib/*.sh` (ui, doctor, project, tools), совместим с системным bash 3.2.
-- `make check` — сам репозиторий: shellcheck, `bash -n` системным bash, синтаксис zsh, Brewfile, JSON, gitleaks.
+- Код `dot` — в `lib/*.sh` (ui, doctor, project, tools, snapshot), совместим с системным bash 3.2.
+- `make check` — сам репозиторий: shellcheck, `bash -n` системным bash, синтаксис zsh, Brewfile, JSON, Python,
+  шейдеры Ghostty, `go vet` и тесты `berth`, gitleaks.
   `make test` — смоук-тесты `tests/smoke.sh`. То же самое гоняет CI.
-- CI на GitHub (`.github/workflows/ci.yml`): Linux — линтеры и gitleaks; **macOS** — компилирует все Swift-генераторы
-  и применяет каждую тему в пустом `HOME`, как на новом маке.
+- CI на GitHub (`.github/workflows/ci.yml`): Linux — линтеры и gitleaks; **macOS** — тесты `berth`, компилирует все
+  Swift-генераторы и применяет каждую тему в пустом `HOME`, как на новом маке.
 
-## 13. Рецепты
+## 14. Рецепты
 
 | Хочу | Делаю |
 |---|---|
@@ -217,6 +270,8 @@ pgx, `/health` с пингом базы, graceful shutdown, compose, двухэ�
 | новую программу | строка в `Brewfile` (или `Brewfile.devops`, если необязательная) → `dot install` |
 | новую Go-утилиту / обновить её | `пакет@версия` в `go/tools.txt` → `dot tools install` |
 | настройки macOS | `./macos.sh` (план) → `./macos.sh --yes` |
+| шаблон контейнера в `orbstack` | строка в `berth/templates.go` → `cd berth && go test ./...` → `update` |
+| клавишу в `orbstack` | `key()` и `keyHelp` в `berth/ui.go` |
 | новый конфиг под git | файл в репозиторий + строка `link` в `install.sh` → `./install.sh` |
 | понять, что сломалось | `dot doctor` |
 | всё обновить | `update` (раз в неделю) |

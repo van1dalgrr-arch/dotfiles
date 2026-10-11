@@ -14,4 +14,4 @@
 - `btop.conf` → `~/.config/btop/btop.conf`
 - `themes/rose-pine.theme` → `~/.config/btop/themes/rose-pine.theme`
 
-[← dotfiles](../README.md) · [как пользоваться](../docs/guide.ru.md)
+[← dotfiles](../README.ru.md) · [как пользоваться](../docs/guide.ru.md)

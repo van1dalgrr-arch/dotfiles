@@ -1,5 +1,11 @@
 # Troubleshooting
 
+🇷🇺 [Русская версия](troubleshooting.ru.md) · [all docs](README.md)
+
+Start with `dot doctor`: it finds most of these by itself and prints the fix. Below, grouped by area.
+
+## Look
+
 <details>
 <summary>An app icon went back to the default</summary>
 
@@ -11,8 +17,17 @@ macOS resets custom icons when an app updates. Bring it back with `theme vesper`
 <summary>The terminal didn't change colors after <code>theme</code></summary>
 
 `theme`, `wall` and `backdrop` reload Ghostty by themselves over AppleScript. If it didn't happen (Ghostty wasn't
-running, or Automation was denied), press `cmd-shift-,`.
+running, or Automation was denied), press `cmd-shift-,`. The prompt and command colors change in **new** windows;
+in an open one run `exec zsh`.
 </details>
+
+<details>
+<summary>I want starship back</summary>
+
+Put `export PROMPT_ENGINE=starship` in `~/.zshenv` — the config is in `starship/`.
+</details>
+
+## Terminal
 
 <details>
 <summary>The drop-down terminal doesn't open</summary>
@@ -24,25 +39,60 @@ allow it (System Settings → Privacy & Security → Automation, if you clicked 
 </details>
 
 <details>
-<summary>I want starship back</summary>
+<summary>A command does something unexpected (<code>cat</code>, <code>ls</code>, <code>dc</code>, <code>wall</code>, <code>docker</code>)</summary>
 
-Put `export PROMPT_ENGINE=starship` in `~/.zshenv` — the config is in `starship/`.
+Some names are deliberately replaced: `cat`→bat, `ls`→eza, `rm/cp/mv` ask before overwriting, `dc`→docker compose,
+`orbstack`→berth, and `wall`/`pl`/`docker` are functions (`docker` starts OrbStack when it's off). For the original,
+use `command cat` or `\cat`.
 </details>
 
 <details>
-<summary><code>dot doctor</code> shows ✗ / ! / ○ — what's what</summary>
+<summary>The shell prints "нет oh-my-zsh"</summary>
 
-`✗` means something required (main `Brewfile`, symlinks, hooks) is broken, and `dot doctor` exits with 1.
-`!` is worth a look but doesn't fail the run. `○` is optional (`Brewfile.devops`) and just not set up.
-Every line ends with the fix. Add `--deep` for versions, pinned revisions, packages installed outside the Brewfile, and `brew doctor`.
+`.zshrc` still works without it, but run `./install.sh` to clone oh-my-zsh and fzf-tab at the pinned revisions.
+</details>
+
+## Docker and <code>orbstack</code>
+
+<details>
+<summary><code>docker</code> hangs for a few seconds, or prints "запускаю OrbStack…"</summary>
+
+That's the wrapper starting OrbStack because it was off — it takes ~4 s, then the command runs. To keep the engine
+up for a while: `orbstack on`. If it doesn't start within a minute, open OrbStack by hand: `open -a OrbStack`.
 </details>
 
 <details>
-<summary><code>brew bundle</code> says Zed / VS Code "already exists"</summary>
+<summary><code>orbstack</code>: "command not found", or old behaviour after an update</summary>
 
-The Brewfile skips them when they're already in `/Applications` (installed from the website).
-To let brew manage an existing copy: `brew install --cask --adopt zed`.
+`orbstack` is an alias for `~/go/bin/berth`, built from `berth/`. Rebuild it with `./install.sh` or `update`
+(or `go build -C ~/dotfiles/berth -o ~/go/bin/berth .`). `dot doctor` warns when the binary is older than the sources.
+In a window opened before the install, run `exec zsh` to pick up the alias.
 </details>
+
+<details>
+<summary><code>orbstack</code>: the dashboard says "движок выключен"</summary>
+
+Press `e` to start the engine, or just do anything with a container — it starts the engine itself.
+`E` stops it and gives the memory back.
+</details>
+
+<details>
+<summary><code>orbstack</code>: <code>f</code> shows image layers instead of a Dockerfile</summary>
+
+The Dockerfile is found through the compose labels on the container. If the container was started with `docker run`,
+or its compose service uses a ready `image:` instead of `build:`, there is no Dockerfile to show, so the image layers
+are shown instead — the steps it was built from. If the compose file moved, the labels still point to the old path:
+recreate the containers with `docker compose up -d`.
+</details>
+
+<details>
+<summary><code>orbstack watch</code> changed my compose file</summary>
+
+Only after asking: it adds a `develop.watch` block to services with `build:`. Comments and key order stay;
+blank lines between services may go. `git diff` shows exactly what changed; `git checkout -- compose.yaml` undoes it.
+</details>
+
+## Go
 
 <details>
 <summary>A Go tool has the wrong version, or <code>dot tools</code> shows <code>!</code></summary>
@@ -60,25 +110,15 @@ You don't need to do anything: with the default `GOTOOLCHAIN=auto`, Go downloads
 It shouldn't be `local`.
 </details>
 
-<details>
-<summary><code>macos.sh</code> didn't change anything</summary>
-
-That's on purpose: without `--yes` it only prints the plan. Run `./macos.sh --yes`
-(or `./macos.sh --yes finder dock` for specific groups). Keyboard, trackpad and dark mode apply after you log out and back in.
-To undo one setting: `defaults delete <domain> <key>` (both are listed in `macos.sh`).
-</details>
+## macOS and <code>dot doctor</code>
 
 <details>
-<summary>A command does something unexpected (<code>cat</code>, <code>ls</code>, <code>dc</code>, <code>wall</code>)</summary>
+<summary><code>dot doctor</code> shows ✗ / ! / ○ — what's what</summary>
 
-Some names are deliberately replaced: `cat`→bat, `ls`→eza, `rm/cp/mv` ask before overwriting, `dc`→docker compose,
-and `wall`/`pl` are functions. For the original, use `command cat` or `\cat`.
-</details>
-
-<details>
-<summary>The shell prints "нет oh-my-zsh"</summary>
-
-`.zshrc` still works without it, but run `./install.sh` to clone oh-my-zsh and fzf-tab at the pinned revisions.
+`✗` means something required (main `Brewfile`, symlinks, hooks) is broken, and `dot doctor` exits with 1.
+`!` is worth a look but doesn't fail the run. `○` is optional (`Brewfile.devops`) and just not set up.
+`·` is information. Every line ends with the fix. Add `--deep` for versions, pinned revisions, packages installed
+outside the Brewfile, and `brew doctor`.
 </details>
 
 <details>
@@ -89,16 +129,31 @@ current value → expected; `./macos.sh --yes` restores them. Changed on purpose
 </details>
 
 <details>
-<summary><code>macos.sh safari</code>: "нет доступа" / "не проверить"</summary>
-
-Safari keeps its settings in a sandbox: the terminal can't read or write them without
-System Settings → Privacy & Security → **Full Disk Access** → Ghostty (restart Ghostty after). Apply, then you can
-take the access back: `tccutil reset SystemPolicyAllFiles com.mitchellh.ghostty`.
-</details>
-
-<details>
 <summary><code>dot doctor</code>: "awake включён"</summary>
 
 `awake on` stops the Mac from sleeping even with the lid closed — handy for Claude Code from the phone, bad in a
 backpack. `awake off` when you're back (asks for the password).
+</details>
+
+<details>
+<summary><code>brew bundle</code> says Zed / VS Code "already exists"</summary>
+
+The Brewfile skips them when they're already in `/Applications` (installed from the website).
+To let brew manage an existing copy: `brew install --cask --adopt zed`.
+</details>
+
+<details>
+<summary><code>macos.sh</code> didn't change anything</summary>
+
+That's on purpose: without `--yes` it only prints the plan. Run `./macos.sh --yes`
+(or `./macos.sh --yes finder dock` for specific groups). Keyboard, trackpad and dark mode apply after you log out and back in.
+To undo one setting: `defaults delete <domain> <key>` (both are listed in `macos.sh`).
+</details>
+
+<details>
+<summary><code>macos.sh safari</code>: "нет доступа" / "не проверить"</summary>
+
+Safari keeps its settings in a sandbox: the terminal can't read or write them without
+System Settings → Privacy & Security → **Full Disk Access** → Ghostty (restart Ghostty after). Apply, then take the
+access back: `tccutil reset SystemPolicyAllFiles com.mitchellh.ghostty`.
 </details>

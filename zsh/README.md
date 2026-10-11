@@ -2,11 +2,11 @@
 
 🇷🇺 [Русская версия](README.ru.md)
 
-Shell config: hand-written prompt, aliases, functions. Starts in ~0.15 s. All commands: [docs/guide.ru.md](../docs/guide.ru.md).
+Shell config: hand-written prompt, aliases, functions. Starts in ~0.15 s. All commands: [docs/guide.md](../docs/guide.md).
 
 | File | What |
 |---|---|
-| `.zshrc` | PATH, oh-my-zsh, fzf, zoxide, atuin, aliases, `p`, `pl`, `up`, `gco`, greeting |
+| `.zshrc` | PATH, oh-my-zsh, fzf, zoxide, atuin, aliases, `p`, `pl`, `up`, `gco`, the `docker` wrapper (starts OrbStack on demand), `orbstack` → [berth](../berth), greeting |
 | `prompt.zsh` | framed prompt, transient prompt, command-not-found hints |
 | `theme.zsh` | `theme`, `wall`, `wall add`, `backdrop`, `palette`, light mode |
 | `reminders.zsh` | reminders under the greeting: stale `update`, unpushed work |

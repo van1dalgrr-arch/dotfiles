@@ -29,4 +29,4 @@
 
 Оба расширения подключаются в Zed как dev-расширения через `install.sh`. Те же темы для JetBrains — [jetbrains/](../jetbrains).
 
-[← dotfiles](../README.md) · [как пользоваться](../docs/guide.ru.md)
+[← dotfiles](../README.ru.md) · [как пользоваться](../docs/guide.ru.md)

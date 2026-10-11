@@ -1,20 +1,34 @@
 # Docs
 
-🇷🇺 [Русская версия](README.ru.md)
+🇷🇺 [Русская версия](README.ru.md) · [← dotfiles](../README.md)
 
-Guides and pictures for the README.
+Every document exists in English and Russian — the link at the top of each switches the language.
 
-| File | What |
+## Start here
+
+| | |
 |---|---|
-| `guide.ru.md` | **how to use it**: every command by area (RU) |
-| `how-it-works.ru.md` | how it's built inside, with diagrams (RU) |
-| `macos-upgrade.ru.md` | major macOS upgrade checklist: before (push, backup, `dot snapshot`) and after (CLT, `dot snapshot diff`, permissions) |
-| `docker.ru.md` | containers from the terminal: `docker run` explained, compose, cleanup (RU) |
-| `recovery.ru.md` | the Mac was wiped: restore checklist (RU) |
-| `themes.md` | themes side by side, how `theme` recolors everything |
-| `wallpapers.md` | gallery of the 30 live wallpapers |
-| `hotkeys.md` | AeroSpace, Ghostty and Zed shortcuts |
-| `troubleshooting.md` | common problems and fixes |
-| `*.png, *.jpg` | screenshots rendered from real output (no screen capture) |
+| [**How to use it**](guide.md) | every command and feature, by area: look, terminal, projects, git, containers, Mac upkeep |
+| [**Hotkeys**](hotkeys.md) | AeroSpace, Ghostty, `orbstack` and Zed on one page |
+| [**Containers from the terminal**](docker.md) | images, containers, volumes; every `docker run` flag explained; compose; live rebuild |
 
-[← dotfiles](../README.md)
+## Understand and change it
+
+| | |
+|---|---|
+| [**How it works**](how-it-works.md) | architecture with diagrams, the *why* behind every piece, and recipes for changing things |
+| [**Themes**](themes.md) | all themes side by side, light mode, making your own |
+| [**Wallpapers**](wallpapers.md) | the gallery of 30 live wallpapers and how to draw your own |
+
+## When something happens
+
+| | |
+|---|---|
+| [**Troubleshooting**](troubleshooting.md) | common problems and their fixes, by area |
+| [**Upgrading macOS**](macos-upgrade.md) | a one-evening checklist: before (push, backup, `dot snapshot`) and after (`dot snapshot diff`, permissions) |
+| [**If the Mac was wiped**](recovery.md) | restore in about an hour: what comes back by itself, what's left by hand, what's lost |
+
+## Pictures
+
+`*.jpg`, `*.png` here are rendered from real output — the terminal, `dot doctor`, `orbstack`, the themes —
+not screen captures. `wallpapers/` holds the gallery previews.

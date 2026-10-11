@@ -19,4 +19,4 @@
 
 `swift zed/tools/build-icons.swift`.
 
-[← dotfiles](../../README.md) · [как пользоваться](../../docs/guide.ru.md)
+[← dotfiles](../README.ru.md) · [как пользоваться](../../docs/guide.ru.md)

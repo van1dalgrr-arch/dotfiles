@@ -6,7 +6,7 @@
 
 | Файл | Что это |
 |---|---|
-| `.zshrc` | PATH, oh-my-zsh, fzf, zoxide, atuin, алиасы, `p`, `pl`, `up`, `gco`, приветствие |
+| `.zshrc` | PATH, oh-my-zsh, fzf, zoxide, atuin, алиасы, `p`, `pl`, `up`, `gco`, обёртка `docker` (сама запускает OrbStack), `orbstack` → [berth](../berth), приветствие |
 | `prompt.zsh` | промпт в рамке, сворачивание, подсказки «команда не найдена» |
 | `theme.zsh` | `theme`, `wall`, `wall add`, `backdrop`, `palette`, светлый режим |
 | `reminders.zsh` | напоминания под приветствием: давно не было `update`, незапушенное |
@@ -25,4 +25,4 @@
 
 `.zshrc` подключает oh-my-zsh, потом `theme.zsh` (палитра первой — остальное берёт её цвета), промпт, утилиты и остальные модули. Подсветка синтаксиса — последней.
 
-[← dotfiles](../README.md) · [как пользоваться](../docs/guide.ru.md)
+[← dotfiles](../README.ru.md) · [как пользоваться](../docs/guide.ru.md)

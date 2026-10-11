@@ -12,4 +12,4 @@
 
 macOS 26 спрашивает подтверждение на каждое расширение — запускать, сидя за Mac.
 
-[← dotfiles](../README.md) · [как пользоваться](../docs/guide.ru.md)
+[← dotfiles](../README.ru.md) · [как пользоваться](../docs/guide.ru.md)

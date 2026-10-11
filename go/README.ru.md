@@ -13,4 +13,4 @@ Go-утилиты, которые ставятся через `go install` **з�
 
 `dot tools` — что стоит и что закреплено, `dot tools install` — поставить закреплённые (`dot tools install devops` — необязательные). Обновить утилиту — сначала поменять версию здесь. `update` тоже ставит их.
 
-[← dotfiles](../README.md) · [как пользоваться](../docs/guide.ru.md)
+[← dotfiles](../README.ru.md) · [как пользоваться](../docs/guide.ru.md)

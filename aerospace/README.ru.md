@@ -16,4 +16,4 @@
 
 AeroSpace стартует при входе и запускает Ghostty в фоне — поэтому выпадающий терминал (`` ctrl+` ``) всегда доступен. Окна Ghostty плавают на текущем столе: тайлинг ломал выпадающий терминал. Ещё он ловит `` ctrl+` `` и запускает `ghostty/quick-terminal.applescript` — выпадающий терминал Ghostty. Применить изменения: `alt-shift-c`. Все хоткеи — [docs/hotkeys.md](../docs/hotkeys.md).
 
-[← dotfiles](../README.md) · [как пользоваться](../docs/guide.ru.md)
+[← dotfiles](../README.ru.md) · [как пользоваться](../docs/guide.ru.md)

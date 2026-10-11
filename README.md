@@ -16,7 +16,9 @@ MacBook Air M2 · 8 GB · zsh · Ghostty · AeroSpace · Zed
 
 <sub>Ghostty + Zed tiled by AeroSpace. The terminal's glow is built from the wallpaper's colors. Rendered from real command output.</sub>
 
-**[Install](#install)** · **[What's inside](#whats-inside)** · **[Daily commands](#daily-commands)** · **[Health checks](#health-checks)** · **[Customize](#customize)** · **[Maintain](#maintain)** · **[Docs](#docs)**
+**[Install](#install)** · **[What's inside](#whats-inside)** · **[Daily commands](#daily-commands)** · **[Containers](#containers-orbstack)** · **[Health checks](#health-checks)** · **[Customize](#customize)** · **[Docs](#docs)**
+
+🇷🇺 [Русская версия](README.ru.md)
 
 </div>
 
@@ -64,6 +66,7 @@ dot doctor               # everything should be ✓
 - symlinks every config (a file already in place is kept as `*.bak`, nothing gets deleted)
 - clones oh-my-zsh and fzf-tab at **pinned commits**, without the oh-my-zsh installer, which would overwrite `.zshrc`
 - installs Go tools at **pinned versions** from `go/tools.txt`
+- builds `orbstack` from `berth/` into `~/go/bin`
 - applies the theme and wallpaper
 
 It doesn't install apps (that's `brew bundle`), and it doesn't touch macOS settings (that's `macos.sh`).
@@ -96,7 +99,7 @@ Fork it rather than installing mine as is. Before `make install`:
 | **Terminal look** | `fx` — Ghostty shaders (cursor, trail, sparks, focus flash, glow) · `backdrop` — the wallpaper's light behind the text |
 | **Browser** | Safari — the lightest on 8 GB. Settings in `macos.sh safari`, uBlock Origin Lite from the App Store via the Brewfile, JetBrains Mono for code on every site |
 | **Git** | delta for diffs, lazygit, gitleaks before every commit in every repo |
-| **Docker** | `orbstack` — containers in the terminal ([berth/](berth), Go + Bubble Tea): one live screen with CPU/memory per container, the selected log and an event feed; every action explained with the docker command behind it; templates for postgres/redis/nginx/mongo/mysql/rabbitmq. `orbstack watch` rebuilds and restarts the container when you save code. Every action is also a subcommand (`orbstack run postgres`, `logs`, `top`, `events`…). OrbStack starts on demand: any `docker` command launches it if it's off (no more "failed to connect"). lazydocker, and `up` — dependencies and the app in one command |
+| **Containers** | [OrbStack](https://orbstack.dev), started on demand by any `docker` command, and [`orbstack`](#containers-orbstack) — a live dashboard in Go; `up` runs dependencies + the app in one command |
 | **API & DB** | [Yaak](https://yaak.app) instead of Postman, [TablePlus](https://tableplus.com) for databases, `pgcli` via `db` |
 
 <p align="center"><img src="docs/zed-themes.png" width="90%" alt="Dev Night and Dev Day side by side"/></p>
@@ -117,16 +120,40 @@ Forgot a command? Press `?` (or `ctrl+/`) — a cheatsheet with every hotkey, fu
 | `db` | pgcli into the project database (from `DATABASE_URL` / `.env`) |
 | `vuln` | vulnerabilities: govulncheck for Go deps + trivy for the rest |
 | `load` | load test an endpoint with oha (`/health` by default) |
+| `orbstack` | containers: live dashboard, templates, logs, inspect, live rebuild ([more](#containers-orbstack)) |
 | `dsh` / `dlogs` | shell into a container / follow its logs (picked with fzf) |
 | `gco` | switch branches with fzf |
 | `killport 8080` | free a port (TERM first, KILL after 2 s) |
 | `ram` | what's eating memory — grouped by app, not by process |
 | `lean` | memory report for 8 GB · `lean on` quits heavy apps from a list · `lean off` brings them back |
 | `awake on` / `off` | keep the Mac awake with the lid closed (for Claude Code from the phone); `dot doctor` reminds you if it's left on |
-| `update` | weekly maintenance: brew, pinned Go tools, Docker junk, tldr, icons |
-| `dot snapshot` | snapshot before a macOS upgrade; `dot snapshot diff` after shows what reset ([checklist](docs/macos-upgrade.ru.md)) |
+| `update` | weekly maintenance: brew, pinned Go tools, Docker junk, tldr, icons, rebuilds `orbstack` |
+| `dot snapshot` | snapshot before a macOS upgrade; `dot snapshot diff` after shows what reset ([checklist](docs/macos-upgrade.md)) |
 
 Type a command that doesn't exist and the prompt tells you if it's available in brew — like `pkgfile` on Arch.
+
+## Containers: `orbstack`
+
+<img src="docs/orbstack.jpg" alt="orbstack: gradient logo, a table of containers with CPU and memory, the selected container's log and a live event feed" width="100%">
+
+<sub>The dashboard, rendered from its own view with live data from a demo container.</sub>
+
+```bash
+orbstack                 # live dashboard
+orbstack run postgres    # start from a template — shows the docker run command first, editable
+orbstack watch           # live rebuild: save code → image rebuilt, container restarted
+```
+
+One screen instead of a dozen commands: containers with CPU and memory refreshing in the table, the selected
+container's log and an event feed (start, stop, crash, out of memory). Everything is on a key — `l` logs, `s` shell,
+`r` restart, `x` stop/start, `d` remove, `i` a readable inspect with secrets hidden, `f` the Dockerfile (found through
+the compose labels), `c` the compose file, `n` new from a template, `w` live rebuild. `enter` lists the actions,
+**each explained with the docker command behind it** — so it teaches docker while you use it.
+
+Written in Go with [Bubble Tea](https://github.com/charmbracelet/bubbletea) ([`berth/`](berth)), built by `install.sh`,
+tested in CI. It talks to the docker CLI, so it follows any context: OrbStack, Colima, Docker Desktop.
+And OrbStack itself needs no babysitting: any `docker` command starts it when it's off. More:
+[containers from the terminal](docs/docker.md) · [keys](docs/hotkeys.md#orbstack--containers).
 
 ## Health checks
 
@@ -179,7 +206,7 @@ theme              # pick with a preview
 theme kanagawa     # apply directly
 ```
 
-One palette file (`themes/<name>.sh`, 19 colors) recolors Ghostty, the prompt, bat, delta, btop, eza, lazygit,
+One palette file (`themes/<name>.sh`, 19 colors) recolors Ghostty, the prompt, fzf, bat, delta, btop, eza, lazygit,
 starship, app and folder icons, and the wallpaper. Light mode (Dev Day) follows macOS. New theme: copy a palette, change the colors, `theme <name>`.
 All of them side by side: [docs/themes.md](docs/themes.md).
 
@@ -263,7 +290,7 @@ never logs you out. `dot doctor` notices when a macOS upgrade puts a setting bac
 ## Maintain
 
 ```bash
-update               # brew upgrade, pinned Go tools, Docker junk, tldr, icons
+update               # brew upgrade, pinned Go tools, Docker junk, tldr, icons, rebuilds orbstack
 dot doctor --deep    # anything installed outside the Brewfile? anything outdated?
 ```
 
@@ -342,17 +369,18 @@ How it fits together: `brew bundle` installs programs. `install.sh` links the co
 
 ## Docs
 
+Every document is in English and Russian — [all docs](docs/README.md) · [вся документация](docs/README.ru.md).
+
 | | |
 |---|---|
-| [How to use it (RU)](docs/guide.ru.md) | every command and feature, day to day |
-| [How it works (RU)](docs/how-it-works.ru.md) | architecture, diagrams, the "why" behind every piece, and recipes |
-| [Containers from the terminal (RU)](docs/docker.ru.md) | images, containers, volumes; `docker run` flags explained; compose; cleanup — and the `orbstack` shortcut for each |
-| [Recovery (RU)](docs/recovery.ru.md) | the Mac was wiped: restore checklist, what comes back by itself, what doesn't |
-| [macOS upgrade (RU)](docs/macos-upgrade.ru.md) | before/after checklist with `dot snapshot` |
-| [Wallpapers](docs/wallpapers.md) | all 30 live wallpapers with previews, and how to make your own |
-| [Themes](docs/themes.md) | all themes side by side, and how `theme` recolors everything |
-| [Hotkeys](docs/hotkeys.md) | AeroSpace, Ghostty and Zed shortcuts |
-| [Troubleshooting](docs/troubleshooting.md) | icons, theme, drop-down terminal, doctor statuses, Go versions, `macos.sh` |
+| [How to use it](docs/guide.md) | every command and feature, day to day |
+| [Hotkeys](docs/hotkeys.md) | AeroSpace, Ghostty, `orbstack` and Zed |
+| [Containers from the terminal](docs/docker.md) | images, containers, volumes; `docker run` flags explained; compose; live rebuild |
+| [How it works](docs/how-it-works.md) | architecture, diagrams, the "why" behind every piece, and recipes |
+| [Themes](docs/themes.md) · [Wallpapers](docs/wallpapers.md) | all themes side by side · the gallery of 30 live wallpapers |
+| [Troubleshooting](docs/troubleshooting.md) | common problems by area, `orbstack` included |
+| [Upgrading macOS](docs/macos-upgrade.md) | before/after checklist with `dot snapshot` |
+| [If the Mac was wiped](docs/recovery.md) | restore checklist: what comes back by itself, what doesn't |
 | [Changelog](CHANGELOG.md) | what changed between releases |
 
 ## Thanks
@@ -363,7 +391,8 @@ How it fits together: `brew bundle` installs programs. `install.sh` links the co
 [Nerd Fonts](https://www.nerdfonts.com) ·
 [Ghostty](https://ghostty.org) ·
 [AeroSpace](https://github.com/nikitabobko/AeroSpace) ·
-[OrbStack](https://orbstack.dev)
+[OrbStack](https://orbstack.dev) ·
+[Charm](https://charm.sh) (Bubble Tea, Lip Gloss)
 
 ## License
 

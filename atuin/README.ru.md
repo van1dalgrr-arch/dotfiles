@@ -16,4 +16,4 @@
 
 История живёт только на этом Mac (синхронизация выключена). Atuin AI выключен намеренно (`--disable-ai` в `.zshrc`), поэтому `?` открывает шпаргалку.
 
-[← dotfiles](../README.md) · [как пользоваться](../docs/guide.ru.md)
+[← dotfiles](../README.ru.md) · [как пользоваться](../docs/guide.ru.md)

@@ -17,4 +17,4 @@
 
 Скопируй файл палитры, поменяй 19 цветов `T_*`, затем `theme <имя>`.
 
-[← dotfiles](../README.md) · [как пользоваться](../docs/guide.ru.md)
+[← dotfiles](../README.ru.md) · [как пользоваться](../docs/guide.ru.md)

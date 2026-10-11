@@ -35,4 +35,4 @@
 
 `` ctrl+` `` ловит AeroSpace (у него уже есть «Универсальный доступ») и запускает `quick-terminal.applescript`, который показывает выпадающий терминал Ghostty. Поэтому он работает из любого приложения, а Ghostty не нужно отдельное разрешение.
 
-[← dotfiles](../README.md) · [как пользоваться](../docs/guide.ru.md)
+[← dotfiles](../README.ru.md) · [как пользоваться](../docs/guide.ru.md)

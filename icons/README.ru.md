@@ -19,4 +19,4 @@
 
 Создай `wallpaper-<имя>.swift` с `runWallpaper { hour in … }`, потом `wall <имя>`. Галерея — [docs/wallpapers.md](../docs/wallpapers.md).
 
-[← dotfiles](../README.md) · [как пользоваться](../docs/guide.ru.md)
+[← dotfiles](../README.ru.md) · [как пользоваться](../docs/guide.ru.md)

@@ -18,4 +18,4 @@ Dev Night и Dev Day для GoLand и других IDE JetBrains, собранн
 
 Пересобрать: `python3 jetbrains/build.py`.
 
-[← dotfiles](../README.md) · [как пользоваться](../docs/guide.ru.md)
+[← dotfiles](../README.ru.md) · [как пользоваться](../docs/guide.ru.md)

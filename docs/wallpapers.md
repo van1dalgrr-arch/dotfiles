@@ -1,5 +1,7 @@
 # Wallpapers
 
+🇷🇺 [Русская версия](wallpapers.ru.md) · [all docs](README.md)
+
 Every wallpaper is a short Swift script in [`icons/`](../icons) that renders a dynamic HEIC —
 frames change with the time of day and macOS blends between them. Apply one with `wall <name>`,
 or run `wall` to pick from a list with image previews.

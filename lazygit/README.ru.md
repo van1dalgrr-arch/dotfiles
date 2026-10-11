@@ -12,4 +12,4 @@
 
 - `config.yml` → `~/Library/Application Support/lazygit/config.yml`
 
-[← dotfiles](../README.md) · [как пользоваться](../docs/guide.ru.md)
+[← dotfiles](../README.ru.md) · [как пользоваться](../docs/guide.ru.md)

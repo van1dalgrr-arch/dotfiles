@@ -12,4 +12,4 @@
 
 - `themes/rose-pine.tmTheme` → `~/.config/bat/themes/rose-pine.tmTheme`
 
-[← dotfiles](../README.md) · [как пользоваться](../docs/guide.ru.md)
+[← dotfiles](../README.ru.md) · [как пользоваться](../docs/guide.ru.md)

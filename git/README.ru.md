@@ -22,4 +22,4 @@
 
 gitleaks не пропустит коммит с токеном или ключом. Ложная тревога — допиши в строку `gitleaks:allow`.
 
-[← dotfiles](../README.md) · [как пользоваться](../docs/guide.ru.md)
+[← dotfiles](../README.ru.md) · [как пользоваться](../docs/guide.ru.md)

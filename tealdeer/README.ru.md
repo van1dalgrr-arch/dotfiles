@@ -12,4 +12,4 @@
 
 - `config.toml` → `~/.config/tealdeer/config.toml`
 
-[← dotfiles](../README.md) · [как пользоваться](../docs/guide.ru.md)
+[← dotfiles](../README.ru.md) · [как пользоваться](../docs/guide.ru.md)

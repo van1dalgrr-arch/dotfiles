@@ -1,5 +1,7 @@
 # Themes
 
+🇷🇺 [Русская версия](themes.ru.md) · [all docs](README.md)
+
 <img src="themes.jpg" alt="vesper, kanagawa, rose-pine and the light Dev Day" width="100%">
 
 <sub>vesper (default), kanagawa, rose-pine, and Dev Day, which switches on with macOS light mode. Rendered from each theme's real palette and prompt colors.</sub>
@@ -20,7 +22,20 @@ How it works: every config in the repo is written in Rosé Pine colors, and a th
 of "which color becomes which" across 19 roles (`themes/<name>.sh`). `themes/apply.sh` recolors copies
 of the configs into `~/.config` and `~/.cache` in a single pass — the repo itself never changes when you switch.
 It recolors Ghostty, the prompt, syntax highlighting, fzf, bat, delta, eza, lazygit, btop,
-Dock and folder icons, and the wallpaper. VS Code keeps its own theme.
+Dock and folder icons, the terminal effects (`fx`), and the wallpaper; the backdrop is rebuilt for it.
+Ghostty reloads by itself. VS Code keeps its own theme; Zed and GoLand use Dev Night / Dev Day.
+
+## Make your own
+
+Copy a palette, change the 19 colors, apply it:
+
+```bash
+cp themes/vesper.sh themes/mine.sh   # edit the T_* hex values
+theme mine
+```
+
+`THEME_WALLPAPER` sets which wallpaper comes with the theme; `THEME_GHOSTTY_EXTRA` overrides
+Ghostty's ANSI palette if the base one has colors you don't like.
 
 ## Light mode (Dev Day)
 

@@ -10,4 +10,4 @@
 | `preview.py` | рисует `docs/zed-themes.png` без запуска Zed |
 | `build-icons.swift` | вытаскивает значки Nerd Font в SVG |
 
-[← dotfiles](../../README.md) · [как пользоваться](../../docs/guide.ru.md)
+[← dotfiles](../README.ru.md) · [как пользоваться](../../docs/guide.ru.md)

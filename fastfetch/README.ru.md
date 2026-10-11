@@ -17,4 +17,4 @@
 
 Память считается как в `ram` (через `memory_pressure`): кэш macOS не считается занятым. Напоминания под приветствием — в [zsh/reminders.zsh](../zsh/reminders.zsh).
 
-[← dotfiles](../README.md) · [как пользоваться](../docs/guide.ru.md)
+[← dotfiles](../README.ru.md) · [как пользоваться](../docs/guide.ru.md)

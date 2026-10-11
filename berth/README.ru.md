@@ -43,4 +43,4 @@ cd berth && go test ./...                               # входит в make c
 BERTH_RENDER=/tmp/b.ansi go test -run TestRender .      # снимок панели с живыми данными
 ```
 
-[← dotfiles](../README.md)
+[← dotfiles](../README.ru.md)

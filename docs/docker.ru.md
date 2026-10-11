@@ -1,7 +1,13 @@
 # Контейнеры из терминала
 
+🇬🇧 [English version](docker.md) · [все документы](README.ru.md)
+
 Шпаргалка: `orbstack guide` открывает её прямо в терминале. Docker работает на OrbStack —
 любая команда `docker` сама его запустит, если он выключен.
+
+Самое удобное — **`orbstack`**: живая панель, где всё ниже делается одной клавишей, а у каждого действия
+написана команда docker, которая за ним стоит. Клавиши — в [руководстве](guide.ru.md#5-docker-и-kubernetes).
+Этот документ — что происходит под капотом и как сделать то же руками.
 
 ## Два слова
 
@@ -31,7 +37,8 @@ docker run -d --name pg -p 5432:5432 -e POSTGRES_PASSWORD=postgres -v pgdata:/va
 ## Посмотреть
 
 ```bash
-docker ps              # что работает          · orbstack — то же на главном экране
+docker ps              # что работает                 · orbstack — таблица на главном экране
+docker inspect pg      # всё о контейнере (JSON)      · orbstack: клавиша i — то же по-человечески
 docker ps -a           # всё, и остановленное
 docker logs -f pg      # лог вживую (ctrl+c — выйти)  · orbstack logs
 docker stats           # CPU, память, сеть вживую     · orbstack top
