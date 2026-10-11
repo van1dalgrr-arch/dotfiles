@@ -33,7 +33,9 @@
 - [ ] Проекты: `mkdir ~/dev && cd ~/dev && gh repo clone <имя>` для каждого (`gh repo list` — все свои)
 - [ ] Фото для обоев: `gh repo clone dotfiles-photos ~/dotfiles/wallpapers/photos`
 - [ ] Войти: Telegram, Discord, Яндекс Музыка, Claude, ChatGPT
-- [ ] VPN (Happ / WireGuard): заново добавить конфиги
+- [ ] VPN (Happ): заново добавить конфиги
+- [ ] Safari: Настройки → Расширения → включить uBlock Origin Lite; Дополнения → Таблица стилей → `~/dotfiles/safari/user.css`
+- [ ] `./macos.sh --yes safari` — терминалу на время нужен «Полный доступ к диску», потом его можно снять
 - [ ] Raycast: импортировать настройки, если сохранял экспорт (Settings → Advanced → Export)
 - [ ] Zed: войти в аккаунт (для AI)
 - [ ] Права в «Конфиденциальность и безопасность»: AeroSpace и Ghostty → Универсальный доступ (без этого не работают хоткеи и выпадающий терминал)
@@ -41,7 +43,7 @@
 ## Приложения не из Brewfile
 
 Ставятся с сайтов или из App Store, `dot doctor --deep` показывает их как «нет в Brewfile»:
-Telegram, Discord, Яндекс Музыка, Happ, Spotify, ChatGPT, Claude, GitHub Desktop, JetBrains Toolbox, UTM, iTerm, Rectangle, Hammerspoon.
+Telegram, Discord, Яндекс Музыка, Happ, ChatGPT, Claude, GitHub Desktop, JetBrains Toolbox, UTM, Rectangle, Hammerspoon.
 Нужное постоянно — лучше внести в `Brewfile` (`cask "telegram"` и т.п.), тогда тоже вернётся само.
 
 ## Что пропадает

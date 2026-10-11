@@ -10,7 +10,8 @@ macOS resets custom icons when an app updates. Bring it back with `theme vesper`
 <details>
 <summary>The terminal didn't change colors after <code>theme</code></summary>
 
-Ghostty reads its config on launch — press `cmd-shift-,` and open a new window.
+`theme`, `wall` and `backdrop` reload Ghostty by themselves over AppleScript. If it didn't happen (Ghostty wasn't
+running, or Automation was denied), press `cmd-shift-,`.
 </details>
 
 <details>
@@ -78,4 +79,26 @@ and `wall`/`pl` are functions. For the original, use `command cat` or `\cat`.
 <summary>The shell prints "нет oh-my-zsh"</summary>
 
 `.zshrc` still works without it, but run `./install.sh` to clone oh-my-zsh and fzf-tab at the pinned revisions.
+</details>
+
+<details>
+<summary><code>dot doctor</code>: "настроек macos.sh не на месте"</summary>
+
+A macOS upgrade (or a click in System Settings) put some settings back. `./macos.sh` shows which ones,
+current value → expected; `./macos.sh --yes` restores them. Changed on purpose? Edit or delete that line in `macos.sh`.
+</details>
+
+<details>
+<summary><code>macos.sh safari</code>: "нет доступа" / "не проверить"</summary>
+
+Safari keeps its settings in a sandbox: the terminal can't read or write them without
+System Settings → Privacy & Security → **Full Disk Access** → Ghostty (restart Ghostty after). Apply, then you can
+take the access back: `tccutil reset SystemPolicyAllFiles com.mitchellh.ghostty`.
+</details>
+
+<details>
+<summary><code>dot doctor</code>: "awake включён"</summary>
+
+`awake on` stops the Mac from sleeping even with the lid closed — handy for Claude Code from the phone, bad in a
+backpack. `awake off` when you're back (asks for the password).
 </details>
