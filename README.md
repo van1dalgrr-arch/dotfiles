@@ -96,7 +96,7 @@ Fork it rather than installing mine as is. Before `make install`:
 | **Terminal look** | `fx` — Ghostty shaders (cursor, trail, sparks, focus flash, glow) · `backdrop` — the wallpaper's light behind the text |
 | **Browser** | Safari — the lightest on 8 GB. Settings in `macos.sh safari`, uBlock Origin Lite from the App Store via the Brewfile, JetBrains Mono for code on every site |
 | **Git** | delta for diffs, lazygit, gitleaks before every commit in every repo |
-| **Docker** | `orbstack` — containers in the terminal: a status screen, a menu that explains each action and the docker command behind it, templates to run postgres/redis/nginx/mongo/mysql/rabbitmq, live CPU/memory and an event feed. Every action is also a subcommand (`orbstack run postgres`, `logs`, `top`, `events`…). OrbStack starts on demand: any `docker` command launches it if it's off (no more "failed to connect"). lazydocker, and `up` — dependencies and the app in one command |
+| **Docker** | `orbstack` — containers in the terminal: a status screen, a menu that explains each action and the docker command behind it, templates to run postgres/redis/nginx/mongo/mysql/rabbitmq, live CPU/memory and an event feed. `orbstack watch` rebuilds and restarts the container when you save code. Every action is also a subcommand (`orbstack run postgres`, `logs`, `top`, `events`…). OrbStack starts on demand: any `docker` command launches it if it's off (no more "failed to connect"). lazydocker, and `up` — dependencies and the app in one command |
 | **API & DB** | [Yaak](https://yaak.app) instead of Postman, [TablePlus](https://tableplus.com) for databases, `pgcli` via `db` |
 
 <p align="center"><img src="docs/zed-themes.png" width="90%" alt="Dev Night and Dev Day side by side"/></p>

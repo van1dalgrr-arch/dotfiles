@@ -72,6 +72,36 @@ docker compose down      # остановить и убрать контейне
 
 `up` (без orbstack) поднимает только зависимости из compose и запускает Go-приложение с `.env`.
 
+## Живая сборка — без постоянного build
+
+```bash
+docker compose watch     # сохранил код — образ пересобрался, контейнер перезапустился · orbstack watch
+```
+
+Docker следит за файлами проекта. Для этого у сервиса с `build:` в compose нужен блок
+(`orbstack watch` предложит добавить его сам):
+
+```yaml
+  app:
+    build: .
+    develop:
+      watch:
+        - action: rebuild          # пересобрать образ и перезапустить контейнер
+          path: .                  # за какой папкой следить
+          ignore: [.git/, tmp/, "*_test.go", "*.md"]
+```
+
+Для Go `rebuild` — правильный режим: код компилируется, просто подложить файлы нельзя.
+Чтобы пересборка шла секунды, а не с нуля, дай `go build` в Dockerfile кэш:
+
+```dockerfile
+RUN --mount=type=cache,target=/root/.cache/go-build \
+    --mount=type=cache,target=/go/pkg/mod \
+    CGO_ENABLED=0 go build -o /bin/app ./cmd/api
+```
+
+Без Docker то же делает `air` (`up` запускает приложение через него): база в контейнере, Go — на Mac.
+
 ## Уборка
 
 ```bash

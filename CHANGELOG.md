@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- **`orbstack watch`:** live rebuild — save the code and Docker rebuilds the image and restarts the container (`docker compose watch`). If the compose file has no `develop.watch` block, it shows the block, asks, and adds it with yq for every service with `build:`; suggests a Go build cache in the Dockerfile so rebuilds take seconds
 - **`orbstack`:** containers in the terminal. Home screen: a gradient banner in the theme colors, engine status and a table of containers (● running / ○ stopped / ● created, short ports). Menu with an explanation and the underlying docker command for every item: containers (logs with live preview, shell, restart, stop/start, inspect, remove), **run** from templates (postgres, redis, nginx, mongo, mysql, rabbitmq) or any image — shows the `docker run` command and lets you edit it first, **top** (live CPU/memory/network), **events** (live start/stop/die/oom/health feed), compose up/down, images, cleanup, engine on/off, and a guide. Every action is also a subcommand; `ctrl+c` in logs or monitoring returns to the menu
 - **`docs/docker.ru.md`:** how to run containers from the terminal — `docker run` flags explained, compose, cleanup (`orbstack guide`)
 - **`docker` starts OrbStack by itself:** any docker command (`docker ps`, `dps`, `dsh`…) launches OrbStack when it's off and waits for it (~4 s), instead of failing with "failed to connect to the docker API" — that happened 20 times in a week. `up` uses the same helper; `update` and `lean` only probe and never start it

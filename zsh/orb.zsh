@@ -210,6 +210,45 @@ _ob_events() {
     done
 }
 
+# живая сборка: docker compose watch — сохранил код, Docker сам пересобрал образ и перезапустил контейнер.
+# Нужен блок develop.watch в compose: если его нет — покажу, что добавлю, и спрошу
+_ob_watch_setup() {
+    local f=( (compose|docker-compose).y(a|)ml(N) ) s ctx dim="$(_c $T_MUTED)" acc="$(_c $T_ROSE)" r=$'\e[0m'
+    f=$f[1]
+    [[ -n $f ]] || { echo "нет compose.yaml в этой папке — живая сборка работает в compose-проекте"; return 1; }
+    local -a svcs missing
+    svcs=(${(f)"$(yq -r '.services | to_entries[] | select(.value.build != null) | .key' $f)"})
+    (( $#svcs )) || { echo "в $f нет сервисов с build: — пересобирать нечего (образы только скачиваются)"; return 1; }
+    for s in $svcs; do [[ $(yq -r ".services.\"$s\".develop.watch // \"\"" $f) == "" ]] && missing+=$s; done
+    if (( $#missing )); then
+        print "Чтобы Docker сам пересобирал ${acc}${missing[*]}${r} при изменении кода, в $f нужен блок:\n"
+        print "${dim}    develop:\n      watch:\n        - action: rebuild      # пересобрать образ и перезапустить контейнер\n          path: .              # за какой папкой следить\n          ignore: [.git/, tmp/, \"*_test.go\", \"*.md\"]   # это не пересобирает${r}\n"
+        read -q "?добавить в $f? [y/N] " || { echo; return 1; }
+        echo
+        for s in $missing; do
+            ctx=$(yq -r "(.services.\"$s\".build | select(tag == \"!!str\")) // .services.\"$s\".build.context // \".\"" $f)
+            yq -i ".services.\"$s\".develop.watch = [{\"action\": \"rebuild\", \"path\": \"$ctx\", \"ignore\": [\".git/\", \"tmp/\", \"*_test.go\", \"*.md\"]}]" $f
+        done
+        git rev-parse --git-dir >/dev/null 2>&1 && git --no-pager diff --stat -- $f
+        echo "✓ добавлено в $f"
+    fi
+    # совет: кэш компиляции Go между сборками — пересборка за секунды, а не с нуля
+    for s in $svcs; do
+        ctx=$(yq -r "(.services.\"$s\".build | select(tag == \"!!str\")) // .services.\"$s\".build.context // \".\"" $f)
+        if grep -q 'go build' $ctx/Dockerfile 2>/dev/null && ! grep -q 'type=cache' $ctx/Dockerfile; then
+            print "\n${dim}совет: в $ctx/Dockerfile go build каждый раз компилирует всё заново. Быстрее — с кэшем:\n    RUN --mount=type=cache,target=/root/.cache/go-build --mount=type=cache,target=/go/pkg/mod go build …\n(подробнее: orbstack guide)${r}"
+            break
+        fi
+    done
+    return 0
+}
+
+_ob_watch() {
+    _ob_watch_setup || return 1
+    print "\n$(_c $T_FOAM)● слежу за кодом\e[0m — сохраняй файлы, контейнер пересоберётся сам · ctrl+c — перестать"
+    docker compose watch
+}
+
 _ob_images() {
     local img=$(docker images --format '{{.Repository}}:{{.Tag}}\t{{.Size}}\t{{.CreatedSince}}' | column -t -s $'\t' |
         fzf --height=60% --prompt='образ ❯ ' --border-label=' образы ' --header='enter — удалить · esc — назад' | awk '{print $1}')
@@ -250,6 +289,8 @@ _ob_menu() {
         (( $#compose )) && {
             _ob_item up 'compose up' "поднять проект ${PWD:t}" \
                 "Все сервисы из $compose[1] в фоне.\n\nкоманда: docker compose up -d\nбез меню: orbstack up"
+            _ob_item watch 'живая сборка' 'сохранил код — контейнер пересобрался сам' \
+                "Docker следит за кодом: сохранил файл — образ пересобирается, контейнер перезапускается с новым кодом. Не нужно каждый раз писать build. Если в $compose[1] нет блока develop.watch — покажу его и спрошу, добавить ли.\n\nкоманда: docker compose watch\nбез меню: orbstack watch"
             _ob_item down 'compose down' 'остановить проект' \
                 "Остановить и убрать контейнеры проекта. Тома (данные баз) остаются.\n\nкоманда: docker compose down\nбез меню: orbstack down"
         }
@@ -287,6 +328,7 @@ orbstack() {
         images)            _ob_images ;;
         clean)             _ob_clean ;;
         up)                docker compose up -d ;;
+        watch)             _ob_watch ;;
         down)              docker compose down ;;
         on|off)            _ob_power $1 ;;
         guide)             _ob_guide ;;
@@ -301,6 +343,7 @@ orbstack() {
             print "orbstack top              ${d}CPU, память, сеть вживую${r}"
             print "orbstack events           ${d}что запускается и падает${r}"
             print "orbstack up|down          ${d}compose-проект в текущей папке${r}"
+            print "orbstack watch            ${d}живая сборка: сохранил код — контейнер пересобрался сам${r}"
             print "orbstack images|clean     ${d}образы, уборка${r}"
             print "orbstack on|off           ${d}движок: включить / выключить и вернуть память${r}"
             print "orbstack guide            ${d}шпаргалка: как запускать контейнеры из терминала${r}"
@@ -319,6 +362,7 @@ orbstack() {
                     top)        _ob_top; pause=0 ;;
                     events)     _ob_events; pause=0 ;;
                     up)         docker compose up -d ;;
+                    watch)      _ob_watch; pause=0 ;;
                     down)       docker compose down ;;
                     images)     _ob_images || pause=0 ;;
                     clean)      _ob_clean ;;
