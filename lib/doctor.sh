@@ -99,6 +99,15 @@ doc_go() {
         if [ -z "$missing" ]; then pass "Go-утилиты из go/tools.txt"
         else warning "нет Go-утилит:$missing" "→ dot tools install"; fi
     fi
+    # berth (команда orbstack) собирается из berth/: бинарник старше исходников — пересобрать
+    local berth newer
+    berth="$(gobin)/berth"
+    if [ ! -x "$berth" ]; then warning "нет berth (команда orbstack)" "→ ./install.sh"
+    else
+        newer=$(find "$DOTFILES/berth" -name '*.go' ! -name '*_test.go' -newer "$berth" 2>/dev/null | head -1)
+        if [ -n "$newer" ]; then warning "berth старее исходников" "→ ./install.sh (или: go build -C berth -o $berth .)"
+        else pass "berth (orbstack) собран"; fi
+    fi
     if has mise; then
         info "mise $(vers mise --version) активен в zsh"
         if [ "$deep" = 1 ] && mise which go >/dev/null 2>&1; then

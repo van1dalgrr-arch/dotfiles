@@ -1,5 +1,5 @@
 # make install — программы, симлинки, тема · make devops — необязательный DevOps-набор
-# make check — те же проверки, что в CI · make test — смоук-тесты dot · make update — обслуживание
+# make check — те же проверки, что в CI (+ go vet и тесты berth) · make test — смоук-тесты dot · make update — обслуживание
 .PHONY: install devops check test update
 
 SCRIPTS = bin/dot lib/*.sh bootstrap.sh install.sh git/repo-hooks/pre-push uninstall.sh macos.sh themes/apply.sh tests/smoke.sh git/hooks/_chain git/hooks/pre-commit ghostty/fx.sh ghostty/quick-terminal.sh
@@ -23,6 +23,7 @@ check:
 	@if command -v glslangValidator >/dev/null; then for f in ghostty/shaders/*.glsl; do \
 		d=$$(mktemp -d); tmp=$$d/shader.frag; cat ghostty/shaders/.prefix.glsl $$f > $$tmp && glslangValidator -G -S frag $$tmp -o /dev/null >/dev/null 2>&1; ok=$$?; rm -rf $$d; \
 		[ $$ok = 0 ] || { echo "шейдер не компилируется: $$f"; exit 1; }; done; fi
+	cd berth && go vet ./... && go test ./...
 	gitleaks git --no-banner --redact .
 	@echo "✓ всё чисто"
 

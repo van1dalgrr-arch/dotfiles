@@ -51,6 +51,9 @@ jobs:
           go-version: stable
           cache: false
 
+      - name: berth (orbstack) — vet, tests, build
+        run: cd berth && go vet ./... && go test ./... && go build -o /dev/null .
+
       - name: Swift generators compile
         run: |
           for f in icons/wallpaper-*.swift; do

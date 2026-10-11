@@ -72,6 +72,12 @@ clone_pinned https://github.com/Aloxaf/fzf-tab "$HOME/.oh-my-zsh/custom/plugins/
 if command -v go >/dev/null; then "$DOTFILES/bin/dot" tools install || echo "внимание: не все Go-утилиты встали — dot tools"
 else echo "пропуск Go-утилит: нет go (brew bundle)"; fi
 
+# berth — команда orbstack: панель контейнеров на Go (berth/), собирается из исходников в ~/go/bin
+if command -v go >/dev/null; then
+    go build -C "$DOTFILES/berth" -o "$(go env GOPATH)/bin/berth" . && echo "built: berth (orbstack)" \
+        || echo "внимание: berth не собрался — cd berth && go build"
+fi
+
 command -v bat >/dev/null && bat cache --build >/dev/null
 command -v code >/dev/null && xargs -n1 code --install-extension < "$DOTFILES/vscode/extensions.txt"
 if [ -d /Applications/Zed.app ] && [ ! -e /opt/homebrew/bin/zed ] && [ -w /opt/homebrew/bin ]; then

@@ -20,6 +20,11 @@ update() {
         docker builder prune -f --filter until=168h | tail -1
     fi
 
+    if (( $+commands[go] )); then
+        _step "berth (orbstack)"
+        go build -C ~/dotfiles/berth -o "$(go env GOPATH)/bin/berth" . && print "${ok}собран ✓${r}"
+    fi
+
     _step "tldr"
     tldr --update >/dev/null 2>&1 && print "${ok}справочник обновлён ✓${r}"
 

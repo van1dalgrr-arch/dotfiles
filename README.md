@@ -96,7 +96,7 @@ Fork it rather than installing mine as is. Before `make install`:
 | **Terminal look** | `fx` — Ghostty shaders (cursor, trail, sparks, focus flash, glow) · `backdrop` — the wallpaper's light behind the text |
 | **Browser** | Safari — the lightest on 8 GB. Settings in `macos.sh safari`, uBlock Origin Lite from the App Store via the Brewfile, JetBrains Mono for code on every site |
 | **Git** | delta for diffs, lazygit, gitleaks before every commit in every repo |
-| **Docker** | `orbstack` — containers in the terminal: a status screen, a menu that explains each action and the docker command behind it, templates to run postgres/redis/nginx/mongo/mysql/rabbitmq, live CPU/memory and an event feed. `orbstack watch` rebuilds and restarts the container when you save code. Every action is also a subcommand (`orbstack run postgres`, `logs`, `top`, `events`…). OrbStack starts on demand: any `docker` command launches it if it's off (no more "failed to connect"). lazydocker, and `up` — dependencies and the app in one command |
+| **Docker** | `orbstack` — containers in the terminal ([berth/](berth), Go + Bubble Tea): one live screen with CPU/memory per container, the selected log and an event feed; every action explained with the docker command behind it; templates for postgres/redis/nginx/mongo/mysql/rabbitmq. `orbstack watch` rebuilds and restarts the container when you save code. Every action is also a subcommand (`orbstack run postgres`, `logs`, `top`, `events`…). OrbStack starts on demand: any `docker` command launches it if it's off (no more "failed to connect"). lazydocker, and `up` — dependencies and the app in one command |
 | **API & DB** | [Yaak](https://yaak.app) instead of Postman, [TablePlus](https://tableplus.com) for databases, `pgcli` via `db` |
 
 <p align="center"><img src="docs/zed-themes.png" width="90%" alt="Dev Night and Dev Day side by side"/></p>
@@ -306,7 +306,7 @@ own: `kind create cluster` and `tf apply` are always up to you.
 ## Development
 
 ```bash
-make check    # what CI runs: shellcheck, bash 3.2 / zsh syntax, Brewfile, JSON themes, Python, Ghostty shaders, gitleaks
+make check    # what CI runs: shellcheck, bash 3.2 / zsh syntax, Brewfile, JSON themes, Python, Ghostty shaders, berth (go vet + tests), gitleaks
 make test     # smoke tests for dot (tests/smoke.sh)
 ```
 
@@ -326,6 +326,7 @@ dotfiles/
 ├── icons/           wallpapers, backdrop, app and folder icons (Swift)
 ├── ghostty/  aerospace/  zed/  vscode/  jetbrains/  fastfetch/
 ├── safari/          style sheet for Safari: JetBrains Mono for code
+├── berth/           the orbstack command: container dashboard in Go (built by install.sh)
 ├── git/             .gitconfig, delta, gitleaks hooks, global ignore
 ├── go/              tools.txt / tools.devops.txt: pinned Go tools
 ├── tests/smoke.sh   smoke tests for dot (make test, CI)
