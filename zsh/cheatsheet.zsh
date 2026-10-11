@@ -72,7 +72,7 @@ theme|сменить тему терминала и обоев: theme kanagawa /
 palette|цвета текущей темы: роли и 16 цветов терминала
 backdrop|фон терминала: backdrop · glow, aurora, haze, glass · любые обои из wall · off
 fx|эффекты терминала: fx · on/off cursor, trail, sparks, focus, glow
-orbstack|OrbStack в терминале: баннер, статус, меню контейнеров · orbstack help — подкоманды
+orbstack|контейнеры в терминале: запуск по шаблонам, логи, мониторинг, события · orbstack help
 awake|awake on — не засыпать с закрытой крышкой (Claude с телефона) · awake off
 wall|сменить обои с превью: wall · petals, neon, rain, eclipse, orbit, code…
 EOF

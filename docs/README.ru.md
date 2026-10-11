@@ -9,6 +9,7 @@
 | `guide.ru.md` | **как пользоваться**: все команды по разделам |
 | `how-it-works.ru.md` | как устроено внутри, со схемами |
 | `macos-upgrade.ru.md` | чек-лист мажорного обновления macOS: до (push, бэкап, `dot snapshot`) и после (CLT, `dot snapshot diff`, разрешения) |
+| `docker.ru.md` | контейнеры из терминала: флаги `docker run`, compose, уборка |
 | `recovery.ru.md` | Mac сбросился: чеклист восстановления |
 | `themes.md` | все темы рядом, как `theme` перекрашивает всё |
 | `wallpapers.md` | галерея 30 живых обоев |
