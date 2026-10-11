@@ -205,7 +205,9 @@ doc_editors() {
     else failed "Zed не установлен" "→ brew install --cask zed"; fi
     has zed || warning "нет команды zed" "→ ./install.sh создаст /opt/homebrew/bin/zed"
     # Safari: таблица стилей выбирается в самом Safari (песочница) — здесь только читаем
-    if [ "$(defaults read com.apple.Safari UserStyleSheetEnabled 2>/dev/null)" = 1 ] &&
+    if ! defaults read com.apple.Safari >/dev/null 2>&1; then
+        info "Safari: шрифт кода не проверить без «Полного доступа к диску»"
+    elif [ "$(defaults read com.apple.Safari UserStyleSheetEnabled 2>/dev/null)" = 1 ] &&
        [ "$(defaults read com.apple.Safari UserStyleSheetLocationURLString 2>/dev/null)" = "file://$DOTFILES/safari/user.css" ]; then
         pass "Safari: шрифт кода из safari/user.css"
     else warning "Safari: шрифт кода не подключён" "→ safari/README.ru.md"; fi
@@ -281,6 +283,16 @@ doc_macos() {
         else warning "Time Machine настроен, но бэкапа не видно" "→ подключи диск бэкапов"; fi
     else
         warning "бэкапов нет: Time Machine не настроен" "→ Настройки → Основные → Time Machine"
+    fi
+    # настройки из macos.sh: обновление macOS может вернуть заводские. apps/login/security — не здесь
+    # (медленно, спрашивают разрешения; файрвол проверен выше)
+    local groups="keyboard trackpad finder saving screenshots dock appearance safari" drift
+    drift=$("$DOTFILES/macos.sh" $groups 2>/dev/null | grep -c '^  ~')
+    if [ "$drift" = 0 ]; then pass "настройки macos.sh на месте"
+    else warning "настроек macos.sh не на месте: $drift" "→ ./macos.sh — какие; ./macos.sh --yes — вернуть"; fi
+    # awake on (pmset disablesleep) — мак не спит, даже закрытый в рюкзаке
+    if pmset -g 2>/dev/null | grep -q 'SleepDisabled[[:space:]]*1'; then
+        warning "awake включён: мак не засыпает, даже с закрытой крышкой" "→ awake off"
     fi
     local free_gb
     free_gb=$(df -g / | awk 'NR == 2 { print $4 }')

@@ -37,6 +37,8 @@ done
 pref() {
     local domain=$1 key=$2 type=$3 want=$4 desc=$5 cur norm=$4
     cur=$(defaults read "$domain" "$key" 2>/dev/null) || cur="—"
+    # shellcheck disable=SC2088  # нужна буквальная ~ из настроек, не домашняя папка
+    case $cur in "~/"*) cur="$HOME/${cur#"~/"}" ;; esac   # ~/папка и полный путь — одно и то же
     if [ "$type" = bool ]; then [ "$want" = true ] && norm=1 || norm=0; fi
     if [ "$cur" = "$norm" ]; then
         [ "$verbose" = 1 ] && printf '  %s✓ %s%s\n' "$c_dim" "$desc" "$r"
@@ -163,6 +165,11 @@ security() {
 # Safari: только его собственные настройки. Они в песочнице: читать можно, писать — только если у терминала
 # «Полный доступ к диску». Safari закрывается: при выходе он перезаписывает настройки своими
 safari() {
+    if [ "$apply" = 0 ] && ! defaults read com.apple.Safari >/dev/null 2>&1; then
+        printf '  %s· не проверить: без «Полного доступа к диску» настройки Safari не читаются%s\n' "$c_dim" "$r"
+        blocked=1 group_changed=1
+        return 0
+    fi
     if [ "$apply" = 1 ]; then
         if ! defaults write com.apple.Safari DotfilesProbe -bool true 2>/dev/null; then
             printf '  %s✗ нет доступа к настройкам Safari%s → Настройки → Конфиденциальность → Полный доступ к диску → терминал\n' "$c_new" "$r"
@@ -205,7 +212,7 @@ for g in ${groups:-$ALL}; do
 done
 
 echo
-if [ "$blocked" = 1 ]; then echo "не всё применено: см. ✗ выше"; fi
+if [ "$blocked" = 1 ]; then echo "не всё проверено или применено: см. выше"; fi
 if [ "$changed" -eq 0 ]; then [ "$blocked" = 1 ] || echo "всё уже настроено"
 elif [ "$apply" = 0 ]; then echo "изменений: $changed · применить: ./macos.sh --yes$groups"
 else
