@@ -78,6 +78,8 @@ brew "uv"
 # Приложения
 # Zed и VS Code часто ставят с сайта — тогда brew их не трогает (иначе bundle падает на «уже есть»)
 cask "zed" unless File.exist?("/Applications/Zed.app")
+tap "unstablebuild/tap"
+cask "unstablebuild/tap/rune"   # Rune — IDE на Go, следующий редактор (rune/)
 cask "visual-studio-code" unless File.exist?("/Applications/Visual Studio Code.app")
 cask "raycast"
 brew "yazi"

@@ -217,7 +217,12 @@ doc_editors() {
     if [ -d /Applications/Rune.app ]; then
         if [ -x "$HOME/go/bin/rune-dot" ]; then pass "Rune + расширение dot"
         else warning "Rune есть, а расширения dot нет" "→ go build -C ~/dotfiles/rune/dot-ext -o ~/go/bin/rune-dot ."; fi
-    else optional "Rune" "→ github.com/unstablebuild/rune/releases (DMG)"; fi
+    else optional "Rune" "→ brew install unstablebuild/tap/rune"; fi
+    # Rune сохраняет конфиг через «записать рядом и переименовать» — это заменяет ссылку обычным файлом
+    if [ -f "$HOME/.rune/config.yaml" ] && [ ! -L "$HOME/.rune/config.yaml" ]; then
+        warning "Rune переписал ~/.rune/config.yaml поверх ссылки" \
+            "→ cp ~/.rune/config.yaml ~/dotfiles/rune/config.yaml && ln -sf ~/dotfiles/rune/config.yaml ~/.rune/config.yaml"
+    fi
     # Safari: таблица стилей выбирается в самом Safari (песочница) — здесь только читаем
     if ! defaults read com.apple.Safari >/dev/null 2>&1; then
         info "Safari: шрифт кода не проверить без «Полного доступа к диску»"

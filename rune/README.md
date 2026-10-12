@@ -20,12 +20,11 @@ join the network with `:network up` when you need it.
 ## Install
 
 ```sh
-# DMG from GitHub releases (Apple Silicon): Rune-darwin-arm64.dmg
-open https://github.com/unstablebuild/rune/releases/latest
+brew install unstablebuild/tap/rune     # also in the Brewfile
 ```
 
 On first launch Rune asks for a key preset (pick **standard**, the same keys as Zed/VS Code) and
-writes it into `config.yaml`, which is this repo's file through the symlink — review the diff and commit it.
+writes it into `config.yaml`, which is this repo's file through the symlink — review the diff and commit it. Rune saves by writing a new file and renaming it, which can replace the symlink with a plain file; `dot doctor` warns and prints the two commands to fold it back.
 `dot doctor` shows Rune as optional and warns when the `dot` extension isn't built.
 
 ## Writing your own extension
