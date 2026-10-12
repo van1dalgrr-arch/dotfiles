@@ -62,9 +62,9 @@ AeroSpace, Ghostty, `orbstack` и Zed. В терминале `?` (или `ctrl+/
 
 | Клавиши | Что делают |
 |---|---|
-| `ctrl-r` | меню задач: `up`, `air`, тесты, покрытие, линтер, логи compose, `curl /health` |
+| `ctrl-r` | меню задач: `up`, `air`, тесты (и с `-race`), покрытие, линтер, govulncheck, миграции, sqlc, логи compose, `curl /health` |
 | `ctrl-t` | тест под курсором |
-| `f5` | отладка через Delve: `cmd/api`, текущий пакет или тест под курсором |
+| `f5` | отладка через Delve: `cmd/api`, текущий пакет, тест под курсором или подключиться к `dlv` в контейнере |
 | `ctrl-shift-r` | повторить последнюю задачу |
 | `alt-g` · `alt-d` | lazygit · lazydocker внутри Zed |
 | `cmd-j` | терминал |
@@ -76,6 +76,8 @@ AeroSpace, Ghostty, `orbstack` и Zed. В терминале `?` (или `ctrl+/
 | `cmd-alt-l` | текст по центру |
 
 Сниппеты Go: `iferr`, `iferrw`, `ginh`, `ginbind`, `ginr`, `ginmw`, `ttest`, `htest`, `bench`, `qrow`, `slog`, `jstruct`, `ctxt`.
+SQL: `mtable`, `mdrop`, `mcol`, `mindex`, `mfk`, `mtouch` (миграции), `qone`, `qmany`, `qins`, `qexec` (sqlc).
+Dockerfile: `dgo` (сборка с кэшем, distroless), `ddlv` (под Delve). Compose/k8s: `cpg`, `credis`, `cdep`, `cwatch`, `kprobe`.
 
 Ещё: golangci-lint работает как языковой сервер (предупреждения прямо в коде), а файлы `.http` отправляют запросы
 к твоему API, как REST Client в VS Code.

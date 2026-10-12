@@ -1,0 +1,72 @@
+{
+  "compose postgres": {
+    "prefix": "cpg",
+    "body": [
+      "${1:postgres}:",
+      "  image: postgres:${2:18}-alpine",
+      "  environment:",
+      "    POSTGRES_USER: postgres",
+      "    POSTGRES_PASSWORD: \\${DB_PASSWORD:-postgres}",
+      "    POSTGRES_DB: ${3:app}",
+      "  ports:",
+      "    - \"5432:5432\"",
+      "  volumes:",
+      "    - pgdata:/var/lib/postgresql",
+      "  healthcheck:",
+      "    test: [\"CMD-SHELL\", \"pg_isready -U postgres -d $3\"]",
+      "    interval: 3s",
+      "    retries: 10"
+    ],
+    "description": "compose: Postgres с healthcheck (не забудь volumes: pgdata:)"
+  },
+  "compose redis": {
+    "prefix": "credis",
+    "body": [
+      "redis:",
+      "  image: redis:${1:8}-alpine",
+      "  ports:",
+      "    - \"6379:6379\"",
+      "  healthcheck:",
+      "    test: [\"CMD\", \"redis-cli\", \"ping\"]",
+      "    interval: 3s",
+      "    retries: 10"
+    ],
+    "description": "compose: Redis с healthcheck"
+  },
+  "compose depends healthy": {
+    "prefix": "cdep",
+    "body": [
+      "depends_on:",
+      "  ${1:postgres}:",
+      "    condition: service_healthy"
+    ],
+    "description": "compose: ждать, пока зависимость станет healthy"
+  },
+  "compose watch": {
+    "prefix": "cwatch",
+    "body": [
+      "develop:",
+      "  watch:",
+      "    - action: rebuild",
+      "      path: .",
+      "      ignore: [tmp/, bin/, .git/]"
+    ],
+    "description": "compose: пересборка при сохранении (docker compose watch / orbstack watch)"
+  },
+  "k8s probes": {
+    "prefix": "kprobe",
+    "body": [
+      "readinessProbe:",
+      "  httpGet: { path: ${1:/health}, port: ${2:8080} }",
+      "  periodSeconds: 5",
+      "livenessProbe:",
+      "  httpGet: { path: $1, port: $2 }",
+      "  initialDelaySeconds: 10",
+      "  periodSeconds: 10",
+      "resources:",
+      "  requests: { cpu: ${3:50m}, memory: ${4:64Mi} }",
+      "  limits: { memory: ${5:256Mi} }"
+    ],
+    "description": "Kubernetes: пробы и ресурсы контейнера"
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "go multi-stage": {
+    "prefix": "dgo",
+    "body": [
+      "# сборка: кэш модулей и сборки живёт между пересборками (BuildKit)",
+      "FROM golang:${1:1.27}-alpine AS build",
+      "WORKDIR /src",
+      "COPY go.mod go.sum ./",
+      "RUN --mount=type=cache,target=/go/pkg/mod go mod download",
+      "COPY . .",
+      "RUN --mount=type=cache,target=/go/pkg/mod --mount=type=cache,target=/root/.cache/go-build \\\\",
+      "\tCGO_ENABLED=0 go build -trimpath -ldflags=\"-s -w\" -o /app ./${2:cmd/api}",
+      "",
+      "# запуск: только бинарник, без shell и пакетов",
+      "FROM gcr.io/distroless/static-debian12:nonroot",
+      "COPY --from=build /app /app",
+      "EXPOSE ${3:8080}",
+      "ENTRYPOINT [\"/app\"]"
+    ],
+    "description": "Go: многоэтапная сборка с кэшем, distroless nonroot"
+  },
+  "go debug stage": {
+    "prefix": "ddlv",
+    "body": [
+      "# отладка: docker build --target debug; в Zed — f5 → «подключиться к dlv»",
+      "FROM golang:${1:1.27}-alpine AS debug",
+      "RUN go install github.com/go-delve/delve/cmd/dlv@latest",
+      "WORKDIR /src",
+      "COPY . .",
+      "RUN CGO_ENABLED=0 go build -gcflags=\"all=-N -l\" -o /app ./${2:cmd/api}",
+      "EXPOSE ${3:8080} 2345",
+      "ENTRYPOINT [\"dlv\", \"exec\", \"/app\", \"--headless\", \"--listen=:2345\", \"--accept-multiclient\", \"--api-version=2\", \"--continue\"]"
+    ],
+    "description": "Go: стадия для отладки через Delve в контейнере"
+  }
+}

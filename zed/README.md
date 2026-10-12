@@ -10,7 +10,7 @@ Config for [Zed](https://zed.dev), the main editor, plus my own themes and icons
 | `keymap.json` | shortcuts (`f5` debug, `ctrl-t` tests…) |
 | `tasks.json` | tasks on `ctrl-r`: run, tests, coverage, compose logs |
 | `debug.json` | Delve debugger configs |
-| `snippets/go.json` | Go snippets |
+| `snippets/` | snippets: Go, SQL (migrations, sqlc), Dockerfile, compose/k8s |
 | `dev-night-theme/` | Zed extension: Dev Night + Dev Day themes |
 | `dev-night-icons/` | Zed extension: file icons |
 | `tools/` | generators: light theme, preview picture, icons |
@@ -21,7 +21,7 @@ Config for [Zed](https://zed.dev), the main editor, plus my own themes and icons
 - `keymap.json` → `~/.config/zed/keymap.json`
 - `tasks.json` → `~/.config/zed/tasks.json`
 - `debug.json` → `~/.config/zed/debug.json`
-- `snippets/go.json` → `~/.config/zed/snippets/go.json`
+- `snippets/*.json` → `~/.config/zed/snippets/` (go, sql, dockerfile, yaml)
 - `dev-night-theme` → `~/Library/Application Support/Zed/extensions/installed/dev-night-theme`
 - `dev-night-icons` → `~/Library/Application Support/Zed/extensions/installed/dev-night-icons`
 

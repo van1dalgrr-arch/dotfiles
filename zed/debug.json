@@ -24,5 +24,17 @@
     "mode": "test",
     "program": "$ZED_DIRNAME",
     "args": ["-test.run", "^$ZED_SYMBOL$", "-test.v"]
+  },
+  {
+    // приложение в Docker под Delve (сниппет ddlv в Dockerfile, порт 2345 наружу) или
+    // локально: dlv debug ./cmd/api --headless --listen=:2345 --accept-multiclient --api-version=2
+    "label": "Go: подключиться к dlv (:2345, в т.ч. в контейнере)",
+    "adapter": "Delve",
+    "request": "attach",
+    "mode": "remote",
+    "cwd": "$ZED_WORKTREE_ROOT",
+    "tcp_connection": { "host": "127.0.0.1", "port": 2345 },
+    // пути в контейнере (WORKDIR /src) ↔ в проекте — иначе точки останова не сработают
+    "substitutePath": [{ "from": "$ZED_WORKTREE_ROOT", "to": "/src" }]
   }
 ]

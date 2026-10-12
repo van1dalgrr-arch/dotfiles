@@ -62,9 +62,9 @@ In the viewer (`i`, `f`, `c`): `↑↓` scroll, `g`/`G` top/bottom, `esc` back.
 
 | Keys | Action |
 |---|---|
-| `ctrl-r` | task menu: `up`, `air`, tests, coverage, linter, compose logs, `curl /health` |
+| `ctrl-r` | task menu: `up`, `air`, tests (also with `-race`), coverage, linter, govulncheck, migrations, sqlc, compose logs, `curl /health` |
 | `ctrl-t` | run the test under the cursor |
-| `f5` | debug with Delve: `cmd/api`, current package, or the test under the cursor |
+| `f5` | debug with Delve: `cmd/api`, current package, the test under the cursor, or attach to `dlv` in a container |
 | `ctrl-shift-r` | rerun the last task |
 | `alt-g` · `alt-d` | lazygit · lazydocker inside Zed |
 | `cmd-j` | terminal |
@@ -76,6 +76,8 @@ In the viewer (`i`, `f`, `c`): `↑↓` scroll, `g`/`G` top/bottom, `esc` back.
 | `cmd-alt-l` | center the text |
 
 Go snippets: `iferr`, `iferrw`, `ginh`, `ginbind`, `ginr`, `ginmw`, `ttest`, `htest`, `bench`, `qrow`, `slog`, `jstruct`, `ctxt`.
+SQL: `mtable`, `mdrop`, `mcol`, `mindex`, `mfk`, `mtouch` (migrations), `qone`, `qmany`, `qins`, `qexec` (sqlc).
+Dockerfile: `dgo` (cached build, distroless), `ddlv` (under Delve). Compose/k8s: `cpg`, `credis`, `cdep`, `cwatch`, `kprobe`.
 
 Also: golangci-lint runs as a language server (warnings right in the code), and `.http` files send requests
 to your API like REST Client in VS Code.

@@ -236,7 +236,7 @@ flowchart LR
 | `zed/keymap.json` | свои хоткеи поверх раскладки JetBrains |
 | `zed/tasks.json` | `ctrl-r`: up, air, тесты, тест под курсором, покрытие, compose, curl |
 | `zed/debug.json` | `f5`: отладка через Delve — `cmd/api`, пакет, тест под курсором |
-| `zed/snippets/go.json` | `iferr`, `ginh`, `htest`, … |
+| `zed/snippets/` | Go `iferr`, `ginh`, `htest`…; SQL `mtable`, `mindex`, `qone`…; Dockerfile `dgo`, `ddlv`; compose `cpg`, `cwatch`… |
 | `zed/dev-night-theme/`, `zed/dev-night-icons/` | два расширения Zed: темы Dev Night + Dev Day и иконки (как в каталоге Zed) |
 | `zed/tools/light.py`, `preview.py` | собрать Dev Day из Dev Night; картинка-превью обеих тем |
 | `zed/tools/build-icons.swift` | иконки: вытаскивает значки из Nerd Font в SVG |

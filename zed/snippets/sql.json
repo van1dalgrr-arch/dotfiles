@@ -1,0 +1,93 @@
+{
+  "create table": {
+    "prefix": "mtable",
+    "body": [
+      "CREATE TABLE IF NOT EXISTS ${1:items} (",
+      "\tid         BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,",
+      "\t${2:name       TEXT NOT NULL},",
+      "\tcreated_at TIMESTAMPTZ NOT NULL DEFAULT now(),",
+      "\tupdated_at TIMESTAMPTZ NOT NULL DEFAULT now()",
+      ");$0"
+    ],
+    "description": "миграция: таблица с id и created_at/updated_at"
+  },
+  "drop table": {
+    "prefix": "mdrop",
+    "body": ["DROP TABLE IF EXISTS ${1:items};"],
+    "description": "миграция down: удалить таблицу"
+  },
+  "add column": {
+    "prefix": "mcol",
+    "body": ["ALTER TABLE ${1:items} ADD COLUMN IF NOT EXISTS ${2:status} ${3:TEXT NOT NULL DEFAULT '${4:new}'};"],
+    "description": "миграция: новая колонка (с DEFAULT — без долгой блокировки в Postgres 11+)"
+  },
+  "index concurrently": {
+    "prefix": "mindex",
+    "body": [
+      "CREATE INDEX CONCURRENTLY IF NOT EXISTS ${1:items}_${2:name}_idx ON $1 (${2});"
+    ],
+    "description": "индекс без блокировки записи; в golang-migrate — один в файле (вне транзакции)"
+  },
+  "foreign key": {
+    "prefix": "mfk",
+    "body": [
+      "ALTER TABLE ${1:orders}",
+      "\tADD CONSTRAINT $1_${2:user}_id_fkey FOREIGN KEY (${2}_id) REFERENCES ${3:users} (id) ON DELETE ${4|CASCADE,RESTRICT,SET NULL|} NOT VALID;",
+      "ALTER TABLE $1 VALIDATE CONSTRAINT $1_${2}_id_fkey;"
+    ],
+    "description": "внешний ключ: NOT VALID + VALIDATE — без долгой блокировки большой таблицы"
+  },
+  "updated_at trigger": {
+    "prefix": "mtouch",
+    "body": [
+      "CREATE OR REPLACE FUNCTION touch_updated_at() RETURNS trigger AS \\$\\$",
+      "BEGIN",
+      "\tNEW.updated_at = now();",
+      "\tRETURN NEW;",
+      "END",
+      "\\$\\$ LANGUAGE plpgsql;",
+      "",
+      "CREATE TRIGGER ${1:items}_touch BEFORE UPDATE ON $1",
+      "\tFOR EACH ROW EXECUTE FUNCTION touch_updated_at();"
+    ],
+    "description": "updated_at обновляется сам при каждом UPDATE"
+  },
+  "sqlc one": {
+    "prefix": "qone",
+    "body": [
+      "-- name: Get${1:Item} :one",
+      "SELECT * FROM ${2:items}",
+      "WHERE id = \\$1;"
+    ],
+    "description": "sqlc: один ряд"
+  },
+  "sqlc many": {
+    "prefix": "qmany",
+    "body": [
+      "-- name: List${1:Items} :many",
+      "SELECT * FROM ${2:items}",
+      "ORDER BY id DESC",
+      "LIMIT \\$1 OFFSET \\$2;"
+    ],
+    "description": "sqlc: список с пагинацией"
+  },
+  "sqlc insert": {
+    "prefix": "qins",
+    "body": [
+      "-- name: Create${1:Item} :one",
+      "INSERT INTO ${2:items} (${3:name})",
+      "VALUES (\\$1)",
+      "RETURNING *;"
+    ],
+    "description": "sqlc: вставка с RETURNING"
+  },
+  "sqlc exec": {
+    "prefix": "qexec",
+    "body": [
+      "-- name: Delete${1:Item} :exec",
+      "DELETE FROM ${2:items}",
+      "WHERE id = \\$1;"
+    ],
+    "description": "sqlc: запрос без результата"
+  }
+}

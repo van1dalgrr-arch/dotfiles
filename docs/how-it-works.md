@@ -237,7 +237,7 @@ hiding secrets, rendering at three window sizes and mouse clicks. They're part o
 | `zed/keymap.json` | my own hotkeys on top of the JetBrains keymap |
 | `zed/tasks.json` | `ctrl-r`: up, air, tests, the test under the cursor, coverage, compose, curl |
 | `zed/debug.json` | `f5`: Delve debugging — `cmd/api`, a package, the test under the cursor |
-| `zed/snippets/go.json` | `iferr`, `ginh`, `htest`, … |
+| `zed/snippets/` | Go `iferr`, `ginh`, `htest`…; SQL `mtable`, `mindex`, `qone`…; Dockerfile `dgo`, `ddlv`; compose `cpg`, `cwatch`… |
 | `zed/dev-night-theme/`, `zed/dev-night-icons/` | two Zed extensions: the Dev Night + Dev Day themes and icons (as in the Zed catalog) |
 | `zed/tools/light.py`, `preview.py` | build Dev Day from Dev Night; a preview image of both themes |
 | `zed/tools/build-icons.swift` | icons: pulls glyphs out of a Nerd Font into SVG |

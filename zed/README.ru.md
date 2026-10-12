@@ -10,7 +10,7 @@
 | `keymap.json` | хоткеи (`f5` отладка, `ctrl-t` тесты…) |
 | `tasks.json` | задачи по `ctrl-r`: запуск, тесты, покрытие, логи compose |
 | `debug.json` | конфиги отладчика Delve |
-| `snippets/go.json` | сниппеты Go |
+| `snippets/` | сниппеты: Go, SQL (миграции, sqlc), Dockerfile, compose/k8s |
 | `dev-night-theme/` | расширение Zed: темы Dev Night + Dev Day |
 | `dev-night-icons/` | расширение Zed: иконки файлов |
 | `tools/` | генераторы: светлая тема, картинка-превью, иконки |
@@ -21,7 +21,7 @@
 - `keymap.json` → `~/.config/zed/keymap.json`
 - `tasks.json` → `~/.config/zed/tasks.json`
 - `debug.json` → `~/.config/zed/debug.json`
-- `snippets/go.json` → `~/.config/zed/snippets/go.json`
+- `snippets/*.json` → `~/.config/zed/snippets/` (go, sql, dockerfile, yaml)
 - `dev-night-theme` → `~/Library/Application Support/Zed/extensions/installed/dev-night-theme`
 - `dev-night-icons` → `~/Library/Application Support/Zed/extensions/installed/dev-night-icons`
 
