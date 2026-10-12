@@ -9,6 +9,8 @@
   // ────────────────────────────────────────────────────────────
 
   // свои темы из расширения zed/dev-night-theme: тёмная Dev Night, светлая Dev Day; меняются вместе с macOS
+  // `zed file.go` из терминала открывает в текущем окне, а не плодит новые
+  "cli_default_open_behavior": "existing_window",
   "theme": {
     "mode": "system",
     "light": "Dev Day",
@@ -23,10 +25,18 @@
 
   // код — тот же шрифт, что в терминале (с иконками Nerd Font и лигатурами)
   "buffer_font_family": "JetBrainsMono Nerd Font",
-  "buffer_font_size": 14.5,
+  "buffer_font_size": 15,
   "buffer_font_weight": 400,
   "buffer_line_height": { "custom": 1.6 },
   "buffer_font_features": { "calt": true },
+  // неиспользуемый код (импорты, переменные) — блёкло, чтобы не отвлекал
+  "unnecessary_code_fade": 0.5,
+  // парные скобки разными цветами — проще читать вложенные замыкания
+  "colorize_brackets": true,
+  // заголовок функции/struct прилипает сверху при прокрутке длинных хендлеров
+  "sticky_scroll": { "enabled": true },
+  // мышь прячется, пока печатаешь
+  "hide_mouse": "on_typing_and_action",
 
   // интерфейс — системный шрифт macOS
   "ui_font_family": ".SystemUIFont",
@@ -55,11 +65,10 @@
   // курсор не прилипает к краю экрана (как cursorSurroundingLines в VS Code)
   "vertical_scroll_margin": 8,
   "scroll_beyond_last_line": "vertical_scroll_margin",
-  "unnecessary_code_fade": 0.4,
 
   "show_line_numbers": true,
   "relative_line_numbers": "disabled",
-  "show_whitespaces": "boundary",
+  "show_whitespaces": "selection",   // точки-пробелы только в выделении — меньше шума
   "wrap_guides": [120],
   "show_wrap_guides": true,
   "soft_wrap": "none",
@@ -87,8 +96,9 @@
     "diagnostics": "all",
   },
 
+  // миникарта — лишний шум; ошибки и git и так видны на скроллбаре
   "minimap": {
-    "show": "auto",
+    "show": "never",
     "thumb": "always",
     "current_line_highlight": "line",
     "max_width_columns": 60,
@@ -135,10 +145,12 @@
     "quick_actions": true,
     "selections_menu": true,
   },
-  "search": { "button": true, "whole_word": false, "case_sensitive": false, "regex": false },
+  "search": { "button": true, "whole_word": false, "case_sensitive": false, "regex": false, "center_on_match": true },
   "file_finder": { "modal_max_width": "medium", "file_icons": true },
   "show_completions_on_input": true,
   "show_completion_documentation": true,
+  // нет определения (например, метод интерфейса) — показать все использования
+  "go_to_definition_fallback": "find_all_references",
   // cmd-alt-l — текст по центру экрана (удобно читать README и длинные файлы)
   "centered_layout": { "left_padding": 0.18, "right_padding": 0.18 },
 
@@ -175,9 +187,12 @@
   ],
 
   "file_types": {
-    "Dockerfile": ["Dockerfile*", "Containerfile*"],
-    "Shell Script": [".env", ".env.*", ".envrc"],
+    "Dockerfile": ["Dockerfile*", "Containerfile*", "*.dockerfile"],
+    // .env — расширение env (своя подсветка); здесь только .envrc, чтобы shfmt не трогал .env
+    "Shell Script": [".envrc", "*.env.sh"],
     "TOML": [".air.toml"],
+    "YAML": [".yamllint", "*.yml.tpl", "*.yaml.tpl"],
+    "Git Ignore": [".dockerignore"],
     "JSONC": ["**/.zed/*.json", "**/zed/*.json", "tsconfig*.json"],
     // workflow-файлы — своим LSP (расширение github-actions): входы экшенов, ${{ выражения }}, контексты
     "GitHub Actions": [".github/workflows/*.yml", ".github/workflows/*.yaml"],
@@ -200,7 +215,7 @@
     "show_diagnostics": "errors",
   },
   "outline_panel": { "dock": "left", "default_width": 260 },
-  "git_panel": { "dock": "left", "default_width": 280 },
+  "git_panel": { "dock": "left", "default_width": 280, "status_style": "icon" },
   "collaboration_panel": { "button": false },
   "notification_panel": { "button": false },
 
@@ -208,7 +223,12 @@
     "show": true,
     "show_nav_history_buttons": false,
   },
+  "status_bar": {
+    "active_language_button": true,
+    "cursor_position_button": true,
+  },
   "tabs": {
+    "show_close_button": "hover",   // крестик только при наведении — вкладки чище
     "file_icons": true,
     "git_status": true,
     "close_position": "right",
@@ -272,12 +292,14 @@
       "formatter": "language_server",
       "code_actions_on_format": { "source.organizeImports": true },
     },
-    "YAML": { "tab_size": 2, "hard_tabs": false },
-    "Dockerfile": { "tab_size": 4 },
+    // YAML форматирует yaml-language-server (без prettier/node — экономия RAM);
+    // compose, k8s, CI проверяются по JSON-схемам ниже
+    "YAML": { "tab_size": 2, "hard_tabs": false, "formatter": "language_server" },
+    "Dockerfile": { "tab_size": 4, "format_on_save": "off" },
     "SQL": { "tab_size": 2, "format_on_save": "off" },
     "TOML": { "tab_size": 2 },
-    "JSON": { "tab_size": 2 },
-    "JSONC": { "tab_size": 2 },
+    "JSON": { "tab_size": 2, "formatter": "language_server" },
+    "JSONC": { "tab_size": 2, "formatter": "language_server" },
     "Make": { "hard_tabs": true },
     "Shell Script": {
       "tab_size": 2,
@@ -317,15 +339,20 @@
           "shadow": true,
           "unusedparams": true,
           "unusedwrite": true,
+          "unusedvariable": true,
           "useany": true,
         },
         // те же подсказки, что в VS Code — без шума
+        // только полезные подсказки: без типа у каждого := и имён полей в литералах (шумно)
         "hints": {
-          "assignVariableTypes": true,
-          "compositeLiteralFields": true,
           "parameterNames": true,
           "rangeVariableTypes": true,
+          "functionTypeParameters": true,
         },
+        "semanticTokens": true,
+        // уязвимости — только по кнопке (codelens run_govulncheck или задача «govulncheck»):
+        // "Imports" сам ходит в vuln.go.dev при открытии проекта, а лишний трафик не нужен
+        "vulncheck": "Off",
         "codelenses": {
           "generate": true,
           "test": true,
@@ -359,6 +386,13 @@
               "compose*.{yml,yaml}",
             ],
             "https://json.schemastore.org/golangci-lint.json": [".golangci.{yml,yaml}"],
+            "https://json.schemastore.org/github-action.json": ["action.{yml,yaml}"],
+            "https://json.schemastore.org/dependabot-2.0.json": [".github/dependabot.{yml,yaml}"],
+            "https://goreleaser.com/static/schema.json": [".goreleaser.{yml,yaml}"],
+            "https://json.schemastore.org/sqlc-2.0.json": ["sqlc.{yml,yaml}"],
+            "https://json.schemastore.org/buf.json": ["buf.yaml"],
+            "https://json.schemastore.org/chart.json": ["Chart.yaml"],
+            "https://json.schemastore.org/prometheus.json": ["prometheus*.{yml,yaml}"],
             "https://json.schemastore.org/kustomization.json": ["kustomization.{yml,yaml}"],
             // манифесты Kubernetes: автодополнение и проверка полей Deployment, Service…
             "kubernetes": ["k8s/**/*.{yml,yaml}", "deploy/k8s/**/*.{yml,yaml}", "manifests/**/*.{yml,yaml}"],

@@ -93,6 +93,58 @@
     "hide": "on_success",
   },
   {
+    "label": "docker compose ps",
+    "command": "docker compose ps",
+    "cwd": "$ZED_WORKTREE_ROOT",
+    "reveal": "always",
+  },
+  {
+    // проверить compose-файл: итоговый конфиг с подставленными .env
+    "label": "docker compose config",
+    "command": "docker compose config",
+    "cwd": "$ZED_WORKTREE_ROOT",
+    "reveal": "always",
+  },
+  {
+    "label": "docker build — образ проекта",
+    "command": "docker build -t \"$(basename \"$ZED_WORKTREE_ROOT\" | tr 'A-Z ' 'a-z-'):dev\" .",
+    "cwd": "$ZED_WORKTREE_ROOT",
+    "reveal": "always",
+  },
+  {
+    // лучшие практики Dockerfile: открой Dockerfile и запусти
+    "label": "hadolint — текущий Dockerfile",
+    "command": "hadolint \"$ZED_FILE\"",
+    "cwd": "$ZED_WORKTREE_ROOT",
+    "reveal": "always",
+  },
+  {
+    "label": "trivy — уязвимости образа",
+    "command": "trivy image --severity HIGH,CRITICAL \"$(basename \"$ZED_WORKTREE_ROOT\" | tr 'A-Z ' 'a-z-'):dev\"",
+    "cwd": "$ZED_WORKTREE_ROOT",
+    "reveal": "always",
+  },
+  {
+    // уязвимости в зависимостях — вручную (gopls сам в сеть не ходит, см. vulncheck в settings.json)
+    "label": "govulncheck",
+    "command": "govulncheck ./...",
+    "cwd": "$ZED_WORKTREE_ROOT",
+    "reveal": "always",
+  },
+  {
+    // dotfiles: что есть в проекте и чего не хватает (go.mod, тесты, миграции, .env в .gitignore…)
+    "label": "dot project doctor",
+    "command": "dot project doctor \"$ZED_WORKTREE_ROOT\"",
+    "cwd": "$ZED_WORKTREE_ROOT",
+    "reveal": "always",
+  },
+  {
+    // режим проекта: что поднято, лишние приложения, OrbStack (dot work off — погасить)
+    "label": "dot work — что поднято",
+    "command": "dot work",
+    "reveal": "always",
+  },
+  {
     "label": "lazygit",
     "command": "lazygit",
     "cwd": "$ZED_WORKTREE_ROOT",
