@@ -54,6 +54,7 @@ gui:
 # Раскладку (standard — как в Zed/VS Code) Rune при первом запуске пишет в этот же файл
 # (editor.mode + key_bindings). Ниже — только то, что дополняет пресет.
 editor:
+  mode: standard          # клавиши как в Zed/VS Code (cmd-s, cmd-c/v, shift-стрелки)
   autoindent: true
   aux_bar:
     enabled: true
@@ -63,6 +64,7 @@ editor:
     highlight_cursor: true
 
 command:
+  key: "<s-m-p>"            # командная строка — cmd-shift-p, как палитра команд в Zed (":" в режиме standard нельзя)
   key_bindings:
     "<shift-tab>": "fexplorer"
     "<meta-r>": "history"
