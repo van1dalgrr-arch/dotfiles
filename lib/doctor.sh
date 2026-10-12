@@ -1,5 +1,5 @@
 # shellcheck shell=bash
-# dot doctor [--deep] — только читает. Нет обязательного (Brewfile) → ✗ и exit 1, необязательного → ○
+# dot doctor [--deep] [--json] — только читает. Нет обязательного (Brewfile) → ✗ и exit 1, необязательного → ○
 
 # brew в doctor не должен ходить в сеть и обновлять себя
 export HOMEBREW_NO_AUTO_UPDATE=1 HOMEBREW_NO_INSTALL_CLEANUP=1 HOMEBREW_NO_ENV_HINTS=1
@@ -316,12 +316,14 @@ doc_macos() {
     else pass "обновления macOS не нужны"; fi
 }
 
+# shellcheck disable=SC2034  # JSON и цвета читает lib/ui.sh
 doctor() {
     local deep=0 a
     for a in "$@"; do
         case $a in
             --deep) deep=1 ;;
-            *) echo "dot doctor [--deep]" >&2; return 2 ;;
+            --json) JSON=1 c_ok='' c_warn='' c_fail='' c_dim='' c_head='' r='' ;;
+            *) echo "dot doctor [--deep] [--json]" >&2; return 2 ;;
         esac
     done
     [ "$(uname -s)" = Darwin ] || { echo "dot doctor — только для macOS" >&2; return 2; }

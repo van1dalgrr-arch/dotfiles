@@ -9,14 +9,33 @@ else
     c_ok='' c_warn='' c_fail='' c_dim='' c_head='' r=''
 fi
 
-pass()     { ok=$((ok + 1));     printf '  %s✓%s %s\n' "$c_ok" "$r" "$1"; }
-warning()  { warn=$((warn + 1)); printf '  %s!%s %s %s%s%s\n' "$c_warn" "$r" "$1" "$c_dim" "${2:-}" "$r"; }
-failed()   { fail=$((fail + 1)); printf '  %s✗%s %s %s%s%s\n' "$c_fail" "$r" "$1" "$c_dim" "${2:-}" "$r"; }
-optional() { printf '  %s○ %s %s%s\n' "$c_dim" "$1" "${2:-}" "$r"; }
-info()     { printf '  %s·%s %s\n' "$c_dim" "$r" "$1"; }
-section()  { printf '\n%s%s%s\n' "$c_head" "$1" "$r"; }
+# JSON=1 (dot doctor --json): вместо текста — записи {section, status, message, hint}, печатает summary
+JSON=${JSON:-0} cur_section="" records=""
+# строка → JSON-строка в кавычках (bash 3.2, без jq): \ " и управляющие символы
+jstr() {
+    local s=$1
+    s=${s//\\/\\\\}; s=${s//\"/\\\"}; s=${s//$'\t'/\\t}; s=${s//$'\n'/\\n}; s=${s//$'\r'/}
+    s=${s//$'\e'/}
+    printf '"%s"' "$s"
+}
+# hint без стрелки «→ » — в JSON это просто команда/совет
+record() {
+    local hint=${3:-}; hint=${hint#→ }
+    records="$records${records:+,}{\"section\":$(jstr "$cur_section"),\"status\":\"$1\",\"message\":$(jstr "$2"),\"hint\":$(jstr "$hint")}"
+}
+
+pass()     { ok=$((ok + 1));     [ "$JSON" = 1 ] && { record ok "$1"; return; };      printf '  %s✓%s %s\n' "$c_ok" "$r" "$1"; }
+warning()  { warn=$((warn + 1)); [ "$JSON" = 1 ] && { record warn "$1" "${2:-}"; return; }; printf '  %s!%s %s %s%s%s\n' "$c_warn" "$r" "$1" "$c_dim" "${2:-}" "$r"; }
+failed()   { fail=$((fail + 1)); [ "$JSON" = 1 ] && { record fail "$1" "${2:-}"; return; }; printf '  %s✗%s %s %s%s%s\n' "$c_fail" "$r" "$1" "$c_dim" "${2:-}" "$r"; }
+optional() { [ "$JSON" = 1 ] && { record optional "$1" "${2:-}"; return; }; printf '  %s○ %s %s%s\n' "$c_dim" "$1" "${2:-}" "$r"; }
+info()     { [ "$JSON" = 1 ] && { record info "$1"; return; };     printf '  %s·%s %s\n' "$c_dim" "$r" "$1"; }
+section()  { cur_section=$1; [ "$JSON" = 1 ] && return; printf '\n%s%s%s\n' "$c_head" "$1" "$r"; }
 
 summary() {
+    if [ "$JSON" = 1 ]; then
+        printf '{"summary":{"ok":%d,"warn":%d,"fail":%d},"checks":[%s]}\n' "$ok" "$warn" "$fail" "$records"
+        [ "$fail" -eq 0 ]; return
+    fi
     printf '\n%s%d ок%s · %s%d предупреждений%s · %s%d ошибок%s\n' \
         "$c_ok" "$ok" "$r" "$c_warn" "$warn" "$r" "$c_fail" "$fail" "$r"
     [ "$fail" -eq 0 ]
