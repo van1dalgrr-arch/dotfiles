@@ -158,25 +158,48 @@
   "close_on_file_delete": true,
   "confirm_quit": false,
 
-  // не индексировать мусор — меньше памяти и быстрее поиск
+  // не индексировать мусор — меньше памяти и быстрее поиск.
+  // Список ЗАМЕНЯЕТ дефолтный Zed, поэтому его пункты (.svn, .hg, CVS…) повторены.
+  // bin/ и build/ не прячем: там часто лежат скрипты (bin/dot в этом репо) — а
+  // скомпилированное и так в .gitignore, Zed показывает его серым и не ищет по нему.
   "file_scan_exclusions": [
     "**/.git",
+    "**/.svn",
+    "**/.hg",
+    "**/.jj",
+    "**/CVS",
     "**/.DS_Store",
+    "**/Thumbs.db",
     "**/node_modules",
     "**/vendor",
     "**/tmp",
-    "**/bin",
     "**/dist",
-    "**/build",
     "**/.venv",
     "**/__pycache__",
     "**/.terraform",
     "**/coverage",
   ],
 
+  // эти файлы никогда не уходят в AI-агента, edit predictions и общий доступ
+  "private_files": [
+    "**/.env*",
+    "**/.envrc",
+    "**/*.pem",
+    "**/*.key",
+    "**/*.p12",
+    "**/*.cert",
+    "**/*.crt",
+    "**/secrets.yml",
+    "**/*.tfvars",
+    "**/*.tfstate*",
+    "**/kubeconfig*",
+    "**/.kube/config",
+  ],
+
   "file_types": {
-    "Dockerfile": ["Dockerfile*", "Containerfile*"],
-    "Shell Script": [".env", ".env.*", ".envrc"],
+    "Dockerfile": ["Dockerfile*", "Containerfile*", "*.Dockerfile", "*.dockerfile"],
+    // .env/.env.* — расширению env (своя подсветка); как Shell Script его переформатировал бы shfmt
+    "Shell Script": [".envrc"],
     "TOML": [".air.toml"],
     "JSONC": ["**/.zed/*.json", "**/zed/*.json", "tsconfig*.json"],
     // workflow-файлы — своим LSP (расширение github-actions): входы экшенов, ${{ выражения }}, контексты
@@ -265,7 +288,8 @@
 
   "languages": {
     "Go": {
-      "language_servers": ["gopls", "golangci-lint"],   // линтер прямо в редакторе
+      // линтер прямо в редакторе; "..." — остальные серверы (typos) тоже работают в .go
+      "language_servers": ["gopls", "golangci-lint", "..."],
       "hard_tabs": true,
       "tab_size": 4,
       "preferred_line_length": 120,
@@ -294,6 +318,12 @@
       "remove_trailing_whitespace_on_save": false,
       "format_on_save": "off",
     },
+    // сообщение коммита (git commit без -m, lazygit → e): заголовок до 50, тело до 72
+    "Git Commit": {
+      "wrap_guides": [50, 72],
+      "preferred_line_length": 72,
+      "soft_wrap": "preferred_line_length",
+    },
     "Python": { "tab_size": 4 },
     "Terraform": { "tab_size": 2 },
     "HCL": { "tab_size": 2 },
@@ -309,7 +339,10 @@
     "gopls": {
       "initialization_options": {
         "gofumpt": true,
-        "staticcheck": true,
+        // staticcheck уже гоняет golangci-lint — второй прогон в gopls дал бы дубли ошибок и +память
+        "staticcheck": false,
+        // уязвимости зависимостей (govulncheck) прямо в go.mod, без ручного запуска
+        "vulncheck": "Imports",
         "usePlaceholders": true,
         "completeUnimported": true,
         "analyses": {
@@ -372,6 +405,11 @@
   //  AI / ПРОЧЕЕ
   // ────────────────────────────────────────────────────────────
 
+  // автодополнение от модели: не в .env и ключах (они ещё и в private_files)
+  "edit_predictions": {
+    "disabled_globs": ["**/.env*", "**/*.pem", "**/*.key", "**/secrets/**", "**/*.tfvars"],
+  },
+
   "agent": {
     "dock": "right",
     "default_width": 420,
@@ -383,7 +421,6 @@
 
   // ставятся сами при первом запуске (и на новом маке)
   "auto_install_extensions": {
-    "material-icon-theme": true,
     "dockerfile": true,
     "docker-compose": true,
     "toml": true,
