@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Симлинки на конфиги (обычный файл на месте → <файл>.bak), закреплённые клоны, Go-утилиты, тема.
-# Повторный запуск безопасен. Программы ставит `brew bundle`.
+# Повторный запуск безопасен. Программы ставит `brew bundle`. LINKS_ONLY=1 — только симлинки (так их гоняют тесты)
 set -euo pipefail
 
 DOTFILES="$(cd "$(dirname "$0")" && pwd)"
@@ -9,8 +9,8 @@ DOTFILES="$(cd "$(dirname "$0")" && pwd)"
 OMZ_REV=74965c96098134b192f00084f966b4b02438a739
 FZF_TAB_REV=24105b15714bfec37989ed5c5b6e60f572253019
 
-[ "$(uname -s)" = Darwin ] || { echo "только macOS"; exit 1; }
-[ "$(uname -m)" = arm64 ] || echo "внимание: не arm64 (Rosetta?) — пути /opt/homebrew рассчитаны на Apple Silicon"
+[ "$(uname -s)" = Darwin ] || [ -n "${LINKS_ONLY:-}" ] || { echo "только macOS"; exit 1; }
+[ "$(uname -m)" = arm64 ] || [ -n "${LINKS_ONLY:-}" ] || echo "внимание: не arm64 (Rosetta?) — пути /opt/homebrew рассчитаны на Apple Silicon"
 
 clone_pinned() {
     [ -d "$2" ] && return 0
@@ -25,11 +25,15 @@ link() {
 
     mkdir -p "$(dirname "$dst")"
 
-    if [ -L "$dst" ]; then
+    # своя ссылка (в т.ч. на старое место репозитория или битая) — заменяется; чужое — в .bak,
+    # а если .bak уже занят первым оригиналом, то в .bak.1, .bak.2… (uninstall вернёт именно .bak)
+    if [ -L "$dst" ] && { case $(readlink "$dst") in "$DOTFILES"/* | */dotfiles/*) true ;; *) false ;; esac; }; then
         rm "$dst"
-    elif [ -e "$dst" ]; then
-        mv "$dst" "$dst.bak"
-        echo "backup: $dst.bak"
+    elif [ -e "$dst" ] || [ -L "$dst" ]; then
+        local bak="$dst.bak" n=0
+        while [ -e "$bak" ] || [ -L "$bak" ]; do n=$((n + 1)); bak="$dst.bak.$n"; done
+        mv "$dst" "$bak"
+        echo "backup: $bak"
     fi
 
     ln -s "$src" "$dst"
@@ -63,6 +67,8 @@ link zed/snippets/go.json            "$HOME/.config/zed/snippets/go.json"
 # свои темы Dev Night / Dev Day и иконки — два локальных расширения Zed (как в каталоге Zed): ссылки на папки
 link zed/dev-night-theme             "$HOME/Library/Application Support/Zed/extensions/installed/dev-night-theme"
 link zed/dev-night-icons             "$HOME/Library/Application Support/Zed/extensions/installed/dev-night-icons"
+
+[ -n "${LINKS_ONLY:-}" ] && exit 0
 
 # oh-my-zsh без его установщика (тот переписывает ~/.zshrc) + плагин fzf-tab
 clone_pinned https://github.com/ohmyzsh/ohmyzsh "$HOME/.oh-my-zsh" "$OMZ_REV"

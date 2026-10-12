@@ -9,7 +9,7 @@ if ! out=$(make check 2>&1); then
     printf '\033[38;2;239;68;68m✘ make check не прошёл — push отменён\033[0m (git push --no-verify — если очень надо)\n'
     exit 1
 fi
-if ! out=$(tests/smoke.sh 2>&1); then
+if ! out=$(tests/smoke.sh 2>&1 && tests/install.sh 2>&1); then
     printf '%s\n' "$out" | grep -E 'FAIL|ok ·|fail' | tail -10
     printf '\033[38;2;239;68;68m✘ тесты упали — push отменён\033[0m\n'
     exit 1

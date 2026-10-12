@@ -1,8 +1,8 @@
 # make install — программы, симлинки, тема · make devops — необязательный DevOps-набор
-# make check — те же проверки, что в CI (+ go vet и тесты berth) · make test — смоук-тесты dot · make update — обслуживание
+# make check — те же проверки, что в CI (+ go vet и тесты berth) · make test — смоук-тесты dot и install/uninstall во временном HOME · make update — обслуживание
 .PHONY: install devops check test update
 
-SCRIPTS = bin/dot lib/*.sh bootstrap.sh install.sh git/repo-hooks/pre-push uninstall.sh macos.sh themes/apply.sh tests/smoke.sh git/hooks/_chain git/hooks/pre-commit ghostty/fx.sh ghostty/quick-terminal.sh
+SCRIPTS = bin/dot lib/*.sh bootstrap.sh install.sh git/repo-hooks/pre-push uninstall.sh macos.sh themes/apply.sh tests/smoke.sh tests/install.sh git/hooks/_chain git/hooks/pre-commit ghostty/fx.sh ghostty/quick-terminal.sh
 
 install:
 	brew bundle
@@ -29,6 +29,7 @@ check:
 
 test:
 	tests/smoke.sh
+	tests/install.sh
 
 update:
 	zsh -ic update

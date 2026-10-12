@@ -1,0 +1,22 @@
+# Раз в неделю — PR с обновлением закреплённых SHA экшенов и Go-модулей berth
+version: 2
+updates:
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+    commit-message:
+      prefix: ci
+    groups:
+      actions:
+        patterns: ["*"]
+
+  - package-ecosystem: gomod
+    directory: /berth
+    schedule:
+      interval: weekly
+    commit-message:
+      prefix: berth
+    groups:
+      go:
+        patterns: ["*"]

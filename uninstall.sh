@@ -14,7 +14,7 @@ while read -r src dst; do
     dst=$(eval echo "$dst")
     if [ "$(readlink "$dst" 2>/dev/null)" = "$DOTFILES/$src" ]; then
         run rm "$dst"
-        if [ -e "$dst.bak" ]; then run mv "$dst.bak" "$dst"; fi
+        if [ -e "$dst.bak" ] || [ -L "$dst.bak" ]; then run mv "$dst.bak" "$dst"; fi
     fi
 done < <(grep -E '^link ' "$DOTFILES/install.sh" | sed -E 's/^link +([^ ]+) +"?([^"]+)"?.*/\1 \2/')
 

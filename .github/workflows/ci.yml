@@ -1,22 +1,38 @@
-# Проверки на каждый пуш: скрипты, zsh-конфиги, JSON-темы, утечки секретов.
+# Проверки на каждый пуш: скрипты, zsh-конфиги, JSON-темы, утечки секретов, сами workflow.
+# Сторонние экшены закреплены на полных SHA (тег — в комментарии), обновляет их Dependabot.
 name: ci
 
 on:
   push:
   pull_request:
 
+# по умолчанию токен ничего не может; что нужно — выдаётся каждому job отдельно
+permissions: {}
+
 jobs:
   lint:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: read   # gitleaks-action читает коммиты PR
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
         with:
           fetch-depth: 0   # gitleaks смотрит всю историю
+          persist-credentials: false
+
+      - name: actionlint (сами workflow)
+        run: |
+          v=1.7.12 sum=8aca8db96f1b94770f1b0d72b6dddcb1ebb8123cb3712530b08cc387b349a3d8
+          curl -fsSLo /tmp/al.tgz "https://github.com/rhysd/actionlint/releases/download/v$v/actionlint_${v}_linux_amd64.tar.gz"
+          echo "$sum  /tmp/al.tgz" | sha256sum -c -
+          tar -xzf /tmp/al.tgz -C /tmp actionlint
+          /tmp/actionlint -color
 
       - name: shellcheck
         run: |
           shellcheck -S warning -e SC1090 \
-            bin/dot lib/*.sh bootstrap.sh install.sh uninstall.sh macos.sh themes/apply.sh tests/smoke.sh \
+            bin/dot lib/*.sh bootstrap.sh install.sh uninstall.sh macos.sh themes/apply.sh tests/*.sh \
             git/hooks/_chain git/hooks/pre-commit
 
       - name: Brewfile syntax
@@ -24,6 +40,9 @@ jobs:
 
       - name: smoke tests (dot project doctor, tools)
         run: tests/smoke.sh
+
+      - name: install / uninstall in a temp HOME
+        run: tests/install.sh
 
       - name: zsh syntax
         run: |
@@ -36,17 +55,21 @@ jobs:
           python3 -m py_compile themes/set-wallpaper.py zed/tools/light.py zed/tools/preview.py jetbrains/build.py
 
       - name: gitleaks
-        uses: gitleaks/gitleaks-action@v2
+        uses: gitleaks/gitleaks-action@ff98106e4c7b2bc287b24eaf42907196329070c7 # v2.3.9
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   macos:
     runs-on: macos-latest
+    permissions:
+      contents: read
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        with:
+          persist-credentials: false
 
       # на macOS-раннере go нет в PATH, а project doctor справедливо считает это ошибкой
-      - uses: actions/setup-go@v5
+      - uses: actions/setup-go@40f1582b2485089dde7abd97c1529aa768e1baff # v5.6.0
         with:
           go-version: stable
           cache: false
@@ -64,10 +87,19 @@ jobs:
           for f in icons/icons.swift icons/folder.swift icons/backdrop.swift icons/html2png.swift icons/photo-wallpaper.swift ghostty/activate.swift icons/terminal-grade.swift zed/tools/build-icons.swift; do swiftc -typecheck "$f" && echo "ok $f"; done
 
       - name: scripts parse with system bash 3.2
-        run: for f in bin/dot lib/*.sh bootstrap.sh install.sh uninstall.sh macos.sh tests/smoke.sh; do /bin/bash -n "$f" && echo "ok $f"; done
+        run: for f in bin/dot lib/*.sh bootstrap.sh install.sh uninstall.sh macos.sh tests/*.sh; do /bin/bash -n "$f" && echo "ok $f"; done
 
       - name: smoke tests (+ macos.sh preview, read-only)
         run: tests/smoke.sh
+
+      - name: install / uninstall in a temp HOME (BSD tools, bash 3.2)
+        run: /bin/bash tests/install.sh
+
+      - name: dot doctor --json is valid JSON
+        run: |
+          bin/dot doctor --json > /tmp/doctor.json || true
+          jq -e '.summary and (.checks | length > 0)' /tmp/doctor.json >/dev/null
+          jq -r '.summary | "\(.ok) ok · \(.warn) warn · \(.fail) fail"' /tmp/doctor.json
 
       - name: every theme applies in a clean HOME
         run: |
