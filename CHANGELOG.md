@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- **Chrome wallpapers:** `chrome`, `chrome-arc`, `chrome-cables` — liquid-metal tubes on near-black with real reflections (`CIHeightFieldFromMask` + `CIShadedMaterial` reflecting a small studio: bright sky, dark ground, rim lights in the day's tint). Tubes overlap and cast shadows; reflections slide along them over the day. ~1 s a frame on the GPU. The renderer lives in `wallpaper-kit.swift` (`chromeScene`), so a new chrome wallpaper is just a list of curves
 - **`dot work` — project modes:** `work kinoza-back` starts OrbStack (with `orb start`), the project's containers or compose services without `build:`, opens Zed and goes to the folder; the prompt shows `◆ kinoza-back 1h12m`. `work off` stops them, quits every regular app except Finder, Happ and Ghostty, turns OrbStack off when no other containers run, and reports what's still up (including Claude Code sessions in the project). Modes live in `work/<name>.work`, not in the project repo
 - **`dot sync`:** pull fresh dotfiles safely — shows incoming commits and files, fast-forward only (refuses on diverged branches; git refuses to overwrite local edits), then smoke tests and `dot doctor`, and tells what to rerun (install.sh, brew bundle, berth, exec zsh)
 - **`dot doctor --json`:** `{summary, checks: [{section, status, message, hint}]}` for jq, CI and dashboards; plain bash 3.2, no jq needed to produce it

@@ -95,7 +95,7 @@ dot doctor               # всё должно быть ✓
 | **Редактор** | [Zed](https://zed.dev) со своими темами Dev Night (тёмная) и Dev Day (светлая), которые следуют за macOS, и иконками. Delve, golangci-lint, задачи на `ctrl-r` |
 | **GoLand** | те же Dev Night / Dev Day — плагином JetBrains и `.icls`, см. [jetbrains/](jetbrains) |
 | **Темы** | `theme vesper` / `kanagawa` / `rose-pine`: перекрашивает терминал, консольные программы, иконки приложений и обои из одного файла палитры |
-| **Обои** | `wall`: 30 живых обоев, нарисованных на Swift, меняются в течение дня; плюс твои фото, увеличенные без мыла |
+| **Обои** | `wall`: 33 живых обоев, нарисованных на Swift, меняются в течение дня; плюс твои фото, увеличенные без мыла |
 | **Вид терминала** | `fx` — шейдеры Ghostty (курсор, шлейф, искры, вспышка фокуса, свечение) · `backdrop` — свет обоев за текстом |
 | **Браузер** | Safari — самый лёгкий на 8 ГБ. Настройки — в `macos.sh safari`, uBlock Origin Lite из App Store через Brewfile, JetBrains Mono для кода на всех сайтах |
 | **Git** | delta для diff, lazygit, gitleaks перед каждым коммитом в любом репозитории |
@@ -395,7 +395,7 @@ dotfiles/
 | [Горячие клавиши](docs/hotkeys.ru.md) | AeroSpace, Ghostty, `orbstack` и Zed |
 | [Контейнеры из терминала](docs/docker.ru.md) | образы, контейнеры, тома; флаги `docker run` с объяснением; compose; живая сборка |
 | [Как это устроено](docs/how-it-works.ru.md) | архитектура, схемы, «почему» за каждой частью и рецепты |
-| [Темы](docs/themes.ru.md) · [Обои](docs/wallpapers.ru.md) | все темы рядом · галерея 30 живых обоев |
+| [Темы](docs/themes.ru.md) · [Обои](docs/wallpapers.ru.md) | все темы рядом · галерея 33 живых обоев |
 | [Если что-то не так](docs/troubleshooting.ru.md) | частые проблемы по темам, включая `orbstack` |
 | [Обновление macOS](docs/macos-upgrade.ru.md) | чек-лист до и после с `dot snapshot` |
 | [Если Mac сбросился](docs/recovery.ru.md) | восстановление: что вернётся само, что нет |

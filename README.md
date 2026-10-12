@@ -95,7 +95,7 @@ Fork it rather than installing mine as is. Before `make install`:
 | **Editor** | [Zed](https://zed.dev) with my own themes, Dev Night (dark) and Dev Day (light), that follow macOS, plus icons. Delve, golangci-lint, tasks on `ctrl-r` |
 | **GoLand** | the same Dev Night / Dev Day themes as a JetBrains plugin and `.icls` — see [jetbrains/](jetbrains) |
 | **Themes** | `theme vesper` / `kanagawa` / `rose-pine`: recolors the terminal, CLI tools, app icons and wallpaper from one palette file |
-| **Wallpapers** | `wall`: 30 live wallpapers drawn in Swift that change through the day, plus your own photos, upscaled without blur |
+| **Wallpapers** | `wall`: 33 live wallpapers drawn in Swift that change through the day, plus your own photos, upscaled without blur |
 | **Terminal look** | `fx` — Ghostty shaders (cursor, trail, sparks, focus flash, glow) · `backdrop` — the wallpaper's light behind the text |
 | **Browser** | Safari — the lightest on 8 GB. Settings in `macos.sh safari`, uBlock Origin Lite from the App Store via the Brewfile, JetBrains Mono for code on every site |
 | **Git** | delta for diffs, lazygit, gitleaks before every commit in every repo |
@@ -395,7 +395,7 @@ Every document is in English and Russian — [all docs](docs/README.md) · [вс
 | [Hotkeys](docs/hotkeys.md) | AeroSpace, Ghostty, `orbstack` and Zed |
 | [Containers from the terminal](docs/docker.md) | images, containers, volumes; `docker run` flags explained; compose; live rebuild |
 | [How it works](docs/how-it-works.md) | architecture, diagrams, the "why" behind every piece, and recipes |
-| [Themes](docs/themes.md) · [Wallpapers](docs/wallpapers.md) | all themes side by side · the gallery of 30 live wallpapers |
+| [Themes](docs/themes.md) · [Wallpapers](docs/wallpapers.md) | all themes side by side · the gallery of 33 live wallpapers |
 | [Troubleshooting](docs/troubleshooting.md) | common problems by area, `orbstack` included |
 | [Upgrading macOS](docs/macos-upgrade.md) | before/after checklist with `dot snapshot` |
 | [If the Mac was wiped](docs/recovery.md) | restore checklist: what comes back by itself, what doesn't |

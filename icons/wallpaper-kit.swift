@@ -209,3 +209,93 @@ func blurLayer(_ blur: CGFloat, _ draw: (CGContext) -> Void) -> CGImage {
                             from: extent, format: .RGBA16, colorSpace: cs)!
 }
 
+// ─── хром: трубки жидкого металла (chrome, chrome-arc, chrome-cables) ───
+// Рельеф — CIHeightFieldFromMask, металл — CIShadedMaterial: трубки отражают «сферу окружения»
+// (светлое небо, тёмная земля, цветные контровые огни). Всё на GPU, кадр ~1 с.
+// сфера окружения: как выглядел бы зеркальный шар в студии. Её и отражают ленты
+func envSphere(_ hour: CGFloat) -> CIImage {
+    let n = 1024, R = CGFloat(n) / 2
+    let ctx = CGContext(data: nil, width: n, height: n, bitsPerComponent: 16, bytesPerRow: 0,
+                        space: cs, bitmapInfo: CGImageAlphaInfo.premultipliedLast.rawValue)!
+    let (a, b) = tint(hour)
+    let c = CGPoint(x: R, y: R)
+    ctx.addEllipse(in: CGRect(x: 0, y: 0, width: R * 2, height: R * 2)); ctx.clip()
+    // классический хром: светлое «небо» сверху, тёмная «земля» снизу, резкий горизонт чуть выше центра.
+    // Горизонт наклоняется за сутки — блики плывут вдоль трубок
+    let tilt = sin(hour / 24 * 2 * .pi) * 0.35
+    ctx.saveGState()
+    ctx.translateBy(x: R, y: R); ctx.rotate(by: tilt); ctx.translateBy(x: -R, y: -R)
+    let sky = CGGradient(colorsSpace: cs, colors: [rgb(0x5d6275), rgb(0xb9bfcc), rgb(0xe8ebf2)] as CFArray, locations: [0, 0.75, 1])!
+    let ground = CGGradient(colorsSpace: cs, colors: [rgb(0x020203), rgb(0x0d0d14), rgb(0x23232e)] as CFArray, locations: [0, 0.8, 1])!
+    let horizon = R * 1.08
+    ctx.drawLinearGradient(sky, start: CGPoint(x: 0, y: R * 2), end: CGPoint(x: 0, y: horizon), options: [.drawsAfterEndLocation])
+    ctx.clip(to: CGRect(x: -R, y: -R, width: R * 4, height: horizon + R))
+    ctx.drawLinearGradient(ground, start: CGPoint(x: 0, y: 0), end: CGPoint(x: 0, y: horizon), options: [])
+    ctx.restoreGState()
+    // к краю шара — темнее (грани трубок уходят в тень)
+    let rim = CGGradient(colorsSpace: cs, colors: [rgb(0x000000, 0), rgb(0x000000, 0), rgb(0x000000, 0.75)] as CFArray, locations: [0, 0.72, 1])!
+    ctx.drawRadialGradient(rim, startCenter: c, startRadius: 0, endCenter: c, endRadius: R, options: [])
+    // свет обходит шар за сутки
+    let turn = hour / 24 * 2 * .pi
+    func at(_ ang: CGFloat, _ dist: CGFloat) -> CGPoint { CGPoint(x: R + cos(turn + ang) * R * dist, y: R + sin(turn + ang) * R * dist) }
+    // цветные контровые огни по краю
+    radialGlow(ctx, at(3.6, 0.85), R * 0.9, a, 1.0)
+    radialGlow(ctx, at(5.2, 0.85), R * 0.7, b, 1.0)
+    radialGlow(ctx, at(1.6, 0.8), R * 0.6, violet, 0.85)
+    // маленький горячий блик
+    radialGlow(ctx, at(0.9, 0.55), R * 0.14, 0xffffff, 0.9)
+    // горизонт чуть мягче: резкая граница на сфере даёт «лесенку» на широких трубках
+    let sphere = CIImage(cgImage: ctx.makeImage()!)
+    return sphere.clampedToExtent().applyingFilter("CIGaussianBlur", parameters: [kCIInputRadiusKey: 5]).cropped(to: sphere.extent)
+}
+
+// трубка: (начало, две контрольные точки, конец) в долях экрана и толщина в долях ширины
+typealias Tube = ([CGFloat], CGFloat)
+
+// маска одной ленты: белым по чёрному
+func ribbonMask(_ p: [CGFloat], _ w: CGFloat) -> CIImage {
+    let ctx = CGContext(data: nil, width: Int(W), height: Int(H), bitsPerComponent: 16, bytesPerRow: 0,
+                        space: cs, bitmapInfo: CGImageAlphaInfo.premultipliedLast.rawValue)!
+    ctx.setFillColor(rgb(0x000000)); ctx.fill(extent)
+    ctx.setStrokeColor(rgb(0xffffff)); ctx.setLineCap(.round); ctx.setLineWidth(W * w)
+    ctx.move(to: CGPoint(x: W * p[0], y: H * p[1]))
+    ctx.addCurve(to: CGPoint(x: W * p[6], y: H * p[7]),
+                 control1: CGPoint(x: W * p[2], y: H * p[3]), control2: CGPoint(x: W * p[4], y: H * p[5]))
+    ctx.strokePath()
+    return CIImage(cgImage: ctx.makeImage()!)
+}
+
+func blur(_ i: CIImage, _ r: CGFloat) -> CIImage {
+    i.clampedToExtent().applyingFilter("CIGaussianBlur", parameters: [kCIInputRadiusKey: r]).cropped(to: extent)
+}
+
+// трубки рисуются от дальней к ближней: тень на нижние, рельеф скруглён на всю толщину
+func chromeScene(_ hour: CGFloat, _ ribbons: [Tube], _ masks: [CIImage]) -> CGImage {
+    // фон: почти чёрный с еле заметным цветным светом
+    let (a, _) = tint(hour)
+    let bgc = canvas()
+    radialGlow(bgc, CGPoint(x: W * 0.72, y: H * 0.12), W * 0.6, a, 0.12)
+    radialGlow(bgc, CGPoint(x: W * 0.15, y: H * 0.9), W * 0.45, violet, 0.08)
+    var img = CIImage(cgImage: bgc.makeImage()!)
+    let env = envSphere(hour)
+    let black = CIImage(color: CIColor(red: 0, green: 0, blue: 0)).cropped(to: extent)
+
+    for (i, (_, w)) in ribbons.enumerated() {
+        let mask = masks[i]
+        // тень на то, что под лентой: сдвинута вниз и размыта
+        let shadow = blur(mask, W * w * 0.6).transformed(by: CGAffineTransform(translationX: W * w * 0.12, y: -W * w * 0.35))
+            .cropped(to: extent).applyingFilter("CIColorMatrix", parameters: [
+                "inputRVector": CIVector(x: 0.75, y: 0, z: 0, w: 0), "inputGVector": CIVector(x: 0, y: 0.75, z: 0, w: 0),
+                "inputBVector": CIVector(x: 0, y: 0, z: 0.75, w: 0)])
+        img = black.applyingFilter("CIBlendWithMask", parameters: [kCIInputBackgroundImageKey: img, kCIInputMaskImageKey: shadow])
+        // рельеф скруглён на всю толщину — сечение как у трубки
+        // рельеф скруглён на всю толщину — сечение как у трубки; 16-битная маска и лёгкое размытие
+        // рельефа сглаживают «лесенку» на толстых трубках
+        let height = blur(mask.clampedToExtent().applyingFilter("CIHeightFieldFromMask", parameters: [kCIInputRadiusKey: W * w * 0.5]), 2 + W * w * 0.02)
+        let metal = height.applyingFilter("CIShadedMaterial", parameters: ["inputShadingImage": env, kCIInputScaleKey: 30 * S])
+            .cropped(to: extent)
+        img = metal.applyingFilter("CIBlendWithMask", parameters: [kCIInputBackgroundImageKey: img, kCIInputMaskImageKey: blur(mask, 1.2 * S)])
+    }
+    let cg = ci.createCGImage(img, from: extent, format: .RGBA16, colorSpace: cs)!
+    return filmic(bloom(cg, near: 5, far: 45, strength: 0.4), grain: 0.018, vignette: 0.5)
+}

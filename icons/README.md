@@ -6,7 +6,7 @@ Swift generators: live wallpapers, photo wallpapers, the terminal backdrop, glas
 
 | File | What |
 |---|---|
-| `wallpaper-*.swift` | 25 live wallpapers: 12 frames a day into a dynamic HEIC (`wall <name>`) |
+| `wallpaper-*.swift` | 33 live wallpapers: 12 frames a day into a dynamic HEIC (`wall <name>`) |
 | `wallpaper-kit.swift` | shared kit for new wallpapers (`runWallpaper { hour in … }`) |
 | `terminal-grade.swift` | any wallpaper or photo → dark, readable terminal background (`backdrop <name>`) |
 | `photo-wallpaper.swift` | photo → screen-sized wallpaper without blur (`wall add`) |

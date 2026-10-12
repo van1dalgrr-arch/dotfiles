@@ -6,7 +6,7 @@
 
 | Файл | Что это |
 |---|---|
-| `wallpaper-*.swift` | 25 живых обоев: 12 кадров в сутки в динамический HEIC (`wall <имя>`) |
+| `wallpaper-*.swift` | 33 живых обоя: 12 кадров в сутки в динамический HEIC (`wall <имя>`) |
 | `wallpaper-kit.swift` | общий набор для новых обоев (`runWallpaper { hour in … }`) |
 | `terminal-grade.swift` | любые обои или фото → тёмный читаемый фон терминала (`backdrop <имя>`) |
 | `photo-wallpaper.swift` | фото → обои под экран без мыла (`wall add`) |

@@ -8,6 +8,16 @@
 
 Превью — кадр 13:00.
 
+## Хром
+
+Трубки жидкого металла на почти чёрном. Отражения настоящие, а не нарисованные блики: рельеф даёт
+`CIHeightFieldFromMask`, металл — `CIShadedMaterial`, который отражает маленькую «студию» (светлое небо, тёмная земля,
+цветные контровые огни). За день отражения плывут вдоль трубок, контровой свет берёт цвет суток.
+
+<table>
+<tr><td width="33%" valign="top"><img src="wallpapers/chrome.jpg" alt="chrome"/><br><b><code>chrome</code></b><br><sub>Три хромированные трубки лежат друг на друге, фиолетовый контровой свет</sub></td><td width="33%" valign="top"><img src="wallpapers/chrome-arc.jpg" alt="chrome-arc"/><br><b><code>chrome-arc</code></b><br><sub>Одна толстая хромовая арка крупным планом, поперёк — тонкая трубка</sub></td><td width="33%" valign="top"><img src="wallpapers/chrome-cables.jpg" alt="chrome-cables"/><br><b><code>chrome-cables</code></b><br><sub>Пучок тонких хромовых кабелей течёт волной</sub></td></tr>
+</table>
+
 ## Атмосфера
 
 Атмосферные сцены, похожие на фото: туман, сумерки, снег. Нарисованы кодом в разрешении экрана, с глубиной резкости и плёночным зерном.

@@ -18,7 +18,7 @@ Every document exists in English and Russian — the link at the top of each swi
 |---|---|
 | [**How it works**](how-it-works.md) | architecture with diagrams, the *why* behind every piece, and recipes for changing things |
 | [**Themes**](themes.md) | all themes side by side, light mode, making your own |
-| [**Wallpapers**](wallpapers.md) | the gallery of 30 live wallpapers and how to draw your own |
+| [**Wallpapers**](wallpapers.md) | the gallery of 33 live wallpapers and how to draw your own |
 
 ## When something happens
 

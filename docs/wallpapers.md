@@ -8,6 +8,16 @@ or run `wall` to pick from a list with image previews.
 
 Previews show the 13:00 frame.
 
+## Chrome
+
+Liquid-metal tubes on near-black. Real reflections, not painted highlights: the relief comes from
+`CIHeightFieldFromMask` and the metal from `CIShadedMaterial` reflecting a small "studio" (bright sky, dark ground,
+colored rim lights). The reflections slide along the tubes over the day, the rim lights take the day's tint.
+
+<table>
+<tr><td width="33%" valign="top"><img src="wallpapers/chrome.jpg" alt="chrome"/><br><b><code>chrome</code></b><br><sub>Three chrome tubes lying across each other, violet rim light</sub></td><td width="33%" valign="top"><img src="wallpapers/chrome-arc.jpg" alt="chrome-arc"/><br><b><code>chrome-arc</code></b><br><sub>One thick chrome arch in close-up, a thin tube across it</sub></td><td width="33%" valign="top"><img src="wallpapers/chrome-cables.jpg" alt="chrome-cables"/><br><b><code>chrome-cables</code></b><br><sub>A bundle of thin chrome cables flowing in a wave</sub></td></tr>
+</table>
+
 ## Atmosphere
 
 Moody, photo-like scenes: fog, dusk, snow. Painted in code at screen resolution, with depth of field and film grain.
