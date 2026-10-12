@@ -62,6 +62,7 @@ link zed/settings.json               "$HOME/.config/zed/settings.json"
 link zed/keymap.json                 "$HOME/.config/zed/keymap.json"
 link zed/tasks.json                  "$HOME/.config/zed/tasks.json"
 link pgcli/config                    "$HOME/.config/pgcli/config"
+link rune/config.yaml                "$HOME/.rune/config.yaml"          # Rune — тема Dev Night, без телеметрии
 link zed/debug.json                  "$HOME/.config/zed/debug.json"
 link zed/snippets/go.json            "$HOME/.config/zed/snippets/go.json"
 # свои темы Dev Night / Dev Day и иконки — два локальных расширения Zed (как в каталоге Zed): ссылки на папки
@@ -82,6 +83,9 @@ else echo "пропуск Go-утилит: нет go (brew bundle)"; fi
 if command -v go >/dev/null; then
     go build -C "$DOTFILES/berth" -o "$(go env GOPATH)/bin/berth" . && echo "built: berth (orbstack)" \
         || echo "внимание: berth не собрался — cd berth && go build"
+    # rune-dot — расширение Rune (rune/dot-ext): :work, :projectdoctor
+    go build -C "$DOTFILES/rune/dot-ext" -o "$(go env GOPATH)/bin/rune-dot" . && echo "built: rune-dot" \
+        || echo "внимание: rune-dot не собрался — cd rune/dot-ext && go build"
 fi
 
 command -v bat >/dev/null && bat cache --build >/dev/null

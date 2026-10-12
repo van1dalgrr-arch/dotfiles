@@ -92,7 +92,7 @@ Fork it rather than installing mine as is. Before `make install`:
 | **Terminal** | [Ghostty](https://ghostty.org) with a transparent title bar, a smooth gliding cursor, and a drop-down window on `` ctrl+` `` from any app |
 | **Windows** | [AeroSpace](https://github.com/nikitabobko/AeroSpace) — i3-style tiling; hotkeys work on any keyboard layout |
 | **Prompt** | custom zsh in a frame: `╭─[user@host]─[path]─[git]─[Go · compose · ⎈ k8s context]`, command duration, collapses after Enter |
-| **Editor** | [Zed](https://zed.dev) with my own themes, Dev Night (dark) and Dev Day (light), that follow macOS, plus icons. Delve, golangci-lint, tasks on `ctrl-r` |
+| **Editor** | [Zed](https://zed.dev) with my own themes, Dev Night (dark) and Dev Day (light), that follow macOS, plus icons. Delve, golangci-lint, tasks on `ctrl-r`. Moving gradually to [Rune](rune) (Go-native IDE): Dev Night theme, no telemetry, a `dot` extension in Go |
 | **GoLand** | the same Dev Night / Dev Day themes as a JetBrains plugin and `.icls` — see [jetbrains/](jetbrains) |
 | **Themes** | `theme vesper` / `kanagawa` / `rose-pine`: recolors the terminal, CLI tools, app icons and wallpaper from one palette file |
 | **Wallpapers** | `wall`: 33 live wallpapers drawn in Swift that change through the day, plus your own photos, upscaled without blur |

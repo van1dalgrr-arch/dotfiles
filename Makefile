@@ -24,6 +24,7 @@ check:
 		d=$$(mktemp -d); tmp=$$d/shader.frag; cat ghostty/shaders/.prefix.glsl $$f > $$tmp && glslangValidator -G -S frag $$tmp -o /dev/null >/dev/null 2>&1; ok=$$?; rm -rf $$d; \
 		[ $$ok = 0 ] || { echo "шейдер не компилируется: $$f"; exit 1; }; done; fi
 	cd berth && go vet ./... && go test ./...
+	cd rune/dot-ext && go vet ./... && go test ./...
 	gitleaks git --no-banner --redact .
 	@echo "✓ всё чисто"
 

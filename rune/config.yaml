@@ -1,0 +1,84 @@
+# Rune — личный конфиг (~/.rune/config.yaml → симлинк сюда, ставит install.sh).
+# Слои: встроенные умолчания → этот файл → .rune/config.yaml в репозитории проекта.
+# Перечитать без перезапуска: :workspacereload (тема и шрифт — только после перезапуска).
+# Все ключи: cmd/rune/rune.star в исходниках Rune.
+
+# ── ТРАФИК: ничего не ходит в сеть само ──────────────────────────
+telemetry:
+  enabled: false            # анонимная статистика — выключена
+upgrade:
+  auto_check_enabled: false # проверка новой версии раз в сутки — выключена; обновиться вручную: :upgrade
+network:
+  auto_join: false          # «сеть» Rune (порт 7473) при старте не поднимается; нужна — :network up
+updates:
+  auto_install: false       # языковые пакеты — только с вопросом
+
+# ── ВИД ──────────────────────────────────────────────────────────
+gui:
+  default_theme: dev-night
+  font_size: 15             # как в Zed
+  ligatures: true
+  enable_transparent_window: true
+  window_opacity: { fg: 1, bg: 0.94 }
+  window_blur_radius: 30    # как background-blur в Ghostty
+  themes:
+    # Dev Night — та же палитра, что у темы Zed (zed/dev-night-theme) и терминала.
+    # Rune красит всё через 16 именованных цветов: silver — приглушённое (комментарии),
+    # gray — подложки (выделение, панели), остальные — акценты.
+    dev-night:
+      foreground: "#d6d9e8"
+      background: "#101010"
+      cursor: "#a855f7"
+      black: "#101010"
+      gray: "#1d1b26"
+      silver: "#666666"
+      white: "#d6d9e8"
+      maroon: "#ef4444"
+      red: "#f87171"
+      green: "#9fb8e8"
+      lime: "#b4c8f0"
+      olive: "#f59e0b"
+      yellow: "#f0d39c"
+      navy: "#2a2350"
+      blue: "#3b82f6"
+      purple: "#a855f7"
+      magenta: "#c084fc"
+      fuchsia: "#c084fc"
+      teal: "#0ea5e9"
+      cyan: "#38bdf8"
+      aqua: "#818cf8"
+
+# ── РЕДАКТОР ─────────────────────────────────────────────────────
+# Раскладку (standard — как в Zed/VS Code) Rune при первом запуске пишет в этот же файл
+# (editor.mode + key_bindings). Ниже — только то, что дополняет пресет.
+editor:
+  autoindent: true
+  aux_bar:
+    enabled: true
+    folds: true
+    git: inline
+    lines: absolute
+    highlight_cursor: true
+
+command:
+  # свои команды поверх встроенных: dotfiles прямо из командной строки Rune (:)
+  aliases:
+    doctor: "! dot project doctor %"      # что есть в проекте и чего не хватает
+    gotest: "! go test ./..."
+    govet: "! go vet ./..."
+    lg: "! lazygit"
+
+terminal:
+  shell: zsh
+  max_lines: 10000
+  clipboard:
+    write: true
+    read: false
+
+workspace:
+  auto_restore: true
+
+# расширение dot (rune/dot-ext, собирает install.sh): команды work, workoff, projectdoctor
+extensions:
+  dot:
+    path: ~/go/bin/rune-dot

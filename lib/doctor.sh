@@ -213,6 +213,11 @@ doc_editors() {
     if [ -d /Applications/Zed.app ]; then pass "Zed"
     else failed "Zed не установлен" "→ brew install --cask zed"; fi
     has zed || warning "нет команды zed" "→ ./install.sh создаст /opt/homebrew/bin/zed"
+    # Rune — следующий редактор (переезд с Zed постепенный): необязателен, но если стоит — с расширением dot
+    if [ -d /Applications/Rune.app ]; then
+        if [ -x "$HOME/go/bin/rune-dot" ]; then pass "Rune + расширение dot"
+        else warning "Rune есть, а расширения dot нет" "→ go build -C ~/dotfiles/rune/dot-ext -o ~/go/bin/rune-dot ."; fi
+    else optional "Rune" "→ github.com/unstablebuild/rune/releases (DMG)"; fi
     # Safari: таблица стилей выбирается в самом Safari (песочница) — здесь только читаем
     if ! defaults read com.apple.Safari >/dev/null 2>&1; then
         info "Safari: шрифт кода не проверить без «Полного доступа к диску»"

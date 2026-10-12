@@ -12,7 +12,7 @@ updates:
         patterns: ["*"]
 
   - package-ecosystem: gomod
-    directory: /berth
+    directories: [/berth, /rune/dot-ext]
     schedule:
       interval: weekly
     commit-message:
