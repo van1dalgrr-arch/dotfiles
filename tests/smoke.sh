@@ -51,12 +51,26 @@ check ".env попадёт в git"   1 ".env не в .gitignore"    -- "$DOT" pr
 mkdir -p "$TMP/notes"
 check "не Go-проект"         0 "не Go-проект"            -- "$DOT" project doctor "$TMP/notes"
 
+# dot work: режимы из своей папки, состояние — во временном файле
+export WORK_DEFS="$TMP/work" WORK_STATE="$TMP/work-state"
+mkdir -p "$WORK_DEFS"
+printf 'dir=%s\ncontainers=""\neditor=none\n' "$TMP/notes" > "$WORK_DEFS/notes.work"
+check "work list"            0 "notes"                   -- "$DOT" work list
+check "work: нет режима"     2 "нет режима"              -- "$DOT" work nope
+check "work: плохой флаг"    2 ""                        -- "$DOT" work --bogus
+check "work: включить"       0 "◆ notes"                 -- "$DOT" work notes
+check "work: состояние"      0 "notes"                   -- cat "$WORK_STATE"
+check "work dir"             0 "$TMP/notes"              -- "$DOT" work dir
+check "sync: плохой флаг"    2 ""                        -- "$DOT" sync --bogus
+rm -f "$WORK_STATE"
+
 # go/tools.txt разбирается: имя, пакет, версия
 check "tools.txt разбор"     0 "gopls golang.org/x/tools/gopls v" -- bash -c ". '$DOTFILES/lib/ui.sh'; . '$DOTFILES/lib/tools.sh'; tools_list"
 
 if [ "$(uname -s)" = Darwin ]; then
     check "macos.sh: план"       0 "finder"    -- "$DOTFILES/macos.sh" finder
     check "macos.sh: группа"     2 "неизвестно" -- "$DOTFILES/macos.sh" bogus
+    check "doctor --json: валидный JSON" 0 "" -- bash -c "'$DOT' doctor --json > '$TMP/d.json'; jq -e '.summary.ok > 0 and (.checks | all(has(\"section\", \"status\", \"message\", \"hint\")))' '$TMP/d.json'"
     check "bootstrap: план"      0 "make install" -- env DOTFILES="$TMP/fresh" "$DOTFILES/bootstrap.sh" --dry-run
 fi
 

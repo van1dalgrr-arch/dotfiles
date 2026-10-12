@@ -128,6 +128,8 @@ Forgot a command? Press `?` (or `ctrl+/`) — a cheatsheet with every hotkey, fu
 | `lean` | memory report for 8 GB · `lean on` quits heavy apps from a list · `lean off` brings them back |
 | `awake on` / `off` | keep the Mac awake with the lid closed (for Claude Code from the phone); `dot doctor` reminds you if it's left on |
 | `update` | weekly maintenance: brew, pinned Go tools, Docker junk, tldr, icons, rebuilds `orbstack` |
+| `work kinoza-back` / `work off` | project mode: OrbStack, its containers and Zed in one command, `◆ name 1h12m` in the prompt; `off` shuts everything down ([`work/`](work)) |
+| `dot sync` | pull fresh dotfiles safely: fast-forward only, never touches uncommitted changes |
 | `dot snapshot` | snapshot before a macOS upgrade; `dot snapshot diff` after shows what reset ([checklist](docs/macos-upgrade.md)) |
 
 Type a command that doesn't exist and the prompt tells you if it's available in brew — like `pkgfile` on Arch.
@@ -350,7 +352,7 @@ own: `kind create cluster` and `tf apply` are always up to you.
 
 ```bash
 make check    # what CI runs: shellcheck, bash 3.2 / zsh syntax, Brewfile, JSON themes, Python, Ghostty shaders, berth (go vet + tests), gitleaks
-make test     # smoke tests for dot (tests/smoke.sh)
+make test     # smoke tests for dot + install/uninstall in a temp HOME (tests/)
 ```
 
 Scripts target the system **bash 3.2**, so they work on a clean Mac before Homebrew. CI runs on every push, and a
@@ -372,7 +374,7 @@ dotfiles/
 ├── berth/           the orbstack command: container dashboard in Go (built by install.sh)
 ├── git/             .gitconfig, delta, gitleaks hooks, global ignore
 ├── go/              tools.txt / tools.devops.txt: pinned Go tools
-├── tests/smoke.sh   smoke tests for dot (make test, CI)
+├── tests/          smoke tests for dot, install/uninstall tests (make test, CI)
 ├── btop/ bat/ eza/ lazygit/ atuin/ tealdeer/ starship/ pgcli/
 ├── Brewfile         required apps, CLIs and App Store apps   ·  Brewfile.devops: optional
 ├── bootstrap.sh     clean Mac → everything, one curl command

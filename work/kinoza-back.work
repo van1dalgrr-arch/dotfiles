@@ -1,0 +1,4 @@
+# киноза — командный проект: Postgres в отдельном контейнере, compose в репо пустой
+dir=~/dev/kinozaBack/kinoza-back
+containers="kinoza-pg"
+editor=zed

@@ -1,4 +1,5 @@
 # Промпт на чистом zsh: вне git — ни одного процесса, в git — один `git status`. Цвета — T_* темы.
+# ◆ режим проекта (dot work) — из ~/.config/dotfiles/work, тоже без процессов.
 # ⎈ контекст kubectl — только в k8s-проекте или после kubectl/helm в этом окне (читается файл).
 
 zmodload zsh/datetime
@@ -87,6 +88,16 @@ _prompt_context() {
 
 _seg() { [[ -n $1 ]] && print -n "$(_p $T_MUTED)─[%f$1$(_p $T_MUTED)]"; }
 
+# ◆ kinoza-back 1ч12м — включённый режим dot work и сколько он работает
+_prompt_work() {
+    local f=$HOME/.config/dotfiles/work
+    [[ -r $f ]] || return
+    local -a w=("${(@f)$(<$f)}")
+    local s=$(( EPOCHSECONDS - ${w[2]:-$EPOCHSECONDS} )) age
+    (( s >= 3600 )) && age="$((s / 3600))ч$((s % 3600 / 60))м" || age="$((s / 60))м"
+    print -n "$(_p $T_ROSE)◆ %B${w[1]}%b $(_p $T_MUTED)$age"
+}
+
 # время команды; заодно — была ли она про Kubernetes (тогда показываем ⎈)
 _prompt_preexec() {
     _prompt_t0=$EPOCHREALTIME
@@ -126,7 +137,7 @@ _prompt_precmd() {
     local host_color=$T_FOAM; [[ -n $SSH_CONNECTION ]] && host_color=$T_LOVE
     local who="%B$(_p $T_ROSE)%n%b$(_p $T_MUTED)@%B$(_p $host_color)%m%b"
 
-    PROMPT="$(_p $T_MUTED)╭─[%f$who$(_p $T_MUTED)]$(_seg "$(_prompt_dir $root)")$(_seg "$git_part")$(_seg "$(_prompt_context $root)")$jobs_part$status_part%f
+    PROMPT="$(_p $T_MUTED)╭─[%f$who$(_p $T_MUTED)]$(_seg "$(_prompt_dir $root)")$(_seg "$git_part")$(_seg "$(_prompt_context $root)")$(_seg "$(_prompt_work)")$jobs_part$status_part%f
 $(_p $T_MUTED)╰─%(?.$(_p $T_ROSE).$(_p $T_LOVE))%(!.#.$)%f "
     RPROMPT="${took:+$(_p $T_GOLD)󱎫 $took $(_p $T_HL_HIGH)· }$(_p $T_MUTED)%D{%H:%M}%f"
 }

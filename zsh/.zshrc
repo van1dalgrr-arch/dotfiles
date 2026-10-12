@@ -128,7 +128,8 @@ alias gds="git diff --staged"
 _docker_ready() {
     [[ -S ~/.orbstack/run/docker.sock ]] && command docker info >/dev/null 2>&1 && return 0
     print -P "%F{#$T_MUTED}󰡨 запускаю OrbStack…%f" >&2
-    open -ga OrbStack
+    # после `orb stop` приложение остаётся открытым, и open -ga уже ничего не делает — движок будит orb start
+    if (( $+commands[orb] )); then orb start >/dev/null 2>&1; else open -ga OrbStack; fi
     local i; for i in {1..60}; do command docker info >/dev/null 2>&1 && return 0; sleep 1; done
     echo "OrbStack не запустился за минуту — open -a OrbStack" >&2; return 1
 }
@@ -374,6 +375,12 @@ up() {
         fi
     )
     [ -n "$compose" ] && echo "зависимости работают дальше · остановить: dcd"
+}
+
+# work kinoza-back — dot work + переход в папку проекта; work off — погасить всё
+work() {
+    dot work "$@" || return
+    [[ -n $1 && $1 != (off|list|dir) ]] && cd "$(dot work dir)"
 }
 
 fkill() {

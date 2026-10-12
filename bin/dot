@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # ============================================================
 #   dot — управление dotfiles одной командой
-#     dot doctor [--deep]       всё ли на месте (только читает; --deep — подробно)
+#     dot doctor [--deep] [--json]  всё ли на месте (только читает; --deep — подробно, --json — для jq/CI)
 #     dot project doctor [dir]  что есть в проекте и чего не хватает (только читает)
 #     dot install               brew bundle + симлинки + Go-утилиты + тема
 #     dot update                обслуживание (brew, Go-утилиты, Docker, иконки)
@@ -10,13 +10,15 @@
 #     dot theme [имя]           сменить тему          dot wall [имя]   сменить обои
 #     dot fx [on|off|set …]     эффекты Ghostty       dot check        проверки, как в CI
 #     dot snapshot [diff]       снимок системы до/после обновления macOS; diff — что поменялось
+#     dot work [имя|off|list]   режим проекта: поднять окружение / погасить всё до нуля
+#     dot sync                  безопасно подтянуть свежие dotfiles: только fast-forward + проверки
 #     dot edit                  открыть репозиторий в Zed
 #   Код выхода: 0 — ок (предупреждения не считаются), 1 — есть ошибки, 2 — неверный вызов.
 # ============================================================
 set -uo pipefail
 DOTFILES="${DOTFILES:-$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)}"
 
-for lib in ui tools doctor project snapshot; do
+for lib in ui tools doctor project snapshot work sync; do
     # shellcheck source=/dev/null
     . "$DOTFILES/lib/$lib.sh"
 done
@@ -32,8 +34,10 @@ case "${1:-help}" in
     wall)    shift; zsh -ic "wall $*" ;;
     fx)      shift; "$DOTFILES/ghostty/fx.sh" "$@" ;;
     snapshot) shift; snapshot "$@" ;;
+    work)    shift; work "$@" ;;
+    sync)    shift; sync "$@" ;;
     check)   make -C "$DOTFILES" check ;;
     edit)    zed "$DOTFILES" ;;
-    help|-h|--help) sed -n '3,14p' "$0" | sed 's/^# \{0,1\}//' ;;
-    *)       sed -n '3,14p' "$0" | sed 's/^# \{0,1\}//' >&2; exit 2 ;;
+    help|-h|--help) sed -n '3,16p' "$0" | sed 's/^# \{0,1\}//' ;;
+    *)       sed -n '3,16p' "$0" | sed 's/^# \{0,1\}//' >&2; exit 2 ;;
 esac

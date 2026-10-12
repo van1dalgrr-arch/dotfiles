@@ -63,6 +63,7 @@ lean|разгрузить память: lean — отчёт · lean on — за�
 update|обслуживание: brew, Go-инструменты, мусор Docker, иконки
 dot|dot doctor [--deep] — всё ли на месте · dot project doctor — проверить проект · dot tools/macos
 up|запустить проект: compose-зависимости + air/go run с .env
+work|режим проекта: work kinoza-back — поднять всё, work off — погасить до нуля
 pl|все проекты ~/dev: стек, ветка, изменения, давность
 db|pgcli к базе проекта (DATABASE_URL / .env)
 vuln|уязвимости: govulncheck + trivy

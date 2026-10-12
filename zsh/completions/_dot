@@ -1,4 +1,4 @@
-#compdef dot theme wall backdrop awake fx lean
+#compdef dot theme wall backdrop awake fx lean work
 # ============================================================
 #   Автодополнение (Tab) для своих команд: dot, theme, wall, backdrop, awake.
 #   Темы, обои и стили берутся из репозитория — новые появляются в Tab сами.
@@ -15,6 +15,10 @@ _dot_fx() {
     if (( CURRENT == 2 )); then local -a a=(on:'включить' off:'выключить' set:'ровно этот набор' list:'что включено'); _describe 'действие' a
     else local -a e=(glow:'свечение текста' cursor:'плавный курсор' trail:'шлейф' sparks:'искры при наборе' focus:'вспышка фокуса' none:'ничего'); _describe 'эффект' e; fi
 }
+_dot_work() {
+    local -a m=(~/dotfiles/work/*.work(N:t:r)) a=(off:'погасить всё до нуля' list:'какие режимы есть')
+    _describe 'режим' m; _describe 'действие' a
+}
 _dot_macos_groups() {
     local -a g=(keyboard trackpad finder saving screenshots dock appearance apps login security)
     _arguments '(-y --yes)'{-y,--yes}'[применить]' '(-v --verbose)'{-v,--verbose}'[показать и уже настроенное]' '*:группа:(${g})'
@@ -27,10 +31,11 @@ _dot() {
         backdrop) _dot_backdrops; return ;;
         fx)       _dot_fx; return ;;
         lean)     local -a l=(on:'закрыть тяжёлое из списка' off:'вернуть закрытое'); _describe 'действие' l; return ;;
+        work)     _dot_work; return ;;
         awake)    local -a a=(on:'не засыпать с закрытой крышкой' off:'как обычно'); _describe 'режим' a; return ;;
     esac
     local -a cmds=(
-        'doctor:всё ли на месте (--deep — подробно)'
+        'doctor:всё ли на месте (--deep — подробно, --json — для jq)'
         'project:dot project doctor — проверить проект'
         'install:brew bundle + симлинки + тема'
         'update:обслуживание: brew, Go-утилиты, Docker, иконки'
@@ -40,13 +45,17 @@ _dot() {
         'wall:сменить обои'
         'fx:эффекты Ghostty (шейдеры)'
         'snapshot:снимок системы до/после обновления macOS'
+        'work:режим проекта: поднять окружение / off — погасить'
+        'sync:подтянуть свежие dotfiles: fast-forward + проверки'
         'check:проверки, как в CI'
         'edit:открыть dotfiles в Zed'
         'help:справка'
     )
     if (( CURRENT == 2 )); then _describe 'команда' cmds; return; fi
     case $words[2] in
-        doctor)  _arguments '--deep[подробно: версии, ревизии, лишние пакеты]' ;;
+        doctor)  _arguments '--deep[подробно: версии, ревизии, лишние пакеты]' '--json[результат в JSON]' ;;
+        work)    _dot_work ;;
+        sync)    _arguments '--yes[применить без вопроса]' ;;
         project) (( CURRENT == 3 )) && { local -a p=('doctor:что есть в проекте и чего не хватает'); _describe 'проект' p; } || _directories ;;
         tools)   local -a t=(status install devops); _describe 'действие' t ;;
         macos)   shift words; (( CURRENT-- )); _dot_macos_groups ;;

@@ -12,7 +12,9 @@ Executables on `PATH`. Here: `dot`, the one command for managing the setup.
 
 | | |
 |---|---|
-| `dot doctor [--deep]` | is everything in place (read-only) |
+| `dot doctor [--deep] [--json]` | is everything in place (read-only; `--json` for jq and CI) |
+| `dot work [name\|off\|list]` | project mode: bring up its containers and editor; `off` shuts everything down to Finder, Happ, Ghostty |
+| `dot sync [--yes]` | pull fresh dotfiles: shows what's coming, fast-forward only, then tests and doctor |
 | `dot project doctor [dir]` | what a project has and lacks |
 | `dot tools [install] [devops]` | pinned Go tools |
 | `dot install` · `dot update` | brew bundle + install.sh · weekly upkeep |

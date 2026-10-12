@@ -1,0 +1,4 @@
+# Режим проекта для `dot work <имя>`: скопируй в work/<имя>.work
+dir=~/dev/my-api              # папка проекта
+containers=""                 # контейнеры для docker start/stop; пусто → сервисы compose без build:
+editor=zed                    # zed | none

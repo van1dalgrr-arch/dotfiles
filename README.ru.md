@@ -128,6 +128,8 @@ dot doctor               # всё должно быть ✓
 | `lean` | память на 8 ГБ: отчёт · `lean on` закрывает тяжёлое из списка · `lean off` возвращает |
 | `awake on` / `off` | не засыпать с закрытой крышкой (для Claude Code с телефона); `dot doctor` напомнит, если забыл выключить |
 | `update` | обслуживание раз в неделю: brew, закреплённые Go-утилиты, мусор Docker, tldr, иконки, пересборка `orbstack` |
+| `work kinoza-back` / `work off` | режим проекта: OrbStack, его контейнеры и Zed одной командой, в промпте `◆ имя 1ч12м`; `off` гасит всё ([`work/`](work)) |
+| `dot sync` | безопасно подтянуть свежие dotfiles: только fast-forward, незакоммиченное не трогает |
 | `dot snapshot` | снимок системы перед обновлением macOS; `dot snapshot diff` после — что сбросилось ([чек-лист](docs/macos-upgrade.ru.md)) |
 
 Набрал команду, которой нет, — промпт подскажет, есть ли она в brew, как `pkgfile` в Arch.
@@ -350,7 +352,7 @@ dot doctor --deep    # стоит ли что-то мимо Brewfile? что-т�
 
 ```bash
 make check    # то же, что в CI: shellcheck, синтаксис bash 3.2 / zsh, Brewfile, JSON тем, Python, шейдеры Ghostty, berth (go vet + тесты), gitleaks
-make test     # смоук-тесты dot (tests/smoke.sh)
+make test     # смоук-тесты dot + install/uninstall во временном HOME (tests/)
 ```
 
 Скрипты рассчитаны на системный **bash 3.2**, поэтому работают на чистом Mac ещё до Homebrew. CI запускается на каждый push,
@@ -372,7 +374,7 @@ dotfiles/
 ├── berth/           команда orbstack: панель контейнеров на Go (собирает install.sh)
 ├── git/             .gitconfig, delta, хуки gitleaks, глобальный ignore
 ├── go/              tools.txt / tools.devops.txt: закреплённые Go-утилиты
-├── tests/smoke.sh   смоук-тесты dot (make test, CI)
+├── tests/          смоук-тесты dot, тесты install/uninstall (make test, CI)
 ├── btop/ bat/ eza/ lazygit/ atuin/ tealdeer/ starship/ pgcli/
 ├── Brewfile         обязательные программы, CLI и приложения из App Store   ·  Brewfile.devops: необязательное
 ├── bootstrap.sh     чистый Mac → всё, одной командой curl
