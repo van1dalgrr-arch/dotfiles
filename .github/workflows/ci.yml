@@ -108,7 +108,7 @@ jobs:
         run: |
           for t in themes/*.sh; do
             name=$(basename "$t" .sh); [ "$name" = apply ] && continue
-            export HOME=$(mktemp -d)
+            HOME=$(mktemp -d); export HOME
             NO_WALLPAPER=1 NO_ICONS=1 ./themes/apply.sh "$name"
             test -s "$HOME/.config/ghostty/theme.ghostty" && test -s "$HOME/.cache/dotfiles-theme/starship.toml"
             echo "ok $name"
