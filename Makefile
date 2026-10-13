@@ -15,6 +15,7 @@ devops:
 check:
 	shellcheck -S warning -e SC1090 $(SCRIPTS)
 	for f in $(SCRIPTS); do /bin/bash -n $$f || exit 1; done   # системный bash 3.2 на чистом Mac
+	@! perl -ne 'print "$$ARGV:$$.: $$_" if /\$$[A-Za-z_]\w*[\x80-\xff]/; close ARGV if eof' $(SCRIPTS) | grep . || { echo '↑ bash 3.2 читает байты UTF-8 после $$var как часть имени — пиши $${var}'; exit 1; }
 	for f in zsh/.zshrc zsh/*.zsh; do zsh -n $$f || exit 1; done
 	ruby -c Brewfile >/dev/null && ruby -c Brewfile.devops >/dev/null
 	for f in zed/dev-night-theme/themes/*.json zed/dev-night-icons/icon_themes/*.json; do jq empty $$f || exit 1; done

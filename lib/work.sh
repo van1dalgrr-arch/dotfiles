@@ -67,10 +67,10 @@ claude_in() {
 
 work_on() {
     local name=$1 c deps
-    work_def "$name" || { echo "нет режима «$name» → dot work list" >&2; return 2; }
+    work_def "$name" || { echo "нет режима «${name}» → dot work list" >&2; return 2; }
     [ -d "$dir" ] || { failed "нет папки $dir" "→ поправь dir= в work/$name.work"; return 1; }
     local cur; cur=$(work_active)
-    if [ -n "$cur" ] && [ "$cur" != "$name" ]; then info "сначала гашу «$cur»"; work_off_quiet "$cur"; fi
+    if [ -n "$cur" ] && [ "$cur" != "$name" ]; then info "сначала гашу «${cur}»"; work_off_quiet "$cur"; fi
 
     section "◆ $name"
     deps=$(compose_deps 2>/dev/null)
@@ -112,7 +112,7 @@ work_off_quiet() {
 work_off() {
     local cur app c
     cur=$(work_active)
-    section "Гашу${cur:+ «$cur»}"
+    section "Гашу${cur:+ «${cur}»}"
     if [ -n "$cur" ]; then
         work_def "$cur" || true
         work_off_quiet "$cur"
@@ -143,7 +143,7 @@ work_report() {
     local cur apps n pids
     cur=$(work_active)
     if [ -n "$cur" ]; then
-        pass "режим «$cur» · $(work_age "$(sed -n 2p "$WORK_STATE")") · $(sed -n 3p "$WORK_STATE")"
+        pass "режим «${cur}» · $(work_age "$(sed -n 2p "$WORK_STATE")") · $(sed -n 3p "$WORK_STATE")"
     else
         pass "режим не включён"
     fi
