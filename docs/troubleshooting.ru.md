@@ -109,6 +109,47 @@ tflint лежит в `go/tools.devops.txt` (Homebrew убрал формулу):
 (`go 1.N` / `toolchain go1.N.x`) при первой сборке. Не скачал — проверь `go env GOTOOLCHAIN`: там не должно быть `local`.
 </details>
 
+## Редакторы: Rune и Neovim
+
+<details>
+<summary>Rune: <code>dot doctor</code> пишет «Rune переписал ~/.rune/config.yaml поверх ссылки»</summary>
+
+Rune при старте дописывает в конфиг блоки своих пакетов и сохраняет файл целиком — ссылка становится обычным файлом.
+Посмотри разницу и забери её в репозиторий:
+`diff ~/dotfiles/rune/config.yaml ~/.rune/config.yaml`, потом
+`cp ~/.rune/config.yaml ~/dotfiles/rune/config.yaml && ln -sf ~/dotfiles/rune/config.yaml ~/.rune/config.yaml` и закоммить.
+</details>
+
+<details>
+<summary>Rune: клавиша не срабатывает</summary>
+
+Сначала проверь, не забрал ли её AeroSpace: ему принадлежат `alt-h/j/k/l`, `alt-r`, `alt-q`, `alt-e`, `alt-enter`,
+`alt-1…9` и всё с `alt-shift`. Поэтому в Rune всё на `cmd`, `ctrl-alt`, `cmd-alt` и F-клавишах.
+F-клавиши на маке — через `fn` (`fn-F8`). Ошибки в самом конфиге Rune пишет в `~/.rune/debug.log`:
+`grep -i 'error occurred' ~/.rune/debug.log | tail -1`.
+</details>
+
+<details>
+<summary>Neovim: нет подсказок кода и перехода к определению</summary>
+
+Языковой сервер ещё не поставился или упал. `:Mason` — что стоит; `:LspInfo` — что подключено к файлу;
+`:checkhealth` — всё целиком. Первый запуск в Go-проекте ставит gopls сборкой из исходников — это пара минут.
+</details>
+
+<details>
+<summary>Neovim: Mason не ставит серверы, в логе <code>npm error EACCES</code></summary>
+
+В `~/.npm` остались папки от root (когда-то запускали `sudo npm`). Это просто кеш: `mv ~/.npm ~/.npm.old`
+и `:Mason` → переустановить. Старую папку потом удалить: `sudo rm -rf ~/.npm.old`.
+</details>
+
+<details>
+<summary>Neovim: нет подсветки, ошибка про <code>tree-sitter-cli</code></summary>
+
+Новый nvim-treesitter собирает парсеры сам и для этого нужен `tree-sitter-cli`: `brew install tree-sitter-cli`
+(он уже в Brewfile), потом в Neovim `:TSUpdate`.
+</details>
+
 ## macOS и <code>dot doctor</code>
 
 <details>

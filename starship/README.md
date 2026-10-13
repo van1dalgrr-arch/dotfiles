@@ -12,4 +12,14 @@ Optional [starship](https://starship.rs) prompt. The default prompt is the hand-
 
 - `starship.toml` → `~/.config/starship.toml`
 
+## Turning it on
+
+```bash
+echo 'export PROMPT_ENGINE=starship' >> ~/.zshenv && exec zsh      # on
+sed -i '' '/PROMPT_ENGINE=starship/d' ~/.zshenv && exec zsh      # back to the own prompt
+```
+
+The own prompt is faster (no processes outside git), so it's the default. starship is kept as a fallback
+in case you want modules the own one doesn't have. `theme` generates its colors too.
+
 [← dotfiles](../README.md)

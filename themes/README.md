@@ -17,4 +17,15 @@ Color palettes and the script that recolors everything. Pictures of all themes: 
 
 Copy a palette file, change the 19 `T_*` colors, then `theme <name>`.
 
+## Using it
+
+```bash
+theme              # pick with a color preview
+theme kanagawa     # right away
+```
+
+One palette recolors Ghostty, the prompt, fzf, bat, delta, btop, eza, lazygit, starship, app and folder icons,
+and sets the theme's wallpaper. Generated files go to `~/.config` and `~/.cache/dotfiles-theme`, never into the repo.
+macOS light mode switches to Dev Day by itself — in Ghostty and Zed.
+
 [← dotfiles](../README.md)

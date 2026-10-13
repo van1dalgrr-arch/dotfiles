@@ -1,0 +1,52 @@
+# nvim
+
+🇷🇺 [Русская версия](README.ru.md) · [← dotfiles](../README.md)
+
+Neovim on [LazyVim](https://lazyvim.org) — the escape hatch if Rune or Zed get old: a ready IDE in the terminal,
+nothing to assemble by hand. A from-scratch config can later live in a sibling folder and run as
+`NVIM_APPNAME=<name> nvim` without breaking this one.
+
+| File | What |
+|---|---|
+| `init.lua` | one line: loads `lua/config/lazy.lua` |
+| `lua/config/lazy.lua` | installs the lazy.nvim plugin manager and LazyVim; **background update checks are off** — update with `:Lazy update` |
+| `lua/config/{options,keymaps,autocmds}.lua` | own settings on top of LazyVim (empty for now — everything is stock) |
+| `lua/plugins/dotfiles.lua` | tokyonight night with a transparent background, to match the terminal |
+| `lazyvim.json` | enabled extras: Go, Docker, YAML, JSON, Markdown, debugger, tests |
+| `lazy-lock.json` | exact versions of every plugin — another Mac gets the same thing |
+
+`install.sh` links `~/.config/nvim → nvim/`. The previous hand-written `init.lua` is kept as
+`~/.config/nvim.bak-20261014`. Plugins and tools live outside the repo, in `~/.local/share/nvim`.
+
+## First run
+
+```bash
+nvim .            # in a project folder
+```
+
+The first run fetches whatever is missing: highlighting parsers are built by `tree-sitter-cli` (in the Brewfile),
+language servers and tools come from Mason (`:Mason` — list, status, reinstall).
+Already installed: gopls, delve, golangci-lint, gofumpt, goimports, servers for Lua, YAML, JSON, Dockerfile, compose, Markdown.
+
+## The key is space
+
+`space` (leader) opens a menu of every action with hints, so there is nothing to memorise.
+
+| Keys | What |
+|---|---|
+| `space f f` · `space /` · `space ,` | file by name · text across the project · open buffers |
+| `space e` | file tree |
+| `gd` · `gr` · `gI` · `K` | definition · usages · implementations · docs |
+| `space c r` · `space c a` | rename · code actions (fixes, gopls refactorings) |
+| `space x x` | every problem in a list (Trouble) |
+| `space t r` · `space t t` · `space t s` | test at cursor · tests in the file · test panel |
+| `space d b` · `space d c` · `space d O` / `d i` / `d o` · `space d t` | breakpoint · run/continue · step / into / out · stop |
+| `space g g` | lazygit |
+| `space s k` | search all keymaps |
+
+## Change it
+
+- **A language or feature:** `:LazyExtras` — toggle with one key (written to `lazyvim.json`, commit it).
+- **A plugin or plugin settings:** a new file in `lua/plugins/` — LazyVim picks it up.
+- **Own keys and options:** `lua/config/keymaps.lua` and `options.lua`.
+- **Update plugins:** `:Lazy update`, then commit `lazy-lock.json`.

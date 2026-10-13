@@ -12,4 +12,13 @@ Colors for [eza](https://github.com/eza-community/eza), the modern `ls` (`ls`, `
 
 - `theme.yml` → `~/.config/eza/theme.yml`
 
+## Using it
+
+| Alias | What |
+|---|---|
+| `ls` | icons, folders first |
+| `ll` | long: permissions, size, date and **git status** for every file |
+| `la` | with hidden files |
+| `lt` | a two-level tree |
+
 [← dotfiles](../README.md)

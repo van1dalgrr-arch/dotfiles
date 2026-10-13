@@ -15,4 +15,9 @@ Settings for VS Code, the secondary editor (Zed is the main one).
 - `settings.json` → `~/Library/Application Support/Code/User/settings.json`
 - `keybindings.json` → `~/Library/Application Support/Code/User/keybindings.json`
 
+## When it's needed
+
+Almost never: on 8 GB VS Code is several times heavier than Zed. It stays for the rare extension that exists nowhere
+else. Settings keep the same dark look so switching doesn't hurt the eyes.
+
 [← dotfiles](../README.md)

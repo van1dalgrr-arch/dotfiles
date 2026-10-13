@@ -29,4 +29,20 @@
 
 Оба расширения подключаются в Zed как dev-расширения через `install.sh`. Те же темы для JetBrains — [jetbrains/](../jetbrains).
 
+## Клавиши и задачи
+
+| Клавиши | Что |
+|---|---|
+| `ctrl-r` · `ctrl-shift-r` | список задач · повторить последнюю |
+| `ctrl-t` | тест под курсором |
+| `f5` | отладка (Delve, конфиги в `debug.json`) |
+| `cmd-1` · `cmd-2` · `cmd-3` · `cmd-j` | файлы · структура файла · git · терминал |
+| `cmd-shift-d` | все проблемы проекта |
+| `cmd-shift-b` · `cmd-alt-b` | git blame файла · blame в строке |
+| `alt-g` · `alt-d` | lazygit · lazydocker прямо в Zed |
+
+Задачи (`ctrl-r`): `up` (зависимости из compose и приложение), air, `go run`, тесты всего проекта / пакета / под курсором,
+бенчмарк, покрытие, golangci-lint, `go mod tidy`, govulncheck, compose up/down/ps/config/логи, сборка образа,
+hadolint для Dockerfile, trivy для образа, `curl /health`, `dot project doctor`, `dot work`.
+
 [← dotfiles](../README.ru.md) · [как пользоваться](../docs/guide.ru.md)

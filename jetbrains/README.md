@@ -18,4 +18,9 @@ Dev Night and Dev Day for GoLand and other JetBrains IDEs, generated from the Ze
 
 Rebuild: `python3 jetbrains/build.py`.
 
+## When GoLand
+
+For heavy refactoring on a big codebase where gopls isn't enough. Day to day it's Zed or Rune: Rune has a GoLand
+keymap, so your hands don't relearn anything when switching.
+
 [← dotfiles](../README.md)

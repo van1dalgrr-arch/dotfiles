@@ -2,7 +2,7 @@
 
 🇷🇺 [Русская версия](hotkeys.ru.md) · [all docs](README.md)
 
-AeroSpace, Ghostty, `orbstack` and Zed. In the terminal, `?` (or `ctrl+/`) shows all of them plus every function and alias.
+AeroSpace, Ghostty, `orbstack`, Zed, Rune and Neovim. In the terminal, `?` (or `ctrl+/`) shows all of them plus every function and alias.
 
 ## AeroSpace — windows and workspaces
 
@@ -34,6 +34,7 @@ Workspaces: 2 — code, 3 — browser, 4 — chats, 5 — music; the terminal st
 | Keys | Action |
 |---|---|
 | `` ctrl+` `` | drop-down terminal from any app |
+| `cmd-t` · `cmd-w` | new tab (in the titlebar) · close |
 | `cmd-d` · `cmd-shift-d` | split right · down |
 | `cmd-alt-arrows` | move between splits |
 | `cmd-shift-enter` | zoom split |
@@ -79,3 +80,27 @@ Go snippets: `iferr`, `iferrw`, `ginh`, `ginbind`, `ginr`, `ginmw`, `ttest`, `ht
 
 Also: golangci-lint runs as a language server (warnings right in the code), and `.http` files send requests
 to your API like REST Client in VS Code.
+
+## Rune — IDE (GoLand keymap)
+
+| Keys | Action |
+|---|---|
+| `cmd-B` · `cmd-alt-B` · `alt-F7` · `F1` | definition · implementations · usages · docs |
+| `cmd-O` · `cmd-shift-O` · `cmd-E` · `cmd-shift-T` | type · file · recent · test ↔ code |
+| `ctrl-T` · `shift-F6` · `ctrl-alt-O` | every refactoring · rename · imports |
+| `ctrl-alt-R` · `ctrl-shift-R` · `ctrl-alt-T` | run · test at cursor · all tests |
+| `ctrl-alt-D` · `cmd-F8` · `F8` / `F7` / `shift-F8` | debug · breakpoint · stepping |
+| `ctrl-alt-L` · `ctrl-alt-E` · `ctrl-alt-W` | linter · build errors · vet and tests in the background |
+
+Everything else is in [rune/README.md](../rune/README.md). F-keys need `fn`.
+
+## Neovim — LazyVim
+
+| Keys | Action |
+|---|---|
+| `space` | menu of every action with hints |
+| `space f f` · `space /` · `space e` | file · text across the project · file tree |
+| `gd` · `gr` · `K` · `space c r` · `space c a` | definition · usages · docs · rename · code actions |
+| `space t r` · `space d b` · `space d c` | test at cursor · breakpoint · start debugging |
+
+More in [nvim/README.md](../nvim/README.md).

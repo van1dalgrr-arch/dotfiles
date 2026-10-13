@@ -17,4 +17,15 @@
 
 Скопируй файл палитры, поменяй 19 цветов `T_*`, затем `theme <имя>`.
 
+## Как пользоваться
+
+```bash
+theme              # выбор с превью цветов
+theme kanagawa     # сразу
+```
+
+Одна палитра перекрашивает Ghostty, промпт, fzf, bat, delta, btop, eza, lazygit, starship, иконки приложений и папок
+и ставит обои темы. Сгенерированные файлы лежат в `~/.config` и `~/.cache/dotfiles-theme`, в репозиторий не попадают.
+Светлый режим macOS включает Dev Day сам — в Ghostty и Zed.
+
 [← dotfiles](../README.ru.md) · [как пользоваться](../docs/guide.ru.md)

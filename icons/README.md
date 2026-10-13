@@ -19,4 +19,18 @@ Swift generators: live wallpapers, photo wallpapers, the terminal backdrop, glas
 
 Create `wallpaper-<name>.swift` with `runWallpaper { hour in … }`, then `wall <name>`. Gallery: [docs/wallpapers.md](../docs/wallpapers.md).
 
+## Using it
+
+You don't run these by hand — commands call them:
+
+```bash
+wall                   # pick a wallpaper (builds the HEIC on first pick, ~10–60 s)
+wall add photo.jpg name # your photo → wallpaper
+backdrop               # terminal background from the current wallpaper (opt-in)
+theme vesper           # the theme recolors app and folder icons too
+```
+
+Built wallpapers live in `~/Pictures/Wallpapers`, previews in `~/.cache/wallpapers`. macOS itself moves between frames,
+so live wallpapers cost nothing in the background.
+
 [← dotfiles](../README.md)

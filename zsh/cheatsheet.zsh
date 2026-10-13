@@ -20,6 +20,7 @@ AeroSpace|alt-r|режим ресайза (hjkl, esc)
 AeroSpace|alt-shift-;|сервис: r сброс, f float, ⌫ закрыть остальные
 AeroSpace|alt-shift-c|перечитать конфиг
 Ghostty|ctrl-`|выпадающий терминал (из любого приложения)
+Ghostty|cmd-t|новая вкладка (в заголовке окна)
 Ghostty|cmd-d / cmd-shift-d|сплит вправо / вниз
 Ghostty|cmd-alt-стрелки|перейти между сплитами
 Ghostty|cmd-shift-enter|развернуть сплит

@@ -25,4 +25,15 @@ Shell config: hand-written prompt, aliases, functions. Starts in ~0.15 s. All co
 
 `.zshrc` sources oh-my-zsh, then `theme.zsh` (palette first: everything else uses its colors), the prompt, tools, and the other modules. Syntax highlighting goes last.
 
+## What the shell does
+
+- **A cheatsheet at hand:** `?` or `ctrl+/` — every hotkey, function and alias, searchable.
+- **A prompt that doesn't lag:** no processes outside git, one `git status` inside. After `enter` it collapses to `$ command`.
+- **Help when you mistype:** an unknown command suggests `brew install` and similar own commands.
+- **fzf everywhere:** `ctrl-t` — file with a preview, `alt-c` — folder, `tab` — completion with a preview, `ctrl-r` — history (atuin).
+- **Folder jumps:** `z part-of-path` (zoxide) and `p` — a project from `~/dev`.
+- **Memory on 8 GB:** `ram` — who eats memory, by app; `lean on` / `lean off` — close the heavy stuff and bring it back.
+- **Docker without "cannot connect":** the `docker` wrapper starts OrbStack when it's off.
+- **Sleep:** `awake on` — don't sleep with the lid closed (for working from the phone), `awake off` — back to normal.
+
 [← dotfiles](../README.md)

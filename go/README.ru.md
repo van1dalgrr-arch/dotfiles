@@ -6,11 +6,16 @@ Go-утилиты, которые ставятся через `go install` **з�
 
 | Файл | Что это |
 |---|---|
-| `tools.txt` | gopls, air, golangci-lint-langserver, govulncheck, gofumpt |
+| `tools.txt` | gopls (языковой сервер для Zed), air (перезапуск при сохранении), golangci-lint-langserver (линтер в редакторе), govulncheck (уязвимости), gofumpt (строгий формат), gw (`github` — GitHub в терминале, код написан нейросетью) |
 | `tools.devops.txt` | необязательное: tflint (из Homebrew его убрали) |
 
 ## Как пользоваться
 
 `dot tools` — что стоит и что закреплено, `dot tools install` — поставить закреплённые (`dot tools install devops` — необязательные). Обновить утилиту — сначала поменять версию здесь. `update` тоже ставит их.
+
+## Почему не Homebrew
+
+Часть этих программ в Homebrew нет, а `brew "air"` — вообще другая программа с тем же именем. `go install` с точной
+версией даёт одно и то же на любом маке. Rune и Neovim ставят себе gopls отдельно — эти версии их не касаются.
 
 [← dotfiles](../README.ru.md) · [как пользоваться](../docs/guide.ru.md)

@@ -14,4 +14,10 @@ Config and theme for [btop](https://github.com/aristocratos/btop), the resource 
 - `btop.conf` → `~/.config/btop/btop.conf`
 - `themes/rose-pine.theme` → `~/.config/btop/themes/rose-pine.theme`
 
+## Using it
+
+`top` opens btop: CPU, memory, network and processes (`shown_boxes = cpu mem net proc`), refreshed every 2 s,
+sorted by CPU. `f` — filter processes, `k` — kill the selected one, `esc` — menu, `q` — quit.
+For "what's eating memory", `ram` is handier: it counts by app, not by process.
+
 [← dotfiles](../README.md)

@@ -110,6 +110,47 @@ You don't need to do anything: with the default `GOTOOLCHAIN=auto`, Go downloads
 It shouldn't be `local`.
 </details>
 
+## Editors: Rune and Neovim
+
+<details>
+<summary>Rune: <code>dot doctor</code> says "Rune rewrote ~/.rune/config.yaml over the link"</summary>
+
+On start Rune merges its packages' blocks into the config and saves the whole file, which turns the link into a plain file.
+Look at the difference and take it into the repo:
+`diff ~/dotfiles/rune/config.yaml ~/.rune/config.yaml`, then
+`cp ~/.rune/config.yaml ~/dotfiles/rune/config.yaml && ln -sf ~/dotfiles/rune/config.yaml ~/.rune/config.yaml` and commit.
+</details>
+
+<details>
+<summary>Rune: a key does nothing</summary>
+
+First check that AeroSpace didn't take it: it owns `alt-h/j/k/l`, `alt-r`, `alt-q`, `alt-e`, `alt-enter`,
+`alt-1…9` and everything with `alt-shift`. That's why Rune keys are on `cmd`, `ctrl-alt`, `cmd-alt` and F-keys.
+F-keys on a Mac need `fn` (`fn-F8`). Rune writes config errors to `~/.rune/debug.log`:
+`grep -i 'error occurred' ~/.rune/debug.log | tail -1`.
+</details>
+
+<details>
+<summary>Neovim: no completion and no go-to-definition</summary>
+
+The language server isn't installed yet or crashed. `:Mason` — what's installed; `:LspInfo` — what's attached to the file;
+`:checkhealth` — everything. The first run in a Go project builds gopls from source — that takes a couple of minutes.
+</details>
+
+<details>
+<summary>Neovim: Mason doesn't install servers, the log says <code>npm error EACCES</code></summary>
+
+`~/.npm` has root-owned folders (someone ran `sudo npm` once). It's only a cache: `mv ~/.npm ~/.npm.old`
+and reinstall from `:Mason`. Remove the old folder later: `sudo rm -rf ~/.npm.old`.
+</details>
+
+<details>
+<summary>Neovim: no highlighting, an error about <code>tree-sitter-cli</code></summary>
+
+The new nvim-treesitter builds parsers itself and needs `tree-sitter-cli` for it: `brew install tree-sitter-cli`
+(it's in the Brewfile), then `:TSUpdate` in Neovim.
+</details>
+
 ## macOS and <code>dot doctor</code>
 
 <details>

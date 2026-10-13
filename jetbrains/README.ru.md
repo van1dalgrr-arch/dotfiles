@@ -18,4 +18,9 @@ Dev Night и Dev Day для GoLand и других IDE JetBrains, собранн
 
 Пересобрать: `python3 jetbrains/build.py`.
 
+## Когда GoLand
+
+Для тяжёлых рефакторингов на большом коде, где не хватает gopls. Каждый день — Zed или Rune: Rune настроен
+с раскладкой GoLand, поэтому руки не переучиваются при переходе.
+
 [← dotfiles](../README.ru.md) · [как пользоваться](../docs/guide.ru.md)

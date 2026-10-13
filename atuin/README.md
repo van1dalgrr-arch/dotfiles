@@ -16,4 +16,10 @@ Config for [atuin](https://atuin.sh), shell history in SQLite: `ctrl+r` opens se
 
 History stays on this Mac (sync is off). Atuin AI is disabled on purpose (`--disable-ai` in `.zshrc`), so `?` keeps opening the cheatsheet.
 
+## Using it
+
+- `ctrl-r` — search the whole history: type part of a command, `enter` puts it on the line (doesn't run it — you can edit first).
+- `↑` on an empty line — history of **this folder only**: handy to get back to a project's commands.
+- The list shows where and when each command ran and how it ended (exit code).
+
 [← dotfiles](../README.md)

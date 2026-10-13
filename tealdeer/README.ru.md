@@ -12,4 +12,11 @@
 
 - `config.toml` → `~/.config/tealdeer/config.toml`
 
+## Как пользоваться
+
+```bash
+tldr tar        # самые нужные примеры, без простыни man
+tldr -u         # обновить страницы вручную (сами обновляются раз в 30 дней, а ещё в `update`)
+```
+
 [← dotfiles](../README.ru.md) · [как пользоваться](../docs/guide.ru.md)

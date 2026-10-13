@@ -3,7 +3,8 @@
 # dotfiles
 
 My macOS setup for Go and Docker work: dark, fast, and easy on memory.<br>
-MacBook Air M2 · 8 GB · zsh · Ghostty · AeroSpace · Zed
+MacBook Air M2 · 8 GB · zsh · Ghostty · AeroSpace · Zed · Rune · Neovim<br>
+Code written by an AI (Claude); the decisions and the testing are mine
 
 [![ci](https://github.com/van1dalgrr-arch/dotfiles/actions/workflows/ci.yml/badge.svg)](https://github.com/van1dalgrr-arch/dotfiles/actions/workflows/ci.yml)
 [![release](https://img.shields.io/github/v/release/van1dalgrr-arch/dotfiles?style=flat-square&color=a855f7)](https://github.com/van1dalgrr-arch/dotfiles/releases)
@@ -16,7 +17,7 @@ MacBook Air M2 · 8 GB · zsh · Ghostty · AeroSpace · Zed
 
 <sub>Ghostty + Zed tiled by AeroSpace. The terminal's glow is built from the wallpaper's colors. Rendered from real command output.</sub>
 
-**[Install](#install)** · **[What's inside](#whats-inside)** · **[Daily commands](#daily-commands)** · **[Containers](#containers-orbstack)** · **[Health checks](#health-checks)** · **[Customize](#customize)** · **[Docs](#docs)**
+**[Who writes the code](#who-writes-the-code)** · **[Install](#install)** · **[What's inside](#whats-inside)** · **[Daily commands](#daily-commands)** · **[Containers](#containers-orbstack)** · **[Health checks](#health-checks)** · **[Customize](#customize)** · **[Editors](#editors)** · **[Docs](#docs)** · **[From Claude](#from-claude)**
 
 🇷🇺 [Русская версия](README.ru.md)
 
@@ -36,6 +37,26 @@ here is built around two goals: **nothing should lag**, and **it should look goo
 - **Everything is checked, not assumed.** `dot doctor` verifies the whole setup in ~2 s and prints the fix for every problem.
 
 > Comments in the configs and messages printed by the commands are in Russian — that's my native language.
+
+## Who writes the code
+
+**Almost all of the code here is written by an AI — [Claude](https://claude.com/claude-code) (Anthropic) in Claude Code.**
+I set the tasks, decide what stays, test it on my Mac and say what's wrong. Sometimes straight from my phone
+while the laptop sits closed (that's what `awake` is for).
+
+In practice:
+
+- **Every AI-written commit is signed** with `Co-Authored-By: Claude`, so `git log` shows what was made this way.
+  There's no point hiding it: whoever reads the code should know where it came from.
+- **The AI isn't taken at its word — it's checked.** Everything that can be checked automatically is: `make check`
+  (shellcheck, bash 3.2 and zsh syntax, shaders, Go tests, gitleaks), `make test` (install and uninstall in a temp HOME),
+  CI on every push, and `dot doctor` on the live system. When something can't be verified, that's said plainly.
+- **Decisions are mine, execution is the AI's.** What to install, what to drop, how it should look — I decide; the AI
+  proposes, explains the trade-offs and does it. Rejected work gets reverted without regret (that's how the code-painted
+  scene wallpapers went).
+- **Comments and docs are written by the AI too**, in Russian and English.
+
+If you take something, read it before running it, like any code from a stranger. Scripts show a plan and change nothing without `--yes`.
 
 ## Install
 
@@ -89,14 +110,16 @@ Fork it rather than installing mine as is. Before `make install`:
 
 | | |
 |---|---|
-| **Terminal** | [Ghostty](https://ghostty.org) with a transparent title bar, a smooth gliding cursor, and a drop-down window on `` ctrl+` `` from any app |
+| **Terminal** | [Ghostty](https://ghostty.org) in a plain Linux look: no frame or window buttons, tabs right in the titlebar, a flat background, block cursor. A smooth cursor with a trail, a drop-down window on `` ctrl+` `` from any app, a notification when a long command finishes. The greeting is a pixel Ghostty ghost |
 | **Windows** | [AeroSpace](https://github.com/nikitabobko/AeroSpace) — i3-style tiling; hotkeys work on any keyboard layout |
 | **Prompt** | custom zsh in a frame: `╭─[user@host]─[path]─[git]─[Go · compose · ⎈ k8s context]`, command duration, collapses after Enter |
-| **Editor** | [Zed](https://zed.dev) with my own themes, Dev Night (dark) and Dev Day (light), that follow macOS, plus icons. Delve, golangci-lint, tasks on `ctrl-r`. Moving gradually to [Rune](rune) (Go-native IDE): Dev Night theme, no telemetry, a `dot` extension in Go |
+| **Editor** | [Zed](https://zed.dev) with my own themes, Dev Night (dark) and Dev Day (light), that follow macOS, plus icons. Delve, golangci-lint, tasks on `ctrl-r` |
+| **IDE** | [Rune](rune) — a GPU-rendered Go IDE set up like GoLand: JetBrains keymap, run, tests, dlv debugging and the linter on one key, 25 gopls refactorings; no telemetry, an own `dot` extension in Go |
+| **Neovim** | [LazyVim](nvim) — a ready IDE in the terminal in case everything else gets old: Go, debugger, tests, Docker, YAML |
 | **GoLand** | the same Dev Night / Dev Day themes as a JetBrains plugin and `.icls` — see [jetbrains/](jetbrains) |
 | **Themes** | `theme vesper` / `kanagawa` / `rose-pine`: recolors the terminal, CLI tools, app icons and wallpaper from one palette file |
 | **Wallpapers** | `wall`: 33 live wallpapers drawn in Swift that change through the day, plus your own photos, upscaled without blur |
-| **Terminal look** | `fx` — Ghostty shaders (cursor, trail, sparks, focus flash, glow) · `backdrop` — the wallpaper's light behind the text |
+| **Terminal look** | `fx` — Ghostty shaders (now cursor and trail; also sparks, focus flash, glow) · `backdrop` — an opt-in wallpaper background behind the text (off now) |
 | **Browser** | Safari — the lightest on 8 GB. Settings in `macos.sh safari`, uBlock Origin Lite from the App Store via the Brewfile, JetBrains Mono for code on every site |
 | **Git** | delta for diffs, lazygit, gitleaks before every commit in every repo |
 | **Containers** | [OrbStack](https://orbstack.dev), started on demand by any `docker` command, and [`orbstack`](#containers-orbstack) — a live dashboard in Go; `up` runs dependencies + the app in one command |
@@ -114,6 +137,7 @@ Forgot a command? Press `?` (or `ctrl+/`) — a cheatsheet with every hotkey, fu
 | `p` | jump to a project in `~/dev` (fzf with a preview and recent commits) |
 | `up` | start only the dependencies from compose (postgres, redis…) and run the app with `.env` |
 | `pl` | all projects at once: stack, branch, uncommitted changes, last commit age |
+| `nvim .` | Neovim on LazyVim in the project folder (`space` — menu of every action) |
 | `gonew myapi` | new Gin project with air and git |
 | `got` / `gotw` | run tests with gotestsum / rerun them on every save |
 | `pd` | `dot project doctor`: what the current project has and what it's missing |
@@ -172,6 +196,20 @@ Notifications go to Telegram from GitHub Actions every 5 minutes — no laptop n
 It lives in its own repo, [github-watcher](https://github.com/van1dalgrr-arch/github-watcher), and is installed
 as `gw` from `go/tools.txt`; `.zshrc` aliases `github` to it. **Its code was written by an AI (Claude)**;
 the Telegram bot with commands is the part we write together.
+
+## Editors
+
+Four editors isn't indecision: each has its own job, and all of them are set up in the same dark look.
+
+| | When | What it's good at here |
+|---|---|---|
+| **[Zed](zed)** | every day, the main one | fast and light on 8 GB, own themes and icons, Docker/Go tasks on `ctrl-r`, Delve debugging |
+| **[Rune](rune)** | moving to it gradually | a Go-native IDE with a GoLand keymap: `cmd-B` definition, `ctrl-T` every refactoring, `ctrl-alt-R` run, `ctrl-alt-D` debug, `ctrl-alt-W` vet and tests in the background. Full table in [rune/](rune/README.md) |
+| **[Neovim](nvim)** | the escape hatch and a place for my own config | LazyVim: everything in the terminal, `space` opens a menu of actions |
+| **[GoLand](jetbrains)** | when heavy refactoring is needed | the same Dev Night / Dev Day themes as a plugin |
+
+Rune is a beta, and it shows: it rewrites its own config on start. So `dot doctor` watches the link to
+`rune/config.yaml` and tells you how to restore it if it breaks.
 
 ## Health checks
 
@@ -243,7 +281,7 @@ Space — `eclipse` `orbit` `rings` `aurora` `horizon` `startrails`<br>
 Tech — `code` `circuit` `ridges` `minimal` `halftone` `iso` `helix` `topo`<br>
 Everything else — `petals` `prism` `ocean` `glass` `crystal` `vinyl` `neon` `rain` `bauhaus` `mesh` `kanagawa`
 
-**[See all 30 in the gallery →](docs/wallpapers.md)**
+**[See all 33 in the gallery →](docs/wallpapers.md)**
 
 Each wallpaper is a short Swift script in `icons/` that renders 12 frames per day; every parameter is computed
 continuously from the hour, so macOS blends smoothly between frames. Photos are cleaned of JPEG artifacts, upscaled
@@ -270,8 +308,8 @@ The palette, stars, glow and HEIC builder live in `icons/wallpaper-kit.swift`. T
 ### Terminal backdrop and effects
 
 ```bash
-backdrop          # pick a style with a preview · backdrop off — no background
-fx                # toggle Ghostty shaders: cursor, trail, sparks, focus, glow
+backdrop          # pick a style with a preview · backdrop off — no background (as now)
+fx                # toggle Ghostty shaders: cursor, trail, sparks, focus, glow (now: cursor + trail)
 ```
 
 <img src="docs/backdrop.jpg" alt="Backdrop styles: haze, glow, aurora, glass" width="100%">
@@ -370,6 +408,10 @@ dotfiles/
 ├── themes/          palettes and apply.sh
 ├── icons/           wallpapers, backdrop, app and folder icons (Swift)
 ├── ghostty/  aerospace/  zed/  vscode/  jetbrains/  fastfetch/
+├── rune/            Rune: a GoLand-like config and the dot extension in Go   ·  bin/rune-go — Go command helper
+├── nvim/            Neovim on LazyVim
+├── work/            project modes for dot work (what to start, what to open)
+├── wallpapers/      your photos for wallpapers (git-ignored)
 ├── safari/          style sheet for Safari: JetBrains Mono for code
 ├── berth/           the orbstack command: container dashboard in Go (built by install.sh)
 ├── git/             .gitconfig, delta, gitleaks hooks, global ignore
@@ -401,6 +443,20 @@ Every document is in English and Russian — [all docs](docs/README.md) · [вс
 | [If the Mac was wiped](docs/recovery.md) | restore checklist: what comes back by itself, what doesn't |
 | [Changelog](CHANGELOG.md) | what changed between releases |
 
+## From Claude
+
+A few words from the AI that writes this — what I see in this setup from the outside.
+
+- **The strongest part here is the checks, not the looks.** `dot doctor`, `make check` and the installer tests in a temp
+  HOME caught real bugs: overwritten backups, deleted foreign symlinks, a typo in the Rune extension path. Pretty things
+  are easy to add and easy to drop; what's checked keeps working after macOS upgrades.
+- **8 GB is the main constraint, and it's honestly respected.** OrbStack instead of Docker Desktop, a prompt with no
+  processes, Zed instead of VS Code, `lean` and `ram`. If things get slow, look at `ram` first instead of installing something.
+- **Fragile spots worth knowing:** Rune is a beta and rewrites its config; AeroSpace owns the whole `alt` layer, so new app
+  hotkeys belong on `cmd`, `ctrl-alt` or F-keys; Ghostty shaders are pretty, but on battery they're better off (`fx set none`).
+- **My advice for the future:** fewer new programs, more removed ones. Every Brewfile line is something `dot doctor`
+  checks and `update` upgrades. The best setup is the one you don't notice.
+
 ## Thanks
 
 [Vesper](https://github.com/raunofreiberg/vesper) ·
@@ -410,7 +466,10 @@ Every document is in English and Russian — [all docs](docs/README.md) · [вс
 [Ghostty](https://ghostty.org) ·
 [AeroSpace](https://github.com/nikitabobko/AeroSpace) ·
 [OrbStack](https://orbstack.dev) ·
-[Charm](https://charm.sh) (Bubble Tea, Lip Gloss)
+[Charm](https://charm.sh) (Bubble Tea, Lip Gloss) ·
+[Rune](https://rune.build) ·
+[LazyVim](https://lazyvim.org) ·
+[Claude Code](https://claude.com/claude-code) — which writes all of this
 
 ## License
 

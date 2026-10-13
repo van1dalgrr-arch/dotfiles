@@ -121,10 +121,18 @@ fx set none       # no effects (a plain cursor)
 `cursor` — smooth cursor · `trail` — a trail on jumps · `sparks` — sparks as you type ·
 `focus` — the focused window flashes along its edges · `glow` — glowing text (dark theme only).
 Colors come from the theme, so `theme` and light mode recolor the effects at once.
+Only `cursor` and `trail` are on by default: the rest is decoration, better off on battery.
 
 ---
 
 ## 2. Terminal
+
+### Window look
+
+Plain, like a Linux terminal: no frame, no window buttons, no shadow. Tabs (`cmd-t`) live right in the
+titlebar — one slim bar instead of two. A flat dark background with a little transparency, a block cursor that
+doesn't blink, tight 12×8 padding. Close a window with `alt-q` (AeroSpace) or `cmd-w`; drag a floating one with
+`ctrl-cmd` from anywhere. All of it is at the top of `ghostty/config.ghostty`.
 
 ### Prompt
 
@@ -164,7 +172,7 @@ Ghostty always runs in the background: it starts at login, and `cmd+q` closes on
 
 ### Greeting and reminders
 
-Every new window shows a logo and a summary (memory, uptime), a command tip of the day and,
+Every new window shows a pixel Ghostty ghost and a summary (memory, uptime), a command tip of the day and,
 **only when there's a reason**:
 
 ```
@@ -340,7 +348,7 @@ Screenshots and screen recordings (`cmd+shift+5`) go to `~/Pictures/Screenshots`
 
 ---
 
-## 7. Zed and GoLand
+## 7. Editors: Zed, Rune, Neovim, GoLand
 
 - **Zed**: the **Dev Night** (dark) and **Dev Day** (light) themes switch with macOS, plus its own
   file icons. Extensions install themselves: Go linter, GitHub Actions, Postgres SQL,
@@ -349,6 +357,13 @@ Screenshots and screen recordings (`cmd+shift+5`) go to `~/Pictures/Screenshots`
   [release](https://github.com/van1dalgrr-arch/dotfiles/releases/tag/jetbrains-v1.0.0)
   (Settings → Plugins → ⚙️ → Install Plugin from Disk), or just the code colors as `.icls`
   (Settings → Editor → Color Scheme → ⚙️ → Import Scheme). Details: [jetbrains/README.md](../jetbrains/README.md).
+- **Rune**: a Go IDE set up like GoLand. `cmd-B` — definition, `alt-F7` — usages, `ctrl-T` — every gopls
+  refactoring in a list, `ctrl-alt-R` — run, `ctrl-shift-R` — test at cursor, `ctrl-alt-D` — debug,
+  `ctrl-alt-W` — vet and tests in the background, `ctrl-alt-L` — linter findings as a jump list. F-keys need `fn`.
+  The full table: [rune/README.md](../rune/README.md).
+- **Neovim**: `nvim .` — LazyVim, a ready IDE in the terminal. `space` opens a menu of every action,
+  `space f f` — file, `gd` — definition, `space t r` — test, `space d b` — breakpoint.
+  Details: [nvim/README.md](../nvim/README.md).
 
 ---
 

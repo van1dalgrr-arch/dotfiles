@@ -15,4 +15,9 @@
 - `settings.json` → `~/Library/Application Support/Code/User/settings.json`
 - `keybindings.json` → `~/Library/Application Support/Code/User/keybindings.json`
 
+## Когда он нужен
+
+Почти никогда: на 8 ГБ VS Code тяжелее Zed в разы. Он остаётся на случай, когда нужно расширение, которого нет
+нигде больше. Настройки держатся в той же тёмной гамме, чтобы переход не резал глаз.
+
 [← dotfiles](../README.ru.md) · [как пользоваться](../docs/guide.ru.md)

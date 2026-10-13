@@ -22,4 +22,18 @@ Global Git config, hooks and ignore rules.
 
 gitleaks blocks a commit that contains a token or a key. A false positive: add `gitleaks:allow` on that line.
 
+## Using it
+
+| Command | What |
+|---|---|
+| `git undo` | undo the last commit, changes stay in the files |
+| `git amend` | add changes to the last commit without a new message |
+| `git wip` / `git unwip` | quickly save everything as a `wip` commit / take it back |
+| `git fixup` | a fix for one of the recent commits (pick with fzf); `rebase -i` puts it in place |
+| `git recent` | the last 10 branches by date |
+| `git gone` / `git tidy` | branches deleted on GitHub after merge / delete them locally (merged only) |
+
+Also on: `pull` rebases (no extra merge commits), `rebase` stashes and restores uncommitted work by itself,
+`rerere` remembers how you resolved a conflict and replays it; a new branch sets its upstream on the first `push`.
+
 [← dotfiles](../README.md)
