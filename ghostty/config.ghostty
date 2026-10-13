@@ -6,18 +6,23 @@
 theme = Rose Pine
 font-family = JetBrainsMono Nerd Font
 font-size = 14
-font-thicken = true
-adjust-cell-height = 10%
+# тонко и плотно, как в терминалах на Linux: без жирнения macOS, почти без доп. межстрочного
+font-thicken = false
+adjust-cell-height = 4%
 
 # --- Window ---
-background-opacity = 0.88
-background-blur = 30
-window-padding-x = 22
-window-padding-y = 18
+# ровный тёмный фон с лёгкой прозрачностью (как picom на Linux), без картинки — backdrop off
+background-opacity = 0.94
+background-blur = 20
+window-padding-x = 12
+window-padding-y = 8
 window-padding-balance = true
-# Заголовок прозрачный: полосы нет, но кнопки закрыть/свернуть/развернуть на месте —
-# окно можно закрыть мышью. Двигать плавающее окно: ctrl+cmd + тянуть (macos.sh, группа appearance)
-macos-titlebar-style = transparent
+# Без рамки, как в тайлинговом WM: вкладки живут прямо в заголовке (одна тонкая полоса вместо двух),
+# кнопок-светофоров нет, тени нет. Закрыть окно — alt+q (AeroSpace) или cmd+w,
+# двигать плавающее окно — ctrl+cmd + тянуть (macos.sh, группа appearance)
+macos-titlebar-style = tabs
+macos-window-buttons = hidden
+macos-window-shadow = false
 macos-titlebar-proxy-icon = hidden
 # Красная кнопка закрывает окно, Ghostty остаётся в фоне — ctrl+` работает всегда
 quit-after-last-window-closed = false
@@ -31,11 +36,13 @@ macos-icon-ghost-color = #ebbcba
 macos-icon-screen-color = #191724,#26233a
 
 # --- Cursor ---
-# черта, как в VS Code (в промпте Ghostty всё равно ставит черту; vim и т.п. сами просят блок)
-cursor-style = bar
+# блок без мигания — классика терминалов на Linux (vim и т.п. сами меняют форму)
+cursor-style = block
 # цвета курсора, выделения и фона сплитов — в темах (themes/apply.sh → ~/.config/ghostty/themes),
 # иначе светлая тема не смогла бы их поменять
-cursor-style-blink = true
+cursor-style-blink = false
+# в промпте Ghostty по умолчанию переключает на черту — пусть остаётся блок
+shell-integration-features = no-cursor
 # Плавный курсор, шлейф, искры, вспышка фокуса, свечение — шейдеры в shaders/, включаются командой fx
 # (она пишет fx.ghostty в конце этого файла: cursor-opacity = 0 и custom-shader = …)
 

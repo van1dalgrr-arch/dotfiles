@@ -9,7 +9,7 @@ set -euo pipefail
 DOTFILES="$(cd "$(dirname "$0")/.." && pwd)"
 STATE="$HOME/.config/dotfiles/fx"
 CFG="$HOME/.config/ghostty/fx.ghostty"
-DEFAULT="cursor trail focus"
+DEFAULT="cursor trail"
 
 # порядок = порядок проходов: свечение до курсора, чтобы курсор не размывался
 ALL="glow cursor trail sparks focus"

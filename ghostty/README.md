@@ -2,7 +2,7 @@
 
 🇷🇺 [Русская версия](README.ru.md)
 
-Config for the [Ghostty](https://ghostty.org) terminal: transparent titlebar (only the window buttons), quick terminal on `` ctrl+` ``, smooth cursor, backdrop from the wallpaper.
+Config for the [Ghostty](https://ghostty.org) terminal: a plain Linux-style look — no frame buttons or shadow, tabs right in the titlebar, a flat background, block cursor, tight padding; quick terminal on `` ctrl+` ``, smooth cursor. A backdrop from the wallpaper is opt-in: `backdrop`.
 
 | File | What |
 |---|---|
@@ -28,7 +28,7 @@ Config for the [Ghostty](https://ghostty.org) terminal: transparent titlebar (on
 
 ## Effects: `fx`
 
-`fx` (fzf: Tab to mark, Enter toggles) or `fx on sparks`, `fx off trail`, `fx set none`. Default: `cursor trail focus`.
+`fx` (fzf: Tab to mark, Enter toggles) or `fx on sparks`, `fx off trail`, `fx set none`. Default: `cursor trail`.
 Shaders take their colors from the terminal theme (`iCursorColor`, `iPalette`), so `theme` and light mode recolor them live. They're used straight from the repo, nothing is copied.
 
 ## Quick terminal
