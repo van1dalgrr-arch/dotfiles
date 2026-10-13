@@ -1,0 +1,87 @@
+#!/usr/bin/env bash
+# ============================================================
+#   rune-go — помощник для Go-алиасов Rune (rune/config.yaml)
+#     rune-go main  [папка]          какой пакет запускать: main в папке файла → единственный main в модуле → .
+#     rune-go run   [папка]          go run этого пакета (для задачи :run)
+#     rune-go lint  [папка]          golangci-lint      → строки path:line:col: текст (для locationpicker)
+#     rune-go vet   [папка]          go vet             → то же
+#     rune-go build [папка]          ошибки go build    → то же
+#     rune-go test-name <файл> <строка>   имя Test/Benchmark/Fuzz-функции, внутри которой стоит курсор
+#     rune-go test-file <файл>       парный файл: x.go ↔ x_test.go (как «Go to Test» в GoLand)
+#     rune-go cover [папка]          покрытие тестами модуля → отчёт в браузере
+#   Папка — любая внутри модуля (обычно $FILE_DIR), по умолчанию текущая.
+#   Пути в выводе абсолютные: Rune открывает их, где бы ни был корень воркспейса.
+# ============================================================
+set -uo pipefail
+
+# корень модуля для папки: ближайший go.mod выше, иначе сама папка
+module_root() {
+    local dir
+    dir=$(cd "${1:-.}" 2>/dev/null && pwd) || dir=$PWD
+    local d=$dir
+    while [ "$d" != / ]; do
+        [ -f "$d/go.mod" ] && { echo "$d"; return; }
+        d=$(dirname "$d")
+    done
+    echo "$dir"
+}
+
+# относительные пути path:line → абсолютные; остальные строки (заголовки «# pkg», пустые) отбрасываются
+locations() {
+    local root=$1
+    grep -E '^[^[:space:]#][^:]*:[0-9]+' | sed -E "s|^([^/])|$root/\1|"
+    return 0    # пустой список — не ошибка
+}
+
+main_pkg() {
+    local dir root mains
+    dir=$(cd "${1:-.}" 2>/dev/null && pwd) || dir=$PWD
+    root=$(module_root "$dir")
+    if [ "$(cd "$dir" && go list -f '{{.Name}}' . 2>/dev/null)" = main ]; then
+        echo "$dir"; return
+    fi
+    mains=$(cd "$root" && go list -f '{{if eq .Name "main"}}{{.Dir}}{{end}}' ./... 2>/dev/null | sed '/^$/d')
+    if [ "$(printf '%s\n' "$mains" | sed '/^$/d' | wc -l | tr -d ' ')" = 1 ]; then
+        echo "$mains"
+    else
+        # несколько main (cmd/api, cmd/worker…) — берём ближайший к файлу, иначе корень
+        echo "$root"
+    fi
+}
+
+case "${1:-}" in
+    main)  main_pkg "${2:-.}" ;;
+    run)
+        pkg=$(main_pkg "${2:-.}")
+        cd "$(module_root "$pkg")" && exec go run "$pkg" ;;
+    lint)
+        root=$(module_root "${2:-.}")
+        cd "$root" && golangci-lint run --output.text.print-issued-lines=false --show-stats=false ./... 2>&1 | locations "$root" ;;
+    vet)
+        root=$(module_root "${2:-.}")
+        cd "$root" && go vet ./... 2>&1 | sed -E 's/^vet: //' | locations "$root" ;;
+    build)
+        root=$(module_root "${2:-.}")
+        cd "$root" && go build -o /dev/null ./... 2>&1 | locations "$root" ;;
+    test-name)
+        [ $# -ge 3 ] || { echo "usage: rune-go test-name <file> <line>" >&2; exit 2; }
+        # последний func Test…/Benchmark…/Fuzz… не ниже курсора
+        name=$(head -n "$3" "$2" | grep -oE '^func (Test|Benchmark|Fuzz)[A-Za-z0-9_]*' | tail -1 | cut -d' ' -f2)
+        [ -n "$name" ] || { echo "курсор не внутри теста" >&2; exit 1; }
+        echo "$name" ;;
+    test-file)
+        [ $# -ge 2 ] || { echo "usage: rune-go test-file <file>" >&2; exit 2; }
+        case "$2" in
+            *_test.go) echo "${2%_test.go}.go" ;;
+            *.go)      echo "${2%.go}_test.go" ;;
+            *)         echo "$2" ;;
+        esac ;;
+    cover)
+        root=$(module_root "${2:-.}")
+        out=${TMPDIR:-/tmp}/rune-cover.out
+        cd "$root" && go test -coverprofile="$out" ./... && go tool cover -func="$out" | tail -1 \
+            && go tool cover -html="$out" ;;
+    *)
+        sed -n '3,12p' "$0" | sed 's/^#//'
+        [ -z "${1:-}" ] && exit 0 || exit 2 ;;
+esac

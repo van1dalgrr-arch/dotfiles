@@ -7,6 +7,7 @@ Executables on `PATH`. Here: `dot`, the one command for managing the setup.
 | File | What |
 |---|---|
 | `dot` | entry point: parses the command and calls modules from [lib/](../lib) |
+| `rune-go` | helper for Rune's Go commands: main package, lint/vet/build as a jump list, test at cursor ([rune/](../rune)) |
 
 ## Commands
 

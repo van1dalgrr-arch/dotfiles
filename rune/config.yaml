@@ -1,32 +1,57 @@
 config_version: 2
-
 # Rune — личный конфиг (~/.rune/config.yaml → симлинк сюда, ставит install.sh).
-# Слои: встроенные умолчания → этот файл → .rune/config.yaml в репозитории проекта.
-# Перечитать без перезапуска: :workspacereload (тема и шрифт — только после перезапуска).
-# Все ключи: cmd/rune/rune.star в исходниках Rune.
+# Слои: встроенные умолчания (cmd/rune/rune.star) → этот файл → .rune/config.yaml в проекте.
+# После правок: :write, затем ПОЛНЫЙ перезапуск Rune (тема и шрифт иначе не применятся).
+# Переключить тему на лету: :guitheme neon-noir | :guitheme dev-night
 
 # ── ТРАФИК: ничего не ходит в сеть само ──────────────────────────
 telemetry:
-  enabled: false            # анонимная статистика — выключена
+  enabled: false
 upgrade:
-  auto_check_enabled: false # проверка новой версии раз в сутки — выключена; обновиться вручную: :upgrade
+  auto_check_enabled: false # обновление вручную: :upgrade
 network:
-  auto_join: false          # «сеть» Rune (порт 7473) при старте не поднимается; нужна — :network up
+  auto_join: false # поднять вручную: :network up
 updates:
-  auto_install: false       # языковые пакеты — только с вопросом
-
+  auto_install: false # языковые пакеты — только с вопросом
+log_level: info
+log_path: ~/.rune/debug.log
 # ── ВИД ──────────────────────────────────────────────────────────
 gui:
-  default_theme: dev-night
-  font_size: 15             # как в Zed
+  default_theme: neon-noir
+  font_size: 15
   ligatures: true
+  line_height_offset: 2
+  scroll_multiplier: 3
   enable_transparent_window: true
-  window_opacity: { fg: 1, bg: 0.94 }
-  window_blur_radius: 30    # как background-blur в Ghostty
+  window_opacity: {fg: 1, bg: 0.92}
+  window_blur_radius: 40
   themes:
-    # Dev Night — та же палитра, что у темы Zed (zed/dev-night-theme) и терминала.
-    # Rune красит всё через 16 именованных цветов: silver — приглушённое (комментарии),
-    # gray — подложки (выделение, панели), остальные — акценты.
+    # Neon Noir — жёсткая: угольный фон, неоновые акценты.
+    # Rune красит всё через 16 именованных цветов:
+    # silver — приглушённое (комментарии, номера строк), gray — подложки, остальное — акценты.
+    neon-noir:
+      foreground: "#e6e6e6"
+      background: "#0a0a0a"
+      cursor: "#ff2e88"
+      black: "#0a0a0a"
+      gray: "#1c1c1f"
+      silver: "#5f5f66"
+      white: "#f2f2f2"
+      maroon: "#ff3b3b"
+      red: "#ff5f5f"
+      green: "#a6e22e"
+      lime: "#c3f73a"
+      olive: "#ff9f1c"
+      yellow: "#ffd60a"
+      navy: "#1b1035"
+      blue: "#4d7cff"
+      purple: "#b46cff"
+      magenta: "#ff2e88"
+      fuchsia: "#ff4fd8"
+      teal: "#00c2c7"
+      cyan: "#2ee6ff"
+      aqua: "#7aa2ff"
+    # Прежняя тема — оставлена, чтобы можно было вернуться через :guitheme dev-night
     dev-night:
       foreground: "#d6d9e8"
       background: "#101010"
@@ -49,41 +74,150 @@ gui:
       teal: "#0ea5e9"
       cyan: "#38bdf8"
       aqua: "#818cf8"
-
+  env:
+    GOBIN: /Users/dev/.rune/bin
+    GOCACHE: /Users/dev/.rune/go/cache
+    GOMODCACHE: /Users/dev/.rune/go/pkg/mod
+    GOPATH: /Users/dev/.rune/go
+    GOROOT: /Users/dev/.rune/lib/go
+    GOTOOLCHAIN: auto
+animations:
+  loading_workspace: false
+  open_workspace:
+    enabled: false
+  command_prompt:
+    enabled: false
 # ── РЕДАКТОР ─────────────────────────────────────────────────────
-# Раскладку (standard — как в Zed/VS Code) Rune при первом запуске пишет в этот же файл
-# (editor.mode + key_bindings). Ниже — только то, что дополняет пресет.
 editor:
-  mode: standard          # клавиши как в Zed/VS Code (cmd-s, cmd-c/v, shift-стрелки)
+  mode: standard # клавиши как в Zed/VS Code
   autoindent: true
+  auto_pair: true
+  auto_save: true # сохраняет через ~2 с после правки
+  tabspaces: 4
+  ruler: 90
+  initial_folds: true
+  max_size_for_syntax: 1048576
+  # Подсветка: только имена, которые есть в умолчаниях Rune
+  highlights:
+    comment: {fg: silver, flags: italic}
+    keyword: {fg: magenta, flags: bold}
+    function: {fg: cyan, flags: bold}
+    "function.method": {fg: cyan}
+    "function.builtin": {fg: yellow, flags: bold}
+    type: {fg: lime, flags: bold}
+    string: {fg: green}
+    escape: {fg: olive, flags: bold}
+    number: {fg: olive}
+    "constant.builtin": {fg: olive, flags: bold}
+    operator: {fg: fuchsia}
+    property: {fg: aqua}
+    variable: {fg: white}
+    "markup.heading": {fg: magenta, flags: bold}
+    "markup.raw": {fg: green}
+    "markup.link.url": {fg: cyan, flags: underline}
+    "markup.list": {fg: magenta, flags: bold}
+    "markup.quote": {fg: silver, flags: italic}
+  standard:
+    search_attr: {fg: black, bg: yellow}
+    search:
+      match_attr: {fg: black, bg: yellow}
+      focus_frame_attr: {fg: magenta, bg: default}
   aux_bar:
     enabled: true
     folds: true
     git: inline
+    icons: true
     lines: absolute
     highlight_cursor: true
-
+    line_number_attr: {fg: silver, bg: default} # было gray — номера почти не видно
+    highlight_cursor_attr: {fg: magenta, bg: default, flags: bold}
+    git_add_inline_attr: {fg: green, flags: bold}
+    git_del_inline_attr: {fg: maroon, flags: bold}
+  status_bar:
+    enabled: true
+    layout: ' {{ .Status | bg "magenta" | fg "black" | bold }}  {{ .Filepath | fg "white" | bold }}  {{ .GitShortRef | fg "purple" }}  {{ .GitDiffAdd | fg "green" }} {{ .GitDiffDel | fg "red" }} {{ .ShiftRight }} {{ .CursorLine | fg "cyan" }}:{{ .CursorColumn | fg "cyan" }}  {{ .TotalLines | fg "silver" }} lines  {{ .Language | bg "cyan" | fg "black" | bold }} '
+    background_attr: {bg: gray}
+  file_explorer:
+    indent_attr: {fg: gray}
+    icon_attr: {fg: purple}
+  comments:
+    go:
+      block:
+        - /*
+        - '*/'
+      line:
+        - //
+  icons:
+    .go: "\U000F07D3"
+# ── ОКНА И ВКЛАДКИ ───────────────────────────────────────────────
+browser:
+  window_manager:
+    dim: true # неактивные панели притушены
+    frame_attr: {fg: gray, bg: default}
+    focus_frame_attr: {fg: magenta, bg: default}
+    scroll_bar_attr: {fg: magenta, bg: default}
+  focus_tab_attr: {fg: white, bg: default}
+  dirty_tab_attr: {fg: magenta, bg: default, flags: [italic]}
+  non_focus_tab_attr: {fg: silver, bg: default}
+  focus_tab_icon_attr: {fg: cyan, bg: default}
+  focus_tab_highlight_attr: {fg: magenta, bg: default}
+workspace:
+  home: "~"
+  auto_restore: true
+  symboldb: true
+  wallpaper_attr: {fg: magenta, bg: default}
+notifications:
+  auto_close: 4s
+# ── КОМАНДЫ И КЛАВИШИ ────────────────────────────────────────────
+# Раскладка — как в GoLand для macOS, поверх пресета standard (Rune держит его в себе).
+# AeroSpace забирает себе alt-h/j/k/l, alt-r, alt-q, alt-e, alt-enter, alt-1…9 и alt-shift-…,
+# поэтому здесь только cmd / ctrl / ctrl-alt / cmd-alt и F-клавиши.
+# F-клавиши на этом маке — через fn (fn-F8 и т.д.), у отладки есть дубли на ctrl-alt-стрелках.
+# Шпаргалка по всему: :cheatsheet (cmd-/), все команды — cmd-shift-p.
 command:
-  key: "<s-m-p>"            # командная строка — cmd-shift-p, как палитра команд в Zed (":" в режиме standard нельзя)
+  key: "<s-m-p>" # cmd-shift-p — командная строка
+  history_key: "<m-r>"
+  max_history: 20000
+  matched_text_attr: {fg: magenta, bg: default, flags: [bold]}
+  focus_element_attr: {fg: cyan, bg: default}
   key_bindings:
+    # файлы и поиск
+    "<meta-s>": "write"
+    "<meta-p>": "searchfile"
+    "<shift-meta-o>": "searchfile" # GoLand: Go to File
+    "<meta-o>": "searchtype" # GoLand: Go to Class — типы по всему проекту
+    "<alt-meta-o>": "searchfunc" # GoLand: Go to Symbol — функции и методы
+    "<meta-e>": "tabsearch" # GoLand: Recent Files
+    "<shift-meta-f>": "searchtext" # GoLand: Find in Path
+    "<shift-meta-s>": "searchtext"
+    "<ctrl-alt-f>": "echo {prompt}gitgrep<space>" # git grep с переходом
+    "<meta-f12>": "echo {prompt}jumptoast<space>locals.scm<space>local.definition.method|local.definition.function<space>" # File Structure
+    "<alt-f>": "echo {prompt}jumptoast<space>locals.scm<space>local.definition.method|local.definition.function<space>"
+    "<alt-v>": "echo {prompt}jumptoast<space>locals.scm<space>local.definition.var<space>"
+    "<alt-s>": "echo {prompt}jumptoast<space>locals.scm<space>local.definition.type<space>"
     "<shift-tab>": "fexplorer"
-    "<meta-r>": "history"
-    "<meta-,>": "config"
-    "<meta-/>": "cheatsheet"
-    "<meta-q>": "quit"
-    "<meta-=>": "guifontsize increase"
-    "<meta-->": "guifontsize decrease"
+    # вкладки (alt-h/l и alt-1…9 занял AeroSpace)
     "<meta-t>": "tabnew"
-    "<alt-enter>": "echo {prompt}windowconverttab<space>"
     "<alt-w>": "tabclose"
-    "<alt-l>": "tabnext"
-    "<alt-h>": "tabprevious"
-    "<meta-n>": "windownew"
-    "<meta-c>": "clipboardcopy"
-    "<meta-v>": "clipboardpaste"
+    "<shift-meta-]>": "tabnext"
+    "<shift-meta-[>": "tabprevious"
+    "<ctrl-tab>": "tabnext"
+    "<ctrl-shift-tab>": "tabprevious"
+    "<alt-meta-]>": "tabmove right"
+    "<alt-meta-[>": "tabmove left"
     "<alt-`>": "tabsearch"
-    "<alt-shift-l>": "tabmove right"
-    "<alt-shift-h>": "tabmove left"
+    "<ctrl-1>": "tabfocus 1"
+    "<ctrl-2>": "tabfocus 2"
+    "<ctrl-3>": "tabfocus 3"
+    "<ctrl-4>": "tabfocus 4"
+    "<ctrl-5>": "tabfocus 5"
+    "<ctrl-6>": "tabfocus 6"
+    "<ctrl-7>": "tabfocus 7"
+    "<ctrl-8>": "tabfocus 8"
+    "<ctrl-9>": "tabfocus 9"
+    # окна
+    "<meta-n>": "windownew"
+    "<meta-w>": "windowclose"
     "<meta-h>": "windowfocus left"
     "<meta-l>": "windowfocus right"
     "<meta-j>": "windowfocus down"
@@ -93,97 +227,225 @@ command:
     "<shift-meta-j>": "windowmove down"
     "<shift-meta-k>": "windowmove up"
     "<shift-meta-backspace>": "windowresize reset"
-    "<shift-meta-+>": ["windowresize max width", "windowresize max height"]
-    "<shift-meta-->": ["windowresize min width", "windowresize min height"]
     "<alt-meta-h>": "windowresize decrease width"
     "<alt-meta-j>": "windowresize decrease height"
     "<alt-meta-k>": "windowresize increase height"
     "<alt-meta-l>": "windowresize increase width"
-    "<meta-w>": "windowclose"
     "<ctrl-meta-h>": "windowdefaultsplit h"
     "<ctrl-meta-v>": "windowdefaultsplit v"
-    "<shift-meta-f>": "windowtogglemaximize"
-    "<alt-f>": "echo {prompt}jumptoast<space>locals.scm<space>local.definition.method|local.definition.function<space>"
-    "<alt-v>": "echo {prompt}jumptoast<space>locals.scm<space>local.definition.var<space>"
-    "<alt-s>": "echo {prompt}jumptoast<space>locals.scm<space>local.definition.type<space>"
-    "<alt-j>": "lspnextdiagnostic"
-    "<alt-k>": "lspprevdiagnostic"
+    "<shift-meta-f12>": "windowtogglemaximize" # GoLand: Hide All Tool Windows
+    "<ctrl-meta-m>": "windowtogglemaximize"
+    # навигация по коду (GoLand)
+    "<meta-b>": "lsp definition" # Go to Declaration
+    "<alt-meta-b>": "lsp implementation" # Implementations — работает в обе стороны: тип ↔ интерфейс
+    "<shift-meta-b>": "lsp type-definition" # Go to Type Declaration
+    "<alt-f7>": "lsp references" # Find Usages
+    "<ctrl-meta-u>": "lsp references" # то же без F-клавиши
+    "<f1>": "lsp hover" # Quick Documentation
+    "<ctrl-j>": "lsp hover"
     "<alt-t>": "lsp hover"
-    "<alt-shift-t>": "echo {prompt}lsp<space>hover<space>"
-    "<alt-shift-e>": "lsp diagnostics"
-    "<meta-f>": "lsp rename"
-    "<alt-r>": "lsp references"
-    "<alt-shift-r>": "echo {prompt}lsp<space>references<space>"
     "<alt-d>": "lsp definition"
-    "<alt-shift-d>": "echo {prompt}lsp<space>definition<space>"
     "<alt-i>": "lsp implementation"
-    "<alt-shift-i>": "echo {prompt}lsp<space>implementation<space>"
+    "<shift-meta-t>": "gototest" # Go to Test: x.go ↔ x_test.go
+    "<meta-[>": "cursorhistory prev" # Back
+    "<meta-]>": "cursorhistory next" # Forward
     "<ctrl-o>": "cursorhistory prev"
     "<ctrl-i>": "cursorhistory next"
+    # ошибки: F2 / shift-F2 как в GoLand; ctrl-cmd-j/l (ошибки) и ctrl-cmd-i/k (git) — из пресета
+    "<f2>": "lspnextdiagnostic"
+    "<shift-f2>": "lspprevdiagnostic"
+    "<alt-shift-e>": "lsp diagnostics" # все проблемы файла списком
+    # закладки (F2 ушла ошибкам)
+    "<meta-f3>": "locationtoggle bookmark"
+    "<f3>": "jumptolocation next bookmark"
+    "<shift-f3>": "jumptolocation previous bookmark"
+    # правка и рефакторинг (GoLand)
+    "<ctrl-space>": "lsp complete" # на macOS сначала отключи ctrl-space в настройках клавиатуры
+    "<alt-g>": "lsp signature-help" # Parameter Info
+    "<shift-f6>": "lsp rename" # Rename
+    "<alt-n>": "lsp rename"
     "<alt-b>": "lsp format"
-    # on MacOS <ctrl-space> is a shortcut. To disable it and enable this
-    # key binding, go to System Settings → Keyboard → Keyboard Shortcuts
-    # → Input Sources → uncheck both entries.
-    "<ctrl-space>": "lsp complete"
-    "<alt-shift-j>": "gitnextchange"
-    "<alt-shift-k>": "gitprevchange"
+    "<ctrl-alt-o>": "go organize-imports" # Optimize Imports
+    "<ctrl-t>": "echo {prompt}go<space>" # Refactor This: все рефакторинги gopls списком
+    "<meta-.>": "go fix-all" # все безопасные исправления в файле
+    "<alt-meta-m>": "go extract-function" # Extract Method
+    "<alt-shift-meta-m>": "go extract-method"
+    "<alt-meta-v>": "go extract-variable" # Introduce Variable
+    "<alt-meta-c>": "go extract-constant" # Introduce Constant
+    "<alt-meta-n>": "go inline-call" # Inline
+    "<alt-meta-s>": "go fill-struct" # заполнить поля структуры
+    "<alt-meta-t>": "go add-tags" # json-теги полям
+    # запуск, тесты, отладка (GoLand: ctrl-alt-R / ctrl-alt-D)
+    "<ctrl-alt-r>": "gorun" # go run main-пакета — вкладка-задача, ctrl-r перезапускает
+    "<ctrl-shift-r>": "go test" # тест или бенчмарк под курсором
+    "<ctrl-alt-t>": "gotests" # все тесты — вкладка, перезапуск при сохранении .go
+    "<ctrl-alt-w>": "gowatch" # vet + тесты в фоне: зелёный/красный квадрат по краям
+    "<ctrl-alt-l>": "golint" # golangci-lint → список с переходом
+    "<ctrl-alt-e>": "goerrors" # ошибки сборки → список с переходом
+    "<ctrl-alt-d>": "godebug" # отладка main-пакета до первой точки останова
+    "<ctrl-shift-d>": "godebugtest" # отладка теста под курсором
+    "<meta-f8>": "debugger set-breakpoint" # Toggle Breakpoint
+    "<ctrl-alt-b>": "debugger set-breakpoint"
+    "<f8>": "console debugger next" # Step Over
+    "<f7>": "console debugger step-in" # Step Into
+    "<shift-f8>": "console debugger step-out"
+    "<alt-meta-r>": "console debugger continue" # Resume
+    "<f9>": "console debugger continue"
+    "<meta-f2>": "console debugger terminate" # Stop
+    "<alt-f8>": "echo {prompt}console<space>debugger<space>evaluate<space>" # Evaluate
+    "<ctrl-alt-down>": "console debugger next"
+    "<ctrl-alt-right>": "console debugger step-in"
+    "<ctrl-alt-up>": "console debugger step-out"
+    "<alt-shift-enter>": "console" # консоль Rune: debugger, pkg, extensions
+    # git (ctrl-cmd-i/k — прошлое/следующее изменение, из пресета)
+    "<ctrl-alt-g>": "lg"
+    "<ctrl-alt-a>": "linelog" # история строки под курсором
+    "<ctrl-alt-h>": "filehistory" # история файла в lazygit
+    # прочее
     "<meta-enter>": "terminalneworsplit"
     "<shift-meta-enter>": "!"
     "<meta-`>": "workspacesearch"
-    "<alt-1>": "tabfocus 1"
-    "<alt-2>": "tabfocus 2"
-    "<alt-3>": "tabfocus 3"
-    "<alt-4>": "tabfocus 4"
-    "<alt-5>": "tabfocus 5"
-    "<alt-6>": "tabfocus 6"
-    "<alt-7>": "tabfocus 7"
-    "<alt-8>": "tabfocus 8"
-    "<alt-9>": "tabfocus 9"
-    "<alt-shift-1>": "tabmove 1"
-    "<alt-shift-2>": "tabmove 2"
-    "<alt-shift-3>": "tabmove 3"
-    "<alt-shift-4>": "tabmove 4"
-    "<alt-shift-5>": "tabmove 5"
-    "<alt-shift-6>": "tabmove 6"
-    "<alt-shift-7>": "tabmove 7"
-    "<alt-shift-8>": "tabmove 8"
-    "<alt-shift-9>": "tabmove 9"
     "<meta-1>": "workspacefocus 1"
     "<meta-2>": "workspacefocus 2"
     "<meta-3>": "workspacefocus 3"
-    "<meta-4>": "workspacefocus 4"
-    "<meta-5>": "workspacefocus 5"
-    "<meta-6>": "workspacefocus 6"
-    "<meta-7>": "workspacefocus 7"
-    "<meta-8>": "workspacefocus 8"
-    "<meta-9>": "workspacefocus 9"
-    "<shift-meta-1>": "workspacemove 1"
-    "<shift-meta-2>": "workspacemove 2"
-    "<shift-meta-3>": "workspacemove 3"
-    "<shift-meta-4>": "workspacemove 4"
-    "<shift-meta-5>": "workspacemove 5"
-    "<shift-meta-6>": "workspacemove 6"
-    "<shift-meta-7>": "workspacemove 7"
-    "<shift-meta-8>": "workspacemove 8"
-    "<shift-meta-9>": "workspacemove 9"
-  # свои команды поверх встроенных: dotfiles прямо из командной строки Rune (:)
+    "<meta-c>": "clipboardcopy"
+    "<meta-v>": "clipboardpaste"
+    "<meta-=>": "guifontsize increase"
+    "<meta-->": "guifontsize decrease"
+    "<meta-,>": "config"
+    "<meta-/>": "cheatsheet"
+    "<meta-q>": "quit"
+    <a-s-f>: searchfunc
+    <a-s-s>: searchtype
+    <a-s-v>: searchvar
+    <m-\\>: searchtext
+    <m-p>: searchfile
+    <s-m-f>: searchtext
+    <a-m>: go organize-imports
+  # Свои команды (вызываются из cmd-shift-p и клавишами выше).
+  # Go-часть держит bin/rune-go: он находит модуль и main-пакет от файла в фокусе.
   aliases:
-    doctor: "! dot project doctor %"      # что есть в проекте и чего не хватает
-    gotest: "! go test ./..."
-    govet: "! go vet ./..."
+    e: {command: edit, completer: files}
+    doctor: "! dot project doctor %"
+    # запуск и тесты
+    gorun: "tasknewtab run -- rune-go run $FILE_DIR"
+    gotests: "tasknewtab tests *.go,go.mod -- gotestsum --format testname -- ./..."
+    gowatch:
+      - "tasknew vet right *.go,go.mod -- go vet ./..."
+      - "tasknew test left *.go,go.mod -- go test -short ./..."
+    gowatchoff:
+      - "taskclose vet"
+      - "taskclose test"
+    gocover: "! rune-go cover $FILE_DIR"
+    gototest:
+      - "!! T=$(rune-go test-file $FILE)"
+      - "edit $T"
+    # отладка: точки ставь заранее (cmd-F8) — они уходят в dlv на старте
+    godebug:
+      - "!! PKG=$(rune-go main $FILE_DIR)"
+      - "console debugger terminate; debugger initialize go && debugger launch $PKG && debugger configured"
+    godebugtest:
+      - "!! NAME=$(rune-go test-name $FILE $LINE)"
+      - "console debugger terminate; debugger initialize gotest && debugger launch $FILE_DIR -- -test.run ^$NAME$ && debugger configured"
+    # проблемы списком: fuzzy-фильтр, превью, enter — переход
+    golint: "locationpicker rune-go lint $FILE_DIR"
+    govet: "locationpicker rune-go vet $FILE_DIR"
+    goerrors: "locationpicker rune-go build $FILE_DIR"
+    todo: "locationpicker git grep -n --column -E (TODO|FIXME|XXX|HACK)"
+    gitgrep: "locationpicker git grep -n --column -- $1"
+    conflicts: "locationpicker git grep -n --column -E ^(<<<<<<<|=======$|>>>>>>>)"
+    changed: "locationpicker git diff --name-only HEAD"
+    # git
     lg: "! lazygit"
-
+    filehistory: "! lazygit -f $FILE"
+    linelog: "! git log --oneline -L $LINE,$LINE:$FILE"
+    gitdiff: "! git diff"
+    gitblame: "! git blame $FILE"
+    searchfunc: echo {prompt}searchast<space>locals.scm<space>local.definition.method|local.definition.function<enter>
+    searchtype: echo {prompt}searchast<space>locals.scm<space>local.definition.type<enter>
+    searchvar: echo {prompt}searchast<space>locals.scm<space>local.definition.var<enter>
+# Отладчик: «go» ставит сам Go-пакет Rune (dlv dap). «gotest» — тот же dlv в режиме теста,
+# им пользуется :godebugtest.
+debugger:
+  gotest:
+    command: "dlv dap --listen={addr}"
+    adapter_id: "dlv-dap"
+    launch:
+      mode: "test"
+      outputMode: "remote"
+  go:
+    adapter_id: dlv-dap
+    attach:
+      mode: local
+    command: dlv dap --listen={addr}
+    launch:
+      mode: debug
+      outputMode: remote
 terminal:
-  shell: zsh
-  max_lines: 10000
-  clipboard:
-    write: true
-    read: false
-
-workspace:
-  auto_restore: true
-
-# расширение dot (rune/dot-ext, собирает install.sh): команды work, workoff, projectdoctor
+  max_lines: 5000
+  dynamic_tab_name: true
+# dot-расширение (rune/dot-ext, собирает install.sh)
 extensions:
   dot:
     path: ~/go/bin/rune-dot
+  fuzzy_search:
+    config:
+      file:
+        algo: fuzzy
+        case_sensitive: true
+        count_attr:
+          bg: default
+          fg: default
+        element_attr:
+          bg: default
+          fg: default
+          flags:
+            - dim
+        focus_element_attr:
+          bg: default
+          fg: purple
+        history: 50000
+        history_key: <m-p>
+        matched_text_attr:
+          bg: default
+          fg: blue
+          flags:
+            - bold
+      line:
+        algo: fuzzy
+        case_sensitive: true
+        count_attr:
+          bg: default
+          fg: default
+        element_attr:
+          bg: default
+          fg: default
+          flags:
+            - dim
+        focus_element_attr:
+          bg: default
+          fg: purple
+        history: 2000
+        history_key: <m-\\>
+        matched_text_attr:
+          bg: default
+          fg: blue
+          flags:
+            - bold
+      syntax:
+        algo: fuzzy
+        case_sensitive: true
+    path: /Users/dev/.rune/bin/extension_fuzzy_search
+  go:
+    config:
+      lsp_path: ""
+    path: /Users/dev/.rune/bin/extension_go
+tutorials:
+  fuzzy_search: /Users/dev/.rune/pkg/fuzzy-search/v1.1.2/fuzzy_search.star
+lsp:
+  icons:
+    bounds: "\U000F016A"
+    compiler: ⚙
+    escape: "\U000F005D"
+    inline: "\U000F0054"
+    nilcheck: ∅

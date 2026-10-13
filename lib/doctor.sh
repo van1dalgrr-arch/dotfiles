@@ -215,13 +215,17 @@ doc_editors() {
     has zed || warning "нет команды zed" "→ ./install.sh создаст /opt/homebrew/bin/zed"
     # Rune — следующий редактор (переезд с Zed постепенный): необязателен, но если стоит — с расширением dot
     if [ -d /Applications/Rune.app ]; then
-        if [ -x "$HOME/go/bin/rune-dot" ]; then pass "Rune + расширение dot"
-        else warning "Rune есть, а расширения dot нет" "→ go build -C ~/dotfiles/rune/dot-ext -o ~/go/bin/rune-dot ."; fi
+        if [ ! -x "$HOME/go/bin/rune-dot" ]; then
+            warning "Rune есть, а расширения dot нет" "→ go build -C ~/dotfiles/rune/dot-ext -o ~/go/bin/rune-dot ."
+        elif ! grep -q 'path: ~/go/bin/rune-dot$' "$DOTFILES/rune/config.yaml"; then
+            warning "rune/config.yaml не указывает на ~/go/bin/rune-dot — расширение dot не загрузится" "→ extensions.dot.path"
+        else pass "Rune + расширение dot"; fi
     else optional "Rune" "→ brew install unstablebuild/tap/rune"; fi
-    # Rune сохраняет конфиг через «записать рядом и переименовать» — это заменяет ссылку обычным файлом
+    # Rune переписывает конфиг целиком (запись рядом + переименование), когда дописывает блоки
+    # своих пакетов (go, fuzzy-search) или сохраняет :config — ссылка становится обычным файлом
     if [ -f "$HOME/.rune/config.yaml" ] && [ ! -L "$HOME/.rune/config.yaml" ]; then
         warning "Rune переписал ~/.rune/config.yaml поверх ссылки" \
-            "→ cp ~/.rune/config.yaml ~/dotfiles/rune/config.yaml && ln -sf ~/dotfiles/rune/config.yaml ~/.rune/config.yaml"
+            "→ diff ~/dotfiles/rune/config.yaml ~/.rune/config.yaml, затем cp ~/.rune/config.yaml ~/dotfiles/rune/config.yaml && ln -sf ~/dotfiles/rune/config.yaml ~/.rune/config.yaml"
     fi
     # Safari: таблица стилей выбирается в самом Safari (песочница) — здесь только читаем
     if ! defaults read com.apple.Safari >/dev/null 2>&1; then
