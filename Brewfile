@@ -21,6 +21,10 @@ brew "fastfetch"
 brew "tealdeer"
 brew "httpie"
 
+# Neovim на LazyVim (nvim/); tree-sitter-cli собирает парсеры подсветки
+brew "neovim"
+brew "tree-sitter-cli"
+
 # Git
 brew "git"
 brew "gh"

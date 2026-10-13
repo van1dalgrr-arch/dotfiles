@@ -48,6 +48,7 @@ _cheat_funcs() {
     command cat <<'EOF'
 p|выбрать проект из ~/dev (p kino — с фильтром)
 y|yazi, при выходе остаёмся в папке
+nvim|Neovim на LazyVim: nvim . · пробел — меню всех действий · :LazyExtras — языки и фичи
 gonew|новый Go-проект с CI, тестом, миграциями: gonew myapi [--gh — сразу на GitHub]
 dsh|зайти в контейнер (fzf)
 dlogs|логи контейнера (fzf)
