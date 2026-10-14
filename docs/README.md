@@ -10,6 +10,7 @@ Every document exists in English and Russian — the link at the top of each swi
 |---|---|
 | [**How to use it**](guide.md) | every command and feature, by area: look, terminal, projects, git, containers, Mac upkeep |
 | [**Hotkeys**](hotkeys.md) | AeroSpace, Ghostty, `orbstack`, Zed, Rune (GoLand-like) and Neovim on one page |
+| [**Postman in nvim**](postman.md) | send a request to your API and see the answer — in 5 steps |
 | [**Containers from the terminal**](docker.md) | images, containers, volumes; every `docker run` flag explained; compose; live rebuild |
 
 ## Understand and change it

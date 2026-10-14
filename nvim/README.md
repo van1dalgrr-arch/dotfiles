@@ -87,6 +87,8 @@ Dockerfiles are checked by hadolint as you type — findings show up like normal
 
 ## Postman in a file
 
+**A 5-step guide in plain words: [docs/postman.md](../docs/postman.md).** Below is for when you already know it.
+
 `space r h` builds `api.http` in the project root: every Gin route as a request, login first. From then on the file is
 yours — edit bodies and params. Cursor on a request → `enter` — the response on the right (JSON, status, time), `q` closes.
 

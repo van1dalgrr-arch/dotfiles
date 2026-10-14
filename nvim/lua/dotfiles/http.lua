@@ -152,6 +152,12 @@ function M.copy_curl()
   vim.notify(cmd, vim.log.levels.INFO, { title = "скопировано" })
 end
 
+-- закрыть панель ответа (Esc в .http-файле)
+function M.close()
+  if win and vim.api.nvim_win_is_valid(win) and #vim.api.nvim_list_wins() > 1 then vim.api.nvim_win_close(win, true) end
+  vim.cmd("nohlsearch")
+end
+
 function M.jump(dir)
   local reqs = select(3, current())
   local line = vim.fn.line(".")

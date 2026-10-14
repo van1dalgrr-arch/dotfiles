@@ -201,7 +201,7 @@ function M.http_file(root, dest, no_open)
     if r.method == "POST" and r.path:match("login$") then login = r end
   end
   local lines = {
-    "# Запросы к API. Курсор на запрос → enter — отправить (ответ справа), пробел R r — повторить, пробел R c — как curl, пробел R n/p — соседний.",
+    "# Как пользоваться: курсор на запрос → Enter — ответ справа, Esc — закрыть. Подробно: ~/dotfiles/docs/postman.ru.md",
     "# Сгенерировано из маршрутов (пробел r h); дальше файл твой — правь тела и параметры.",
     "@host = http://localhost:" .. port(root),
   }

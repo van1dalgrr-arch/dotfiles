@@ -39,6 +39,7 @@ vim.api.nvim_create_autocmd("FileType", {
     local http = require("dotfiles.http")
     local function map(lhs, fn, desc) vim.keymap.set("n", lhs, fn, { buffer = ev.buf, desc = desc }) end
     map("<cr>", http.send, "HTTP: отправить запрос под курсором")
+    map("<esc>", http.close, "HTTP: закрыть ответ")
     map("<leader>Rs", http.send, "HTTP: отправить")
     map("<leader>Rr", http.replay, "HTTP: повторить последний")
     map("<leader>Rc", http.copy_curl, "HTTP: скопировать как curl")
