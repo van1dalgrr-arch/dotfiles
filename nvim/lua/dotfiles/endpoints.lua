@@ -44,6 +44,61 @@ function M.collect(root)
   return out
 end
 
+
+-- Запрос на запущенный API, ответ — в правой панели. Порт — PORT из .env или окружения, иначе 8080.
+-- Токен: если ответ содержит access_token / accessToken / token, он запоминается и уходит
+-- в Authorization: Bearer для следующих запросов (сбросить — :let g:api_token = v:null).
+local bodies = {} -- последнее тело запроса для каждого маршрута
+
+local function port()
+  local f = io.open(LazyVim.root() .. "/.env")
+  if f then
+    for line in f:lines() do
+      local p = line:match("^%s*PORT%s*=%s*(%d+)")
+      if p then f:close(); return p end
+    end
+    f:close()
+  end
+  return vim.env.PORT or "8080"
+end
+
+local function show(lines, title)
+  local buf = vim.api.nvim_create_buf(false, true)
+  vim.api.nvim_buf_set_lines(buf, 0, -1, false, lines)
+  vim.bo[buf].filetype = "json"
+  vim.bo[buf].bufhidden = "wipe"
+  vim.cmd("botright vsplit")
+  vim.api.nvim_win_set_buf(0, buf)
+  vim.api.nvim_buf_set_name(buf, title .. " [" .. buf .. "]")
+  vim.keymap.set("n", "q", "<cmd>close<cr>", { buffer = buf, desc = "закрыть ответ" })
+end
+
+function M.send(r, body)
+  local path = r.path:gsub(":([%w_]+)", "1"):gsub("%*[%w_]*", "")
+  local url = "http://localhost:" .. port() .. path
+  local cmd = { "curl", "-s", "-S", "-X", r.method == "ANY" and "GET" or r.method, "-w", "\n@@%{http_code} %{time_total}", url }
+  if vim.g.api_token then vim.list_extend(cmd, { "-H", "Authorization: Bearer " .. vim.g.api_token }) end
+  if body and body ~= "" then vim.list_extend(cmd, { "-H", "Content-Type: application/json", "-d", body }) end
+  vim.system(cmd, { text = true }, vim.schedule_wrap(function(res)
+    if res.code ~= 0 then
+      return vim.notify((res.stderr or "") .. "\nAPI запущен? пробел r r → go run / up", vim.log.levels.ERROR, { title = url })
+    end
+    local out, status, secs = res.stdout:match("^(.*)\n@@(%d+) ([%d.]+)$")
+    out = out or res.stdout
+    local ok, decoded = pcall(vim.json.decode, out)
+    if ok and type(decoded) == "table" then
+      local tok = decoded.access_token or decoded.accessToken or decoded.token
+        or (type(decoded.data) == "table" and (decoded.data.access_token or decoded.data.accessToken or decoded.data.token))
+      if type(tok) == "string" then vim.g.api_token = tok; vim.notify("токен запомнен для следующих запросов") end
+      local pretty = vim.fn.executable("jq") == 1 and vim.fn.systemlist({ "jq", "." }, out) or { out }
+      out = table.concat(pretty, "\n")
+    end
+    local ms = (tonumber(secs) or 0) * 1000
+    local head = ("// %s %s → %s · %s"):format(r.method, path, status or "?", ms < 1 and "<1 мс" or ("%d мс"):format(math.floor(ms)))
+    show(vim.list_extend({ head }, vim.split(out, "\n")), r.method .. " " .. path)
+  end))
+end
+
 local colors = { GET = "DiagnosticOk", POST = "DiagnosticWarn", PUT = "DiagnosticInfo", PATCH = "DiagnosticInfo", DELETE = "DiagnosticError" }
 
 function M.pick()
@@ -62,7 +117,7 @@ function M.pick()
     }
   end
   Snacks.picker.pick({
-    title = "Эндпоинты · enter — хендлер · ctrl-y — curl",
+    title = "Эндпоинты · enter — хендлер · ctrl-r — запрос · ctrl-y — curl",
     items = items,
     preview = "file",
     format = function(item)
@@ -104,6 +159,16 @@ function M.pick()
       end)
     end,
     actions = {
+      send = function(picker, item)
+        local r = item.route
+        picker:close()
+        if r.method == "GET" or r.method == "DELETE" or r.method == "HEAD" then return M.send(r) end
+        vim.ui.input({ prompt = r.method .. " " .. r.path .. " · тело JSON: ", default = bodies[r.method .. r.path] or "{}" }, function(body)
+          if body == nil then return end
+          bodies[r.method .. r.path] = body
+          M.send(r, body)
+        end)
+      end,
       curl = function(_, item)
         local r = item.route
         local path = r.path:gsub(":([%w_]+)", "1"):gsub("%*[%w_]*", "")
@@ -112,7 +177,10 @@ function M.pick()
         vim.notify(cmd, vim.log.levels.INFO, { title = "скопировано" })
       end,
     },
-    win = { input = { keys = { ["<c-y>"] = { "curl", mode = { "n", "i" } } } } },
+    win = { input = { keys = {
+      ["<c-y>"] = { "curl", mode = { "n", "i" } },
+      ["<c-r>"] = { "send", mode = { "n", "i" } },
+    } } },
   })
 end
 

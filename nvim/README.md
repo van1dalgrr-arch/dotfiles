@@ -63,7 +63,7 @@ Practice: `:Tutor` — a built-in 30-minute lesson. Live on this table for a wee
 | `space t r` · `space t t` · `space t s` | test at cursor · tests in the file · test panel |
 | `space d b` · `space d c` · `space d O` / `d i` / `d o` · `space d t` | breakpoint · run/continue · step / into / out · stop |
 | `space g g` · `space r d` | lazygit · lazydocker |
-| `space r e` | **Gin endpoints** with full paths (`Group` prefixes added up): `enter` — to the handler, `ctrl-y` — copy a `curl` |
+| `space r e` | **Gin endpoints** with full paths (`Group` prefixes added up): `enter` — to the handler, `ctrl-r` — **send the request** (response on the right, the login token is reused, `q` closes), `ctrl-y` — copy a `curl` |
 | `space r r` · `space r l` | tasks like `ctrl-r` in Zed · what ran and how it ended |
 | `V` … `J` / `K` | move selected lines down / up (AeroSpace owns `alt-j/k`) |
 | `space s k` | search all keymaps |
