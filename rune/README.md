@@ -42,6 +42,8 @@ All commands: `cmd-shift-p`; Rune's cheatsheet: `cmd-/`.
 | **Git** | `ctrl-alt-G` · `ctrl-alt-H` · `ctrl-alt-A` | lazygit · file history · line history |
 | | `ctrl-cmd-I` / `ctrl-cmd-K` | previous / next change |
 | **Tabs** | `cmd-shift-[` / `]` · `ctrl-1…9` | neighbour tab · tab by number |
+| | `alt-W` · `cmd-alt-W` · `cmd-shift-W` | close the tab · all but this one · all |
+| | `shift-tab` | show / hide the file tree |
 
 More commands without keys: `:todo`, `:conflicts`, `:changed`, `:gocover` (coverage in the browser), `:gowatchoff`,
 `:govet`, `go tidy`, `go vulncheck`, `go add-test`, `go assembly`.

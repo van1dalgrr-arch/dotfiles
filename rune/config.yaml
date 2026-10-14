@@ -199,6 +199,8 @@ command:
     # вкладки (alt-h/l и alt-1…9 занял AeroSpace)
     "<meta-t>": "tabnew"
     "<alt-w>": "tabclose"
+    "<alt-meta-w>": "tabcloseinactive" # GoLand: Close Others — закрыть все вкладки, кроме текущей
+    "<shift-meta-w>": "tabcloseall" # закрыть все вкладки окна
     "<shift-meta-]>": "tabnext"
     "<shift-meta-[>": "tabprevious"
     "<ctrl-tab>": "tabnext"

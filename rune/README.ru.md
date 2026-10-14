@@ -42,6 +42,8 @@ Go в ней — основной язык, и расширения тоже п�
 | **Git** | `ctrl-alt-G` · `ctrl-alt-H` · `ctrl-alt-A` | lazygit · история файла · история строки |
 | | `ctrl-cmd-I` / `ctrl-cmd-K` | прошлое / следующее изменение |
 | **Вкладки** | `cmd-shift-[` / `]` · `ctrl-1…9` | соседняя вкладка · вкладка по номеру |
+| | `alt-W` · `cmd-alt-W` · `cmd-shift-W` | закрыть вкладку · все, кроме текущей · все |
+| | `shift-tab` | показать / скрыть дерево файлов |
 
 Ещё команды без клавиш: `:todo`, `:conflicts`, `:changed`, `:gocover` (покрытие в браузере), `:gowatchoff`,
 `:govet`, `go tidy`, `go vulncheck`, `go add-test`, `go assembly`.
