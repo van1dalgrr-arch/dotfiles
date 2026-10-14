@@ -7,6 +7,9 @@ export PATH="/opt/homebrew/bin:/opt/homebrew/sbin:$PATH"
 export PATH="$PATH:${GOPATH:-$HOME/go}/bin"   # без вызова `go env` — быстрее старт
 export PATH="$HOME/dotfiles/bin:$PATH"           # dot — управление dotfiles
 
+# редактор для git commit, lazygit, yazi, crontab и всего, что спрашивает $EDITOR — Neovim (nvim/)
+export EDITOR=nvim VISUAL=nvim
+
 # ── OH MY ZSH
 
 export ZSH="$HOME/.oh-my-zsh"

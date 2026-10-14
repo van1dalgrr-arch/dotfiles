@@ -31,3 +31,5 @@ gui:
       - "#e0def4"
   authorColors:
     "*": "#c4a7e7"
+os:
+  editPreset: "nvim"   # e — открыть файл в Neovim сразу на нужной строке

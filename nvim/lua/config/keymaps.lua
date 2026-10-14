@@ -8,3 +8,8 @@ map("n", "<F7>", dap("step_into"), { desc = "Debug: внутрь" })
 map("n", "<S-F8>", dap("step_out"), { desc = "Debug: наружу" })
 map("n", "<F9>", dap("continue"), { desc = "Debug: запустить / дальше" })
 map("n", "<C-F8>", dap("toggle_breakpoint"), { desc = "Debug: точка останова" })
+
+-- Переместить выделенные строки: alt-j/alt-k из LazyVim забирает AeroSpace (весь слой alt — его).
+-- V, выделить, J/K — и строки едут вниз/вверх, отступы поправляются сами.
+map("x", "J", ":m '>+1<cr>gv=gv", { desc = "Строки вниз", silent = true })
+map("x", "K", ":m '<-2<cr>gv=gv", { desc = "Строки вверх", silent = true })
