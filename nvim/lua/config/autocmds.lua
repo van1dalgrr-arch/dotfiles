@@ -26,3 +26,7 @@ vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI", "BufEnter" }, {
     if vim.fn.mode() ~= "c" and vim.bo.buftype == "" then vim.cmd("silent! checktime") end
   end,
 })
+
+-- База проекта для dadbod (пробел D) — как у команды db: из .env или по имени папки
+require("dotfiles.system").project_db()
+vim.api.nvim_create_autocmd("DirChanged", { group = group, callback = function() require("dotfiles.system").project_db() end })

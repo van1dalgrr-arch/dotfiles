@@ -32,6 +32,23 @@ The first run fetches whatever is missing: highlighting parsers are built by `tr
 language servers and tools come from Mason (`:Mason` — list, status, reinstall).
 Already installed: gopls, delve, golangci-lint, gofumpt, goimports, servers for Lua, YAML, JSON, Dockerfile, compose, Markdown.
 
+## Vim from zero: 20 commands for the first week
+
+Vim is modes. **Normal** (`esc`) — move and command, **insert** (`i`) — type, **visual** (`v`, `V`) — select.
+A command is action + motion: `d` (delete) + `w` (to the next word) = `dw`. A number in front repeats it: `3dd`.
+
+| | Keys | What |
+|---|---|---|
+| move | `h j k l` · `w` / `b` · `0` / `$` · `gg` / `G` | ←↓↑→ · word forward / back · line start / end · file start / end |
+| | `{` / `}` · `ctrl-d` / `ctrl-u` · `s` + 2 letters | paragraph · half a screen · jump anywhere (flash) |
+| type | `i` / `a` · `o` / `O` · `esc` | before / after the cursor · new line below / above · leave |
+| change | `x` · `dd` · `dw` · `cw` · `ciw` · `ci"` | char · line · word · change word · the whole word under the cursor · text inside quotes |
+| | `yy` · `p` · `u` · `ctrl-r` · `.` | copy line · paste · undo · redo · **repeat the last change** |
+| search | `/text` → `n` / `N` · `*` | find, next / previous · the word under the cursor |
+| files | `:w` · `:q` · `space f f` · `space e` | save (not needed — autosave) · quit · find a file · tree |
+
+Practice: `:Tutor` — a built-in 30-minute lesson. Live on this table for a week and your fingers take over.
+
 ## The key is space
 
 `space` (leader) opens a menu of every action with hints, so there is nothing to memorise.
@@ -50,6 +67,13 @@ Already installed: gopls, delve, golangci-lint, gofumpt, goimports, servers for 
 | `space r r` · `space r l` | tasks like `ctrl-r` in Zed · what ran and how it ended |
 | `V` … `J` / `K` | move selected lines down / up (AeroSpace owns `alt-j/k`) |
 | `space s k` | search all keymaps |
+| `space D` | **the project database**: tables, queries, results as a table (address like `db`: from `.env` or the folder name) |
+| `space r c` | **containers** — `orbstack` in a floating window |
+| `space r p` · `space r w` · `space r b` | `dot project doctor` · `dot work` · `dot backup` |
+| `space g b` | **line history**: who changed it and when, `enter` — the whole commit |
+| `space g p` · `space g i` | GitHub **pull requests and issues** (via `gh`): diff, comments on lines, review |
+
+Dockerfiles are checked by hadolint as you type — findings show up like normal errors. The status line shows `◆ mode 1h12m` while `dot work` is on.
 
 ## By itself, no `:w`
 

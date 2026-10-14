@@ -7,7 +7,9 @@
     "lazyvim.plugins.extras.lang.markdown",
     "lazyvim.plugins.extras.dap.core",
     "lazyvim.plugins.extras.test.core",
-    "lazyvim.plugins.extras.editor.overseer"
+    "lazyvim.plugins.extras.editor.overseer",
+    "lazyvim.plugins.extras.lang.sql",
+    "lazyvim.plugins.extras.util.octo"
   ],
   "news": {
     "NEWS.md": "11866"

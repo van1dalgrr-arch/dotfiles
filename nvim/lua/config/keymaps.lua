@@ -16,3 +16,10 @@ map("x", "K", ":m '<-2<cr>gv=gv", { desc = "Строки вверх", silent = t
 
 -- Эндпоинты Gin, как в GoLand: все маршруты с полным путём, enter — к хендлеру, ctrl-y — curl
 map("n", "<leader>re", function() require("dotfiles.endpoints").pick() end, { desc = "Эндпоинты (Gin)" })
+
+-- Система: контейнеры, dot (lua/dotfiles/system.lua)
+local sys = require("dotfiles.system")
+map("n", "<leader>rc", sys.containers, { desc = "Контейнеры (orbstack)" })
+map("n", "<leader>rp", sys.dot("project doctor ."), { desc = "dot project doctor" })
+map("n", "<leader>rw", sys.dot("work"), { desc = "dot work — что поднято" })
+map("n", "<leader>rb", sys.dot("backup"), { desc = "dot backup" })
