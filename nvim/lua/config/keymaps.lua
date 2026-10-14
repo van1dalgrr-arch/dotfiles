@@ -24,3 +24,16 @@ map("n", "<leader>rc", sys.containers, { desc = "Контейнеры (orbstack)
 map("n", "<leader>rp", sys.dot("project doctor ."), { desc = "dot project doctor" })
 map("n", "<leader>rw", sys.dot("work"), { desc = "dot work — что поднято" })
 map("n", "<leader>rb", sys.dot("backup"), { desc = "dot backup" })
+
+-- Одно нажатие вместо пробел+буквы: alt + буква (эти alt-буквы AeroSpace не забирает)
+map({ "n", "t" }, "<M-o>", sys.containers, { desc = "orbstack — контейнеры (alt-o ещё раз — закрыть)" })
+map("n", "<M-g>", function() Snacks.lazygit({ cwd = LazyVim.root.git() }) end, { desc = "lazygit" })
+map("n", "<M-p>", function() require("dotfiles.endpoints").http_file() end, { desc = "Postman: api.http проекта" })
+map("n", "<M-a>", function() require("dotfiles.endpoints").pick() end, { desc = "Эндпоинты API" })
+map("n", "<M-d>", "<cmd>DBUIToggle<cr>", { desc = "База данных (alt-d ещё раз — закрыть)" })
+map("n", "<M-t>", "<cmd>OverseerRun<cr>", { desc = "Задачи" })
+-- те же клавиши в русской раскладке: alt-щ = alt-o и т.д. (langmap на сочетания с alt не действует)
+for ru, en in pairs({ ["щ"] = "o", ["п"] = "g", ["з"] = "p", ["ф"] = "a", ["в"] = "d", ["е"] = "t" }) do
+  local m = vim.fn.maparg("<M-" .. en .. ">", "n", false, true)
+  if m.callback or m.rhs then map(en == "o" and { "n", "t" } or "n", "<M-" .. ru .. ">", m.callback or m.rhs, { desc = m.desc }) end
+end

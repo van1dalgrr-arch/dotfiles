@@ -98,6 +98,7 @@ Everything else is in [rune/README.md](../rune/README.md). F-keys need `fn`.
 
 | Keys | Action |
 |---|---|
+| `alt-o` · `alt-g` · `alt-p` · `alt-a` · `alt-d` · `alt-t` | orbstack · lazygit · Postman · endpoints · database · tasks — one press |
 | `space` | menu of every action with hints |
 | `space f f` · `space /` · `space e` | file · text across the project · file tree |
 | `gd` · `gr` · `K` · `space c r` · `space c a` | definition · usages · docs · rename · code actions |

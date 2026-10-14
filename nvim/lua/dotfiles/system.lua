@@ -43,8 +43,13 @@ function M.dot(args)
 end
 
 -- orbstack — своя панель контейнеров (berth): таблица, логи, события, всё на клавишах
+-- то же нажатие внутри окна закрывает его: toggle, а в окне клавиша работает и в режиме терминала
 function M.containers()
-  Snacks.terminal("orbstack", { cwd = root(), win = { position = "float", width = 0.9, height = 0.85, border = "rounded" } })
+  Snacks.terminal.toggle("orbstack", {
+    cwd = root(),
+    win = { position = "float", width = 0.9, height = 0.85, border = "rounded",
+      keys = { hide = { "<M-o>", "hide", mode = { "n", "t" } } } },
+  })
 end
 
 return M

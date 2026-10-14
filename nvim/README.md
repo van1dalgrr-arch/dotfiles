@@ -54,6 +54,19 @@ A command is action + motion: `d` (delete) + `w` (to the next word) = `dw`. A nu
 
 Practice: `:Tutor` — a built-in 30-minute lesson. Live on this table for a week and your fingers take over.
 
+## One key press
+
+| Keys | What |
+|---|---|
+| `alt-o` | **orbstack** — containers in a float; `alt-o` again closes it |
+| `alt-g` | **lazygit** |
+| `alt-p` | **Postman** — the project's `api.http` ([how to](../docs/postman.md)) |
+| `alt-a` | **API endpoints** — every route, enter jumps to the handler |
+| `alt-d` | **database**; `alt-d` again closes it |
+| `alt-t` | **tasks** (`up`, tests, linter, compose…) |
+
+They work in the Russian layout too. These are the `alt` letters AeroSpace leaves free.
+
 ## The key is space
 
 `space` (leader) opens a menu of every action with hints, so there is nothing to memorise.

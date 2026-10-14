@@ -22,9 +22,9 @@ curl localhost:8080/health      # an answer should come back, not silence
 nvim .
 ```
 
-## Step 3. Press `space` `r` `h`
+## Step 3. Press `alt-p`
 
-Three keys one after another: **space**, then **r**, then **h**.
+One chord: left **option** + **p** (or **space**, **r**, **h** one after another — the same).
 An `api.http` file appears with **every** request of your API already written. Each piece between `###` is **one request**:
 
 ```http
@@ -74,7 +74,7 @@ Content-Type: application/json
 
 | Keys | What |
 |---|---|
-| `space r h` | create `api.http` (if it exists, just open it) |
+| `alt-p` (or `space r h`) | create `api.http` (if it exists, just open it) |
 | `Enter` | send the request under the cursor |
 | `space R r` | send the last request again |
 | `space R c` | copy the request as a `curl` command |

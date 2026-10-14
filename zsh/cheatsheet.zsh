@@ -49,8 +49,8 @@ _cheat_funcs() {
     command cat <<'EOF'
 p|выбрать проект из ~/dev (p kino — с фильтром)
 y|yazi, при выходе остаёмся в папке
-postman|запросы к API в nvim: nvim . → пробел r h → Enter на запросе · инструкция: docs/postman.ru.md
-nvim|Neovim на LazyVim: nvim . · пробел — меню всех действий · :LazyExtras — языки и фичи
+postman|запросы к API в nvim: nvim . → alt-p → Enter на запросе · инструкция: docs/postman.ru.md
+nvim|Neovim на LazyVim: nvim . · пробел — меню · alt-o контейнеры, alt-g git, alt-p Postman, alt-a эндпоинты, alt-d база, alt-t задачи
 gonew|новый Go-проект с CI, тестом, миграциями: gonew myapi [--gh — сразу на GitHub]
 dsh|зайти в контейнер (fzf)
 dlogs|логи контейнера (fzf)
