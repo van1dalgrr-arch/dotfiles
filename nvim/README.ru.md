@@ -14,6 +14,7 @@ Neovim на [LazyVim](https://lazyvim.org) — запасной выход, ес
 | `lua/config/keymaps.lua` | F-клавиши отладки как в Rune и GoLand |
 | `lua/config/autocmds.lua` | **автосохранение** (а с ним импорты и формат) и перечитывание файлов, изменённых снаружи |
 | `lua/plugins/tasks.lua` | задачи из Zed: `up`, air, тесты, покрытие, линтер, compose, docker build, hadolint, trivy, govulncheck, `dot` |
+| `lua/dotfiles/http.lua` | **Postman в файле**: `.http`-запросы через curl, без плагинов и лицензий |
 | `lua/dotfiles/endpoints.lua` | эндпоинты Gin, как окно Endpoints в GoLand (`пробел r e`) |
 | `lua/plugins/dotfiles.lua` | тема tokyonight night с прозрачным фоном — в тон терминалу |
 | `lazyvim.json` | включённые «extras»: Go, Docker, YAML, JSON, Markdown, отладчик, тесты |
@@ -83,6 +84,29 @@ Dockerfile проверяется hadolint прямо при наборе — з
 - **Правки снаружи подхватываются сами:** Claude Code, `git pull`, `go generate` — буфер перечитается после паузы в наборе.
 - Выключить автосохранение на время: `:let g:autosave = v:false`.
 - **Neovim — редактор по умолчанию** (`$EDITOR`): `git commit`, `e` в lazygit (сразу на нужной строке), yazi, `crontab -e`.
+
+## Postman в файле
+
+`пробел r h` собирает `api.http` в корне проекта: все маршруты Gin запросами, логин первым. Дальше файл твой —
+правь тела и параметры. Курсор на запрос → `enter` — ответ справа (JSON, статус, время), `q` — закрыть.
+
+```http
+@host = http://localhost:8080
+
+### POST /auth/login
+# @name login
+POST {{host}}/auth/login
+Content-Type: application/json
+
+{"email": "me@example.com", "password": "secret"}
+
+### GET /api/me — токен из ответа логина подставится сам
+GET {{host}}/api/me
+Authorization: Bearer {{login.response.body.$.access_token}}
+```
+
+`пробел R r` — повторить последний, `пробел R c` — скопировать как curl, `пробел R n` / `R p` — соседний запрос.
+Работает и с любыми `.http` из VS Code или GoLand. Плагин kulala из LazyVim не используется: с 2026 он требует платную лицензию.
 
 ## Русская раскладка
 

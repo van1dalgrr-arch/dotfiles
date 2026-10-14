@@ -14,6 +14,7 @@ nothing to assemble by hand. A from-scratch config can later live in a sibling f
 | `lua/config/keymaps.lua` | debug F-keys like in Rune and GoLand |
 | `lua/config/autocmds.lua` | **autosave** (and with it imports and formatting) and reloading files changed outside |
 | `lua/plugins/tasks.lua` | the Zed tasks: `up`, air, tests, coverage, linter, compose, docker build, hadolint, trivy, govulncheck, `dot` |
+| `lua/dotfiles/http.lua` | **Postman in a file**: `.http` requests via curl, no plugins or licenses |
 | `lua/dotfiles/endpoints.lua` | Gin endpoints, like the Endpoints window in GoLand (`space r e`) |
 | `lua/plugins/dotfiles.lua` | tokyonight night with a transparent background, to match the terminal |
 | `lazyvim.json` | enabled extras: Go, Docker, YAML, JSON, Markdown, debugger, tests |
@@ -83,6 +84,29 @@ Dockerfiles are checked by hadolint as you type — findings show up like normal
 - **Outside changes come in by themselves:** Claude Code, `git pull`, `go generate` — the buffer reloads after a typing pause.
 - Pause autosave: `:let g:autosave = v:false`.
 - **Neovim is the default editor** (`$EDITOR`): `git commit`, `e` in lazygit (right at the line), yazi, `crontab -e`.
+
+## Postman in a file
+
+`space r h` builds `api.http` in the project root: every Gin route as a request, login first. From then on the file is
+yours — edit bodies and params. Cursor on a request → `enter` — the response on the right (JSON, status, time), `q` closes.
+
+```http
+@host = http://localhost:8080
+
+### POST /auth/login
+# @name login
+POST {{host}}/auth/login
+Content-Type: application/json
+
+{"email": "me@example.com", "password": "secret"}
+
+### GET /api/me — the token from the login response fills in
+GET {{host}}/api/me
+Authorization: Bearer {{login.response.body.$.access_token}}
+```
+
+`space R r` — replay the last one, `space R c` — copy as curl, `space R n` / `R p` — next / previous request.
+Works with any `.http` file from VS Code or GoLand. LazyVim's kulala isn't used: since 2026 it needs a paid license.
 
 ## Russian layout
 

@@ -30,3 +30,19 @@ vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI", "BufEnter" }, {
 -- База проекта для dadbod (пробел D) — как у команды db: из .env или по имени папки
 require("dotfiles.system").project_db()
 vim.api.nvim_create_autocmd("DirChanged", { group = group, callback = function() require("dotfiles.system").project_db() end })
+
+-- .http — Postman в файле (lua/dotfiles/http.lua): enter на запросе — отправить
+vim.api.nvim_create_autocmd("FileType", {
+  group = group,
+  pattern = "http",
+  callback = function(ev)
+    local http = require("dotfiles.http")
+    local function map(lhs, fn, desc) vim.keymap.set("n", lhs, fn, { buffer = ev.buf, desc = desc }) end
+    map("<cr>", http.send, "HTTP: отправить запрос под курсором")
+    map("<leader>Rs", http.send, "HTTP: отправить")
+    map("<leader>Rr", http.replay, "HTTP: повторить последний")
+    map("<leader>Rc", http.copy_curl, "HTTP: скопировать как curl")
+    map("<leader>Rn", function() http.jump(1) end, "HTTP: следующий запрос")
+    map("<leader>Rp", function() http.jump(-1) end, "HTTP: предыдущий запрос")
+  end,
+})

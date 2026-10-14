@@ -16,6 +16,7 @@ map("x", "K", ":m '<-2<cr>gv=gv", { desc = "Строки вверх", silent = t
 
 -- Эндпоинты Gin, как в GoLand: все маршруты с полным путём, enter — к хендлеру, ctrl-y — curl
 map("n", "<leader>re", function() require("dotfiles.endpoints").pick() end, { desc = "Эндпоинты (Gin)" })
+map("n", "<leader>rh", function() require("dotfiles.endpoints").http_file() end, { desc = "api.http — Postman в файле" })
 
 -- Система: контейнеры, dot (lua/dotfiles/system.lua)
 local sys = require("dotfiles.system")

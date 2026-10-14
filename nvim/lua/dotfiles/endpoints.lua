@@ -50,8 +50,8 @@ end
 -- в Authorization: Bearer для следующих запросов (сбросить — :let g:api_token = v:null).
 local bodies = {} -- последнее тело запроса для каждого маршрута
 
-local function port()
-  local f = io.open(LazyVim.root() .. "/.env")
+local function port(root)
+  local f = io.open((root or LazyVim.root()) .. "/.env")
   if f then
     for line in f:lines() do
       local p = line:match("^%s*PORT%s*=%s*(%d+)")
@@ -76,7 +76,7 @@ end
 function M.send(r, body)
   local path = r.path:gsub(":([%w_]+)", "1"):gsub("%*[%w_]*", "")
   local url = "http://localhost:" .. port() .. path
-  local cmd = { "curl", "-s", "-S", "-X", r.method == "ANY" and "GET" or r.method, "-w", "\n@@%{http_code} %{time_total}", url }
+  local cmd = { "curl", "-s", "-S", "--connect-timeout", "5", "--max-time", "30", "-X", r.method == "ANY" and "GET" or r.method, "-w", "\n@@%{http_code} %{time_total}", url }
   if vim.g.api_token then vim.list_extend(cmd, { "-H", "Authorization: Bearer " .. vim.g.api_token }) end
   if body and body ~= "" then vim.list_extend(cmd, { "-H", "Content-Type: application/json", "-d", body }) end
   vim.system(cmd, { text = true }, vim.schedule_wrap(function(res)
@@ -182,6 +182,49 @@ function M.pick()
       ["<c-r>"] = { "send", mode = { "n", "i" } },
     } } },
   })
+end
+
+-- api.http — Postman в файле: все маршруты проекта запросами (lua/dotfiles/http.lua, enter — отправить).
+-- Логин получает имя login, остальные запросы берут из его ответа access_token в Authorization.
+-- Готовый файл не перезаписывается: в нём твои тела запросов и правки.
+function M.http_file(root, dest, no_open)
+  root = root or LazyVim.root()
+  dest = dest or (root .. "/api.http")
+  if vim.uv.fs_stat(dest) then
+    vim.notify("api.http уже есть — открываю (новый: удали файл и пробел r h)")
+    return vim.cmd.edit(dest)
+  end
+  local routes = M.collect(root)
+  if #routes == 0 then return vim.notify("Маршрутов Gin не нашёл в " .. root, vim.log.levels.WARN) end
+  local login
+  for _, r in ipairs(routes) do
+    if r.method == "POST" and r.path:match("login$") then login = r end
+  end
+  local lines = {
+    "# Запросы к API. Курсор на запрос → enter — отправить (ответ справа), пробел R r — повторить, пробел R c — как curl, пробел R n/p — соседний.",
+    "# Сгенерировано из маршрутов (пробел r h); дальше файл твой — правь тела и параметры.",
+    "@host = http://localhost:" .. port(root),
+  }
+  local function add(r)
+    local path = r.path:gsub(":([%w_]+)", "1"):gsub("%*[%w_]*", "")
+    vim.list_extend(lines, { "", "### " .. r.method .. " " .. r.path .. " → " .. r.handler })
+    if r == login then lines[#lines + 1] = "# @name login" end
+    lines[#lines + 1] = (r.method == "ANY" and "GET" or r.method) .. " {{host}}" .. path
+    if login and r ~= login and not r.path:match("register$") and not r.path:match("refresh$") then
+      lines[#lines + 1] = "Authorization: Bearer {{login.response.body.$.access_token}}"
+    end
+    if r.method == "POST" or r.method == "PUT" or r.method == "PATCH" then
+      vim.list_extend(lines, { "Content-Type: application/json", "", "{}" })
+    end
+  end
+  if login then add(login) end
+  for _, r in ipairs(routes) do
+    if r ~= login then add(r) end
+  end
+  vim.fn.writefile(lines, dest)
+  if no_open then return dest end
+  vim.cmd.edit(dest)
+  vim.notify(("api.http: %d запросов"):format(#routes))
 end
 
 return M
