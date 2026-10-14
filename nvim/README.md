@@ -10,7 +10,9 @@ nothing to assemble by hand. A from-scratch config can later live in a sibling f
 |---|---|
 | `init.lua` | one line: loads `lua/config/lazy.lua` |
 | `lua/config/lazy.lua` | installs the lazy.nvim plugin manager and LazyVim; **background update checks are off** — update with `:Lazy update` |
-| `lua/config/{options,keymaps,autocmds}.lua` | own settings on top of LazyVim (empty for now — everything is stock) |
+| `lua/config/options.lua` | **the Russian layout understands vim commands** (`langmap`), 8 lines of context around the cursor |
+| `lua/config/keymaps.lua` | debug F-keys like in Rune and GoLand |
+| `lua/config/autocmds.lua` | empty — everything is stock |
 | `lua/plugins/dotfiles.lua` | tokyonight night with a transparent background, to match the terminal |
 | `lazyvim.json` | enabled extras: Go, Docker, YAML, JSON, Markdown, debugger, tests |
 | `lazy-lock.json` | exact versions of every plugin — another Mac gets the same thing |
@@ -43,6 +45,22 @@ Already installed: gopls, delve, golangci-lint, gofumpt, goimports, servers for 
 | `space d b` · `space d c` · `space d O` / `d i` / `d o` · `space d t` | breakpoint · run/continue · step / into / out · stop |
 | `space g g` | lazygit |
 | `space s k` | search all keymaps |
+
+## Russian layout
+
+No need to switch the language: in normal mode Russian letters act like the English ones on the same keys.
+`о`/`л` — down/up (`j`/`k`), `вв` — delete the line (`dd`), `ц` — next word (`w`), `Ж` — command (`:`),
+`Жц` + `enter` — save. In insert mode letters are typed as they are.
+
+## Debugging like GoLand
+
+| Keys | What |
+|---|---|
+| `F9` | run / continue |
+| `F8` · `F7` · `shift-F8` | step · into · out |
+| `ctrl-F8` | breakpoint |
+
+F-keys need `fn` on a Mac. All of it is also on `space d …`.
 
 ## Change it
 
