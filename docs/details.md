@@ -16,9 +16,9 @@ Code written by an AI (Claude); the decisions and the testing are mine
 ![Go](https://img.shields.io/badge/Go-Gin-3b82f6?style=flat-square&logo=go&logoColor=white)
 [![license](https://img.shields.io/badge/license-MIT-101010?style=flat-square)](../LICENSE)
 
-<img src="desktop.jpg" alt="Ghostty and Zed tiled by AeroSpace over the prism wallpaper, the terminal glowing in its colors" width="100%">
+<img src="desktop.jpg" alt="Ghostty with two splits: the ghost greeting and git log on the left, Neovim with the Gin endpoints list on the right" width="100%">
 
-<sub>Ghostty + Zed tiled by AeroSpace. The terminal's glow is built from the wallpaper's colors. Rendered from real command output.</sub>
+<sub>A real screenshot: Ghostty in its plain look, the greeting and git log on the left, Neovim with the endpoints list (<code>space r e</code>) on the right.</sub>
 
 **[Who writes the code](#who-writes-the-code)** · **[Install](#install)** · **[What's inside](#whats-inside)** · **[Daily commands](#daily-commands)** · **[Containers](#containers-orbstack)** · **[Health checks](#health-checks)** · **[Customize](#customize)** · **[Editors](#editors)** · **[Docs](#docs)** · **[From Claude](#from-claude)**
 

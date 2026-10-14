@@ -8,7 +8,9 @@
 [![release](https://img.shields.io/github/v/release/van1dalgrr-arch/dotfiles?style=flat-square&color=a855f7)](https://github.com/van1dalgrr-arch/dotfiles/releases)
 [![license](https://img.shields.io/badge/license-MIT-101010?style=flat-square)](LICENSE)
 
-<img src="docs/desktop.jpg" alt="Ghostty and Zed tiled by AeroSpace" width="100%">
+<img src="docs/desktop.jpg" alt="Ghostty with two splits: the ghost greeting and git log on the left, Neovim with the Gin endpoints list on the right" width="100%">
+
+<sub>A real screenshot: Ghostty, the terminal on the left, Neovim on the right — <code>space r e</code> lists every endpoint of the project.</sub>
 
 **[Install](#install)** · **[Every day](#every-day)** · **[What's inside](#whats-inside)** · **[Full story](docs/details.md)**
 

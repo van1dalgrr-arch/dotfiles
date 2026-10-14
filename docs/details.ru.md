@@ -16,9 +16,9 @@ MacBook Air M2 · 8 ГБ · zsh · Ghostty · AeroSpace · Zed · Rune · Neovim
 ![Go](https://img.shields.io/badge/Go-Gin-3b82f6?style=flat-square&logo=go&logoColor=white)
 [![license](https://img.shields.io/badge/license-MIT-101010?style=flat-square)](../LICENSE)
 
-<img src="desktop.jpg" alt="Ghostty и Zed, разложенные AeroSpace, поверх обоев prism; терминал светится их цветами" width="100%">
+<img src="desktop.jpg" alt="Ghostty, два сплита: слева приветствие с призраком и git log, справа Neovim со списком эндпоинтов Gin" width="100%">
 
-<sub>Ghostty + Zed, разложенные AeroSpace. Свечение терминала собрано из цветов обоев. Нарисовано из настоящего вывода команд.</sub>
+<sub>Настоящий скриншот: Ghostty в строгом виде, слева приветствие и git log, справа Neovim со списком эндпоинтов (<code>пробел r e</code>).</sub>
 
 **[Кто пишет код](#кто-пишет-код)** · **[Установка](#установка)** · **[Что внутри](#что-внутри)** · **[Каждый день](#каждый-день)** · **[Контейнеры](#контейнеры-orbstack)** · **[Проверки](#проверки)** · **[Под себя](#под-себя)** · **[Редакторы](#редакторы)** · **[Документация](#документация)** · **[От Claude](#от-claude)**
 

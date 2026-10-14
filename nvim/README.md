@@ -6,6 +6,10 @@ Neovim on [LazyVim](https://lazyvim.org) — the escape hatch if Rune or Zed get
 nothing to assemble by hand. A from-scratch config can later live in a sibling folder and run as
 `NVIM_APPNAME=<name> nvim` without breaking this one.
 
+<img src="../docs/nvim-endpoints.jpg" alt="Neovim: the Gin endpoints list with a code preview" width="60%">
+
+<sub><code>space r e</code> — every route of the project, enter — to the handler, ctrl-r — a request.</sub>
+
 | File | What |
 |---|---|
 | `init.lua` | one line: loads `lua/config/lazy.lua` |

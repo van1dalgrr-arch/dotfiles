@@ -16,7 +16,9 @@ local function parse(file, out)
       local recv, method, path, rest = line:match("([%w_]+)%.(%u%a+)%(%s*\"([^\"]*)\"(.*)")
       if recv and methods[method] then
         -- хендлер — последний аргумент: userHandler.Register, h.List, func(c *gin.Context)…
-        local handler = rest:match(",%s*([%w_%.]+)%)%s*$") or rest:match(",%s*([%w_%.]+)%s*,?%s*$") or "func"
+        local handler = rest:match(",%s*([%w_%.]+)%(%)%)%s*$") -- logHandler.Create() — фабрика хендлера
+          or rest:match(",%s*([%w_%.]+)%(.-%)%)%s*$") -- handler.Health(db)
+          or rest:match(",%s*([%w_%.]+)%)%s*$") or rest:match(",%s*([%w_%.]+)%s*,?%s*$") or "func"
         local col = line:find(handler, 1, true)
         out[#out + 1] = {
           method = method:upper(),

@@ -32,5 +32,4 @@ Every document exists in English and Russian — the link at the top of each swi
 
 ## Pictures
 
-`*.jpg`, `*.png` here are rendered from real output — the terminal, `dot doctor`, `orbstack`, the themes —
-not screen captures. `wallpapers/` holds the gallery previews.
+`desktop.jpg`, `doctor.jpg`, `nvim-endpoints.jpg` are real screenshots. The other `*.jpg`, `*.png` (`orbstack`, themes, wallpapers, backdrops) are rendered from real output — the terminal, `orbstack`, the themes — not captured from the screen. `wallpapers/` holds the gallery previews.

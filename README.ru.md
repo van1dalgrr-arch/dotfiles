@@ -8,7 +8,9 @@
 [![release](https://img.shields.io/github/v/release/van1dalgrr-arch/dotfiles?style=flat-square&color=a855f7)](https://github.com/van1dalgrr-arch/dotfiles/releases)
 [![license](https://img.shields.io/badge/license-MIT-101010?style=flat-square)](LICENSE)
 
-<img src="docs/desktop.jpg" alt="Ghostty и Zed, разложенные AeroSpace" width="100%">
+<img src="docs/desktop.jpg" alt="Ghostty, два сплита: слева приветствие с призраком и git log, справа Neovim со списком эндпоинтов Gin" width="100%">
+
+<sub>Настоящий скриншот: Ghostty, слева терминал, справа Neovim — <code>пробел r e</code> показывает все эндпоинты проекта.</sub>
 
 **[Установка](#установка)** · **[Каждый день](#каждый-день)** · **[Что внутри](#что-внутри)** · **[Подробно](docs/details.ru.md)**
 
