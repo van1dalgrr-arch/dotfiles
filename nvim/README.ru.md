@@ -14,6 +14,7 @@ Neovim на [LazyVim](https://lazyvim.org) — запасной выход, ес
 | `lua/config/keymaps.lua` | F-клавиши отладки как в Rune и GoLand |
 | `lua/config/autocmds.lua` | **автосохранение** (а с ним импорты и формат) и перечитывание файлов, изменённых снаружи |
 | `lua/plugins/tasks.lua` | задачи из Zed: `up`, air, тесты, покрытие, линтер, compose, docker build, hadolint, trivy, govulncheck, `dot` |
+| `lua/dotfiles/endpoints.lua` | эндпоинты Gin, как окно Endpoints в GoLand (`пробел r e`) |
 | `lua/plugins/dotfiles.lua` | тема tokyonight night с прозрачным фоном — в тон терминалу |
 | `lazyvim.json` | включённые «extras»: Go, Docker, YAML, JSON, Markdown, отладчик, тесты |
 | `lazy-lock.json` | точные версии всех плагинов — на другом маке встанет то же самое |
@@ -45,6 +46,7 @@ nvim .            # в папке проекта
 | `пробел t r` · `пробел t t` · `пробел t s` | тест под курсором · тесты файла · панель тестов |
 | `пробел d b` · `пробел d c` · `пробел d O` / `d i` / `d o` · `пробел d t` | точка останова · запустить/дальше · шаг / внутрь / наружу · стоп |
 | `пробел g g` · `пробел r d` | lazygit · lazydocker |
+| `пробел r e` | **эндпоинты Gin** с полным путём (префиксы `Group` складываются сами): `enter` — к хендлеру, `ctrl-y` — скопировать `curl` |
 | `пробел r r` · `пробел r l` | задачи как `ctrl-r` в Zed · что запущено и чем кончилось |
 | `V` … `J` / `K` | выделенные строки вниз / вверх (`alt-j/k` занял AeroSpace) |
 | `пробел s k` | поиск по всем клавишам |

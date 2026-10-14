@@ -13,3 +13,6 @@ map("n", "<C-F8>", dap("toggle_breakpoint"), { desc = "Debug: точка ост�
 -- V, выделить, J/K — и строки едут вниз/вверх, отступы поправляются сами.
 map("x", "J", ":m '>+1<cr>gv=gv", { desc = "Строки вниз", silent = true })
 map("x", "K", ":m '<-2<cr>gv=gv", { desc = "Строки вверх", silent = true })
+
+-- Эндпоинты Gin, как в GoLand: все маршруты с полным путём, enter — к хендлеру, ctrl-y — curl
+map("n", "<leader>re", function() require("dotfiles.endpoints").pick() end, { desc = "Эндпоинты (Gin)" })

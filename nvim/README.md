@@ -14,6 +14,7 @@ nothing to assemble by hand. A from-scratch config can later live in a sibling f
 | `lua/config/keymaps.lua` | debug F-keys like in Rune and GoLand |
 | `lua/config/autocmds.lua` | **autosave** (and with it imports and formatting) and reloading files changed outside |
 | `lua/plugins/tasks.lua` | the Zed tasks: `up`, air, tests, coverage, linter, compose, docker build, hadolint, trivy, govulncheck, `dot` |
+| `lua/dotfiles/endpoints.lua` | Gin endpoints, like the Endpoints window in GoLand (`space r e`) |
 | `lua/plugins/dotfiles.lua` | tokyonight night with a transparent background, to match the terminal |
 | `lazyvim.json` | enabled extras: Go, Docker, YAML, JSON, Markdown, debugger, tests |
 | `lazy-lock.json` | exact versions of every plugin — another Mac gets the same thing |
@@ -45,6 +46,7 @@ Already installed: gopls, delve, golangci-lint, gofumpt, goimports, servers for 
 | `space t r` · `space t t` · `space t s` | test at cursor · tests in the file · test panel |
 | `space d b` · `space d c` · `space d O` / `d i` / `d o` · `space d t` | breakpoint · run/continue · step / into / out · stop |
 | `space g g` · `space r d` | lazygit · lazydocker |
+| `space r e` | **Gin endpoints** with full paths (`Group` prefixes added up): `enter` — to the handler, `ctrl-y` — copy a `curl` |
 | `space r r` · `space r l` | tasks like `ctrl-r` in Zed · what ran and how it ended |
 | `V` … `J` / `K` | move selected lines down / up (AeroSpace owns `alt-j/k`) |
 | `space s k` | search all keymaps |
