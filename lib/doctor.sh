@@ -123,7 +123,7 @@ doc_docker() {
         pass "docker compose $(vers docker compose version)"
     else failed "нет плагина docker compose" "→ OrbStack ставит его сам; ls ~/.docker/cli-plugins"; fi
     if docker info >/dev/null 2>&1; then pass "движок работает ($(docker context show 2>/dev/null))"
-    else warning "Docker не запущен" "→ откроется сам при up или: open -a OrbStack"; fi
+    else info "Docker спит — проснётся сам от любой команды docker (или: open -a OrbStack)"; fi
     if [ "$deep" = 1 ]; then
         docker buildx version >/dev/null 2>&1 && pass "buildx $(vers docker buildx version)" \
             || warning "нет buildx" "→ ls ~/.docker/cli-plugins"
@@ -285,7 +285,8 @@ doc_macos() {
     esac
     case $(/usr/libexec/ApplicationFirewall/socketfilterfw --getglobalstate 2>/dev/null) in
         *enabled*) pass "файрвол включён" ;;
-        *) warning "файрвол выключен" "→ ./macos.sh --yes security" ;;
+        *) if accepted firewall; then info "файрвол выключен — твоё решение: $(accepted_reason firewall)"
+           else warning "файрвол выключен" "→ ./macos.sh --yes security · или: dot doctor accept firewall «почему»"; fi ;;
     esac
     case $(csrutil status 2>/dev/null) in
         *enabled*) pass "SIP включён" ;;
@@ -319,8 +320,14 @@ doc_macos() {
     if [ "$drift" = 0 ]; then pass "настройки macos.sh на месте"
     else warning "настроек macos.sh не на месте: $drift" "→ ./macos.sh — какие; ./macos.sh --yes — вернуть"; fi
     # awake on (pmset disablesleep) — мак не спит, даже закрытый в рюкзаке
+    # первые сутки это работа с телефона, а не забытая настройка; дольше — уже стоит выключить
     if pmset -g 2>/dev/null | grep -q 'SleepDisabled[[:space:]]*1'; then
-        warning "awake включён: мак не засыпает, даже с закрытой крышкой" "→ awake off"
+        local since="$HOME/.cache/dotfiles/awake-since" hours
+        if [ -f "$since" ]; then
+            hours=$(( ($(date +%s) - $(date -r "$since" +%s)) / 3600 ))
+            if [ "$hours" -lt 24 ]; then info "awake включён ${hours} ч: не засыпает с закрытой крышкой · awake off"
+            else warning "awake включён уже ${hours} ч: мак не засыпает, даже с закрытой крышкой" "→ awake off"; fi
+        else warning "awake включён: мак не засыпает, даже с закрытой крышкой" "→ awake off"; fi
     fi
     local free_gb
     free_gb=$(df -g / | awk 'NR == 2 { print $4 }')
@@ -336,13 +343,43 @@ doc_macos() {
 }
 
 # shellcheck disable=SC2034  # JSON и цвета читает lib/ui.sh
+# решения, которые ты принял сам («файрвол не нужен — домашняя сеть»): на этом маке, не в репозитории
+ACCEPTED=${ACCEPTED:-$HOME/.config/dotfiles/accepted}
+ACCEPT_KEYS="firewall"
+accepted() { [ -f "$ACCEPTED" ] && grep -q "^$1 " "$ACCEPTED"; }
+accepted_reason() { sed -n "s/^$1 //p" "$ACCEPTED" | head -1; }
+
+doctor_accept() {
+    local key=${1:-} reason=${2:-}
+    if [ -z "$key" ]; then
+        [ -s "$ACCEPTED" ] && sed 's/^/  /' "$ACCEPTED" || echo "  принятых решений нет · dot doctor accept <$ACCEPT_KEYS> «почему»"
+        return 0
+    fi
+    case " $ACCEPT_KEYS " in *" $key "*) ;; *) echo "можно принять: $ACCEPT_KEYS" >&2; return 2 ;; esac
+    [ -n "$reason" ] || { echo "dot doctor accept $key «почему» — причина нужна, чтобы потом вспомнить" >&2; return 2; }
+    mkdir -p "$(dirname "$ACCEPTED")"
+    { [ -f "$ACCEPTED" ] && grep -v "^$key " "$ACCEPTED"; echo "$key $reason"; } > "$ACCEPTED.tmp" && mv "$ACCEPTED.tmp" "$ACCEPTED"
+    echo "  принято: $key — $reason (вернуть: dot doctor unaccept $key)"
+}
+
+doctor_unaccept() {
+    [ -n "${1:-}" ] || { echo "dot doctor unaccept <$ACCEPT_KEYS>" >&2; return 2; }
+    [ -f "$ACCEPTED" ] && grep -v "^$1 " "$ACCEPTED" > "$ACCEPTED.tmp"; mv -f "$ACCEPTED.tmp" "$ACCEPTED" 2>/dev/null
+    echo "  снова проверяется: $1"
+}
+
 doctor() {
+    case "${1:-}" in
+        accept) shift; doctor_accept "$@"; return ;;
+        unaccept) shift; doctor_unaccept "$@"; return ;;
+    esac
     local deep=0 a
+    # shellcheck disable=SC2034  # JSON и цвета — глобальные из lib/ui.sh
     for a in "$@"; do
         case $a in
             --deep) deep=1 ;;
             --json) JSON=1 c_ok='' c_warn='' c_fail='' c_dim='' c_head='' r='' ;;
-            *) echo "dot doctor [--deep] [--json]" >&2; return 2 ;;
+            *) echo "dot doctor [--deep] [--json] · dot doctor accept|unaccept <решение>" >&2; return 2 ;;
         esac
     done
     [ "$(uname -s)" = Darwin ] || { echo "dot doctor — только для macOS" >&2; return 2; }

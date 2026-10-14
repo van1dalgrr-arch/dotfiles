@@ -229,7 +229,8 @@ dot doctor --deep    # ~45 s: + versions, pinned revisions, packages outside the
 | Shell | oh-my-zsh, fzf-tab, startup time (best of three runs) |
 | macOS | FileVault, firewall, SIP, Gatekeeper, Time Machine, free disk, **settings from `macos.sh` that an upgrade reset**, `awake` left on |
 
-It only reads, never changes anything. `✓` ok · `!` worth a look · `✗` broken · `○` optional and not installed.
+It only reads, never changes anything. A deliberate choice (no firewall at home, say) — `dot doctor accept firewall "why"`:
+from then on it's a line with your reason, not a warning. `✓` ok · `!` worth a look · `✗` broken · `○` optional and not installed.
 Every problem line ends with the command that fixes it. Exit codes: `0` ok (warnings allowed), `1` errors, `2` bad usage.
 
 <p align="center"><img src="docs/doctor.jpg" width="70%" alt="dot doctor output: sections with checkmarks and hints"/></p>

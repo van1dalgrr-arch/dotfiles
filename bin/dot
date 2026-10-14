@@ -2,6 +2,7 @@
 # ============================================================
 #   dot — управление dotfiles одной командой
 #     dot doctor [--deep] [--json]  всё ли на месте (только читает; --deep — подробно, --json — для jq/CI)
+#     dot doctor accept <что> «почему»  принять решение (firewall): doctor больше не предупреждает
 #     dot project doctor [dir]  что есть в проекте и чего не хватает (только читает)
 #     dot install               brew bundle + симлинки + Go-утилиты + тема
 #     dot update                обслуживание (brew, Go-утилиты, Docker, иконки)
@@ -40,6 +41,6 @@ case "${1:-help}" in
     backup)  shift; backup "$@" ;;
     check)   make -C "$DOTFILES" check ;;
     edit)    zed "$DOTFILES" ;;
-    help|-h|--help) sed -n '3,17p' "$0" | sed 's/^# \{0,1\}//' ;;
-    *)       sed -n '3,17p' "$0" | sed 's/^# \{0,1\}//' >&2; exit 2 ;;
+    help|-h|--help) sed -n '3,18p' "$0" | sed 's/^# \{0,1\}//' ;;
+    *)       sed -n '3,18p' "$0" | sed 's/^# \{0,1\}//' >&2; exit 2 ;;
 esac

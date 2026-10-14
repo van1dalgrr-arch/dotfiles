@@ -79,6 +79,16 @@ check "backup: bundle"       0 "local"                   -- bash -c "git -C '$BA
 check "backup: status"       0 "0 дн. назад"             -- "$DOT" backup status
 unset BACKUP_DIR BACKUP_DEV BACKUP_STAMP BACKUP_NO_SYSTEM
 
+# dot doctor accept: решения хранятся во временном файле
+export ACCEPTED="$TMP/accepted"
+check "accept: без причины"  2 "причина нужна"           -- "$DOT" doctor accept firewall
+check "accept: чужой ключ"   2 "можно принять"           -- "$DOT" doctor accept bogus why
+check "accept"               0 "принято: firewall"       -- "$DOT" doctor accept firewall "домашняя сеть"
+check "accept: список"       0 "firewall домашняя сеть"  -- "$DOT" doctor accept
+check "unaccept"             0 "снова проверяется"       -- "$DOT" doctor unaccept firewall
+check "accept: пусто"        0 "принятых решений нет"    -- "$DOT" doctor accept
+unset ACCEPTED
+
 # go/tools.txt разбирается: имя, пакет, версия
 check "tools.txt разбор"     0 "gopls golang.org/x/tools/gopls v" -- bash -c ". '$DOTFILES/lib/ui.sh'; . '$DOTFILES/lib/tools.sh'; tools_list"
 

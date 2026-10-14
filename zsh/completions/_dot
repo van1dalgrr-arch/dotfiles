@@ -54,7 +54,11 @@ _dot() {
     )
     if (( CURRENT == 2 )); then _describe 'команда' cmds; return; fi
     case $words[2] in
-        doctor)  _arguments '--deep[подробно: версии, ревизии, лишние пакеты]' '--json[результат в JSON]' ;;
+        doctor)  if (( CURRENT == 3 )); then
+                     local -a d=('accept:принять решение (например, без файрвола)' 'unaccept:снова проверять' '--deep:подробно: версии, ревизии, лишние пакеты' '--json:результат в JSON')
+                     _describe 'doctor' d
+                 elif [[ $words[3] == (accept|unaccept) ]] && (( CURRENT == 4 )); then _values 'решение' firewall
+                 fi ;;
         work)    _dot_work ;;
         sync)    _arguments '--yes[применить без вопроса]' ;;
         backup)  _values 'действие' 'status[когда был последний бэкап]' ;;

@@ -189,8 +189,8 @@ alias ports="lsof -i -P | grep LISTEN"
 # awake on|off — не засыпать с закрытой крышкой (pmset, нужен пароль). Не класть так в рюкзак — греется
 awake() {
     case $1 in
-        on)  sudo pmset -a disablesleep 1 && print -P "%F{#$T_FOAM}☕ не засыпает, даже с закрытой крышкой%f · выключить: awake off" ;;
-        off) sudo pmset -a disablesleep 0 && print -P "%F{#$T_MUTED}💤 засыпает как обычно%f" ;;
+        on)  sudo pmset -a disablesleep 1 && mkdir -p ~/.cache/dotfiles && touch ~/.cache/dotfiles/awake-since && print -P "%F{#$T_FOAM}☕ не засыпает, даже с закрытой крышкой%f · выключить: awake off" ;;
+        off) sudo pmset -a disablesleep 0 && rm -f ~/.cache/dotfiles/awake-since && print -P "%F{#$T_MUTED}💤 засыпает как обычно%f" ;;
         *)   if pmset -g | command grep -q 'SleepDisabled[[:space:]]*1'; then
                  print -P "%F{#$T_FOAM}☕ awake: включено%f — не спит с закрытой крышкой · awake off"
              else
