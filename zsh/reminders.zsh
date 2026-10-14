@@ -1,4 +1,4 @@
-# Напоминания под приветствием, только когда есть повод: давно не было update, незапушенное в ~/dev.
+# Напоминания под приветствием, только когда есть повод: давно не было update или бэкапа, незапушенное в ~/dev.
 # Окно не ждёт git: показывается кэш, свежий статус собирается в фоне раз в 10 мин. Выключить: NO_REMINDERS=1
 
 _rem_dir=~/.cache/dotfiles
@@ -33,7 +33,15 @@ _reminders() {
         print "  ${gold}󰚰  update не запускался $(( (EPOCHSECONDS - st[1]) / 86400 )) дн.${r} ${dim}· update${r}"
     fi
 
-    # 2. незапушенное — из кэша
+    # 2. бэкап: без Time Machine — dot backup раз в неделю (метка — ~/.cache/dotfiles/last-backup)
+    local -a bstale=($_rem_dir/last-backup(Nm+7))
+    if [[ ! -f $_rem_dir/last-backup ]]; then
+        print "  ${love}󰁯  бэкапа ещё не было${r} ${dim}· dot backup${r}"
+    elif (( $#bstale )); then
+        print "  ${gold}󰁯  бэкап был больше недели назад${r} ${dim}· dot backup${r}"
+    fi
+
+    # 3. незапушенное — из кэша
     if [[ -s $_rem_repos ]]; then
         local name ahead dirty
         local -a items

@@ -60,10 +60,27 @@ Telegram, Discord, Яндекс Музыка, Happ, ChatGPT, Claude, GitHub Desk
 | История команд (atuin), прыжки zoxide | не критично, наберётся заново |
 | Всё остальное в домашней папке (загрузки, документы) | Time Machine или iCloud Drive |
 
+## Из `dot backup`
+
+`dot backup` (раз в неделю — напомнит приветствие) кладёт в приватный репозиторий `dotfiles-backup` то, чего нет на GitHub:
+незапушенные коммиты всех проектов из `~/dev`, незакоммиченные правки, снимок системы и состояние dotfiles.
+
+```bash
+gh repo clone dotfiles-backup ~/backup
+cat ~/backup/system/brew-casks.txt ~/backup/system/apps.txt     # что стояло
+# проект: сначала склонировать с GitHub, потом вернуть своё
+cd ~/dev/kinozaBack/kinoza-back
+git fetch ~/backup/repos/kinozaBack/kinoza-back/unpushed.bundle 'refs/heads/*:refs/remotes/backup/*'   # незапушенные коммиты
+git apply ~/backup/repos/kinozaBack/kinoza-back/uncommitted.patch                                      # незакоммиченные правки
+```
+
+Новых файлов (`untracked.txt`) в бэкапе нет — только их имена: в них бывают `.env` и ключи.
+
 ## Как не терять в будущем
 
+- **`dot backup`** раз в неделю: незапушенное и снимок системы — в приватный репозиторий (см. выше).
 - **Time Machine** на внешний диск: встроено в macOS, сохраняет вообще всё, памяти не ест.
-  `dot doctor` напоминает, пока бэкапов нет.
+  `dot doctor` считает бэкапом любое из двух и напоминает, если нет ни того, ни другого.
 - Перед выходом из проекта — `pl`: если где-то `!` или `⇡`, запушить.
 - Новая программа → сразу строка в `Brewfile`; новый конфиг → в репозиторий + `link` в `install.sh`.
 - Обновление macOS (27 и дальше) ничего из этого не стирает — восстановление нужно только после стирания диска.

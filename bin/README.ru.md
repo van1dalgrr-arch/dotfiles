@@ -16,6 +16,7 @@
 | `dot doctor [--deep] [--json]` | всё ли на месте (только читает; `--json` — для jq и CI) |
 | `dot work [имя\|off\|list]` | режим проекта: поднять контейнеры и редактор; `off` гасит всё до Finder, Happ, Ghostty |
 | `dot sync [--yes]` | подтянуть свежие dotfiles: показать, что придёт, только fast-forward, потом тесты и doctor |
+| `dot backup [status]` | бэкап без Time Machine: незапушенное, правки, снимок системы → приватный `dotfiles-backup` |
 | `dot project doctor [папка]` | что есть в проекте и чего не хватает |
 | `dot tools [install] [devops]` | Go-утилиты закреплённых версий |
 | `dot install` · `dot update` | brew bundle + install.sh · обслуживание |

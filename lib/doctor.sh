@@ -305,7 +305,12 @@ doc_macos() {
             else warning "Time Machine: последний бэкап $days дн. назад ($last)" "→ подключи диск бэкапов"; fi
         else warning "Time Machine настроен, но бэкапа не видно" "→ подключи диск бэкапов"; fi
     else
-        warning "бэкапов нет: Time Machine не настроен" "→ Настройки → Основные → Time Machine"
+        # без диска Time Machine бэкап — dot backup (приватный репозиторий на GitHub)
+        local bage
+        if bage=$(backup_age); then
+            if [ "$bage" -le 7 ]; then pass "бэкап: dot backup $bage дн. назад (Time Machine нет)"
+            else warning "бэкап: dot backup $bage дн. назад" "→ dot backup"; fi
+        else warning "бэкапов нет: ни Time Machine, ни dot backup" "→ dot backup"; fi
     fi
     # настройки из macos.sh: обновление macOS может вернуть заводские. apps/login/security — не здесь
     # (медленно, спрашивают разрешения; файрвол проверен выше)

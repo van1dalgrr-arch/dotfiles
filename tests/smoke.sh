@@ -64,6 +64,21 @@ check "work dir"             0 "$TMP/notes"              -- "$DOT" work dir
 check "sync: плохой флаг"    2 ""                        -- "$DOT" sync --bogus
 rm -f "$WORK_STATE"
 
+# dot backup: локальные bare-репозитории вместо GitHub, без снимка системы
+export BACKUP_DIR="$TMP/backup" BACKUP_DEV="$TMP/dev" BACKUP_STAMP="$TMP/backup-stamp" BACKUP_NO_SYSTEM=1
+g() { git -c user.name=t -c user.email=t@t -c init.defaultBranch=main -c core.hooksPath=/dev/null "$@"; }
+g init -q --bare "$TMP/backup.git" && g clone -q "$TMP/backup.git" "$BACKUP_DIR" 2>/dev/null
+g -C "$BACKUP_DIR" commit -q --allow-empty -m init && g -C "$BACKUP_DIR" push -q origin HEAD 2>/dev/null
+g init -q --bare "$TMP/proj.git" && mkdir -p "$BACKUP_DEV" && g clone -q "$TMP/proj.git" "$BACKUP_DEV/proj" 2>/dev/null
+( cd "$BACKUP_DEV/proj" && echo a > a && g add a && g commit -qm one && g push -q origin HEAD 2>/dev/null \
+  && echo b > b && g add b && g commit -qm local && echo x >> a && echo n > new.go )
+check "backup: ещё не было"  0 "бэкапа ещё не было"      -- "$DOT" backup status
+check "backup: плохой арг."  2 ""                        -- "$DOT" backup bogus
+check "backup"               0 "proj ⇡1 !1 ?1"           -- env GIT_AUTHOR_NAME=t GIT_AUTHOR_EMAIL=t@t GIT_COMMITTER_NAME=t GIT_COMMITTER_EMAIL=t@t "$DOT" backup
+check "backup: bundle"       0 "local"                   -- bash -c "git -C '$BACKUP_DEV/proj' bundle verify '$BACKUP_DIR/repos/proj/unpushed.bundle' >/dev/null 2>&1 && cat '$BACKUP_DIR/repos/proj/unpushed.txt'"
+check "backup: status"       0 "0 дн. назад"             -- "$DOT" backup status
+unset BACKUP_DIR BACKUP_DEV BACKUP_STAMP BACKUP_NO_SYSTEM
+
 # go/tools.txt разбирается: имя, пакет, версия
 check "tools.txt разбор"     0 "gopls golang.org/x/tools/gopls v" -- bash -c ". '$DOTFILES/lib/ui.sh'; . '$DOTFILES/lib/tools.sh'; tools_list"
 

@@ -12,6 +12,7 @@ Modules of the `dot` command. Plain bash 3.2 (the one shipped with macOS), no de
 | `project.sh` | `dot project doctor`: Go project checklist |
 | `tools.sh` | `dot tools`: pinned Go tools |
 | `sync.sh` | `dot sync`: pull fresh dotfiles — fast-forward only, then tests and `dot doctor` |
+| `backup.sh` | `dot backup`: unpushed commits (git bundle), uncommitted changes, system snapshot → a private repo |
 | `work.sh` | `dot work`: project modes from [work/](../work) — start containers and the editor, `work off` stops everything |
 
 ## Tests

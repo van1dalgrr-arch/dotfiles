@@ -47,6 +47,7 @@ _dot() {
         'snapshot:снимок системы до/после обновления macOS'
         'work:режим проекта: поднять окружение / off — погасить'
         'sync:подтянуть свежие dotfiles: fast-forward + проверки'
+        'backup:бэкап без Time Machine → приватный репозиторий'
         'check:проверки, как в CI'
         'edit:открыть dotfiles в Zed'
         'help:справка'
@@ -56,6 +57,7 @@ _dot() {
         doctor)  _arguments '--deep[подробно: версии, ревизии, лишние пакеты]' '--json[результат в JSON]' ;;
         work)    _dot_work ;;
         sync)    _arguments '--yes[применить без вопроса]' ;;
+        backup)  _values 'действие' 'status[когда был последний бэкап]' ;;
         project) (( CURRENT == 3 )) && { local -a p=('doctor:что есть в проекте и чего не хватает'); _describe 'проект' p; } || _directories ;;
         tools)   local -a t=(status install devops); _describe 'действие' t ;;
         macos)   shift words; (( CURRENT-- )); _dot_macos_groups ;;

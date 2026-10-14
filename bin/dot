@@ -12,13 +12,14 @@
 #     dot snapshot [diff]       снимок системы до/после обновления macOS; diff — что поменялось
 #     dot work [имя|off|list]   режим проекта: поднять окружение / погасить всё до нуля
 #     dot sync                  безопасно подтянуть свежие dotfiles: только fast-forward + проверки
+#     dot backup [status]       бэкап без Time Machine: незапушенное, снимок системы → приватный репозиторий
 #     dot edit                  открыть репозиторий в Zed
 #   Код выхода: 0 — ок (предупреждения не считаются), 1 — есть ошибки, 2 — неверный вызов.
 # ============================================================
 set -uo pipefail
 DOTFILES="${DOTFILES:-$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)}"
 
-for lib in ui tools doctor project snapshot work sync; do
+for lib in ui tools doctor project snapshot work sync backup; do
     # shellcheck source=/dev/null
     . "$DOTFILES/lib/$lib.sh"
 done
@@ -36,8 +37,9 @@ case "${1:-help}" in
     snapshot) shift; snapshot "$@" ;;
     work)    shift; work "$@" ;;
     sync)    shift; sync "$@" ;;
+    backup)  shift; backup "$@" ;;
     check)   make -C "$DOTFILES" check ;;
     edit)    zed "$DOTFILES" ;;
-    help|-h|--help) sed -n '3,16p' "$0" | sed 's/^# \{0,1\}//' ;;
-    *)       sed -n '3,16p' "$0" | sed 's/^# \{0,1\}//' >&2; exit 2 ;;
+    help|-h|--help) sed -n '3,17p' "$0" | sed 's/^# \{0,1\}//' ;;
+    *)       sed -n '3,17p' "$0" | sed 's/^# \{0,1\}//' >&2; exit 2 ;;
 esac

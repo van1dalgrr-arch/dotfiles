@@ -153,6 +153,7 @@ dot doctor               # всё должно быть ✓
 | `update` | обслуживание раз в неделю: brew, закреплённые Go-утилиты, мусор Docker, tldr, иконки, пересборка `orbstack` |
 | `work kinoza-back` / `work off` | режим проекта: OrbStack, его контейнеры и Zed одной командой, в промпте `◆ имя 1ч12м`; `off` гасит всё ([`work/`](work)) |
 | `dot sync` | безопасно подтянуть свежие dotfiles: только fast-forward, незакоммиченное не трогает |
+| `dot backup` | бэкап без Time Machine: незапушенное из `~/dev`, снимок системы → приватный репозиторий на GitHub ([восстановление](docs/recovery.ru.md#из-dot-backup)) |
 | `dot snapshot` | снимок системы перед обновлением macOS; `dot snapshot diff` после — что сбросилось ([чек-лист](docs/macos-upgrade.ru.md)) |
 
 Набрал команду, которой нет, — промпт подскажет, есть ли она в brew, как `pkgfile` в Arch.

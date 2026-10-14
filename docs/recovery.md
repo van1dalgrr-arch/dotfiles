@@ -60,8 +60,25 @@ Anything you always need is better added to the `Brewfile` (`cask "telegram"` an
 | Command history (atuin), zoxide jumps | not critical, they build up again |
 | Everything else in the home folder (downloads, documents) | Time Machine or iCloud Drive |
 
+## From `dot backup`
+
+`dot backup` (weekly — the greeting reminds you) puts what isn't on GitHub into the private `dotfiles-backup` repo:
+unpushed commits of every project in `~/dev`, uncommitted changes, a system snapshot and the dotfiles state.
+
+```bash
+gh repo clone dotfiles-backup ~/backup
+cat ~/backup/system/brew-casks.txt ~/backup/system/apps.txt     # what was installed
+# a project: clone it from GitHub first, then bring your work back
+cd ~/dev/kinozaBack/kinoza-back
+git fetch ~/backup/repos/kinozaBack/kinoza-back/unpushed.bundle 'refs/heads/*:refs/remotes/backup/*'   # unpushed commits
+git apply ~/backup/repos/kinozaBack/kinoza-back/uncommitted.patch                                      # uncommitted changes
+```
+
+New files (`untracked.txt`) aren't in the backup — only their names: they tend to be `.env` files and keys.
+
 ## How not to lose things next time
 
+- **`dot backup`** weekly: unpushed work and a system snapshot into a private repo (see above).
 - **Time Machine** on an external disk: built into macOS, saves absolutely everything, costs no memory.
   `dot doctor` reminds you while there are no backups.
 - Before leaving a project — `pl`: if anything shows `!` or `⇡`, push it.

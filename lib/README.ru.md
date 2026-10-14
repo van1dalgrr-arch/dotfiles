@@ -12,6 +12,7 @@
 | `project.sh` | `dot project doctor`: чеклист Go-проекта |
 | `tools.sh` | `dot tools`: Go-утилиты закреплённых версий |
 | `sync.sh` | `dot sync`: подтянуть свежие dotfiles — только fast-forward, потом тесты и `dot doctor` |
+| `backup.sh` | `dot backup`: незапушенные коммиты (git bundle), незакоммиченные правки, снимок системы → приватный репозиторий |
 | `work.sh` | `dot work`: режимы проектов из [work/](../work) — поднять контейнеры и редактор, `work off` гасит всё |
 
 ## Тесты

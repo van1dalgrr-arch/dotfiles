@@ -154,6 +154,7 @@ Forgot a command? Press `?` (or `ctrl+/`) — a cheatsheet with every hotkey, fu
 | `update` | weekly maintenance: brew, pinned Go tools, Docker junk, tldr, icons, rebuilds `orbstack` |
 | `work kinoza-back` / `work off` | project mode: OrbStack, its containers and Zed in one command, `◆ name 1h12m` in the prompt; `off` shuts everything down ([`work/`](work)) |
 | `dot sync` | pull fresh dotfiles safely: fast-forward only, never touches uncommitted changes |
+| `dot backup` | backup without Time Machine: unpushed work from `~/dev` and a system snapshot → a private GitHub repo ([restore](docs/recovery.md#from-dot-backup)) |
 | `dot snapshot` | snapshot before a macOS upgrade; `dot snapshot diff` after shows what reset ([checklist](docs/macos-upgrade.md)) |
 
 Type a command that doesn't exist and the prompt tells you if it's available in brew — like `pkgfile` on Arch.
