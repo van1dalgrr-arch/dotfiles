@@ -31,6 +31,7 @@ require("lazy").setup({
     -- version = "*", -- try installing the latest stable version for plugins that support semver
   },
   install = { colorscheme = { "tokyonight", "habamax" } },
+  rocks = { enabled = false }, -- ни одному плагину не нужен luarocks — без него :checkhealth не ругается
   checker = {
     enabled = false, -- без проверки обновлений в фоне: обновить — :Lazy update
     notify = false, -- notify on update

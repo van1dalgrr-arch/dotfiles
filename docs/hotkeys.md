@@ -103,5 +103,13 @@ Everything else is in [rune/README.md](../rune/README.md). F-keys need `fn`.
 | `space f f` · `space /` · `space e` | file · text across the project · file tree |
 | `gd` · `gr` · `K` · `space c r` · `space c a` | definition · usages · docs · rename · code actions |
 | `space t r` · `space d b` · `space d c` | test at cursor · breakpoint · start debugging |
+| `space r x` · `space r X` | ▶ run the `func main` / test at the cursor · under the debugger |
+| `gpd` · `gpr` · `gpi` · `space c h` | peek definition / usages / implementations · who calls it |
+| `space c x` · `space c i` · `space c w` · `S-F6` | extract · inline · rewrite · rename |
+| `space G …` | Go: tags, implement an interface, `if err`, tests, coverage |
+| `space g v` · `space g m` · `space U` | diffview and conflicts · branch against main · the file's edit history |
+| `ctrl-n` · `space a c` · `space h` | multiple cursors · Claude Code · **cheat sheet** |
+| `alt-c` · `space a x` · `alt-w` | hide/show Claude · "fix this error" · gw in a popup |
+| `alt-s` | theme with a preview, `enter` remembers it |
 
-More in [nvim/README.md](../nvim/README.md).
+Every key is in the [Neovim cheat sheet](nvim.md) (`space h` in nvim), how it's built — [nvim/README.md](../nvim/README.md).

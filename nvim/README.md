@@ -15,13 +15,25 @@ nothing to assemble by hand. A from-scratch config can later live in a sibling f
 | `init.lua` | one line: loads `lua/config/lazy.lua` |
 | `lua/config/lazy.lua` | installs the lazy.nvim plugin manager and LazyVim; **background update checks are off** — update with `:Lazy update` |
 | `lua/config/options.lua` | **the Russian layout understands vim commands** (`langmap`), 8 lines of context around the cursor |
-| `lua/config/keymaps.lua` | debug F-keys like in Rune and GoLand |
+| `lua/config/keymaps.lua` | debug F-keys like in Rune and GoLand, the cheat sheet (`space h`), line blame |
 | `lua/config/autocmds.lua` | **autosave** (and with it imports and formatting) and reloading files changed outside |
 | `lua/plugins/tasks.lua` | the Zed tasks: `up`, air, tests, coverage, linter, compose, docker build, hadolint, trivy, govulncheck, `dot` |
 | `lua/dotfiles/http.lua` | **Postman in a file**: `.http` requests via curl, no plugins or licenses |
 | `lua/dotfiles/endpoints.lua` | Gin endpoints, like the Endpoints window in GoLand (`space r e`) |
-| `lua/plugins/dotfiles.lua` | tokyonight night with a transparent background, to match the terminal |
-| `lazyvim.json` | enabled extras: Go, Docker, YAML, JSON, Markdown, debugger, tests |
+| `lua/plugins/dotfiles.lua` | **look**: tokyonight night (transparent) plus 6 more themes to pick (`space u C`), a "bubbles" status line, the start screen, borders |
+| `lua/dotfiles/themes.lua` | **theme switcher on `alt-s`**: preview on the whole editor, `enter` remembers it (`~/.local/state/nvim/colorscheme`) |
+| `lua/dotfiles/theme.lua` | rose-pine **in the dotfiles theme colors** (the `themes/<theme>.sh` palette, Dev Day when light); colors for ▶, "implements" and multiple cursors in any theme |
+| `lua/plugins/goland.lua` | **Go like GoLand**: actions with a preview, refactorings, "implements", generation (`space G`), peek, coverage, call hierarchy, dlv in Docker |
+| `lua/dotfiles/run.lua` | ▶ next to `func main` and tests — `space r x` runs, `space r X` debugs |
+| `lua/plugins/ui.lua` | breadcrumbs, errors right of the line (Error Lens), multiple cursors |
+| `lua/plugins/git.lua` | diffview (three-way merge, history, branch against main), blame, edit history (undotree) |
+| `lua/plugins/ai.lua` | Claude Code in nvim, Kubernetes (kubectl.nvim) |
+| `lua/plugins/learn.lua` | learn as you go: motion marks in the line (precognition), a habit coach in hint mode (hardtime) |
+| `lua/plugins/tools.lua` | Claude on `alt-c` and "fix it" (`space a x`), gw on `alt-w`, yazi, Go scratch, structural replace (ast-grep), quicker, persistent breakpoints |
+| `lua/plugins/editing.lua` | `ctrl-a` for Go (`:=`↔`=`, `t.Error`↔`t.Fatal`, HTTP methods and statuses), `.env` under asterisks |
+| `queries/go/injections.scm` | SQL inside Go strings is highlighted as SQL |
+| `snippets/go.json` | own Go snippets: `ife`, `errw`, `tt`, `gh`, `bench`… |
+| `lazyvim.json` | enabled extras: Go, Docker, YAML, JSON, Markdown, debugger, tests, sticky header, Structure, rename with a preview, Claude Code, surround, dial, yanky |
 | `lazy-lock.json` | exact versions of every plugin — another Mac gets the same thing |
 
 `install.sh` links `~/.config/nvim → nvim/`. The previous hand-written `init.lua` is kept as
@@ -92,6 +104,21 @@ They work in the Russian layout too. These are the `alt` letters AeroSpace leave
 | `space g p` · `space g i` | GitHub **pull requests and issues** (via `gh`): diff, comments on lines, review |
 
 Dockerfiles are checked by hadolint as you type — findings show up like normal errors. The status line shows `◆ mode 1h12m` while `dot work` is on.
+
+## Stronger than GoLand
+
+Everything that was missing compared to GoLand, and a bit more — **[the cheat sheet: GoLand → nvim key by key](../docs/nvim.md)** (`space h` in nvim).
+
+- **▶ next to `func main` and tests** — `space r x` runs the function at the cursor, `space r X` debugs it.
+- **`реализует: io.Reader`** in grey next to a type and `реализуют: …` next to an interface — like the ↑↓ icons.
+- **Actions with a preview** (`space c a`): every fix and refactoring shows its diff before it applies.
+  Extract / inline / rewrite — `space c x` / `c i` / `c w`, call hierarchy — `space c h`.
+- **Generation — `space G`:** tags, implement an interface, `if err`, tests, `go mod tidy`, line coverage.
+- **Peek** — `gpd` / `gpr` / `gpi`: definition, usages, implementations in a popup.
+- **Breadcrumbs, a sticky function header, the Structure window, errors as a badge on the right** (like Error Lens).
+- **Git:** three-way merge conflicts, file history, the branch against main (`space g v` / `g H` / `g m`), line blame, Local History.
+- **Beyond GoLand:** Claude Code in a panel with diff edits (`space a c`), multiple cursors (`ctrl-n`), Kubernetes (`space k`), dlv debugging in Docker.
+- **Themes:** tokyonight by default, `space u C` for kanagawa, carbonfox, cyberdream, vesper, gruvbox-material and rose-pine in the terminal colors.
 
 ## By itself, no `:w`
 

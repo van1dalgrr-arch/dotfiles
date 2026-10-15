@@ -52,4 +52,13 @@ function M.containers()
   })
 end
 
+-- gw (github-watcher) — PR, Actions, логи CI проекта; alt-w в окне прячет его, gw продолжает работать
+function M.gw()
+  Snacks.terminal.toggle("gw", {
+    cwd = root(),
+    win = { position = "float", width = 0.9, height = 0.85, border = "rounded",
+      keys = { hide = { "<M-w>", "hide", mode = { "n", "t" } }, hide_ru = { "<M-ц>", "hide", mode = { "n", "t" } } } },
+  })
+end
+
 return M

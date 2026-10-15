@@ -11,6 +11,7 @@ Every document exists in English and Russian — the link at the top of each swi
 | [**The full story**](details.md) | the long version of the front page: every part, checks, versions, security, notes from Claude |
 | [**How to use it**](guide.md) | every command and feature, by area: look, terminal, projects, git, containers, Mac upkeep |
 | [**Hotkeys**](hotkeys.md) | AeroSpace, Ghostty, `orbstack`, Zed, Rune (GoLand-like) and Neovim on one page |
+| [**Neovim cheat sheet**](nvim.md) | vim beyond `dd` and `i`, GoLand → nvim key by key, everything new for Go |
 | [**Postman in nvim**](postman.md) | send a request to your API and see the answer — in 5 steps |
 | [**Containers from the terminal**](docker.md) | images, containers, volumes; every `docker run` flag explained; compose; live rebuild |
 

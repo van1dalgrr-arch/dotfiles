@@ -15,13 +15,25 @@ Neovim на [LazyVim](https://lazyvim.org) — запасной выход, ес
 | `init.lua` | одна строка: грузит `lua/config/lazy.lua` |
 | `lua/config/lazy.lua` | ставит менеджер плагинов lazy.nvim и LazyVim; **проверка обновлений в фоне выключена** — обновить: `:Lazy update` |
 | `lua/config/options.lua` | **русская раскладка понимает vim-команды** (`langmap`), 8 строк вокруг курсора |
-| `lua/config/keymaps.lua` | F-клавиши отладки как в Rune и GoLand |
+| `lua/config/keymaps.lua` | F-клавиши отладки как в Rune и GoLand, шпаргалка (`пробел h`), blame строки |
 | `lua/config/autocmds.lua` | **автосохранение** (а с ним импорты и формат) и перечитывание файлов, изменённых снаружи |
 | `lua/plugins/tasks.lua` | задачи из Zed: `up`, air, тесты, покрытие, линтер, compose, docker build, hadolint, trivy, govulncheck, `dot` |
 | `lua/dotfiles/http.lua` | **Postman в файле**: `.http`-запросы через curl, без плагинов и лицензий |
 | `lua/dotfiles/endpoints.lua` | эндпоинты Gin, как окно Endpoints в GoLand (`пробел r e`) |
-| `lua/plugins/dotfiles.lua` | тема tokyonight night с прозрачным фоном — в тон терминалу |
-| `lazyvim.json` | включённые «extras»: Go, Docker, YAML, JSON, Markdown, отладчик, тесты |
+| `lua/plugins/dotfiles.lua` | **вид**: tokyonight night (прозрачная) и ещё 6 тем на выбор (`пробел u C`), статусная строка «пузырями», стартовый экран, рамки |
+| `lua/dotfiles/themes.lua` | **смена темы по `alt-s`**: предпросмотр на всём редакторе, `enter` — запомнить (`~/.local/state/nvim/colorscheme`) |
+| `lua/dotfiles/theme.lua` | rose-pine **в цветах темы dotfiles** (палитра `themes/<тема>.sh`, светлая — Dev Day); цвета ▶, «реализует:» и мультикурсоров в любой теме |
+| `lua/plugins/goland.lua` | **Go как в GoLand**: действия с превью, рефакторинги, «реализует:», генерация (`пробел G`), peek, покрытие, иерархия вызовов, dlv в Docker |
+| `lua/dotfiles/run.lua` | ▶ у `func main` и тестов — `пробел r x` запустить, `пробел r X` под отладчиком |
+| `lua/plugins/ui.lua` | хлебные крошки, ошибки справа от строки (Error Lens), мультикурсоры |
+| `lua/plugins/git.lua` | diffview (merge втроём, история, ветка против main), blame, история правок (undotree) |
+| `lua/plugins/ai.lua` | Claude Code в nvim, Kubernetes (kubectl.nvim) |
+| `lua/plugins/learn.lua` | учиться на ходу: метки движений в строке (precognition), тренер привычек в режиме подсказок (hardtime) |
+| `lua/plugins/tools.lua` | Claude по `alt-c` и «почини» (`пробел a x`), gw по `alt-w`, yazi, Go-черновик, структурная замена (ast-grep), quicker, точки останова между запусками |
+| `lua/plugins/editing.lua` | `ctrl-a` для Go (`:=`↔`=`, `t.Error`↔`t.Fatal`, HTTP-методы и статусы), `.env` под звёздочками |
+| `queries/go/injections.scm` | SQL внутри Go-строк подсвечивается как SQL |
+| `snippets/go.json` | свои Go-сниппеты: `ife`, `errw`, `tt`, `gh`, `bench`… |
+| `lazyvim.json` | включённые «extras»: Go, Docker, YAML, JSON, Markdown, отладчик, тесты, sticky-заголовок, Structure, переименование с превью, Claude Code, surround, dial, yanky |
 | `lazy-lock.json` | точные версии всех плагинов — на другом маке встанет то же самое |
 
 `install.sh` ставит ссылку `~/.config/nvim → nvim/`. Прежний самодельный `init.lua` сохранён как
@@ -92,6 +104,21 @@ Vim — режимы. **Обычный** (`esc`) — ходишь и коман�
 | `пробел g p` · `пробел g i` | **pull requests и issues** GitHub (через `gh`): diff, комментарии на строках, ревью |
 
 Dockerfile проверяется hadolint прямо при наборе — замечания как обычные ошибки. В статусной строке — `◆ режим 1ч12м`, когда включён `dot work`.
+
+## Сильнее GoLand
+
+Всё, чего не хватало до GoLand, и немного сверху — **[шпаргалка: GoLand → nvim клавиша к клавише](../docs/nvim.ru.md)** (в nvim — `пробел h`).
+
+- **▶ у `func main` и тестов** — `пробел r x` запускает функцию под курсором, `пробел r X` — под отладчиком.
+- **`реализует: io.Reader`** серым у типа и `реализуют: …` у интерфейса — как значки ↑↓.
+- **Действия с превью** (`пробел c a`): каждое исправление и рефакторинг показывает diff до применения.
+  Вынести / встроить / переписать — `пробел c x` / `c i` / `c w`, иерархия вызовов — `пробел c h`.
+- **Генерация — `пробел G`:** теги, реализовать интерфейс, `if err`, тесты, `go mod tidy`, покрытие строк.
+- **Peek** — `gpd` / `gpr` / `gpi`: определение, использования, реализации во всплывашке.
+- **Хлебные крошки, sticky-заголовок функции, окно Structure, ошибки плашкой справа** (как Error Lens).
+- **Git:** merge-конфликты втроём, история файла, ветка против main (`пробел g v` / `g H` / `g m`), blame строки, Local History.
+- **Сверх GoLand:** Claude Code в панели с diff-правками (`пробел a c`), мультикурсоры (`ctrl-n`), Kubernetes (`пробел k`), отладка dlv в Docker.
+- **Темы:** tokyonight по умолчанию, `пробел u C` — kanagawa, carbonfox, cyberdream, vesper, gruvbox-material и rose-pine в цветах терминала.
 
 ## Само, без `:w`
 

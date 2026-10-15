@@ -7,12 +7,28 @@ map("n", "<F8>", dap("step_over"), { desc = "Debug: шаг (как в GoLand)" }
 map("n", "<F7>", dap("step_into"), { desc = "Debug: внутрь" })
 map("n", "<S-F8>", dap("step_out"), { desc = "Debug: наружу" })
 map("n", "<F9>", dap("continue"), { desc = "Debug: запустить / дальше" })
-map("n", "<C-F8>", dap("toggle_breakpoint"), { desc = "Debug: точка останова" })
+-- точка останова сохраняется между запусками nvim (persistent-breakpoints, lua/plugins/tools.lua)
+map("n", "<C-F8>", function() require("persistent-breakpoints.api").toggle_breakpoint() end, { desc = "Debug: точка останова" })
 
 -- Переместить выделенные строки: alt-j/alt-k из LazyVim забирает AeroSpace (весь слой alt — его).
 -- V, выделить, J/K — и строки едут вниз/вверх, отступы поправляются сами.
 map("x", "J", ":m '>+1<cr>gv=gv", { desc = "Строки вниз", silent = true })
 map("x", "K", ":m '<-2<cr>gv=gv", { desc = "Строки вверх", silent = true })
+
+-- Тема с предпросмотром: курсор по списку — весь редактор в ней, enter — запомнить (lua/dotfiles/themes.lua)
+map("n", "<M-s>", function() require("dotfiles.themes").pick() end, { desc = "Тема (предпросмотр, enter — запомнить)" })
+map("n", "<M-ы>", function() require("dotfiles.themes").pick() end, { desc = "Тема (предпросмотр, enter — запомнить)" })
+map("n", "<leader>uC", function() require("dotfiles.themes").pick() end, { desc = "Тема (предпросмотр, enter — запомнить)" })
+
+-- Шпаргалка по всем клавишам (docs/nvim.ru.md) — в окне поверх кода, q — закрыть
+map("n", "<leader>h", function() require("dotfiles.cheatsheet").open() end, { desc = "Шпаргалка" })
+
+-- Кто и когда менял строку — справа серым, как Annotate в GoLand
+Snacks.toggle({
+  name = "Blame строки",
+  get = function() return require("gitsigns.config").config.current_line_blame end,
+  set = function(on) require("gitsigns").toggle_current_line_blame(on) end,
+}):map("<leader>uB")
 
 -- Эндпоинты Gin, как в GoLand: все маршруты с полным путём, enter — к хендлеру, ctrl-y — curl
 map("n", "<leader>re", function() require("dotfiles.endpoints").pick() end, { desc = "Эндпоинты (Gin)" })

@@ -10,3 +10,9 @@ vim.opt.langmap = RU .. ";" .. EN .. "," .. ru .. ";" .. en
 
 -- как в старом init.lua: больше строк вокруг курсора
 vim.opt.scrolloff = 8
+
+-- цвета для ▶, «реализует:», мультикурсоров в любой теме; rose-pine следит за темой dotfiles
+require("dotfiles.theme").watch()
+
+-- все всплывающие окна (hover, подсказки, ошибки) — в скруглённой рамке
+vim.o.winborder = "rounded"

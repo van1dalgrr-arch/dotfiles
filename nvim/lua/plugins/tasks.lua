@@ -23,6 +23,8 @@ local tasks = {
   { "тесты — весь проект", "gotestsum --format pkgname-and-test-fails --format-icons hivis -- ./...", go },
   { "тесты — пакет текущего файла", function() return "gotestsum --format testname -- -count=1 " .. vim.fn.shellescape(file_dir()) end, go },
   { "покрытие тестами", "go test -coverprofile=/tmp/cover.out ./... && go tool cover -html=/tmp/cover.out", go },
+  -- профиль CPU открывается в браузере (flame graph, top, исходник); бинарник теста — в /tmp, не в проект
+  { "бенчмарки пакета + pprof", function() return "go test -run '^$' -bench . -benchmem -o /tmp/bench.test -cpuprofile /tmp/cpu.out " .. vim.fn.shellescape(file_dir()) .. " && go tool pprof -http=:0 /tmp/cpu.out" end, go },
   { "golangci-lint", "golangci-lint run ./...", go },
   { "go mod tidy", "go mod tidy", go },
   { "govulncheck", "govulncheck ./...", go },
