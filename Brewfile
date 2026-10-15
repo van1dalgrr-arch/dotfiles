@@ -90,6 +90,8 @@ cask "raycast"
 brew "yazi"
 brew "glow"
 brew "chafa"            # картинки в терминале (превью в wall)
+tap "charmbracelet/tap"
+brew "charmbracelet/tap/freeze"   # скриншот кода в nvim (пробел P); просто «freeze» — чужой cask
 brew "atuin"
 brew "shellcheck"
 brew "shfmt"

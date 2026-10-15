@@ -74,6 +74,11 @@ return {
       opts.options.section_separators = { left = "", right = "" }
       opts.options.component_separators = { left = "", right = "" }
       opts.sections.lualine_a = { { "mode", separator = { left = "" }, right_padding = 2 } }
+      -- тесты пакета в фоне: ✓ 42 / ✗ 1 / ✗ сборка (lua/dotfiles/autotest.lua)
+      table.insert(opts.sections.lualine_x, 1, {
+        function() return require("dotfiles.autotest").status() end,
+        color = function() return require("dotfiles.autotest").color() end,
+      })
       -- какие языковые серверы подключены к файлу (как значок gopls в углу GoLand)
       table.insert(opts.sections.lualine_x, 1, {
         function()
@@ -116,6 +121,7 @@ neovim · go · без лицензий]],
         sections = {
           { section = "header" },
           { section = "keys", gap = 1, padding = 1 },
+          function() return require("dotfiles.tips").section() end, -- совет дня из шпаргалки
           { section = "startup" },
           { pane = 2, padding = 8 },
           { pane = 2, icon = " ", title = "Недавние файлы", section = "recent_files", cwd = true, indent = 2, padding = 1 },

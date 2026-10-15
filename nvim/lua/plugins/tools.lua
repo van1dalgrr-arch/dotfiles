@@ -41,10 +41,24 @@ return {
     },
   },
 
-  -- gw (github-watcher) во всплывающем окне: PR, Actions, логи CI. alt-w ещё раз — спрятать
+  -- gw (github-watcher) во всплывающем окне: PR, Actions, логи CI. alt-w ещё раз — спрятать.
+  -- Тесты в фоне после сохранения (lua/dotfiles/autotest.lua), скриншот кода (lua/dotfiles/shot.lua).
   {
     "LazyVim/LazyVim",
+    init = function() require("dotfiles.autotest").setup() end,
     keys = {
+      { "<leader>tA", function() require("dotfiles.autotest").toggle() end, desc = "Тесты в фоне вкл/выкл" },
+      { "<leader>P", function() require("dotfiles.shot").shot() end, desc = "Скриншот функции под курсором → буфер обмена" },
+      {
+        "<leader>P",
+        function()
+          local a, b = vim.fn.line("v"), vim.fn.line(".")
+          vim.cmd("normal! \27")
+          require("dotfiles.shot").shot(math.min(a, b), math.max(a, b))
+        end,
+        mode = "x",
+        desc = "Скриншот выделенного → буфер обмена",
+      },
       { "<leader>gw", function() require("dotfiles.system").gw() end, desc = "gw — GitHub: PR, Actions, логи" },
       { "<M-w>", function() require("dotfiles.system").gw() end, mode = { "n", "t" }, desc = "gw — GitHub" },
       { "<M-ц>", function() require("dotfiles.system").gw() end, mode = { "n", "t" }, desc = "gw — GitHub" },

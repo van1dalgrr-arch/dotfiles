@@ -21,6 +21,9 @@ Neovim на [LazyVim](https://lazyvim.org) — запасной выход, ес
 | `lua/dotfiles/http.lua` | **Postman в файле**: `.http`-запросы через curl, без плагинов и лицензий |
 | `lua/dotfiles/endpoints.lua` | эндпоинты Gin, как окно Endpoints в GoLand (`пробел r e`) |
 | `lua/plugins/dotfiles.lua` | **вид**: tokyonight night (прозрачная) и ещё 6 тем на выбор (`пробел u C`), статусная строка «пузырями», стартовый экран, рамки |
+| `lua/dotfiles/autotest.lua` | **тесты в фоне** после сохранения: `✓ 42` / `✗ 1` в статусной строке, упавшая проверка — ошибкой на своей строке |
+| `lua/dotfiles/shot.lua` | **скриншот кода** (`пробел P`) через freeze — PNG в буфер обмена и `~/Pictures/code` |
+| `lua/dotfiles/tips.lua` | совет дня на стартовом экране — из шпаргалки |
 | `lua/dotfiles/themes.lua` | **смена темы по `alt-s`**: предпросмотр на всём редакторе, `enter` — запомнить (`~/.local/state/nvim/colorscheme`) |
 | `lua/dotfiles/theme.lua` | rose-pine **в цветах темы dotfiles** (палитра `themes/<тема>.sh`, светлая — Dev Day); цвета ▶, «реализует:» и мультикурсоров в любой теме |
 | `lua/plugins/goland.lua` | **Go как в GoLand**: действия с превью, рефакторинги, «реализует:», генерация (`пробел G`), peek, покрытие, иерархия вызовов, dlv в Docker |

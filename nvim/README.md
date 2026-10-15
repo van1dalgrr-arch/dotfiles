@@ -21,6 +21,9 @@ nothing to assemble by hand. A from-scratch config can later live in a sibling f
 | `lua/dotfiles/http.lua` | **Postman in a file**: `.http` requests via curl, no plugins or licenses |
 | `lua/dotfiles/endpoints.lua` | Gin endpoints, like the Endpoints window in GoLand (`space r e`) |
 | `lua/plugins/dotfiles.lua` | **look**: tokyonight night (transparent) plus 6 more themes to pick (`space u C`), a "bubbles" status line, the start screen, borders |
+| `lua/dotfiles/autotest.lua` | **background tests** after a save: `✓ 42` / `✗ 1` in the status line, the failed check as an error on its line |
+| `lua/dotfiles/shot.lua` | **code screenshot** (`space P`) through freeze — a PNG to the clipboard and `~/Pictures/code` |
+| `lua/dotfiles/tips.lua` | tip of the day on the start screen, taken from the cheat sheet |
 | `lua/dotfiles/themes.lua` | **theme switcher on `alt-s`**: preview on the whole editor, `enter` remembers it (`~/.local/state/nvim/colorscheme`) |
 | `lua/dotfiles/theme.lua` | rose-pine **in the dotfiles theme colors** (the `themes/<theme>.sh` palette, Dev Day when light); colors for ▶, "implements" and multiple cursors in any theme |
 | `lua/plugins/goland.lua` | **Go like GoLand**: actions with a preview, refactorings, "implements", generation (`space G`), peek, coverage, call hierarchy, dlv in Docker |

@@ -194,6 +194,11 @@ Example: struct fields into `json:"…"` by hand — `qa` … edit one line … 
 
 ## 9. Go: what's new
 
+**Tests in the background.** Save a Go file and a second later `go test` runs for its package. The status line shows
+`󰙨 ✓ 42` (all passed), `󰙨 ✗ 1` (failed) or `✗ сборка` (doesn't compile). The failed check is marked as an error
+on its own line in the `_test.go`: `● TestAdd: got -1, want 3`. Fix it and the mark goes away.
+`space t A` turns it off / on.
+
 **▶ next to functions.** Left of `func main()`, `func TestX`, `BenchmarkX`, `FuzzX`, `ExampleX` there's a ▶.
 Cursor anywhere inside the function → `space r x`. main runs `go run .` in a terminal at the bottom; a test goes through
 neotest (✓/✗ appears next to it); a benchmark runs `go test -bench` with `-benchmem`; fuzzing runs 30 seconds.
@@ -297,6 +302,9 @@ Claude sees which file is open and what's selected. If Claude runs in a separate
 - **`rose-pine` uses the terminal colors:** the dotfiles theme palette (the same as Ghostty, starship, lazygit);
   `theme kanagawa` repaints it too, macOS light mode gets the light Dev Day.
 - **Transparent background** like Ghostty; borders on every popup.
+- **Code screenshot:** select lines → `space P` (no selection — the function at the cursor). A PNG in a window with a shadow,
+  in the current theme, with line numbers — straight to the clipboard (⌘V in Telegram) and into `~/Pictures/code`.
+- **Tip of the day** on the start screen — a random line from this cheat sheet, new on every launch.
 - **`.env` under asterisks:** passwords and tokens are hidden, only the cursor line is open; `space u e` shows everything.
 - `space u w` wrap · `space u l` line numbers · `space u d` diagnostics · `space u z` zen mode.
 
