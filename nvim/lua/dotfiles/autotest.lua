@@ -81,7 +81,8 @@ function M.run(dir)
   state[dir] = vim.tbl_extend("force", state[dir] or {}, { running = true })
   redraw()
   local job
-  job = vim.system({ "go", "test", "-json", "." }, { cwd = dir, text = true }, function(res)
+  -- профиль покрытия — туда же, где его ждёт nvim-coverage: показано покрытие (пробел G V) — обновится само
+  job = vim.system({ "go", "test", "-json", "-coverprofile=/tmp/cover.out", "." }, { cwd = dir, text = true }, function(res)
     if jobs[dir] ~= job then return end -- пришёл ответ убитого прогона
     jobs[dir] = nil
     vim.schedule(function() parse(dir, res) end)

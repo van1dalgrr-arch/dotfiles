@@ -7,7 +7,7 @@ Press `space` and wait half a second for a menu of every action. `space s k` sea
 The Russian layout understands every command: `вв` = `dd`, `о`/`л` = `j`/`k`.
 
 **Learn as you go:** grey marks in the line show where `w` `b` `e` `$` `{` `}` jump (`space u P` turns them off),
-and a coach hints at something shorter when you press `jjjjj` (`space u H` turns it off). Nothing is blocked.
+and a coach hints at something shorter when you press `jjjjj` (`space u H` turns it off, `space u R` — your most frequent habits). Nothing is blocked.
 
 **Notation:** `space` is the leader, `ctrl-x` is with Ctrl, `S-F6` is Shift+F6 (on the HyperX: `Fn`+`Shift`+`6`).
 
@@ -197,6 +197,7 @@ Example: struct fields into `json:"…"` by hand — `qa` … edit one line … 
 **Tests in the background.** Save a Go file and a second later `go test` runs for its package. The status line shows
 `󰙨 ✓ 42` (all passed), `󰙨 ✗ 1` (failed) or `✗ сборка` (doesn't compile). The failed check is marked as an error
 on its own line in the `_test.go`: `● TestAdd: got -1, want 3`. Fix it and the mark goes away.
+Coverage refreshes too: when it's shown (`space G V`), the gutter bars repaint by themselves.
 `space t A` turns it off / on.
 
 **▶ next to functions.** Left of `func main()`, `func TestX`, `BenchmarkX`, `FuzzX`, `ExampleX` there's a ▶.
@@ -258,7 +259,7 @@ Find `errors.New(fmt.Sprintf($$$A))` → replace with `fmt.Errorf($$$A)` across 
 | `space g b` | the line's history: who changed it, `enter` shows the whole commit |
 | `]h` `[h` · `space g h s` · `space g h r` | to a changed hunk · stage the hunk · reset the hunk |
 | `space g h p` | show what the hunk was before the edit |
-| `space g w` · `alt-w` | **gw** — your github-watcher in a popup: PRs, Actions, CI logs; `alt-w` again hides it |
+| `space g w` · `alt-w` | **gw** — GitHub in a popup: PR pages with diffs and reviews, Actions, Inbox, search, profile; `alt-w` again hides it |
 | `space U` | the file's edit tree (Local History): move through the tree and the file shows that version; leave the tree and it stays |
 
 ## 11. Multiple cursors
@@ -288,6 +289,7 @@ Then plain vim commands, on every cursor at once: `ciw`, `A;`, `dd`, `.`.
 | `space a r` · `space a C` | resume a past session (pick one) · the last one |
 | `alt-c` | **hide / show Claude from anywhere** — even from inside the Claude panel |
 | `space a x` | **"fix it"**: the error under the cursor goes to Claude with its place in the file |
+| `space a R` · `space a X` | **branch review**: Claude reads the diff against main (and uncommitted work), findings land on their lines like linter errors and in `:copen` · clear them |
 | `:ClaudeCodeClose` | close Claude completely |
 
 Claude sees which file is open and what's selected. If Claude runs in a separate Ghostty window, type `/ide` there and it connects to this nvim.

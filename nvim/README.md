@@ -20,7 +20,8 @@ nothing to assemble by hand. A from-scratch config can later live in a sibling f
 | `lua/plugins/tasks.lua` | the Zed tasks: `up`, air, tests, coverage, linter, compose, docker build, hadolint, trivy, govulncheck, `dot` |
 | `lua/dotfiles/http.lua` | **Postman in a file**: `.http` requests via curl, no plugins or licenses |
 | `lua/dotfiles/endpoints.lua` | Gin endpoints, like the Endpoints window in GoLand (`space r e`) |
-| `lua/plugins/dotfiles.lua` | **look**: tokyonight night (transparent) plus 6 more themes to pick (`space u C`), a "bubbles" status line, the start screen, borders |
+| `lua/plugins/dotfiles.lua` | **look**: tokyonight night (transparent) plus 6 more themes to pick (`alt-s` — with a preview, remembered), a "bubbles" status line, the start screen, borders |
+| `lua/dotfiles/review.lua` | **Claude branch review** (`space a R`): `claude -p` over the diff against main, findings as diagnostics on lines and in quickfix |
 | `lua/dotfiles/autotest.lua` | **background tests** after a save: `✓ 42` / `✗ 1` in the status line, the failed check as an error on its line |
 | `lua/dotfiles/shot.lua` | **code screenshot** (`space P`) through freeze — a PNG to the clipboard and `~/Pictures/code` |
 | `lua/dotfiles/tips.lua` | tip of the day on the start screen, taken from the cheat sheet |
@@ -121,7 +122,8 @@ Everything that was missing compared to GoLand, and a bit more — **[the cheat 
 - **Breadcrumbs, a sticky function header, the Structure window, errors as a badge on the right** (like Error Lens).
 - **Git:** three-way merge conflicts, file history, the branch against main (`space g v` / `g H` / `g m`), line blame, Local History.
 - **Beyond GoLand:** Claude Code in a panel with diff edits (`space a c`), multiple cursors (`ctrl-n`), Kubernetes (`space k`), dlv debugging in Docker.
-- **Themes:** tokyonight by default, `space u C` for kanagawa, carbonfox, cyberdream, vesper, gruvbox-material and rose-pine in the terminal colors.
+- **Claude review** (`space a R`): findings on the branch diff land on code lines like linter errors.
+- **Themes:** tokyonight by default, `alt-s` for kanagawa, carbonfox, cyberdream, vesper, gruvbox-material and rose-pine in the terminal colors.
 
 ## By itself, no `:w`
 

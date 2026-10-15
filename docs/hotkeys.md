@@ -111,6 +111,7 @@ Everything else is in [rune/README.md](../rune/README.md). F-keys need `fn`.
 | `ctrl-n` · `space a c` · `space h` | multiple cursors · Claude Code · **cheat sheet** |
 | `alt-c` · `space a x` · `alt-w` | hide/show Claude · "fix this error" · gw in a popup |
 | `alt-s` | theme with a preview, `enter` remembers it |
+| `space a R` | Claude reviews the branch — findings on code lines |
 | `space P` · `space t A` | code screenshot to the clipboard · background tests on/off |
 
 Every key is in the [Neovim cheat sheet](nvim.md) (`space h` in nvim), how it's built — [nvim/README.md](../nvim/README.md).

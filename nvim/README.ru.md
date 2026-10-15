@@ -20,7 +20,8 @@ Neovim на [LazyVim](https://lazyvim.org) — запасной выход, ес
 | `lua/plugins/tasks.lua` | задачи из Zed: `up`, air, тесты, покрытие, линтер, compose, docker build, hadolint, trivy, govulncheck, `dot` |
 | `lua/dotfiles/http.lua` | **Postman в файле**: `.http`-запросы через curl, без плагинов и лицензий |
 | `lua/dotfiles/endpoints.lua` | эндпоинты Gin, как окно Endpoints в GoLand (`пробел r e`) |
-| `lua/plugins/dotfiles.lua` | **вид**: tokyonight night (прозрачная) и ещё 6 тем на выбор (`пробел u C`), статусная строка «пузырями», стартовый экран, рамки |
+| `lua/plugins/dotfiles.lua` | **вид**: tokyonight night (прозрачная) и ещё 6 тем на выбор (`alt-s` — с предпросмотром, запоминается), статусная строка «пузырями», стартовый экран, рамки |
+| `lua/dotfiles/review.lua` | **ревью ветки от Claude** (`пробел a R`): `claude -p` по diff против main, замечания — диагностикой на строках и в quickfix |
 | `lua/dotfiles/autotest.lua` | **тесты в фоне** после сохранения: `✓ 42` / `✗ 1` в статусной строке, упавшая проверка — ошибкой на своей строке |
 | `lua/dotfiles/shot.lua` | **скриншот кода** (`пробел P`) через freeze — PNG в буфер обмена и `~/Pictures/code` |
 | `lua/dotfiles/tips.lua` | совет дня на стартовом экране — из шпаргалки |
@@ -121,7 +122,8 @@ Dockerfile проверяется hadolint прямо при наборе — з
 - **Хлебные крошки, sticky-заголовок функции, окно Structure, ошибки плашкой справа** (как Error Lens).
 - **Git:** merge-конфликты втроём, история файла, ветка против main (`пробел g v` / `g H` / `g m`), blame строки, Local History.
 - **Сверх GoLand:** Claude Code в панели с diff-правками (`пробел a c`), мультикурсоры (`ctrl-n`), Kubernetes (`пробел k`), отладка dlv в Docker.
-- **Темы:** tokyonight по умолчанию, `пробел u C` — kanagawa, carbonfox, cyberdream, vesper, gruvbox-material и rose-pine в цветах терминала.
+- **Ревью от Claude** (`пробел a R`): замечания к diff ветки встают на строки кода, как ошибки линтера.
+- **Темы:** tokyonight по умолчанию, `alt-s` — kanagawa, carbonfox, cyberdream, vesper, gruvbox-material и rose-pine в цветах терминала.
 
 ## Само, без `:w`
 

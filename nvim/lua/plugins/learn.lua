@@ -51,6 +51,7 @@ return {
     },
     keys = {
       { "<leader>uH", "<cmd>Hardtime toggle<cr>", desc = "Тренер vim (hardtime) вкл/выкл" },
+      { "<leader>uR", "<cmd>Hardtime report<cr>", desc = "Тренер vim: какие привычки чаще всего" },
     },
   },
 }

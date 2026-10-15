@@ -38,6 +38,9 @@ return {
       { "<M-c>", function() require("claudecode.terminal").simple_toggle() end, mode = { "n", "t", "i" }, desc = "Claude: спрятать / показать" },
       { "<M-с>", function() require("claudecode.terminal").simple_toggle() end, mode = { "n", "t", "i" }, desc = "Claude: спрятать / показать" },
       { "<leader>ax", claude_fix, desc = "Claude: почини ошибку под курсором" },
+      -- ревью diff ветки против main: замечания встают на строки, как ошибки линтера (lua/dotfiles/review.lua)
+      { "<leader>aR", function() require("dotfiles.review").run() end, desc = "Claude: ревью ветки (замечания в коде)" },
+      { "<leader>aX", function() require("dotfiles.review").clear() end, desc = "Claude: убрать замечания ревью" },
     },
   },
 
