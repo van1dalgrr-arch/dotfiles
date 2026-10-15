@@ -7,4 +7,4 @@ github.com/nametake/golangci-lint-langserver@v0.0.12
 golang.org/x/vuln/cmd/govulncheck@v1.8.0
 mvdan.cc/gofumpt@v0.12.0
 # gw — GitHub в терминале (команда github, см. .zshrc); код написан нейросетью Claude
-github.com/van1dalgrr-arch/github-watcher/cmd/gw@v0.1.0
+github.com/van1dalgrr-arch/github-watcher/cmd/gw@v0.2.0
