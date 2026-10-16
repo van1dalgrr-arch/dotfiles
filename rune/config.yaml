@@ -2,7 +2,7 @@ config_version: 2
 # Rune — личный конфиг (~/.rune/config.yaml → симлинк сюда, ставит install.sh).
 # Слои: встроенные умолчания (cmd/rune/rune.star) → этот файл → .rune/config.yaml в проекте.
 # После правок: :write, затем ПОЛНЫЙ перезапуск Rune (тема и шрифт иначе не применятся).
-# Переключить тему на лету: :guitheme neon-noir | :guitheme dev-night
+# Переключить тему на лету: :guitheme neon-noir | :guitheme sunset | :guitheme dev-night
 
 # ── ТРАФИК: ничего не ходит в сеть само ──────────────────────────
 telemetry:
@@ -26,6 +26,30 @@ gui:
   window_opacity: {fg: 1, bg: 0.92}
   window_blur_radius: 40
   themes:
+    # Sunset — фиолетовый → розовый → оранжевый, как профиль GitHub. Графитовый фон без синевы,
+    # один яркий акцент на роль: ключевые слова — фиолетовые, функции — розовые, типы — оранжевые.
+    sunset:
+      foreground: "#e6e3ef"
+      background: "#0f0e14"
+      cursor: "#f472b6"
+      black: "#0f0e14"
+      gray: "#1d1a27"
+      silver: "#6e6884"
+      white: "#f5f3fa"
+      maroon: "#f43f5e"
+      red: "#fb7185"
+      green: "#9ee6b8"
+      lime: "#fdba74"
+      olive: "#fb923c"
+      yellow: "#fcd34d"
+      navy: "#251d3d"
+      blue: "#818cf8"
+      purple: "#a78bfa"
+      magenta: "#c084fc"
+      fuchsia: "#f472b6"
+      teal: "#5eead4"
+      cyan: "#f9a8d4"
+      aqua: "#a5b4fc"
     # Neon Noir — жёсткая: угольный фон, неоновые акценты.
     # Rune красит всё через 16 именованных цветов:
     # silver — приглушённое (комментарии, номера строк), gray — подложки, остальное — акценты.
