@@ -175,7 +175,10 @@ notifications:
 # AeroSpace забирает себе alt-h/j/k/l, alt-r, alt-q, alt-e, alt-enter, alt-1…9 и alt-shift-…,
 # поэтому здесь только cmd / ctrl / ctrl-alt / cmd-alt и F-клавиши.
 # F-клавиши на этом маке — через fn (fn-F8 и т.д.), у отладки есть дубли на ctrl-alt-стрелках.
-# Шпаргалка по всему: :cheatsheet (cmd-/), все команды — cmd-shift-p.
+# Редактор забирает свои клавиши РАНЬШЕ команд: бинд на cmd-[ (отступ), ctrl-T (переставить буквы),
+# ctrl-enter (строка ниже), cmd-J/K/L, shift-tab, ctrl-alt-↑/↓/H/V, cmd-alt-[/]/V молча не сработает.
+# Полный список — «Standard Editor» во встроенной документации Rune. Свободные слои: ctrl-alt, ctrl-cmd.
+# Шпаргалка по всему: :cheatsheet (ctrl-cmd-/), все команды — cmd-shift-p.
 command:
   key: "<s-m-p>" # cmd-shift-p — командная строка
   history_key: "<m-r>"
@@ -197,7 +200,7 @@ command:
     "<alt-f>": "echo {prompt}jumptoast<space>locals.scm<space>local.definition.method|local.definition.function<space>"
     "<alt-v>": "echo {prompt}jumptoast<space>locals.scm<space>local.definition.var<space>"
     "<alt-s>": "echo {prompt}jumptoast<space>locals.scm<space>local.definition.type<space>"
-    "<shift-tab>": "fexplorer"
+    "<shift-meta-e>": "fexplorer" # дерево файлов (shift-tab в редакторе — «убрать отступ»)
     # вкладки (alt-h/l и alt-1…9 занял AeroSpace)
     "<meta-t>": "tabnew"
     "<alt-w>": "tabclose"
@@ -207,8 +210,8 @@ command:
     "<shift-meta-[>": "tabprevious"
     "<ctrl-tab>": "tabnext"
     "<ctrl-shift-tab>": "tabprevious"
-    "<alt-meta-]>": "tabmove right"
-    "<alt-meta-[>": "tabmove left"
+    "<ctrl-alt-]>": "tabmove right" # cmd-alt-[/] — сворачивание кода
+    "<ctrl-alt-[>": "tabmove left"
     "<alt-`>": "tabsearch"
     "<ctrl-1>": "tabfocus 1"
     "<ctrl-2>": "tabfocus 2"
@@ -222,14 +225,15 @@ command:
     # окна
     "<meta-n>": "windownew"
     "<meta-w>": "windowclose"
-    "<meta-h>": "windowfocus left"
-    "<meta-l>": "windowfocus right"
-    "<meta-j>": "windowfocus down"
-    "<meta-k>": "windowfocus up"
-    "<shift-meta-h>": "windowmove left"
-    "<shift-meta-l>": "windowmove right"
-    "<shift-meta-j>": "windowmove down"
-    "<shift-meta-k>": "windowmove up"
+    # cmd-J/K/L заняты редактором (склеить строки, префикс, выделить строку) — фокус на ctrl-cmd-стрелках
+    "<ctrl-meta-left>": "windowfocus left"
+    "<ctrl-meta-right>": "windowfocus right"
+    "<ctrl-meta-down>": "windowfocus down"
+    "<ctrl-meta-up>": "windowfocus up"
+    "<ctrl-shift-meta-left>": "windowmove left"
+    "<ctrl-shift-meta-right>": "windowmove right"
+    "<ctrl-shift-meta-down>": "windowmove down"
+    "<ctrl-shift-meta-up>": "windowmove up"
     "<shift-meta-backspace>": "windowresize reset"
     "<alt-meta-h>": "windowresize decrease width"
     "<alt-meta-j>": "windowresize decrease height"
@@ -249,8 +253,8 @@ command:
     "<ctrl-j>": "lsp hover"
     "<alt-i>": "lsp implementation"
     "<shift-meta-t>": "gototest" # Go to Test: x.go ↔ x_test.go
-    "<meta-[>": "cursorhistory prev" # Back
-    "<meta-]>": "cursorhistory next" # Forward
+    "<alt-meta-left>": "cursorhistory prev" # Back (GoLand: cmd-alt-←; cmd-[ в редакторе — отступ)
+    "<alt-meta-right>": "cursorhistory next" # Forward
     "<ctrl-o>": "cursorhistory prev"
     "<ctrl-i>": "cursorhistory next"
     # ошибки: F2 / shift-F2 как в GoLand; ctrl-cmd-j/l (ошибки) и ctrl-cmd-i/k (git) — из пресета
@@ -268,11 +272,11 @@ command:
     "<alt-n>": "lsp rename"
     "<alt-b>": "lsp format"
     "<ctrl-alt-o>": "go organize-imports" # Optimize Imports
-    "<ctrl-t>": "echo {prompt}go<space>" # Refactor This: все рефакторинги gopls списком
+    "<ctrl-shift-t>": "echo {prompt}go<space>" # Refactor This: все рефакторинги gopls списком (ctrl-T — переставить буквы)
     "<meta-.>": "go fix-all" # все безопасные исправления в файле
     "<alt-meta-m>": "go extract-function" # Extract Method
     "<alt-shift-meta-m>": "go extract-method"
-    "<alt-meta-v>": "go extract-variable" # Introduce Variable
+    "<alt-shift-meta-v>": "go extract-variable" # Introduce Variable (cmd-alt-V — история буфера обмена)
     "<alt-meta-c>": "go extract-constant" # Introduce Constant
     "<alt-meta-n>": "go inline-call" # Inline
     "<alt-meta-s>": "go fill-struct" # заполнить поля структуры
@@ -295,20 +299,21 @@ command:
     "<f9>": "console debugger continue"
     "<meta-f2>": "console debugger terminate" # Stop
     "<alt-f8>": "echo {prompt}console<space>debugger<space>evaluate<space>" # Evaluate
-    "<ctrl-alt-down>": "console debugger next"
-    "<ctrl-alt-right>": "console debugger step-in"
-    "<ctrl-alt-up>": "console debugger step-out"
+    # без F-клавиш (ctrl-alt-↑/↓ редактор забирает под прокрутку): Next · Into · Up
+    "<ctrl-alt-n>": "console debugger next"
+    "<ctrl-alt-i>": "console debugger step-in"
+    "<ctrl-alt-u>": "console debugger step-out"
     "<alt-shift-enter>": "console" # консоль Rune: debugger, pkg, extensions
     # git (ctrl-cmd-i/k — прошлое/следующее изменение, из пресета)
     "<ctrl-alt-g>": "lg"
     "<ctrl-alt-a>": "linelog" # история строки под курсором
-    "<ctrl-alt-h>": "filehistory" # история файла в lazygit
+    "<ctrl-alt-y>": "filehistory" # история файла в lazygit (ctrl-alt-H — скрыть строки)
     # как в nvim — одно нажатие (alt-буквы, которые не занял AeroSpace). Логика — в bin/rune-ide,
     # та же, что в nvim. Определение/документация остались на cmd-B / F1 / ctrl-J.
     "<alt-o>": "containers" # orbstack — контейнеры
     "<alt-g>": "lg" # lazygit
     "<alt-p>": "postman" # api.http проекта — Postman в файле
-    "<ctrl-enter>": "httpsend" # отправить запрос под курсором (в .http), ответ — во вкладке
+    "<ctrl-alt-enter>": "httpsend" # отправить запрос под курсором (в .http); ctrl-enter — новая строка
     "<alt-a>": "endpoints" # все маршруты Gin, enter — к хендлеру
     "<alt-d>": "db" # база проекта
     "<alt-t>": "echo {prompt}task<space>" # задачи: up, air, тесты, линтер, compose… (tab — список)
@@ -327,7 +332,11 @@ command:
     "<meta-=>": "guifontsize increase"
     "<meta-->": "guifontsize decrease"
     "<meta-,>": "config"
-    "<meta-/>": "cheatsheet"
+    "<ctrl-meta-/>": "cheatsheet" # cmd-/ — комментарий, как в GoLand
+    # ещё из GoLand
+    "<shift-meta-n>": "scratch" # Scratch File: Go-файл с main, ctrl-alt-R запускает
+    "<alt-shift-meta-c>": "copyref" # Copy Reference: путь:строка → буфер обмена
+    "<alt-meta-i>": "echo {prompt}impl<space>" # Implement Methods: курсор на тип, tab — интерфейсы
     "<meta-q>": "quit"
     <a-s-f>: searchfunc
     <a-s-s>: searchtype
@@ -343,10 +352,11 @@ command:
     doctor: "! dot project doctor %"
     # запуск и тесты
     gorun: "tasknewtab run -- rune-go run $FILE_DIR"
-    gotests: "tasknewtab tests *.go,go.mod -- gotestsum --format testname -- ./..."
+    # задачи — из корня модуля открытого файла (rune-go in), а не воркспейса: Rune часто открыт на ~
+    gotests: "tasknewtab tests *.go,go.mod -- rune-go in $FILE_DIR gotestsum --format testname -- ./..."
     gowatch:
-      - "tasknew vet right *.go,go.mod -- go vet ./..."
-      - "tasknew test left *.go,go.mod -- go test -short ./..."
+      - "tasknew vet right *.go,go.mod -- rune-go in $FILE_DIR go vet ./..."
+      - "tasknew test left *.go,go.mod -- rune-go in $FILE_DIR go test -short ./..."
     gowatchoff:
       - "taskclose vet"
       - "taskclose test"
@@ -393,6 +403,16 @@ command:
     endpoints: "locationpicker rune-ide endpoints $FILE_DIR"
     review: "locationpicker rune-ide review $FILE_DIR"
     shot: "! rune-ide shot $FILE $LINE"
+    # ── как в GoLand ──
+    scratch:
+      - "!! F=$(rune-ide scratch)"
+      - "edit $F"
+    scratches: "locationpicker rune-ide scratches"
+    copyref: "!! rune-ide ref $FILE $LINE"
+    github: "!! rune-ide github $FILE $LINE" # Open on GitHub
+    impl:
+      command: "! rune-ide impl $FILE ${WORD:?курсор на имя типа} $1"
+      completer: "! rune-ide interfaces $FILE_DIR"
     task:
       command: "tasknewtab $1 -- rune-ide task $1 $FILE_DIR $FILE"
       completer: "! rune-ide tasks $FILE_DIR"

@@ -9,9 +9,21 @@
 #     rune-ide root [папка]           корень проекта (git → go.mod → сама папка)
 #     rune-ide tasks [папка]           задачи проекта (как alt-t в nvim) — для дополнения в Rune
 #     rune-ide task <имя> [папка] [файл]   запустить задачу в корне проекта
+#     rune-ide scratch                 новый scratch-файл Go (как в GoLand) → печатает путь к main.go
+#     rune-ide scratches               все scratch-файлы, свежие сверху (для locationpicker)
+#     rune-ide ref <файл> <строка>     путь:строка от корня проекта → буфер обмена (Copy Reference)
+#     rune-ide github <файл> <строка>  открыть строку на GitHub (ветка, если она запушена)
+#     rune-ide impl <файл> <тип> <интерфейс>   заглушки методов интерфейса → буфер обмена и экран
+#     rune-ide interfaces [папка]      интерфейсы модуля и частые из stdlib — дополнение для impl
 #   Папка — любая внутри проекта (обычно $FILE_DIR); корень — git, иначе go.mod, иначе сама папка.
 # ============================================================
 set -uo pipefail
+
+# GOROOT от Rune указывает на его Go-пакет; пока пакета нет, go падает (то же в rune-go)
+if [ -n "${GOROOT:-}" ]; then
+    if [ -x "$GOROOT/bin/go" ]; then PATH="$GOROOT/bin:$PATH"; else unset GOROOT; fi
+fi
+SCRATCH=${XDG_DATA_HOME:-$HOME/.local/share}/rune-scratch
 
 DOT=$(cd "$(dirname "$(readlink -f "$0")")/.." && pwd)
 CLI="$DOT/nvim/lua/dotfiles/cli.lua"
@@ -114,6 +126,54 @@ case $cmd in
             export PKG IMAGE
             cd "$dir" && echo "▶ $run" && exec bash -c "$run"
         done
-        echo "нет задачи «$name»; есть: $("$0" tasks "$dir" | tr '\n' ' ')"; exit 1 ;;
-    *) sed -n '3,12p' "$0" | sed 's/^#//'; exit 2 ;;
+        echo "нет задачи «${name}»; есть: $("$0" tasks "$dir" | tr '\n' ' ')"; exit 1 ;;
+    scratch)
+        d=$SCRATCH/$(date +%Y%m%d-%H%M%S)
+        mkdir -p "$d" || exit 1
+        v=$(go env GOVERSION 2>/dev/null | sed -nE 's/^go([0-9]+\.[0-9]+).*/\1/p')
+        printf 'module scratch\n\ngo %s\n' "${v:-1.24}" >"$d/go.mod"
+        printf 'package main\n\nimport "fmt"\n\nfunc main() {\n\tfmt.Println("scratch")\n}\n' >"$d/main.go"
+        echo "$d/main.go" ;;
+    scratches)
+        # путь:строка:колонка: первая строка тела main — видно, о чём scratch
+        # папки названы датой — обратная сортировка по имени и есть «свежие сверху»
+        printf '%s\n' "$SCRATCH"/*/main.go | sort -r | while read -r f; do
+            [ -f "$f" ] || continue
+            echo "$f:1:1: $(grep -m1 -vE '^(package|import|func main|\)|\(|\}|[[:space:]]*"|[[:space:]]*$)' "$f" | sed 's/^[[:space:]]*//')"
+        done ;;
+    ref)
+        file=$1 line=${2:-1}
+        r=$(root "$(dirname "$file")")
+        ref=${file#"$r"/}:$line
+        printf %s "$ref" | pbcopy && echo "$ref" ;;
+    github)
+        file=$1 line=${2:-1}
+        r=$(root "$(dirname "$file")")
+        # ветка есть на GitHub, только если у неё есть upstream; иначе — ветка по умолчанию
+        up=$(git -C "$r" rev-parse --abbrev-ref --symbolic-full-name '@{u}' 2>/dev/null)
+        cd "$r" && gh browse "${file#"$r"/}:$line" ${up:+--branch "${up#*/}"} ;;
+    impl)
+        file=${1:?файл} typ=${2:-} iface=${3:-}
+        [ -n "$typ" ] && [ -n "$iface" ] || { echo "курсор на имя типа, затем :impl <интерфейс> (tab — список)"; exit 1; }
+        command -v impl >/dev/null || { echo "нужен impl: go install github.com/josharian/impl@latest"; exit 1; }
+        recv=$(printf %s "${typ:0:1}" | tr '[:upper:]' '[:lower:]')
+        out=$(cd "$(dirname "$file")" && impl -dir . "$recv *$typ" "$iface") || exit 1
+        printf '%s\n' "$out" | pbcopy
+        printf '%s\n\n' "$out"
+        echo "↑ уже в буфере обмена — поставь курсор под типом $typ и cmd-v" ;;
+    interfaces)
+        dir=$(cd "${1:-.}" 2>/dev/null && pwd) || dir=$PWD
+        # интерфейсы модуля: из своего пакета — по имени, из соседних — полным путём импорта
+        mod=$(cd "$dir" && go list -m -f '{{.Dir}}' 2>/dev/null | head -1)
+        [ -n "$mod" ] && (cd "$mod" && go list -f '{{.ImportPath}} {{.Dir}}' ./... 2>/dev/null) |
+            while read -r imp pdir; do
+                for f in "$pdir"/*.go; do
+                    case $f in *_test.go) continue ;; esac
+                    grep -oE '^type [A-Z][A-Za-z0-9_]* interface' "$f" | cut -d' ' -f2
+                done | while read -r n; do [ "$pdir" = "$dir" ] && echo "$n" || echo "$imp.$n"; done
+            done | sort -u
+        printf '%s\n' error fmt.Stringer io.Reader io.Writer io.Closer io.ReadWriteCloser \
+            http.Handler sort.Interface heap.Interface json.Marshaler json.Unmarshaler \
+            sql.Scanner driver.Valuer context.Context slog.Handler ;;
+    *) sed -n '3,18p' "$0" | sed 's/^#//'; exit 2 ;;
 esac

@@ -220,6 +220,14 @@ doc_editors() {
         elif ! grep -q 'path: ~/go/bin/rune-dot$' "$DOTFILES/rune/config.yaml"; then
             warning "rune/config.yaml не указывает на ~/go/bin/rune-dot — расширение dot не загрузится" "→ extensions.dot.path"
         else pass "Rune + расширение dot"; fi
+        # пакеты Rune (go, fuzzy-search) лежат в ~/.rune/bin; пересоздали ~/.rune — их нет, а с ними
+        # пропадают LSP, команды go и поиск файлов (GOROOT из конфига тоже смотрит в пустоту)
+        local ext miss=""
+        for ext in $(sed -nE 's|^ +path: (/.*/\.rune/bin/extension_[a-z_]+)$|\1|p' "$DOTFILES/rune/config.yaml"); do
+            [ -x "$ext" ] || miss="$miss $(printf %s "${ext##*extension_}" | tr _ -)"
+        done
+        [ -z "$miss" ] || warning "Rune: не установлены пакеты:$miss — нет LSP, команд go и поиска" \
+            "→ в Rune: alt-shift-enter (консоль) → pkg install <пакет>"
     else optional "Rune" "→ brew install unstablebuild/tap/rune"; fi
     # Rune переписывает конфиг целиком (запись рядом + переименование), когда дописывает блоки
     # своих пакетов (go, fuzzy-search) или сохраняет :config — ссылка становится обычным файлом

@@ -9,10 +9,17 @@
 #     rune-go test-name <файл> <строка>   имя Test/Benchmark/Fuzz-функции, внутри которой стоит курсор
 #     rune-go test-file <файл>       парный файл: x.go ↔ x_test.go (как «Go to Test» в GoLand)
 #     rune-go cover [папка]          покрытие тестами модуля → отчёт в браузере
+#     rune-go in <папка> <команда…>  запустить команду в корне модуля (для задач: Rune открыт на ~)
 #   Папка — любая внутри модуля (обычно $FILE_DIR), по умолчанию текущая.
 #   Пути в выводе абсолютные: Rune открывает их, где бы ни был корень воркспейса.
 # ============================================================
 set -uo pipefail
+
+# Rune подставляет GOROOT своего Go-пакета (~/.rune/lib/go). Пока пакет не установлен, папки нет —
+# и любой go падает с «cannot find GOROOT». Есть папка — берём go оттуда, чтобы версии совпадали.
+if [ -n "${GOROOT:-}" ]; then
+    if [ -x "$GOROOT/bin/go" ]; then PATH="$GOROOT/bin:$PATH"; else unset GOROOT; fi
+fi
 
 # корень модуля для папки: ближайший go.mod выше, иначе сама папка
 module_root() {
@@ -81,7 +88,11 @@ case "${1:-}" in
         out=${TMPDIR:-/tmp}/rune-cover.out
         cd "$root" && go test -coverprofile="$out" ./... && go tool cover -func="$out" | tail -1 \
             && go tool cover -html="$out" ;;
+    in)
+        [ $# -ge 3 ] || { echo "usage: rune-go in <папка> <команда…>" >&2; exit 2; }
+        root=$(module_root "$2"); shift 2
+        cd "$root" && exec "$@" ;;
     *)
-        sed -n '3,12p' "$0" | sed 's/^#//'
+        sed -n '3,13p' "$0" | sed 's/^#//'
         [ -z "${1:-}" ] && exit 0 || exit 2 ;;
 esac

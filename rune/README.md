@@ -16,7 +16,12 @@ from Zed, gradually: both are set up, Zed stays the default until Rune covers th
 
 On top of the **standard** preset. AeroSpace owns `alt-h/j/k/l`, `alt-r`, `alt-1…9` and `alt-shift-…`,
 so everything here is on `cmd`, `ctrl-alt`, `cmd-alt` and F-keys (F-keys need `fn` on this Mac).
-All commands: `cmd-shift-p`; Rune's cheatsheet: `cmd-/`.
+All commands: `cmd-shift-p`; Rune's cheatsheet: `ctrl-cmd-/` (`cmd-/` comments the line, as in GoLand).
+
+The editor handles its own keys **before** commands, so a binding on a key the editor already uses
+silently does nothing: `cmd-[`/`]` indent, `ctrl-T` transposes letters, `ctrl-enter` opens a line,
+`cmd-J/K/L`, `shift-tab`, `ctrl-alt-↑/↓/H/V`, `cmd-alt-[/]/V`. Those GoLand keys moved to the free
+`ctrl-alt` / `ctrl-cmd` layers below.
 
 | | Key | What |
 |---|---|---|
@@ -24,12 +29,15 @@ All commands: `cmd-shift-p`; Rune's cheatsheet: `cmd-/`.
 | | `alt-F7` / `ctrl-cmd-U` · `F1` / `ctrl-J` | usages · docs |
 | | `cmd-O` · `cmd-shift-O` · `cmd-alt-O` · `cmd-E` | type · file · function across the project · open tabs |
 | | `cmd-shift-F` · `ctrl-alt-F` · `cmd-F12` | text across the project · git grep · file structure |
-| | `cmd-shift-T` · `cmd-[` / `cmd-]` | test ↔ code · back / forward |
+| | `cmd-shift-T` · `cmd-alt-←` / `→` | test ↔ code · back / forward |
 | | `F2` / `shift-F2` · `alt-shift-E` | next / previous problem · all problems in the file |
 | **Refactor** | `shift-F6` · `ctrl-alt-O` · `cmd-.` | rename · imports · every safe fix |
-| | `ctrl-T` | every gopls refactoring in a list (25 of them) |
-| | `cmd-alt-M` · `cmd-alt-V` · `cmd-alt-C` · `cmd-alt-N` | extract function · variable · constant · inline |
+| | `ctrl-shift-T` | every gopls refactoring in a list (25 of them) |
+| | `cmd-alt-M` · `cmd-alt-shift-V` · `cmd-alt-C` · `cmd-alt-N` | extract function · variable · constant · inline |
 | | `cmd-alt-S` · `cmd-alt-T` | fill struct · json tags |
+| | `cmd-alt-I` | **implement an interface**: cursor on the type, `tab` lists the module's and common stdlib interfaces; stubs go to the screen and the clipboard |
+| **Generate** | `cmd-shift-N` | **scratch file**: a Go module with `main` (`ctrl-alt-R` runs it); `:scratches` lists them |
+| | `cmd-alt-shift-C` · `:github` | copy reference `path:line` from the project root · open the line on GitHub |
 | **Run** | `ctrl-alt-R` | `go run` the main package in a task tab (`ctrl-R` there restarts) |
 | | `ctrl-shift-R` · `ctrl-alt-T` | test at cursor · all tests (rerun on save) |
 | | `ctrl-alt-W` | vet + tests in the background: green/red squares at the edges |
@@ -37,13 +45,15 @@ All commands: `cmd-shift-p`; Rune's cheatsheet: `cmd-/`.
 | **Debug** | `cmd-F8` / `ctrl-alt-B` | breakpoint (set before starting) |
 | | `ctrl-alt-D` · `ctrl-shift-D` | debug the main package · the test at cursor |
 | | `F8` · `F7` · `shift-F8` · `cmd-alt-R` · `cmd-F2` | step · into · out · resume · stop |
-| | `ctrl-alt-↓` · `→` · `↑` | step · into · out without F-keys |
+| | `ctrl-alt-N` · `I` · `U` | step (Next) · Into · out (Up) without F-keys |
 | | `alt-F8` | evaluate an expression |
-| **Git** | `ctrl-alt-G` · `ctrl-alt-H` · `ctrl-alt-A` | lazygit · file history · line history |
+| **Git** | `ctrl-alt-G` · `ctrl-alt-Y` · `ctrl-alt-A` | lazygit · file history · line history |
 | | `ctrl-cmd-I` / `ctrl-cmd-K` | previous / next change |
 | **Tabs** | `cmd-shift-[` / `]` · `ctrl-1…9` | neighbour tab · tab by number |
 | | `alt-W` · `cmd-alt-W` · `cmd-shift-W` | close the tab · all but this one · all |
-| | `shift-tab` | show / hide the file tree |
+| | `ctrl-alt-[` / `]` | move the tab left / right |
+| | `cmd-shift-E` | show / hide the file tree |
+| **Windows** | `ctrl-cmd-arrows` · `+shift` | focus a split · move it |
 
 More commands without keys: `:todo`, `:conflicts`, `:changed`, `:gocover` (coverage in the browser), `:gowatchoff`,
 `:govet`, `go tidy`, `go vulncheck`, `go add-test`, `go assembly`.
@@ -57,7 +67,7 @@ Same keys as in [nvim](../nvim/README.md), with regular (non-vim) editing. The l
 |---|---|---|
 | `alt-O` | containers (orbstack) | `:containers` |
 | `alt-G` | lazygit (signature help moved to `ctrl-alt-P`) | `:lg` |
-| `alt-P` · `ctrl-enter` | **Postman in a file**: the project's `api.http` (generated from Gin routes) · send the request under the cursor | `:postman` · `:httpsend` |
+| `alt-P` · `ctrl-alt-enter` | **Postman in a file**: the project's `api.http` (generated from Gin routes) · send the request under the cursor | `:postman` · `:httpsend` |
 | `alt-A` | **Gin endpoints** with full paths, `enter` jumps to the handler | `:endpoints` |
 | `alt-D` | project database (`db`) | `:db` |
 | `alt-T` | **tasks** as in nvim: `up`, `air`, tests, coverage, benchmarks, lint, compose, docker build, hadolint, trivy… (`tab` lists them) | `:task <name>` |
@@ -66,6 +76,15 @@ Same keys as in [nvim](../nvim/README.md), with regular (non-vim) editing. The l
 
 Also without keys: `:gw` (PRs and CI), `:ld` (lazydocker), `:yazi`, `:k8s` (k9s), `:backup`.
 Go to definition and docs, formerly on `alt-D` / `alt-T`, stay on `cmd-B` and `F1` / `ctrl-J`.
+
+## Go from any workspace
+
+Tasks (`ctrl-alt-T`, `ctrl-alt-W`) run from the module root of the focused file through
+`rune-go in`, not from the workspace, so they work when Rune is opened on `~`. `rune-go` and
+`rune-ide` also drop Rune's `GOROOT` while its Go package is not installed — otherwise every `go`
+fails with `cannot find GOROOT`.
+If the packages are gone (say, `~/.rune` was recreated), `dot doctor` says so; install them in
+Rune's console (`alt-shift-enter`): `pkg install go`, `pkg install fuzzy-search`.
 
 ## No traffic by default
 
