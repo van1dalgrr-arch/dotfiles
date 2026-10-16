@@ -92,7 +92,7 @@ Read them aloud: `ci"` — "change inside quotes", `daf` — "delete a function"
 
 **Yank history:** `space p` lists everything you copied; after `p`, `[y` / `]y` cycle what got pasted.
 
-**In insert mode:** `ctrl-w` erases a word, `ctrl-u` — to line start, `ctrl-r "` pastes the yank, `ctrl-k` shows the function's parameters.
+**In insert mode:** `jk` (quickly, English layout) leaves it like `esc`; `ctrl-w` erases a word, `ctrl-u` — to line start, `ctrl-r "` pastes the yank, `ctrl-k` shows the function's parameters.
 
 ## 4. Visual mode
 

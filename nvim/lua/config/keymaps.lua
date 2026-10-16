@@ -10,6 +10,10 @@ map("n", "<F9>", dap("continue"), { desc = "Debug: запустить / даль
 -- точка останова сохраняется между запусками nvim (persistent-breakpoints, lua/plugins/tools.lua)
 map("n", "<C-F8>", function() require("persistent-breakpoints.api").toggle_breakpoint() end, { desc = "Debug: точка останова" })
 
+-- Выйти из вставки, не дотягиваясь до esc: быстро j и k. Только в английской раскладке —
+-- русское «ол» встречается в словах на каждом шагу (голос, пол), там выручает автовыход через 5 с.
+map("i", "jk", "<esc>", { desc = "Выйти из вставки (jk)" })
+
 -- Переместить выделенные строки: alt-j/alt-k из LazyVim забирает AeroSpace (весь слой alt — его).
 -- V, выделить, J/K — и строки едут вниз/вверх, отступы поправляются сами.
 map("x", "J", ":m '>+1<cr>gv=gv", { desc = "Строки вниз", silent = true })
