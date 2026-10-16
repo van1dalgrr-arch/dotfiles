@@ -48,6 +48,25 @@ Go в ней — основной язык, и расширения тоже п�
 Ещё команды без клавиш: `:todo`, `:conflicts`, `:changed`, `:gocover` (покрытие в браузере), `:gowatchoff`,
 `:govet`, `go tidy`, `go vulncheck`, `go add-test`, `go assembly`.
 
+## Как в nvim — одно нажатие
+
+Те же клавиши, что в [nvim](../nvim/README.ru.md), но клавиши редактора обычные (без vim-режима).
+Логика общая: [`bin/rune-ide`](../bin/rune-ide) вызывает те же модули `nvim/lua/dotfiles`, правишь в одном месте.
+
+| Клавиша | Что | Команда |
+|---|---|---|
+| `alt-O` | контейнеры (orbstack) | `:containers` |
+| `alt-G` | lazygit (подсказка аргументов переехала на `ctrl-alt-P`) | `:lg` |
+| `alt-P` · `ctrl-enter` | **Postman в файле**: `api.http` проекта (создаётся из маршрутов Gin) · отправить запрос под курсором | `:postman` · `:httpsend` |
+| `alt-A` | **эндпоинты Gin** с полным путём, `enter` — к хендлеру | `:endpoints` |
+| `alt-D` | база проекта (`db`) | `:db` |
+| `alt-T` | **задачи** как в nvim: `up`, `air`, тесты, покрытие, бенчмарки, линтер, compose, docker build, hadolint, trivy… (`tab` — список) | `:task <имя>` |
+| `alt-C` · `ctrl-alt-C` | Claude Code во вкладке · **ревью ветки** от Claude списком с переходом | `:claude` · `:review` |
+| `ctrl-alt-S` | скриншот функции под курсором (freeze) → буфер обмена и `~/Pictures/code` | `:shot` |
+
+Ещё без клавиш: `:gw` (PR и CI), `:ld` (lazydocker), `:yazi`, `:k8s` (k9s), `:backup`.
+Определение и документация, которые раньше были на `alt-D` / `alt-T`, остались на `cmd-B` и `F1` / `ctrl-J`.
+
 ## Без трафика по умолчанию
 
 Из коробки Rune шлёт телеметрию, раз в сутки проверяет обновления и при старте подключается к своей

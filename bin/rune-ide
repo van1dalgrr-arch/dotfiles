@@ -1,0 +1,119 @@
+#!/usr/bin/env bash
+# ============================================================
+#   rune-ide — фичи nvim для Rune (rune/config.yaml), та же логика, что в nvim:
+#     rune-ide endpoints [папка]       маршруты Gin → путь:строка:колонка: МЕТОД /путь (для locationpicker)
+#     rune-ide httpfile  [папка]       api.http проекта (создаст из маршрутов, если нет) → печатает путь
+#     rune-ide http <файл> <строка>    отправить запрос из .http под курсором → ответ в stdout
+#     rune-ide review    [папка]       ревью ветки от Claude → путь:строка:1: уровень: текст
+#     rune-ide shot <файл> [строка]    скриншот кода (freeze): функция под курсором → буфер обмена и ~/Pictures/code
+#     rune-ide root [папка]           корень проекта (git → go.mod → сама папка)
+#     rune-ide tasks [папка]           задачи проекта (как alt-t в nvim) — для дополнения в Rune
+#     rune-ide task <имя> [папка] [файл]   запустить задачу в корне проекта
+#   Папка — любая внутри проекта (обычно $FILE_DIR); корень — git, иначе go.mod, иначе сама папка.
+# ============================================================
+set -uo pipefail
+
+DOT=$(cd "$(dirname "$(readlink -f "$0")")/.." && pwd)
+CLI="$DOT/nvim/lua/dotfiles/cli.lua"
+
+root() {
+    local dir
+    dir=$(cd "${1:-.}" 2>/dev/null && pwd) || dir=$PWD
+    git -C "$dir" rev-parse --show-toplevel 2>/dev/null && return
+    local d=$dir
+    while [ "$d" != / ]; do
+        [ -f "$d/go.mod" ] && { echo "$d"; return; }
+        d=$(dirname "$d")
+    done
+    echo "$dir"
+}
+
+
+# Задачи — те же, что в nvim (nvim/lua/plugins/tasks.lua) и Zed: имя|условие (файл в корне)|команда
+# Команда — последней: в ней можно и «|»
+TASKS=(
+    "up|go.mod|zsh -ic up"
+    "air|go.mod|air"
+    "run-api|go.mod|go run ./cmd/api"
+    "test|go.mod|gotestsum --format pkgname-and-test-fails --format-icons hivis -- ./..."
+    "test-pkg|go.mod|gotestsum --format testname -- -count=1 \"\$PKG\""
+    "cover|go.mod|go test -coverprofile=/tmp/cover.out ./... && go tool cover -html=/tmp/cover.out"
+    "bench|go.mod|go test -run '^\$' -bench . -benchmem -o /tmp/bench.test -cpuprofile /tmp/cpu.out \"\$PKG\" && go tool pprof -http=:0 /tmp/cpu.out"
+    "lint|go.mod|golangci-lint run ./..."
+    "tidy|go.mod|go mod tidy"
+    "vulncheck|go.mod|govulncheck ./..."
+    "health|go.mod|curl -s localhost:\${PORT:-8080}/health | jq ."
+    "compose-logs|compose|docker compose logs -f --tail 100"
+    "compose-up|compose|docker compose up -d --wait"
+    "compose-down|compose|docker compose down"
+    "compose-ps|compose|docker compose ps"
+    "compose-config|compose|docker compose config"
+    "docker-build|Dockerfile|docker build -t \"\$IMAGE\" ."
+    "hadolint|Dockerfile|hadolint Dockerfile"
+    "trivy|Dockerfile|trivy image --severity HIGH,CRITICAL \"\$IMAGE\""
+    "doctor||dot project doctor ."
+    "work||dot work"
+)
+
+# есть ли в корне файл-условие задачи (compose — любое из имён compose-файла)
+task_ok() {
+    case $2 in
+        "") return 0 ;;
+        compose) ls "$1"/compose.y*ml "$1"/docker-compose.y*ml >/dev/null 2>&1 ;;
+        *) [ -e "$1/$2" ] ;;
+    esac
+}
+
+lua() { nvim --clean --headless -l "$CLI" "$@"; }
+
+# функция под курсором: от строки «func» выше курсора до закрывающей «}» в начале строки
+func_range() {
+    awk -v L="$2" '
+        /^func / { if (NR <= L) start = NR }
+        /^}/     { if (start && NR >= L && !end) end = NR }
+        END      { if (start && end) print start "," end }
+    ' "$1"
+}
+
+cmd=${1:-}; shift || true
+case $cmd in
+    root)      root "${1:-.}" ;;
+    endpoints) lua endpoints "$(root "${1:-.}")" ;;
+    httpfile)  lua httpfile "$(root "${1:-.}")" ;;
+    http)
+        [[ ${1:-} == *.http ]] || { echo "открой .http-файл (alt-p) и поставь курсор на запрос"; exit 1; }
+        lua http "$1" "${2:-1}" ;;
+    review)
+        command -v claude >/dev/null || { echo "нужен Claude Code: команда claude" >&2; exit 1; }
+        echo "Claude смотрит diff ветки… (полминуты–минута)" >&2
+        lua review "$(root "${1:-.}")" ;;
+    shot)
+        file=$1 line=${2:-1}
+        command -v freeze >/dev/null || { echo "нужен freeze: brew install charmbracelet/tap/freeze"; exit 1; }
+        range=$(func_range "$file" "$line")
+        mkdir -p ~/Pictures/code
+        out=~/Pictures/code/$(basename "${file%.*}")-$(date +%Y%m%d-%H%M%S).png
+        freeze "$file" ${range:+--lines "$range"} --theme tokyonight-night \
+            --window --show-line-numbers --font.family "JetBrainsMono Nerd Font" --font.size 14 \
+            --border.radius 10 --shadow.blur 20 --shadow.y 8 --padding 20,28 --margin 32 -o "$out" </dev/null >/dev/null || exit 1
+        osascript -e "set the clipboard to (read (POSIX file \"$out\") as «class PNGf»)"
+        echo "скриншот: $out — уже в буфере обмена (cmd-v)" ;;
+    tasks)
+        dir=$(root "${1:-.}")
+        for t in "${TASKS[@]}"; do
+            rest=${t#*|}
+            task_ok "$dir" "${rest%%|*}" && echo "${t%%|*}"
+        done ;;
+    task)
+        name=${1:-} dir=$(root "${2:-.}") file=${3:-}
+        for t in "${TASKS[@]}"; do
+            [ "${t%%|*}" = "$name" ] || continue
+            rest=${t#*|}; run=${rest#*|}
+            PKG=$(dirname "${file:-$dir/.}")
+            IMAGE=$(basename "$dir" | tr '[:upper:] ' '[:lower:]-'):dev
+            export PKG IMAGE
+            cd "$dir" && echo "▶ $run" && exec bash -c "$run"
+        done
+        echo "нет задачи «$name»; есть: $("$0" tasks "$dir" | tr '\n' ' ')"; exit 1 ;;
+    *) sed -n '3,12p' "$0" | sed 's/^#//'; exit 2 ;;
+esac

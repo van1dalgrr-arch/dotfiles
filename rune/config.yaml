@@ -75,6 +75,8 @@ gui:
       cyan: "#38bdf8"
       aqua: "#818cf8"
   env:
+    # Rune из Dock не видит PATH из zsh: без этого не найдутся rune-ide, lazygit, freeze, claude…
+    PATH: /Users/dev/dotfiles/bin:/opt/homebrew/bin:/opt/homebrew/sbin:/Users/dev/go/bin:/Users/dev/.local/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin
     GOBIN: /Users/dev/.rune/bin
     GOCACHE: /Users/dev/.rune/go/cache
     GOMODCACHE: /Users/dev/.rune/go/pkg/mod
@@ -245,8 +247,6 @@ command:
     "<ctrl-meta-u>": "lsp references" # то же без F-клавиши
     "<f1>": "lsp hover" # Quick Documentation
     "<ctrl-j>": "lsp hover"
-    "<alt-t>": "lsp hover"
-    "<alt-d>": "lsp definition"
     "<alt-i>": "lsp implementation"
     "<shift-meta-t>": "gototest" # Go to Test: x.go ↔ x_test.go
     "<meta-[>": "cursorhistory prev" # Back
@@ -263,7 +263,7 @@ command:
     "<shift-f3>": "jumptolocation previous bookmark"
     # правка и рефакторинг (GoLand)
     "<ctrl-space>": "lsp complete" # на macOS сначала отключи ctrl-space в настройках клавиатуры
-    "<alt-g>": "lsp signature-help" # Parameter Info
+    "<ctrl-alt-p>": "lsp signature-help" # Parameter Info (alt-g теперь lazygit, как в nvim)
     "<shift-f6>": "lsp rename" # Rename
     "<alt-n>": "lsp rename"
     "<alt-b>": "lsp format"
@@ -303,6 +303,18 @@ command:
     "<ctrl-alt-g>": "lg"
     "<ctrl-alt-a>": "linelog" # история строки под курсором
     "<ctrl-alt-h>": "filehistory" # история файла в lazygit
+    # как в nvim — одно нажатие (alt-буквы, которые не занял AeroSpace). Логика — в bin/rune-ide,
+    # та же, что в nvim. Определение/документация остались на cmd-B / F1 / ctrl-J.
+    "<alt-o>": "containers" # orbstack — контейнеры
+    "<alt-g>": "lg" # lazygit
+    "<alt-p>": "postman" # api.http проекта — Postman в файле
+    "<ctrl-enter>": "httpsend" # отправить запрос под курсором (в .http), ответ — во вкладке
+    "<alt-a>": "endpoints" # все маршруты Gin, enter — к хендлеру
+    "<alt-d>": "db" # база проекта
+    "<alt-t>": "echo {prompt}task<space>" # задачи: up, air, тесты, линтер, compose… (tab — список)
+    "<alt-c>": "claude" # Claude Code во вкладке
+    "<ctrl-alt-c>": "review" # ревью ветки от Claude → список замечаний с переходом
+    "<ctrl-alt-s>": "shot" # скриншот функции под курсором → буфер обмена
     # прочее
     "<meta-enter>": "terminalneworsplit"
     "<shift-meta-enter>": "!"
@@ -363,6 +375,27 @@ command:
     linelog: "! git log --oneline -L $LINE,$LINE:$FILE"
     gitdiff: "! git diff"
     gitblame: "! git blame $FILE"
+    # ── как в nvim (bin/rune-ide — та же логика, что в nvim/lua/dotfiles) ──
+    # Проект — git-корень открытого файла ($FILE_DIR), а не воркспейс: Rune часто открыт на ~.
+    # db и orbstack — функция и алиас из zsh, поэтому через zsh -ic.
+    containers: "! zsh -ic orbstack"
+    db: "! cd \"$(rune-ide root $FILE_DIR)\" && zsh -ic db"
+    claude: "! cd \"$(rune-ide root $FILE_DIR)\" && claude"
+    gw: "! gw" # PR, Actions, логи CI
+    ld: "! lazydocker"
+    yazi: "! yazi $FILE_DIR"
+    k8s: "! k9s"
+    backup: "! dot backup"
+    postman:
+      - "!! F=$(rune-ide httpfile $FILE_DIR)"
+      - "edit $F"
+    httpsend: "! rune-ide http $FILE $LINE"
+    endpoints: "locationpicker rune-ide endpoints $FILE_DIR"
+    review: "locationpicker rune-ide review $FILE_DIR"
+    shot: "! rune-ide shot $FILE $LINE"
+    task:
+      command: "tasknewtab $1 -- rune-ide task $1 $FILE_DIR $FILE"
+      completer: "! rune-ide tasks $FILE_DIR"
     searchfunc: echo {prompt}searchast<space>locals.scm<space>local.definition.method|local.definition.function<enter>
     searchtype: echo {prompt}searchast<space>locals.scm<space>local.definition.type<enter>
     searchvar: echo {prompt}searchast<space>locals.scm<space>local.definition.var<enter>

@@ -48,6 +48,25 @@ All commands: `cmd-shift-p`; Rune's cheatsheet: `cmd-/`.
 More commands without keys: `:todo`, `:conflicts`, `:changed`, `:gocover` (coverage in the browser), `:gowatchoff`,
 `:govet`, `go tidy`, `go vulncheck`, `go add-test`, `go assembly`.
 
+## Like nvim — one key press
+
+Same keys as in [nvim](../nvim/README.md), with regular (non-vim) editing. The logic is shared:
+[`bin/rune-ide`](../bin/rune-ide) calls the same `nvim/lua/dotfiles` modules.
+
+| Key | What | Command |
+|---|---|---|
+| `alt-O` | containers (orbstack) | `:containers` |
+| `alt-G` | lazygit (signature help moved to `ctrl-alt-P`) | `:lg` |
+| `alt-P` · `ctrl-enter` | **Postman in a file**: the project's `api.http` (generated from Gin routes) · send the request under the cursor | `:postman` · `:httpsend` |
+| `alt-A` | **Gin endpoints** with full paths, `enter` jumps to the handler | `:endpoints` |
+| `alt-D` | project database (`db`) | `:db` |
+| `alt-T` | **tasks** as in nvim: `up`, `air`, tests, coverage, benchmarks, lint, compose, docker build, hadolint, trivy… (`tab` lists them) | `:task <name>` |
+| `alt-C` · `ctrl-alt-C` | Claude Code in a tab · **branch review** by Claude as a jump list | `:claude` · `:review` |
+| `ctrl-alt-S` | screenshot of the function under the cursor (freeze) → clipboard and `~/Pictures/code` | `:shot` |
+
+Also without keys: `:gw` (PRs and CI), `:ld` (lazydocker), `:yazi`, `:k8s` (k9s), `:backup`.
+Go to definition and docs, formerly on `alt-D` / `alt-T`, stay on `cmd-B` and `F1` / `ctrl-J`.
+
 ## No traffic by default
 
 Rune ships with telemetry on, a daily update check and auto-joining its peer network (port 7473).
