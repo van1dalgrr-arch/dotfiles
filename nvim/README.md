@@ -33,7 +33,7 @@ nothing to assemble by hand. A from-scratch config can later live in a sibling f
 | `lua/plugins/git.lua` | diffview (three-way merge, history, branch against main), blame, edit history (undotree) |
 | `lua/plugins/ai.lua` | Claude Code in nvim, Kubernetes (kubectl.nvim) |
 | `lua/dotfiles/modes.lua` | **mode at a glance**: cursor, line and number turn green in insert, purple in visual; **auto-leaves insert** after 5 s idle (`space u I` to toggle); `cmd-s` / `cmd-p` / `cmd-/` like Zed |
-| `lua/plugins/comfort.lua` | **mouse-free moves**: `enter` labels every line on screen, press the letter to jump (works in Russian layout too); code outside the current function is dimmed (`space u D`); signature help while typing a call; smear cursor (extra) |
+| `lua/plugins/comfort.lua` | **mouse-free moves**: `enter` labels every line on screen, press the letter to jump (works in Russian layout too); signature help while typing a call; smear cursor (extra) |
 | `lua/plugins/learn.lua` | learn as you go: motion marks in the line (precognition), a habit coach in hint mode (hardtime) |
 | `lua/plugins/tools.lua` | Claude on `alt-c` and "fix it" (`space a x`), gw on `alt-w`, yazi, Go scratch, structural replace (ast-grep), quicker, persistent breakpoints |
 | `lua/plugins/editing.lua` | `ctrl-a` for Go (`:=`↔`=`, `t.Error`↔`t.Fatal`, HTTP methods and statuses), `.env` under asterisks |

@@ -40,20 +40,6 @@ return {
     end,
   },
 
-  -- Код вне текущей функции слегка приглушён — глаз сразу на том, что пишешь.
-  -- Выключить: пробел u D; пробел u z — zen: только код по центру.
-  {
-    "folke/snacks.nvim",
-    opts = { dim = { animate = { enabled = false } } },
-    init = function()
-      vim.api.nvim_create_autocmd("User", {
-        pattern = "VeryLazy",
-        once = true,
-        callback = function() Snacks.dim.enable() end,
-      })
-    end,
-  },
-
   -- Подсказка аргументов, пока печатаешь вызов: сигнатура над строкой, текущий аргумент выделен
   {
     "saghen/blink.cmp",

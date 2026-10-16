@@ -32,6 +32,25 @@ return {
   -- встроенный текст ошибок выключен: его рисует tiny-inline-diagnostic
   { "neovim/nvim-lspconfig", opts = { diagnostics = { virtual_text = false } } },
 
+  -- Полоса прокрутки с метками, как правый край в GoLand: где ошибки, git-изменения, найденное и курсор.
+  -- Не ловит мышь и не мешает тексту; в списках и деревьях не рисуется.
+  {
+    "lewis6991/satellite.nvim",
+    event = "VeryLazy",
+    opts = {
+      winblend = 30,
+      excluded_filetypes = { "snacks_dashboard", "snacks_picker_list", "neo-tree", "lazy", "mason", "trouble", "Outline", "dbui" },
+      handlers = {
+        cursor = { enable = true, symbols = { "⎺", "⎻", "⎼", "⎽" } },
+        search = { enable = true },
+        diagnostic = { enable = true, min_severity = vim.diagnostic.severity.WARN },
+        gitsigns = { enable = true },
+        marks = { enable = false },
+        quickfix = { enable = false },
+      },
+    },
+  },
+
   -- Мультикурсоры, как Alt+J / Ctrl+G в GoLand.
   -- ctrl-n — курсор на следующем таком же слове, пробел m — меню, alt+клик — поставить/убрать курсор.
   -- Пока курсоры есть: ←/→ — переключаться, пробел x — убрать текущий, esc — убрать все.
