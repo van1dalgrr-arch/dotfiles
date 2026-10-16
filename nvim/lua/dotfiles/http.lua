@@ -101,25 +101,51 @@ local function show(lines)
   end
 end
 
+-- ответ curl → строки для показа; JSON запроса с @name запоминается для {{name.response.body…}}
+local function render(r, url, res)
+  if res.code ~= 0 then
+    return { "// " .. r.method .. " " .. url .. " → нет ответа", "// " .. vim.trim(res.stderr or ""), "// API запущен? пробел r r → go run / up" }
+  end
+  local out, status, secs = res.stdout:match("^(.*)\n@@(%d+) ([%d.]+)$")
+  out = out or res.stdout
+  local ok, decoded = pcall(vim.json.decode, out)
+  if ok and type(decoded) == "table" then
+    if r.name then responses[r.name] = decoded end
+    if vim.fn.executable("jq") == 1 then out = table.concat(vim.fn.systemlist({ "jq", "." }, out), "\n") end
+  end
+  local ms = (tonumber(secs) or 0) * 1000
+  local head = ("// %s %s → %s · %s"):format(r.method, url, status or "?", ms < 1 and "<1 мс" or ("%d мс"):format(math.floor(ms)))
+  return vim.list_extend({ head }, vim.split(out, "\n"))
+end
+
 local function run(r, vars)
   last = { r = r, vars = vars }
   local args = curl_args(r, vars)
-  local url = args[#args]
-  vim.system(args, { text = true }, vim.schedule_wrap(function(res)
-    if res.code ~= 0 then
-      return show({ "// " .. r.method .. " " .. url .. " → нет ответа", "// " .. vim.trim(res.stderr or ""), "// API запущен? пробел r r → go run / up" })
-    end
-    local out, status, secs = res.stdout:match("^(.*)\n@@(%d+) ([%d.]+)$")
-    out = out or res.stdout
-    local ok, decoded = pcall(vim.json.decode, out)
-    if ok and type(decoded) == "table" then
-      if r.name then responses[r.name] = decoded end
-      if vim.fn.executable("jq") == 1 then out = table.concat(vim.fn.systemlist({ "jq", "." }, out), "\n") end
-    end
-    local ms = (tonumber(secs) or 0) * 1000
-    local head = ("// %s %s → %s · %s"):format(r.method, url, status or "?", ms < 1 and "<1 мс" or ("%d мс"):format(math.floor(ms)))
-    show(vim.list_extend({ head }, vim.split(out, "\n")))
-  end))
+  vim.system(args, { text = true }, vim.schedule_wrap(function(res) show(render(r, args[#args], res)) end))
+end
+
+-- Для Rune (bin/rune-ide http <файл> <строка>): запрос на строке (или ближайший выше) — ответ в stdout.
+-- Ответы с @name живут между запусками в ~/.cache/dotfiles/http-responses.json — токен логина не теряется.
+function M.cli(file, line)
+  local cache = vim.fn.expand("~/.cache/dotfiles/http-responses.json")
+  local ok, saved = pcall(function() return vim.json.decode(table.concat(vim.fn.readfile(cache), "\n")) end)
+  if ok and type(saved) == "table" then responses = saved end
+  local reqs, vars = M.parse(vim.fn.readfile(file))
+  local r
+  for i = #reqs, 1, -1 do
+    -- +1: курсор на заголовке «### …» тоже считается — запрос начинается строкой ниже
+    if reqs[i].method and reqs[i].first <= line + 1 then r = reqs[i]; break end
+  end
+  if not r then
+    io.stdout:write("курсор не на запросе: поставь его на блок с GET/POST … и повтори\n")
+    return 1
+  end
+  local args = curl_args(r, vars)
+  local lines = render(r, args[#args], vim.system(args, { text = true }):wait())
+  io.stdout:write(table.concat(lines, "\n"), "\n")
+  vim.fn.mkdir(vim.fn.fnamemodify(cache, ":h"), "p")
+  vim.fn.writefile({ vim.json.encode(responses) }, cache)
+  return 0
 end
 
 -- запрос под курсором (или ближайший выше)

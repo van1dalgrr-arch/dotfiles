@@ -53,3 +53,13 @@ for ru, en in pairs({ ["щ"] = "o", ["п"] = "g", ["з"] = "p", ["ф"] = "a", ["
   local m = vim.fn.maparg("<M-" .. en .. ">", "n", false, true)
   if m.callback or m.rhs then map(en == "o" and { "n", "t" } or "n", "<M-" .. ru .. ">", m.callback or m.rhs, { desc = m.desc }) end
 end
+
+-- Режим видно по цвету курсора и строки, из вставки выходит сам после 5 с паузы (lua/dotfiles/modes.lua)
+require("dotfiles.modes").setup()
+
+-- cmd-клавиши как в Zed (Ghostty их не занимает и передаёт в nvim): сохранить, найти файл, комментарий
+map({ "n", "i", "x" }, "<D-s>", "<cmd>write<cr><esc>", { desc = "Сохранить (cmd-s)" })
+map({ "n", "i" }, "<D-p>", function() Snacks.picker.files() end, { desc = "Найти файл (cmd-p)" })
+map({ "n", "i" }, "<D-S-p>", function() Snacks.picker.commands() end, { desc = "Все команды (cmd-shift-p)" })
+map("n", "<D-/>", "gcc", { remap = true, desc = "Комментарий (cmd-/)" })
+map("x", "<D-/>", "gc", { remap = true, desc = "Комментарий (cmd-/)" })

@@ -73,7 +73,10 @@ return {
     opts = function(_, opts)
       opts.options.section_separators = { left = "", right = "" }
       opts.options.component_separators = { left = "", right = "" }
-      opts.sections.lualine_a = { { "mode", separator = { left = "" }, right_padding = 2 } }
+      -- режим по-русски: сразу ясно, где ты и что сейчас делают клавиши
+      local ru = { NORMAL = "ОБЫЧНЫЙ", INSERT = "ВСТАВКА", VISUAL = "ВЫДЕЛЕНИЕ", ["V-LINE"] = "СТРОКИ", ["V-BLOCK"] = "БЛОК",
+        REPLACE = "ЗАМЕНА", COMMAND = "КОМАНДА", TERMINAL = "ТЕРМИНАЛ", SELECT = "ВЫБОР", ["O-PENDING"] = "КУДА?" }
+      opts.sections.lualine_a = { { "mode", fmt = function(m) return ru[m] or m end, separator = { left = "" }, right_padding = 2 } }
       -- тесты пакета в фоне: ✓ 42 / ✗ 1 / ✗ сборка (lua/dotfiles/autotest.lua)
       table.insert(opts.sections.lualine_x, 1, {
         function() return require("dotfiles.autotest").status() end,

@@ -32,6 +32,8 @@ Neovim на [LazyVim](https://lazyvim.org) — запасной выход, ес
 | `lua/plugins/ui.lua` | хлебные крошки, ошибки справа от строки (Error Lens), мультикурсоры |
 | `lua/plugins/git.lua` | diffview (merge втроём, история, ветка против main), blame, история правок (undotree) |
 | `lua/plugins/ai.lua` | Claude Code в nvim, Kubernetes (kubectl.nvim) |
+| `lua/dotfiles/modes.lua` | **режим видно сразу**: курсор, строка и номер зеленеют при вставке, фиолетовые при выделении, режим в статусной строке по-русски; не печатаешь 5 с — **сам выходит из вставки** (`пробел u I` — выкл); `cmd-s` / `cmd-p` / `cmd-/` как в Zed |
+| `lua/plugins/comfort.lua` | **ходить без мыши**: `enter` — метки на всех строках экрана, буква — ты там (и в русской раскладке); код вне текущей функции приглушён (`пробел u D`); подсказка аргументов при наборе вызова; летающий курсор (extra smear-cursor) |
 | `lua/plugins/learn.lua` | учиться на ходу: метки движений в строке (precognition), тренер привычек в режиме подсказок (hardtime) |
 | `lua/plugins/tools.lua` | Claude по `alt-c` и «почини» (`пробел a x`), gw по `alt-w`, yazi, Go-черновик, структурная замена (ast-grep), quicker, точки останова между запусками |
 | `lua/plugins/editing.lua` | `ctrl-a` для Go (`:=`↔`=`, `t.Error`↔`t.Fatal`, HTTP-методы и статусы), `.env` под звёздочками |

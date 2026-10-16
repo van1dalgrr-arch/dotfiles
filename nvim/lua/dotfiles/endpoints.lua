@@ -229,4 +229,12 @@ function M.http_file(root, dest, no_open)
   vim.notify(("api.http: %d запросов"):format(#routes))
 end
 
+-- Для Rune (bin/rune-ide endpoints <корень>): маршруты строками путь:строка:колонка: МЕТОД /путь → хендлер
+function M.cli(root)
+  for _, r in ipairs(M.collect(root)) do
+    io.stdout:write(("%s:%d:%d: %-6s %s → %s\n"):format(r.file, r.line, r.col + 1, r.method, r.path, r.handler))
+  end
+  return 0
+end
+
 return M

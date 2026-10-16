@@ -24,14 +24,30 @@ function M.clear()
   for _, b in ipairs(vim.api.nvim_list_bufs()) do vim.diagnostic.reset(ns, b) end
 end
 
+-- diff ветки против main + то, что ещё не закоммичено: ревью того, что уйдёт в PR
+local function branch_diff(root)
+  local base = git(root, { "symbolic-ref", "--short", "refs/remotes/origin/HEAD" })
+  base = base ~= "" and base or "main"
+  local mb = git(root, { "merge-base", base, "HEAD" })
+  return git(root, { "diff", mb ~= "" and mb or base }), base
+end
+
+-- ответ Claude → { file (абсолютный), lnum, level, msg }
+local function parse(stdout, root)
+  local items = {}
+  for line in (stdout or ""):gmatch("[^\n]+") do
+    local path, lnum, level, msg = line:match("^%s*`?([^:`]+):(%d+):%s*(%a+):%s*(.+)$")
+    if path and sev[level] then
+      items[#items + 1] = { file = vim.fs.joinpath(root, path), lnum = tonumber(lnum), level = level, msg = msg }
+    end
+  end
+  return items
+end
+
 function M.run()
   if vim.fn.executable("claude") == 0 then return vim.notify("нужен Claude Code: команда claude", vim.log.levels.ERROR) end
   local root = LazyVim.root.git()
-  local base = git(root, { "symbolic-ref", "--short", "refs/remotes/origin/HEAD" })
-  base = base ~= "" and base or "main"
-  -- ветка против main + то, что ещё не закоммичено: ревью того, что уйдёт в PR
-  local mb = git(root, { "merge-base", base, "HEAD" })
-  local diff = git(root, { "diff", mb ~= "" and mb or base })
+  local diff, base = branch_diff(root)
   if diff == "" then return vim.notify("нет изменений относительно " .. base, vim.log.levels.WARN) end
   vim.notify("Claude смотрит diff против " .. base .. "…", vim.log.levels.INFO, { title = "ревью" })
   vim.system({ "claude", "-p", prompt }, { stdin = diff:sub(1, 150000), text = true, cwd = root }, vim.schedule_wrap(function(res)
@@ -40,15 +56,11 @@ function M.run()
     end
     M.clear()
     local by_buf, qf = {}, {}
-    for line in (res.stdout or ""):gmatch("[^\n]+") do
-      local path, lnum, level, msg = line:match("^%s*`?([^:`]+):(%d+):%s*(%a+):%s*(.+)$")
-      if path and sev[level] then
-        local file = vim.fs.joinpath(root, path)
-        local buf = vim.fn.bufadd(file)
-        by_buf[buf] = by_buf[buf] or {}
-        table.insert(by_buf[buf], { lnum = tonumber(lnum) - 1, col = 0, severity = sev[level], source = "claude", message = msg })
-        table.insert(qf, { filename = file, lnum = tonumber(lnum), text = "claude: " .. msg, type = level:sub(1, 1):upper() })
-      end
+    for _, it in ipairs(parse(res.stdout, root)) do
+      local buf = vim.fn.bufadd(it.file)
+      by_buf[buf] = by_buf[buf] or {}
+      table.insert(by_buf[buf], { lnum = it.lnum - 1, col = 0, severity = sev[it.level], source = "claude", message = it.msg })
+      table.insert(qf, { filename = it.file, lnum = it.lnum, text = "claude: " .. it.msg, type = it.level:sub(1, 1):upper() })
     end
     if #qf == 0 then
       local none = (res.stdout or ""):match("NONE")
@@ -58,6 +70,20 @@ function M.run()
     vim.fn.setqflist({}, " ", { title = "Ревью Claude", items = qf })
     vim.notify(("замечаний: %d — на строках в коде, списком: пробел x q"):format(#qf), vim.log.levels.WARN, { title = "ревью" })
   end))
+end
+
+-- Для Rune (bin/rune-ide review <папка>): замечания строками путь:строка:1: уровень: текст — для locationpicker
+function M.cli(dir)
+  local root = git(dir, { "rev-parse", "--show-toplevel" })
+  if root == "" then root = dir end
+  local diff, base = branch_diff(root)
+  if diff == "" then io.stdout:write("нет изменений относительно " .. base .. "\n"); return 0 end
+  local res = vim.system({ "claude", "-p", prompt }, { stdin = diff:sub(1, 150000), text = true, cwd = root }):wait()
+  if res.code ~= 0 then io.stderr:write("claude: " .. (res.stderr or "") .. "\n"); return 1 end
+  local items = parse(res.stdout, root)
+  for _, it in ipairs(items) do io.stdout:write(("%s:%d:1: %s: %s\n"):format(it.file, it.lnum, it.level, it.msg)) end
+  if #items == 0 then io.stdout:write((res.stdout or ""):match("NONE") and "Claude проблем не нашёл ✓\n" or res.stdout) end
+  return 0
 end
 
 return M

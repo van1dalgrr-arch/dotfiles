@@ -6,7 +6,7 @@ return {
     "tris203/precognition.nvim",
     event = "VeryLazy",
     opts = {
-      startVisible = true,
+      startVisible = false, -- спокойный экран: метки включаются по пробел u P
       showBlankVirtLine = false, -- на пустой строке подсказывать нечего — без лишней строки
       highlightColor = { link = "Comment" },
       -- только главные движения: w b e ^ $ % — без W/B/E/0 и без меток f/t, иначе строка-подсказка как каша
@@ -46,7 +46,9 @@ return {
     dependencies = { "MunifTanjim/nui.nvim" },
     opts = {
       restriction_mode = "hint",
-      disabled_keys = {}, -- стрелки нужны мультикурсорам и терминалу
+      -- стрелки работают везде (и нужны мультикурсорам); пустая {} не помогает — с умолчаниями
+      -- hardtime она сливается, и запрет стрелок остаётся. Разрешать нужно каждую явно.
+      disabled_keys = { ["<Up>"] = false, ["<Down>"] = false, ["<Left>"] = false, ["<Right>"] = false },
       disable_mouse = false,
     },
     keys = {

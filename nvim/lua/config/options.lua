@@ -11,6 +11,9 @@ vim.opt.langmap = RU .. ";" .. EN .. "," .. ru .. ";" .. en
 -- как в старом init.lua: больше строк вокруг курсора
 vim.opt.scrolloff = 8
 
+-- спокойный экран: обычные номера строк вместо «расстояния до курсора» (вернуть: пробел u L)
+vim.opt.relativenumber = false
+
 -- цвета для ▶, «реализует:», мультикурсоров в любой теме; rose-pine следит за темой dotfiles
 require("dotfiles.theme").watch()
 
