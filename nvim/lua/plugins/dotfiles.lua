@@ -71,12 +71,12 @@ return {
     "nvim-lualine/lualine.nvim",
     optional = true,
     opts = function(_, opts)
-      opts.options.section_separators = { left = "", right = "" }
+      opts.options.section_separators = { left = "\u{e0b4}", right = "\u{e0b6}" }
       opts.options.component_separators = { left = "", right = "" }
       -- режим по-русски: сразу ясно, где ты и что сейчас делают клавиши
       local ru = { NORMAL = "ОБЫЧНЫЙ", INSERT = "ВСТАВКА", VISUAL = "ВЫДЕЛЕНИЕ", ["V-LINE"] = "СТРОКИ", ["V-BLOCK"] = "БЛОК",
         REPLACE = "ЗАМЕНА", COMMAND = "КОМАНДА", TERMINAL = "ТЕРМИНАЛ", SELECT = "ВЫБОР", ["O-PENDING"] = "КУДА?" }
-      opts.sections.lualine_a = { { "mode", fmt = function(m) return ru[m] or m end, separator = { left = "" }, right_padding = 2 } }
+      opts.sections.lualine_a = { { "mode", fmt = function(m) return ru[m] or m end, separator = { left = "\u{e0b6}" }, right_padding = 2 } }
       -- тесты пакета в фоне: ✓ 42 / ✗ 1 / ✗ сборка (lua/dotfiles/autotest.lua)
       table.insert(opts.sections.lualine_x, 1, {
         function() return require("dotfiles.autotest").status() end,
@@ -86,11 +86,11 @@ return {
       table.insert(opts.sections.lualine_x, 1, {
         function()
           local names = vim.tbl_map(function(c) return c.name end, vim.lsp.get_clients({ bufnr = 0 }))
-          return #names > 0 and (" " .. table.concat(names, " ")) or ""
+          return #names > 0 and ("\u{f085} " .. table.concat(names, " ")) or ""
         end,
         color = function() return { fg = Snacks.util.color("Comment") } end,
       })
-      opts.sections.lualine_z = { { function() return " " .. os.date("%H:%M") end, separator = { right = "" }, left_padding = 2 } }
+      opts.sections.lualine_z = { { function() return "\u{f43a} " .. os.date("%H:%M") end, separator = { right = "\u{e0b4}" }, left_padding = 2 } }
     end,
   },
 
@@ -109,16 +109,16 @@ return {
 ╚═════╝ ╚══════╝  ╚═══╝  
 neovim · go · без лицензий]],
           keys = {
-            { icon = " ", key = "f", desc = "Найти файл", action = ":lua Snacks.dashboard.pick('files')" },
-            { icon = " ", key = "r", desc = "Недавние файлы", action = ":lua Snacks.dashboard.pick('oldfiles')" },
-            { icon = " ", key = "g", desc = "Поиск по проекту", action = ":lua Snacks.dashboard.pick('live_grep')" },
-            { icon = " ", key = "s", desc = "Вернуть прошлую сессию", section = "session" },
+            { icon = "\u{f002} ", key = "f", desc = "Найти файл", action = ":lua Snacks.dashboard.pick('files')" },
+            { icon = "\u{f1da} ", key = "r", desc = "Недавние файлы", action = ":lua Snacks.dashboard.pick('oldfiles')" },
+            { icon = "\u{f422} ", key = "g", desc = "Поиск по проекту", action = ":lua Snacks.dashboard.pick('live_grep')" },
+            { icon = "\u{e35f} ", key = "s", desc = "Вернуть прошлую сессию", section = "session" },
             { icon = "󰊢 ", key = "G", desc = "lazygit", action = function() Snacks.lazygit() end },
             { icon = "󰚩 ", key = "a", desc = "Claude Code", action = "<cmd>ClaudeCode<cr>" },
-            { icon = " ", key = "e", desc = "Эндпоинты API", action = function() require("dotfiles.endpoints").pick() end },
+            { icon = "\u{f0ac} ", key = "e", desc = "Эндпоинты API", action = function() require("dotfiles.endpoints").pick() end },
             { icon = "󰋖 ", key = "h", desc = "Шпаргалка", action = function() require("dotfiles.cheatsheet").open() end },
             { icon = "󰒲 ", key = "l", desc = "Плагины", action = ":Lazy" },
-            { icon = " ", key = "q", desc = "Выйти", action = ":qa" },
+            { icon = "\u{f426} ", key = "q", desc = "Выйти", action = ":qa" },
           },
         },
         sections = {
@@ -127,13 +127,13 @@ neovim · go · без лицензий]],
           function() return require("dotfiles.tips").section() end, -- совет дня из шпаргалки
           { section = "startup" },
           { pane = 2, padding = 8 },
-          { pane = 2, icon = " ", title = "Недавние файлы", section = "recent_files", cwd = true, indent = 2, padding = 1 },
-          { pane = 2, icon = " ", title = "Проекты", section = "projects", indent = 2, padding = 1 },
+          { pane = 2, icon = "\u{f1da} ", title = "Недавние файлы", section = "recent_files", cwd = true, indent = 2, padding = 1 },
+          { pane = 2, icon = "\u{f07b} ", title = "Проекты", section = "projects", indent = 2, padding = 1 },
           -- git status без терминала: в терминальном блоке висела строка «[Process exited 0]»
           function()
             if not Snacks.git.get_root() then return {} end
             local lines = vim.fn.systemlist({ "git", "status", "--short", "--branch" })
-            local items = { { pane = 2, icon = " ", title = "Git", padding = 1 } }
+            local items = { { pane = 2, icon = "\u{e725} ", title = "Git", padding = 1 } }
             for i, line in ipairs(vim.list_slice(lines, 1, 6)) do
               items[#items + 1] = { pane = 2, text = { { line, hl = i == 1 and "Special" or "Comment" } }, indent = 3 }
             end

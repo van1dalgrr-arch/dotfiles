@@ -81,7 +81,7 @@ end
 
 local function restart()
   timer:stop()
-  timer:start(IDLE_MS, 0, vim.schedule_wrap(idle_exit))
+  timer:start(vim.g.auto_normal_ms or IDLE_MS, 0, vim.schedule_wrap(idle_exit)) -- ownvim задаёт паузу в settings.jsonc
 end
 
 function M.setup()

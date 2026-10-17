@@ -63,6 +63,7 @@ link zed/keymap.json                 "$HOME/.config/zed/keymap.json"
 link zed/tasks.json                  "$HOME/.config/zed/tasks.json"
 link pgcli/config                    "$HOME/.config/pgcli/config"
 link nvim                            "$HOME/.config/nvim"               # Neovim на LazyVim
+link nvim-own                        "$HOME/.config/ownvim"             # своя сборка Neovim — ownvim
 link rune/config.yaml                "$HOME/.rune/config.yaml"          # Rune — тема Dev Night, без телеметрии
 link zed/debug.json                  "$HOME/.config/zed/debug.json"
 link zed/snippets/go.json            "$HOME/.config/zed/snippets/go.json"

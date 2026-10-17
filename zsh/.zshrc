@@ -9,6 +9,8 @@ export PATH="$HOME/dotfiles/bin:$PATH"           # dot — управление 
 
 # редактор для git commit, lazygit, yazi, crontab и всего, что спрашивает $EDITOR — Neovim (nvim/)
 export EDITOR=nvim VISUAL=nvim
+# своя сборка Neovim (nvim-own/, настройки — settings.jsonc); nvim пока остаётся LazyVim
+alias ownvim="NVIM_APPNAME=ownvim nvim"
 
 # ── OH MY ZSH
 
