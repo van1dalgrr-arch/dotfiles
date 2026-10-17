@@ -189,11 +189,20 @@ alias ff="fastfetch"
 alias neofetch="fastfetch"
 alias ports="lsof -i -P | grep LISTEN"
 
+# pmset под root: в терминале — sudo, без терминала (! в Claude, Raycast) — окно пароля macOS
+_awake_pmset() {
+    if [[ -t 0 ]] || sudo -n true 2>/dev/null; then
+        sudo pmset -a disablesleep $1
+    else
+        osascript -e "do shell script \"pmset -a disablesleep $1\" with administrator privileges" >/dev/null
+    fi
+}
+
 # awake on|off — не засыпать с закрытой крышкой (pmset, нужен пароль). Не класть так в рюкзак — греется
 awake() {
     case $1 in
-        on)  sudo pmset -a disablesleep 1 && mkdir -p ~/.cache/dotfiles && touch ~/.cache/dotfiles/awake-since && print -P "%F{#$T_FOAM}☕ не засыпает, даже с закрытой крышкой%f · выключить: awake off" ;;
-        off) sudo pmset -a disablesleep 0 && rm -f ~/.cache/dotfiles/awake-since && print -P "%F{#$T_MUTED}💤 засыпает как обычно%f" ;;
+        on)  _awake_pmset 1 && mkdir -p ~/.cache/dotfiles && touch ~/.cache/dotfiles/awake-since && print -P "%F{#$T_FOAM}☕ не засыпает, даже с закрытой крышкой%f · выключить: awake off" ;;
+        off) _awake_pmset 0 && rm -f ~/.cache/dotfiles/awake-since && print -P "%F{#$T_MUTED}💤 засыпает как обычно%f" ;;
         *)   if pmset -g | command grep -q 'SleepDisabled[[:space:]]*1'; then
                  print -P "%F{#$T_FOAM}☕ awake: включено%f — не спит с закрытой крышкой · awake off"
              else
