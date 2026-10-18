@@ -17,6 +17,8 @@ while read -r src dst; do
         if [ -e "$dst.bak" ] || [ -L "$dst.bak" ]; then run mv "$dst.bak" "$dst"; fi
     fi
 done < <(grep -E '^link ' "$DOTFILES/install.sh" | sed -E 's/^link +([^ ]+) +"?([^"]+)"?.*/\1 \2/')
+# ссылка на ownvim (сам репозиторий ~/dev/ownvim — твой, не трогаем)
+if [ "$(readlink "$HOME/.config/ownvim" 2>/dev/null)" = "$HOME/dev/ownvim" ]; then run rm "$HOME/.config/ownvim"; fi
 
 if [ "$purge" = 1 ]; then
     for p in "$HOME/.cache/dotfiles-theme" "$HOME/.config/dotfiles" "$HOME/.config/ghostty/theme.ghostty" \

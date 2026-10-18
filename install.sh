@@ -63,7 +63,6 @@ link zed/keymap.json                 "$HOME/.config/zed/keymap.json"
 link zed/tasks.json                  "$HOME/.config/zed/tasks.json"
 link pgcli/config                    "$HOME/.config/pgcli/config"
 link nvim                            "$HOME/.config/nvim"               # Neovim на LazyVim
-link nvim-own                        "$HOME/.config/ownvim"             # своя сборка Neovim — ownvim
 link rune/config.yaml                "$HOME/.rune/config.yaml"          # Rune — тема Dev Night, без телеметрии
 link zed/debug.json                  "$HOME/.config/zed/debug.json"
 link zed/snippets/go.json            "$HOME/.config/zed/snippets/go.json"
@@ -76,6 +75,14 @@ link zed/dev-night-icons             "$HOME/Library/Application Support/Zed/exte
 # oh-my-zsh без его установщика (тот переписывает ~/.zshrc) + плагин fzf-tab
 clone_pinned https://github.com/ohmyzsh/ohmyzsh "$HOME/.oh-my-zsh" "$OMZ_REV"
 clone_pinned https://github.com/Aloxaf/fzf-tab "$HOME/.oh-my-zsh/custom/plugins/fzf-tab" "$FZF_TAB_REV"
+
+# ownvim — своя сборка Neovim, отдельный репозиторий (настройки — в нём же, settings.jsonc).
+# Не закреплён на коммите: это рабочая копия, в ней правишь и коммитишь. Репозиторий приватный —
+# без входа в gh не склонируется, остальное ставится дальше.
+OWNVIM="$HOME/dev/ownvim"
+[ -d "$OWNVIM" ] || git clone -q https://github.com/van1dalgrr-arch/ownvim "$OWNVIM" 2>/dev/null \
+    || echo "внимание: ownvim не склонировался (приватный — сначала gh auth login)"
+if [ -d "$OWNVIM" ] && [ ! -e "$HOME/.config/ownvim" ]; then ln -s "$OWNVIM" "$HOME/.config/ownvim"; fi
 
 # Go-утилиты с закреплёнными версиями (go/tools.txt; brew "air" — это другая программа)
 if command -v go >/dev/null; then "$DOTFILES/bin/dot" tools install || echo "внимание: не все Go-утилиты встали — dot tools"
