@@ -89,3 +89,5 @@ config-file = ?theme.ghostty
 config-file = ?backdrop.ghostty
 # --- Эффекты: fx пишет сюда шейдеры (fx set none — без эффектов) ---
 config-file = ?fx.ghostty
+# --- Шрифт из ownvim: пишет ownvim из settings.jsonc, раздел font (пусто — шрифт отсюда) ---
+config-file = ?ownvim.ghostty
