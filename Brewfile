@@ -39,6 +39,9 @@ brew "golangci-lint"
 brew "delve"
 brew "gotestsum"
 
+# C / C++ (компилятор, clangd, lldb — из Command Line Tools; ownvim: задачи cmake, clangd по compile_commands.json)
+brew "cmake"
+
 # Backend
 brew "pgcli"
 brew "golang-migrate"
