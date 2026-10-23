@@ -42,6 +42,9 @@ brew "gotestsum"
 # C / C++ (компилятор, clangd, lldb — из Command Line Tools; ownvim: задачи cmake, clangd по compile_commands.json)
 brew "cmake"
 
+# Rust (ownvim: rust-analyzer, clippy). rustup из brew — keg-only, путь в zsh/.zshrc; тулчейн: rustup default stable
+brew "rustup"
+
 # Backend
 brew "pgcli"
 brew "golang-migrate"

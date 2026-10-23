@@ -31,9 +31,9 @@ jobs:
 
       - name: shellcheck
         run: |
-          shellcheck -S warning -e SC1090 \
-            bin/dot lib/*.sh bootstrap.sh install.sh uninstall.sh macos.sh themes/apply.sh tests/*.sh \
-            git/hooks/_chain git/hooks/pre-commit
+          # тот же список, что у make check (Makefile, SCRIPTS)
+          # shellcheck disable=SC2046
+          shellcheck -S warning -e SC1090 $(make -s scripts)
 
       - name: Brewfile syntax
         run: ruby -c Brewfile && ruby -c Brewfile.devops
@@ -90,7 +90,7 @@ jobs:
           for f in icons/icons.swift icons/folder.swift icons/backdrop.swift icons/html2png.swift icons/photo-wallpaper.swift ghostty/activate.swift icons/terminal-grade.swift zed/tools/build-icons.swift; do swiftc -typecheck "$f" && echo "ok $f"; done
 
       - name: scripts parse with system bash 3.2
-        run: for f in bin/dot lib/*.sh bootstrap.sh install.sh uninstall.sh macos.sh tests/*.sh; do /bin/bash -n "$f" && echo "ok $f"; done
+        run: for f in $(make -s scripts); do /bin/bash -n "$f" && echo "ok $f"; done
 
       - name: smoke tests (+ macos.sh preview, read-only)
         run: tests/smoke.sh
