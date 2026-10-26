@@ -7,6 +7,24 @@ autoload -Uz add-zle-hook-widget add-zsh-hook
 setopt PROMPT_SUBST
 
 _p() { print -n "%F{#$1}"; }                     # %F{#hex} из палитры
+_I=$'%{\e[3m%}' _NI=$'%{\e[23m%}'                # курсив JetBrains Mono (та самая f с хвостиком)
+# значки Nerd Font — escape-кодами: символы из частной зоны Unicode теряются при правках файла
+_G_GIT=$'\ue0a0' _G_GO=$'\ue627' _G_PY=$'\ue73c' _G_APPLE=$'\uf179' _G_CLOCK=$'\uf017' _G_TOOK=$'\U000f13ab'
+
+# текст $3 с плавным переходом цвета $1 → $2 по буквам — целочисленно, без процессов
+_grad() {
+    local s=$3 n=${#3} i ch out="" hex
+    local r1=$((16#${1[1,2]})) g1=$((16#${1[3,4]})) b1=$((16#${1[5,6]}))
+    local r2=$((16#${2[1,2]})) g2=$((16#${2[3,4]})) b2=$((16#${2[5,6]}))
+    local d=$(( n > 1 ? n - 1 : 1 ))
+    for (( i = 1; i <= n; i++ )); do
+        printf -v hex '%02x%02x%02x' $(( r1 + (r2 - r1) * (i - 1) / d )) \
+            $(( g1 + (g2 - g1) * (i - 1) / d )) $(( b1 + (b2 - b1) * (i - 1) / d ))
+        ch=${s[i]}; [[ $ch == % ]] && ch=%%
+        out+="%F{#$hex}$ch"
+    done
+    print -n "$out"
+}
 
 # корень git-репозитория — подъёмом по папкам, без запуска git
 _prompt_root() {
@@ -18,16 +36,18 @@ _prompt_root() {
     return 1
 }
 
-# путь: в репозитории — от его корня (имя проекта жирным), иначе — ~ и последние папки
+# путь: имя проекта — жирный курсив с градиентом акцентов темы, подпапки — приглушённым курсивом;
+# вне репозитория — ~ и последние папки тем же градиентом
 _prompt_dir() {
     local root=$1
     if [[ -n $root ]]; then
         local sub=${PWD#$root}
         local -a parts=(${(s:/:)sub})
         (( $#parts > 2 )) && sub="/…/${(j:/:)parts[-2,-1]}"
-        print -n "%B$(_p $T_FOAM)${root:t}%b$(_p $T_FOAM)${sub}"
+        print -n "%B$_I$(_grad $T_GOLD $T_ROSE "${root:t}")%b$(_p $T_SUBTLE)${sub//\%/%%}$_NI"
     else
-        print -n "%B$(_p $T_FOAM)%(4~|…/%2~|%~)%b"
+        local d=${(%):-%(4~|…/%2~|%~)}
+        print -n "%B$_I$(_grad $T_GOLD $T_ROSE "$d")%b$_NI"
     fi
 }
 
@@ -48,7 +68,7 @@ _prompt_git() {
     [[ -z $branch ]] && return
     [[ $branch == "(detached)" ]] && branch="${oid[1,7]}"
 
-    local s="$(_p $T_GOLD) $branch"
+    local s="$(_p $T_GOLD)$_G_GIT $_I$branch$_NI"
     (( staged ))    && s+=" $(_p $T_FOAM)+$staged"
     (( changed ))   && s+=" $(_p $T_ROSE)!$changed"
     (( conflicts )) && s+=" $(_p $T_LOVE)=$conflicts"
@@ -74,7 +94,7 @@ _prompt_context() {
     local -a s
     if [[ -n $root && -f $root/go.mod ]]; then
         local gv=${${(M)${(f)"$(<$root/go.mod)"}:#go [0-9]*}#go }
-        [[ -n $gv ]] && s+="$(_p $T_FOAM) $gv"
+        [[ -n $gv ]] && s+="$(_p $T_FOAM)$_G_GO $gv"
     fi
     local -a compose=($base/(compose|docker-compose).y(a|)ml(N))
     (( $#compose )) && s+="$(_p $T_FOAM)󰡨"
@@ -82,11 +102,18 @@ _prompt_context() {
     if (( $#k8s || _prompt_kube_used )); then
         local kube=$(_prompt_kube); [[ -n $kube ]] && s+="$kube"
     fi
-    [[ -n $VIRTUAL_ENV ]] && s+="$(_p $T_GOLD) ${VIRTUAL_ENV:t}"
+    [[ -n $VIRTUAL_ENV ]] && s+="$(_p $T_GOLD)$_G_PY ${VIRTUAL_ENV:t}"
     print -n "${(j: :)s}"
 }
 
-_seg() { [[ -n $1 ]] && print -n "$(_p $T_MUTED)─[%f$1$(_p $T_MUTED)]"; }
+# ─[ сегмент ] рамки; пустой — не рисуется
+_seg() { [[ -n $1 ]] && print -n "$(_p $T_MUTED)─[%f $1 $(_p $T_MUTED)]"; }
+
+# видимая ширина строки промпта: без %F{…} %B %{…%} и с раскрытыми %~ %n %m
+_prompt_width() {
+    local zero='%([BSUbfsu]|[FK]{*}|{*%})'          # без \{ — через $~ экранирование не работает
+    REPLY=${#${(S%%)1//$~zero/}}
+}
 
 # ◆ kinoza-back 1ч12м — включённый режим dot work и сколько он работает
 _prompt_work() {
@@ -125,26 +152,39 @@ _prompt_precmd() {
     # код выхода: 130 → INT (Ctrl+C), 137 → KILL …
     local status_part=""
     if (( code > 128 && code < 160 )) && [[ -n ${signals[code-127]} ]]; then
-        status_part=" $(_p $T_LOVE)✘ ${signals[code-127]}"
+        status_part="$(_p $T_LOVE)✘ ${signals[code-127]}"
     elif (( code )); then
-        status_part=" $(_p $T_LOVE)✘ $code"
+        status_part="$(_p $T_LOVE)✘ $code"
     fi
 
-    local jobs_part="%(1j. $(_p $T_GOLD)✦ %j.)"
+    local jobs_part=""; (( ${#jobstates} )) && jobs_part="$(_p $T_GOLD)✦ ${#jobstates}"
     local git_part=""; [[ -n $root ]] && git_part=$(_prompt_git)
 
-    # кто@где — настоящие имя и хост; по SSH хост красный, чтобы не перепутать машину
+    # кто㉿где, как в Kali; по SSH хост красный — чтобы не перепутать машину
     local host_color=$T_FOAM; [[ -n $SSH_CONNECTION ]] && host_color=$T_LOVE
-    local who="%B$(_p $T_ROSE)%n%b$(_p $T_MUTED)@%B$(_p $host_color)%m%b"
+    local who="$(_p $T_ROSE)$_G_APPLE %B%n%b$(_p $T_GOLD)㉿%B$(_p $host_color)%m%b"
 
-    PROMPT="$(_p $T_MUTED)╭─[%f$who$(_p $T_MUTED)]$(_seg "$(_prompt_dir $root)")$(_seg "$git_part")$(_seg "$(_prompt_context $root)")$(_seg "$(_prompt_work)")$jobs_part$status_part%f
-$(_p $T_MUTED)╰─%(?.$(_p $T_ROSE).$(_p $T_LOVE))%(!.#.$)%f "
-    RPROMPT="${took:+$(_p $T_GOLD)󱎫 $took $(_p $T_HL_HIGH)· }$(_p $T_MUTED)%D{%H:%M}%f"
+    # левая часть: ╭─( кто㉿где )─[ путь ]─[ git ]─[ окружение ]─[ ◆ work ]
+    local left="$(_p $T_MUTED)╭─(%f$who$(_p $T_MUTED))$(_seg "$(_prompt_dir $root)")$(_seg "$git_part")$(_seg "$(_prompt_context $root)")$(_seg "$(_prompt_work)")"
+    # правая: [ ✘ код ]─[ ✦ задачи ]─[ 󱎫 время команды ]─[  часы ]─╮
+    local right="$(_seg "$status_part")$(_seg "$jobs_part")$(_seg "${took:+$(_p $T_GOLD)$_G_TOOK $_I$took$_NI}")$(_seg "$(_p $T_SUBTLE)$_G_CLOCK $_I%D{%H:%M}$_NI")$(_p $T_MUTED)─╮"
+
+    # между ними — линия на всю ширину окна (㉿ занимает две клетки)
+    local lw rw; _prompt_width "$left"; lw=$(( REPLY + 1 )); _prompt_width "$right"; rw=$REPLY
+    local fill=$(( COLUMNS - lw - rw ))
+    if (( fill >= 1 )); then
+        PROMPT="$left$(_p $T_MUTED)${(l:$fill::─:)}$right"
+    else
+        PROMPT="$left"                                # узкое окно — правую часть не влезет
+    fi
+    PROMPT+="%f
+$(_p $T_MUTED)╰─%(?.$(_p $T_ROSE).$(_p $T_LOVE))%B%(!.#.❯)%b%f "
+    RPROMPT=""
 }
 
 # «транзиентный» промпт: после Enter остаётся только $ команда
 _prompt_collapse() {
-    PROMPT="$(_p $T_ROSE)%(!.#.$)%f "
+    PROMPT="$(_p $T_ROSE)%B%(!.#.❯)%b%f "
     RPROMPT=""
     zle .reset-prompt
 }

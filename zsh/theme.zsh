@@ -21,6 +21,7 @@ _tg=~/.cache/dotfiles-theme
 (( DOTFILES_LIGHT )) && [[ -d $_tg/light ]] && { _tg=$_tg/light; export DELTA_FEATURES=+day; }
 [[ -f $_tg/starship.toml ]] && export STARSHIP_CONFIG=$_tg/starship.toml
 [[ -f $_tg/eza/theme.yml ]] && export EZA_CONFIG_DIR=$_tg/eza || export EZA_CONFIG_DIR=~/.config/eza
+[[ -f $_tg/yazi/theme.toml ]] && export YAZI_CONFIG_HOME=$_tg/yazi || export YAZI_CONFIG_HOME=~/dotfiles/yazi
 [[ -f $_tg/lazygit.yml ]] && export LG_CONFIG_FILE=$_tg/lazygit.yml
 [[ -f ~/.config/bat/themes/dotfiles.tmTheme ]] && export BAT_THEME=dotfiles || export BAT_THEME=rose-pine
 (( DOTFILES_LIGHT )) && [[ -f ~/.config/bat/themes/dotfiles-light.tmTheme ]] && export BAT_THEME=dotfiles-light
@@ -117,6 +118,7 @@ wall() {
     fi
     python3 ~/dotfiles/themes/set-wallpaper.py $heic
     print -r -- $heic >| ~/.config/dotfiles/wall-path
+    ~/dotfiles/safari/start.sh 2>/dev/null                 # стартовая страница Safari — на новых обоях
     # фон терминала берёт цвета из обоев — пересобрать под новые
     local bd=$(command cat ~/.config/dotfiles/backdrop 2>/dev/null)
     [[ -n $bd && $bd != off ]] && backdrop $bd

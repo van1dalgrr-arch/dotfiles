@@ -1,0 +1,88 @@
+# Rosé Pine — эталон; themes/apply.sh переводит цвета роль к роли в текущую тему
+[mgr]
+cwd            = { fg = "#9ccfd8", italic = true }
+hovered        = { fg = "#191724", bg = "#ebbcba", bold = true }
+preview_hovered = { underline = true }
+find_keyword   = { fg = "#f6c177", bold = true, italic = true }
+find_position  = { fg = "#ebbcba", bg = "reset", bold = true, italic = true }
+marker_copied   = { fg = "#9ccfd8", bg = "#9ccfd8" }
+marker_cut      = { fg = "#eb6f92", bg = "#eb6f92" }
+marker_marked   = { fg = "#c4a7e7", bg = "#c4a7e7" }
+marker_selected = { fg = "#f6c177", bg = "#f6c177" }
+count_copied   = { fg = "#191724", bg = "#9ccfd8" }
+count_cut      = { fg = "#191724", bg = "#eb6f92" }
+count_selected = { fg = "#191724", bg = "#f6c177" }
+border_symbol  = "│"
+border_style   = { fg = "#524f67" }
+
+[tabs]
+active   = { fg = "#191724", bg = "#ebbcba", bold = true }
+inactive = { fg = "#908caa", bg = "#26233a" }
+sep_inner = { open = "", close = "" }
+sep_outer = { open = "", close = "" }
+
+[mode]
+normal_main = { fg = "#191724", bg = "#ebbcba", bold = true }
+normal_alt  = { fg = "#ebbcba", bg = "#26233a" }
+select_main = { fg = "#191724", bg = "#f6c177", bold = true }
+select_alt  = { fg = "#f6c177", bg = "#26233a" }
+unset_main  = { fg = "#191724", bg = "#eb6f92", bold = true }
+unset_alt   = { fg = "#eb6f92", bg = "#26233a" }
+
+[status]
+overall   = { bg = "#1f1d2e" }
+sep_left  = { open = "", close = "" }
+sep_right = { open = "", close = "" }
+perm_type  = { fg = "#9ccfd8" }
+perm_read  = { fg = "#f6c177" }
+perm_write = { fg = "#eb6f92" }
+perm_exec  = { fg = "#9ccfd8" }
+perm_sep   = { fg = "#6e6a86" }
+progress_label  = { fg = "#e0def4", bold = true }
+progress_normal = { fg = "#ebbcba", bg = "#26233a" }
+progress_error  = { fg = "#eb6f92", bg = "#26233a" }
+
+[input]
+border   = { fg = "#ebbcba" }
+title    = { fg = "#e0def4" }
+value    = { fg = "#e0def4" }
+selected = { reverse = true }
+
+[pick]
+border   = { fg = "#ebbcba" }
+active   = { fg = "#ebbcba", bold = true }
+inactive = { fg = "#908caa" }
+
+[cmp]
+border   = { fg = "#ebbcba" }
+
+[tasks]
+border  = { fg = "#ebbcba" }
+title   = { fg = "#e0def4" }
+hovered = { fg = "#ebbcba", underline = true }
+
+[which]
+mask            = { bg = "#1f1d2e" }
+cand            = { fg = "#9ccfd8" }
+rest            = { fg = "#6e6a86" }
+desc            = { fg = "#ebbcba" }
+separator       = "  "
+separator_style = { fg = "#524f67" }
+
+[help]
+on      = { fg = "#9ccfd8" }
+run     = { fg = "#ebbcba" }
+hovered = { reverse = true, bold = true }
+footer  = { fg = "#191724", bg = "#e0def4" }
+
+[filetype]
+rules = [
+  { mime = "image/*", fg = "#f6c177" },
+  { mime = "{audio,video}/*", fg = "#c4a7e7" },
+  { mime = "application/{zip,rar,7z*,tar,gzip,xz,zstd,bzip*,lzma,compress,archive,cpio,arj,xar,ms-cab*}", fg = "#eb6f92" },
+  { mime = "application/{pdf,doc,rtf}", fg = "#9ccfd8" },
+  { url = "*", is = "exec", fg = "#9ccfd8", bold = true },
+  { url = "*", is = "link", fg = "#9ccfd8", italic = true },
+  { url = "*", fg = "#e0def4" },
+  { url = "*/", fg = "#9ccfd8", bold = true },
+]

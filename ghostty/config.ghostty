@@ -11,22 +11,28 @@ font-thicken = false
 adjust-cell-height = 4%
 
 # --- Window ---
-# ровный тёмный фон с лёгкой прозрачностью (как picom на Linux), без картинки — backdrop off
-background-opacity = 0.94
-background-blur = 20
+# Liquid Glass macOS (26+): системное матовое стекло — за окном мягко видно рабочий стол.
+# macos-glass-clear — почти прозрачное; вернуть старый вид: opacity 0.94 и blur 20
+background-opacity = 0.6
+background-blur = macos-glass-regular
 window-padding-x = 12
 window-padding-y = 8
 window-padding-balance = true
-# Без рамки, как в тайлинговом WM: вкладки живут прямо в заголовке (одна тонкая полоса вместо двух),
-# кнопок-светофоров нет, тени нет. Закрыть окно — alt+q (AeroSpace) или cmd+w,
-# двигать плавающее окно — ctrl+cmd + тянуть (macos.sh, группа appearance)
-macos-titlebar-style = tabs
+# Вкладки — обычной полосой во всю ширину (как в Safari), заголовок прозрачный — фон терминала
+# доходит до самого верха. Стиль tabs на новой macOS сжимал вкладку в крошечную «таблетку»
+# в углу — названий было не видно. Кнопок-светофоров нет, тени нет. Закрыть окно — alt+q
+# (AeroSpace) или cmd+w, двигать плавающее окно — ctrl+cmd + тянуть (macos.sh, группа appearance)
+macos-titlebar-style = transparent
 macos-window-buttons = hidden
 macos-window-shadow = false
 macos-titlebar-proxy-icon = hidden
 # Красная кнопка закрывает окно, Ghostty остаётся в фоне — ctrl+` работает всегда
 quit-after-last-window-closed = false
 unfocused-split-opacity = 0.85
+# названия вкладок — обычным системным шрифтом, читаются легче моноширинного
+window-title-font-family = SF Pro Text
+# после перезапуска Ghostty (или Mac) окна и вкладки возвращаются на место
+window-save-state = always
 # AeroSpace постоянно меняет размеры окон — без всплывашки «120×40»
 resize-overlay = never
 # Иконка в доке в цветах Rosé Pine
@@ -42,12 +48,15 @@ cursor-style = block
 # иначе светлая тема не смогла бы их поменять
 cursor-style-blink = false
 # в промпте Ghostty по умолчанию переключает на черту — пусть остаётся блок
-shell-integration-features = no-cursor
+# no-title: заголовок вкладки ставит zsh/title.zsh — со значком программы
+shell-integration-features = no-cursor,no-title
 # Плавный курсор, шлейф, искры, вспышка фокуса, свечение — шейдеры в shaders/, включаются командой fx
 # (она пишет fx.ghostty в конце этого файла: cursor-opacity = 0 и custom-shader = …)
 
 # --- Keys ---
 macos-option-as-alt = left
+# курсор мыши прячется, пока печатаешь — не загораживает текст
+mouse-hide-while-typing = true
 scrollback-limit = 50000000
 link-url = true
 
@@ -56,6 +65,14 @@ link-url = true
 notify-on-command-finish = unfocused
 notify-on-command-finish-action = no-bell,notify
 notify-on-command-finish-after = 15s
+
+# --- Tabs ---
+# cmd+t — новая, cmd+w — закрыть, cmd+1…9 — перейти к вкладке, cmd+shift+[ / ] — соседняя (стандартные)
+# переставить вкладку влево / вправо
+keybind = cmd+shift+left=move_tab:-1
+keybind = cmd+shift+right=move_tab:1
+# переименовать вкладку (вместо пути — своё название, например «server»)
+keybind = cmd+shift+r=prompt_surface_title
 
 # --- Splits ---
 keybind = cmd+d=new_split:right
@@ -69,6 +86,9 @@ keybind = cmd+shift+e=equalize_splits
 
 # --- Quick terminal (выпадающий по хоткею) ---
 quick-terminal-position = top
+# не полоса во всю ширину, а «карточка» по центру сверху: 46% высоты, 72% ширины — сразу видно,
+# что это выпадающий, а не обычное окно (стекло и прозрачность у всех окон Ghostty общие)
+quick-terminal-size = 46%,72%
 # плавный выезд/уход: 0.15 было резко, 0.3 — мягко, но без ощущения тормозов
 quick-terminal-animation-duration = 0.3
 # прячется, когда кликаешь в другое приложение

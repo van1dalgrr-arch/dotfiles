@@ -21,6 +21,9 @@ let folders: [(String, String)] = [
     ("\(home)/Pictures", "\u{F021F}"),       // картинка
     ("\(home)/Music", "\u{F075A}"),          // нота
     ("\(home)/dotfiles", "\u{F0493}"),       // шестерёнка
+    ("\(home)/Movies", "\u{F0381}"),         // хлопушка
+    ("\(home)/Public", "\u{F0497}"),         // «поделиться»
+    ("\(home)/Applications", "\u{F003B}"),   // сетка приложений
 ]
 
 func glyphPath(_ g: String) -> CGPath? {

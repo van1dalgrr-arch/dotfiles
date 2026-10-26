@@ -60,7 +60,7 @@ Forgot a command — press `?` in the terminal.
 | | |
 |---|---|
 | **Terminal** | [Ghostty](ghostty) — plain, Linux-style: no frame, tabs in the titlebar, drops down on `` ctrl+` `` |
-| **Windows** | [AeroSpace](aerospace) — tiles windows, all from the keyboard |
+| **Windows** | [AeroSpace](aerospace) — workspaces and alt hotkeys; windows float, no tiling |
 | **Editors** | [Neovim](nvim) with Postman and an endpoints list · [Zed](zed) · [Rune](rune) with GoLand keys |
 | **Shell** | [zsh](zsh) — a fast own prompt, hints, the `?` cheatsheet |
 | **Containers** | OrbStack + an own [`orbstack`](berth) dashboard in Go |

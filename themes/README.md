@@ -8,6 +8,7 @@ Color palettes and the script that recolors everything. Pictures of all themes: 
 |---|---|
 | `vesper.sh` | default: near-black, saturated violet and blue |
 | `kanagawa.sh` | Kanagawa Wave |
+| `tokyonight.sh` · `gruvbox-material.sh` · `everforest.sh` · `oxocarbon.sh` | Tokyo Night, Gruvbox Material, Everforest, Oxocarbon |
 | `rose-pine.sh` | **reference palette**: all configs are written in its colors; can't be removed |
 | `light/day.sh` | Dev Day, the light palette used in macOS light mode |
 | `apply.sh` | `theme <name>`: recolors configs role by role into `~/.config` and `~/.cache` |

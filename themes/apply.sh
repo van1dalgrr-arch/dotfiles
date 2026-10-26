@@ -60,6 +60,10 @@ EOF
 # ─── starship, eza, lazygit, btop, bat — перекрашенные копии ───
 recolor "$DOTFILES/starship/starship.toml" "$GEN/starship.toml"
 mkdir -p "$GEN/eza"; recolor "$DOTFILES/eza/theme.yml" "$GEN/eza/theme.yml"
+mkdir -p "$GEN/yazi"; recolor "$DOTFILES/yazi/theme.toml" "$GEN/yazi/theme.toml"; cp "$DOTFILES/yazi/yazi.toml" "$GEN/yazi/"
+mkdir -p "$GEN/telegram"; "$DOTFILES/telegram/palette.sh" "$theme" > "$GEN/telegram/Dotfiles.palette"   # открыть в Telegram
+VC="$HOME/Library/Application Support/Vencord/themes"   # Discord: только если стоит Vencord
+[ -d "${VC%/themes}" ] && mkdir -p "$VC" && "$DOTFILES/discord/theme.sh" "$theme" > "$VC/dotfiles.theme.css"
 recolor "$DOTFILES/lazygit/config.yml" "$GEN/lazygit.yml"
 mkdir -p "$HOME/.config/btop/themes"
 recolor "$DOTFILES/btop/themes/rose-pine.theme" "$HOME/.config/btop/themes/dotfiles.theme"
@@ -67,15 +71,20 @@ mkdir -p "$HOME/.config/bat/themes"
 recolor "$DOTFILES/bat/themes/rose-pine.tmTheme" "$HOME/.config/bat/themes/dotfiles.tmTheme"
 bat cache --build >/dev/null 2>&1 || true
 
+# ─── стартовая страница Safari: перекрасить и собрать с текущими обоями ───
+recolor "$DOTFILES/safari/start.html" "$GEN/start.tmpl.html"
+"$DOTFILES/safari/start.sh" || true
+
 # ─── delta (git diff): цвета подключаются в .gitconfig через [include] ───
 recolor "$DOTFILES/git/delta.gitconfig" "$GEN/delta.gitconfig.tmp"
 sed 's/syntax-theme = .*/syntax-theme = dotfiles/' "$GEN/delta.gitconfig.tmp" > "$GEN/delta.gitconfig" && rm "$GEN/delta.gitconfig.tmp"
 
 # ─── светлые копии (Dev Day) для светлого режима macOS: zsh/theme.zsh выбирает их при старте ───
 map=$(make_map "$DOTFILES/themes/light/day.sh")
-L="$GEN/light"; mkdir -p "$L/eza"
+L="$GEN/light"; mkdir -p "$L/eza" "$L/yazi"
 recolor "$DOTFILES/starship/starship.toml" "$L/starship.toml"
 recolor "$DOTFILES/eza/theme.yml" "$L/eza/theme.yml"
+recolor "$DOTFILES/yazi/theme.toml" "$L/yazi/theme.toml"; cp "$DOTFILES/yazi/yazi.toml" "$L/yazi/"
 recolor "$DOTFILES/lazygit/config.yml" "$L/lazygit.yml"
 recolor "$DOTFILES/bat/themes/rose-pine.tmTheme" "$HOME/.config/bat/themes/dotfiles-light.tmTheme"
 bat cache --build >/dev/null 2>&1 || true

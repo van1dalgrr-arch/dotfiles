@@ -1,0 +1,12 @@
+# yazi — файловый менеджер (alt+e, y). Цвета — theme.toml, перекрашивается под тему (themes/apply.sh)
+[mgr]
+ratio          = [1, 3, 4]      # родитель · текущая · превью
+show_hidden    = true
+sort_by        = "natural"
+sort_dir_first = true
+linemode       = "size"
+show_symlink   = true
+
+[preview]
+max_width  = 1200
+max_height = 1800

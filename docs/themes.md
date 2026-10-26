@@ -17,6 +17,10 @@ theme vesper     # apply directly
 | `vesper` | near-black with saturated violet and blue — the main one |
 | `kanagawa` | indigo and paper, inspired by Hokusai |
 | `rose-pine` | soft and muted |
+| `tokyonight` | night Tokyo: deep blue with neon blue and violet, like nvim with tokyonight |
+| `gruvbox-material` | warm retro: brown, muted orange, yellow and teal |
+| `everforest` | forest: grey-green, soft green accent, beige text — easy on the eyes at night |
+| `oxocarbon` | IBM Carbon: neutral graphite, cold neon violet, pink, blue and teal |
 
 How it works: every config in the repo is written in Rosé Pine colors, and a theme is just a map
 of "which color becomes which" across 19 roles (`themes/<name>.sh`). `themes/apply.sh` recolors copies

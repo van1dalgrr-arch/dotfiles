@@ -1,0 +1,152 @@
+<!doctype html>
+<!-- Стартовая страница Safari: обои + стеклянная карточка в стиле промпта (zsh/prompt.zsh).
+     Цвета — эталон Rosé Pine: themes/apply.sh перекрашивает копию под тему, safari/start.sh кладёт
+     рядом обои (bg.jpg) → ~/.cache/dotfiles-theme/start/index.html. Ссылки — в LINKS ниже. -->
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>start</title>
+<style>
+  :root {
+    --base: #191724; --surface: #1f1d2e; --overlay: #26233a; --hl: #403d52;
+    --muted: #6e6a86; --subtle: #908caa; --text: #e0def4;
+    --love: #eb6f92; --gold: #f6c177; --rose: #ebbcba; --pine: #31748f; --foam: #9ccfd8; --iris: #c4a7e7;
+    --mono: "JetBrainsMono Nerd Font", "JetBrains Mono", ui-monospace, monospace;
+  }
+  * { box-sizing: border-box; margin: 0; }
+  html, body { height: 100%; }
+  body {
+    background: var(--base) url("bg.jpg") center / cover no-repeat fixed;
+    color: var(--text); font-family: var(--mono);
+    display: grid; place-items: center; overflow: hidden;
+  }
+  /* лёгкая виньетка — карточка читается на любых обоях */
+  body::before {
+    content: ""; position: fixed; inset: 0; pointer-events: none;
+    background: radial-gradient(ellipse at center, transparent 40%, rgb(0 0 0 / .45));
+  }
+  .card {
+    position: relative; width: min(780px, calc(100vw - 32px)); padding: 26px 30px 30px;
+    border-radius: 24px; border: 1px solid rgb(255 255 255 / .14);
+    background: color-mix(in srgb, var(--base) 64%, transparent);   /* читается и на ярких обоях */
+    backdrop-filter: blur(38px) saturate(170%); -webkit-backdrop-filter: blur(38px) saturate(170%);
+    box-shadow: 0 30px 80px rgb(0 0 0 / .45), inset 0 1px 0 rgb(255 255 255 / .10);
+    animation: rise .5s cubic-bezier(.2, .8, .2, 1);
+  }
+  @keyframes rise { from { opacity: 0; transform: translateY(14px) scale(.985); } }
+
+  /* ╭─( dev㉿van1dal )─[ start ]──────────[  02:15 ]─╮ */
+  .frame { display: flex; align-items: center; white-space: nowrap; font-size: 15px; color: var(--muted); }
+  .frame .fill { flex: 1; height: 1px; background: var(--muted); opacity: .7; margin: 0 1px; }
+  .who { color: var(--rose); font-weight: 700; } .at { color: var(--gold); } .host { color: var(--foam); font-weight: 700; }
+  .dir { font-style: italic; font-weight: 700; background: linear-gradient(90deg, var(--gold), var(--rose));
+         -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .clk { color: var(--subtle); font-style: italic; }
+
+  .time {
+    margin: 26px 0 2px; font-size: clamp(64px, 12vw, 112px); line-height: 1; font-weight: 300; font-style: italic;
+    letter-spacing: -2px; background: linear-gradient(100deg, var(--gold), var(--rose) 55%, var(--iris));
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  .date { color: var(--subtle); font-size: 16px; margin-bottom: 26px; }
+
+  /* ╰─❯ поиск */
+  form { display: flex; align-items: center; gap: 10px; font-size: 18px; }
+  form .pre { color: var(--muted); } form .pre b { color: var(--rose); }
+  input {
+    flex: 1; font: inherit; color: var(--text); background: transparent; border: 0; outline: 0;
+    padding: 10px 0; border-bottom: 1px solid color-mix(in srgb, var(--muted) 50%, transparent);
+    caret-color: var(--rose);
+  }
+  input:focus { border-bottom-color: var(--rose); }
+  input::placeholder { color: var(--muted); font-style: italic; }
+
+  .links { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; margin-top: 26px; }
+  .links a {
+    display: flex; align-items: center; gap: 10px; padding: 12px 14px; border-radius: 14px;
+    color: var(--text); text-decoration: none; font-size: 14px;
+    background: color-mix(in srgb, var(--overlay) 45%, transparent); border: 1px solid rgb(255 255 255 / .07);
+    transition: transform .18s ease, background .18s ease, border-color .18s ease;
+  }
+  .links a:hover, .links a:focus-visible {
+    transform: translateY(-2px); outline: 0;
+    background: color-mix(in srgb, var(--hl) 60%, transparent); border-color: color-mix(in srgb, var(--rose) 50%, transparent);
+  }
+  .links .ic { font-size: 18px; width: 20px; text-align: center; }
+  .links .k { margin-left: auto; color: var(--muted); font-size: 12px; font-style: italic; }
+  .hint { margin-top: 18px; color: var(--muted); font-size: 12px; font-style: italic; }
+  @media (prefers-reduced-motion: reduce) { .card { animation: none; } .links a { transition: none; } }
+</style>
+</head>
+<body>
+<main class="card">
+  <div class="frame">
+    <span>╭─(</span><span class="who">&nbsp;dev</span><span class="at">㉿</span><span class="host">van1dal</span><span>&nbsp;)─[&nbsp;</span>
+    <span class="dir">start</span><span>&nbsp;]</span><span class="fill"></span>
+    <span>[&nbsp;</span><span class="clk" id="clk"></span><span>&nbsp;]─╮</span>
+  </div>
+
+  <div class="time" id="time"></div>
+  <div class="date" id="date"></div>
+
+  <form id="f" autocomplete="off">
+    <span class="pre">╰─<b>❯</b></span>
+    <input id="q" autofocus placeholder="поиск · gh — GitHub · yt — YouTube">
+  </form>
+
+  <nav class="links" id="links"></nav>
+  <div class="hint">/ — к поиску · 1–9 — открыть ссылку</div>
+</main>
+<script>
+  // ссылки: значок (Nerd Font или обычный символ), название, адрес
+  const LINKS = [
+    ["\uf09b", "GitHub", "https://github.com"],
+    ["✻", "Claude", "https://claude.ai"],
+    ["\uf16a", "YouTube", "https://youtube.com"],
+    ["\ue627", "Go pkg", "https://pkg.go.dev"],
+    ["\uf233", "localhost", "http://localhost:8080"],
+    ["\uf281", "unixporn", "https://www.reddit.com/r/unixporn/"],
+  ];
+  const SEARCH = {
+    "": q => "https://www.google.com/search?q=" + encodeURIComponent(q),
+    gh: q => "https://github.com/search?type=repositories&q=" + encodeURIComponent(q),
+    yt: q => "https://www.youtube.com/results?search_query=" + encodeURIComponent(q),
+  };
+
+  const nav = document.getElementById("links");
+  LINKS.forEach(([ic, name, url], i) => {
+    const a = document.createElement("a");
+    a.href = url;
+    a.innerHTML = `<span class="ic"></span><span></span><span class="k">${i + 1}</span>`;
+    a.children[0].textContent = ic; a.children[1].textContent = name;
+    nav.appendChild(a);
+  });
+
+  const q = document.getElementById("q");
+  document.getElementById("f").addEventListener("submit", e => {
+    e.preventDefault();
+    const v = q.value.trim(); if (!v) return;
+    const m = v.match(/^(gh|yt)\s+(.+)$/);
+    if (m) location.href = SEARCH[m[1]](m[2]);
+    else if (/^(https?:\/\/|localhost|[\w-]+\.[a-z]{2,})(\S*)$/i.test(v)) location.href = /^https?:/i.test(v) ? v : "https://" + v;
+    else location.href = SEARCH[""](v);
+  });
+  document.addEventListener("keydown", e => {
+    if (document.activeElement === q) return;
+    if (e.key === "/") { e.preventDefault(); q.focus(); }
+    const n = Number(e.key); if (n >= 1 && n <= LINKS.length) location.href = LINKS[n - 1][2];
+  });
+
+  const fmtT = new Intl.DateTimeFormat("ru-RU", { hour: "2-digit", minute: "2-digit" });
+  const fmtD = new Intl.DateTimeFormat("ru-RU", { weekday: "long", day: "numeric", month: "long" });
+  function tick() {
+    const d = new Date(), t = fmtT.format(d);
+    document.getElementById("time").textContent = t;
+    document.getElementById("clk").textContent = "\uf017 " + t;
+    document.getElementById("date").textContent = fmtD.format(d);
+  }
+  tick(); setInterval(tick, 10000);
+</script>
+</body>
+</html>

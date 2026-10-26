@@ -8,6 +8,7 @@ here is only what Safari can't take from the terminal.
 | File | What |
 |---|---|
 | `user.css` | style sheet for every site: JetBrains Mono for code |
+| `start.html` · `start.sh` | own start page: wallpaper, a glass card in the prompt frame, clock, search (`gh …`, `yt …`), links 1–9. Theme colors and the current wallpaper — `theme` and `wall` rebuild it; turn on with `./macos.sh safari --yes` |
 
 **Font.** Safari → Settings → Advanced → Style sheet → Other… → `⌘⇧G` → `~/dotfiles/safari/user.css`.
 Picking it in Safari is what gives Safari (sandboxed) access to the file. `dot doctor` checks it.

@@ -8,6 +8,7 @@
 |---|---|
 | `vesper.sh` | по умолчанию: почти чёрный, насыщенные фиолетовый и синий |
 | `kanagawa.sh` | Kanagawa Wave |
+| `tokyonight.sh` · `gruvbox-material.sh` · `everforest.sh` · `oxocarbon.sh` | Tokyo Night, Gruvbox Material, Everforest, Oxocarbon |
 | `rose-pine.sh` | **эталон**: все конфиги написаны в её цветах — удалять нельзя |
 | `light/day.sh` | Dev Day — светлая палитра для светлого режима macOS |
 | `apply.sh` | `theme <имя>`: перекрашивает конфиги роль к роли в `~/.config` и `~/.cache` |

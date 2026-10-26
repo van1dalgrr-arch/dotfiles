@@ -6,6 +6,7 @@ typeset -U path PATH                             # без повторов, да
 export PATH="/opt/homebrew/bin:/opt/homebrew/sbin:$PATH"
 export PATH="$PATH:${GOPATH:-$HOME/go}/bin"   # без вызова `go env` — быстрее старт
 export PATH="$HOME/dotfiles/bin:$PATH"           # dot — управление dotfiles
+export PATH="/opt/homebrew/opt/rustup/bin:$HOME/.cargo/bin:$PATH"   # Rust: cargo, rustc, clippy (rustup из brew), cargo install
 
 # редактор для git commit, lazygit, yazi, crontab и всего, что спрашивает $EDITOR — Neovim (nvim/)
 export EDITOR=nvim VISUAL=nvim
@@ -17,6 +18,8 @@ alias ownvim="NVIM_APPNAME=ownvim nvim"
 export ZSH="$HOME/.oh-my-zsh"
 
 ZSH_THEME=""
+# заголовок вкладки ставит zsh/title.zsh (значок + команда или папка), не oh-my-zsh
+DISABLE_AUTO_TITLE="true"
 
 plugins=(
     git
@@ -45,6 +48,12 @@ if [[ $PROMPT_ENGINE == starship ]] && (( $+commands[starship] )); then
 else
     source "$HOME/dotfiles/zsh/prompt.zsh"
 fi
+
+# ── ЗАГОЛОВОК ВКЛАДКИ: ✎ main.go · ⎇ lazygit · ⎈ k9s · ❯ dotfiles (zsh/title.zsh)
+source "$HOME/dotfiles/zsh/title.zsh"
+
+# ── LOCK: lock — матричный дождь в цветах темы и блокировка; rain — просто дождь (zsh/lock.zsh)
+source "$HOME/dotfiles/zsh/lock.zsh"
 
 # ── FZF
 
@@ -121,7 +130,11 @@ alias gp="git push"
 alias gl="git pull"
 alias gcl="git clone"
 
-alias lg="git log --oneline --graph --decorate --all"
+# lg — граф всех веток в цветах темы: хэш  (ветки)  сообщение  · автор, когда
+lg() {
+    git -c log.graphColors="#$T_ROSE,#$T_FOAM,#$T_GOLD,#$T_LOVE,#$T_IRIS,#$T_PINE" log --graph --all --date=relative \
+        --format="%C(#$T_ROSE)%h%C(reset)%C(#$T_FOAM bold)%d%C(reset) %C(#$T_TEXT)%s%C(reset) %C(#$T_MUTED italic)· %an, %ar%C(reset)" "$@"
+}
 alias gg="lazygit"
 alias gd="git diff"
 alias gds="git diff --staged"
@@ -432,18 +445,5 @@ source "$HOME/dotfiles/zsh/reminders.zsh"
 
 # ── ПРИВЕТСТВИЕ: только в новом большом окне Ghostty (не quick terminal, не Zed)
 
-# перед первым приглашением, а не при чтении .zshrc: в первые мс окно ещё 80×24 и проверка размера не проходила
-_greeting() {
-    add-zsh-hook -d precmd _greeting                     # только один раз
-    # не SHLVL: Ghostty от AeroSpace наследует SHLVL=3+; флаг в окружении — вложенный zsh без приветствия
-    [[ $TERM_PROGRAM == ghostty && -z $DOTFILES_GREETED && $LINES -ge 12 && $COLUMNS -ge 60 && -z $NO_GREETING ]] || return
-    export DOTFILES_GREETED=1
-    (( $+commands[fastfetch] )) || return
-    fastfetch -c "$HOME/dotfiles/fastfetch/greeting.jsonc"
-    local -a tips=(${(f)"$(_cheat_funcs)"})
-    local tip=${tips[RANDOM % $#tips + 1]}
-    print -P "\n  $(_c $T_GOLD)󰌵  ${tip%%|*}%f  $(_c $T_MUTED)${tip#*|}  · ? — все команды%f"
-    _reminders                                           # update давно не запускался, незапушенное
-}
-add-zsh-hook precmd _greeting
+source "$HOME/dotfiles/zsh/greeting.zsh"
 

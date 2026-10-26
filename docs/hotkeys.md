@@ -34,7 +34,10 @@ Workspaces: 2 — code, 3 — browser, 4 — chats, 5 — music; the terminal st
 | Keys | Action |
 |---|---|
 | `` ctrl+` `` | drop-down terminal from any app |
-| `cmd-t` · `cmd-w` | new tab (in the titlebar) · close |
+| `cmd-t` · `cmd-w` | new tab · close |
+| `cmd-1…9` · `cmd-shift-[` / `]` | go to tab · previous / next |
+| `cmd-shift-left` / `right` | move tab left / right |
+| `cmd-shift-r` | rename tab |
 | `cmd-d` · `cmd-shift-d` | split right · down |
 | `cmd-alt-arrows` | move between splits |
 | `cmd-shift-enter` | zoom split |

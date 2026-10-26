@@ -2,7 +2,7 @@
 # make check — те же проверки, что в CI (+ go vet и тесты berth) · make test — смоук-тесты dot и install/uninstall во временном HOME · make update — обслуживание
 .PHONY: install devops check test update scripts
 
-SCRIPTS = bin/dot bin/rune-go bin/rune-ide lib/*.sh bootstrap.sh install.sh git/repo-hooks/pre-push uninstall.sh macos.sh themes/apply.sh tests/smoke.sh tests/install.sh git/hooks/_chain git/hooks/pre-commit ghostty/fx.sh ghostty/quick-terminal.sh
+SCRIPTS = bin/dot bin/rune-go bin/rune-ide lib/*.sh bootstrap.sh install.sh git/repo-hooks/pre-push uninstall.sh macos.sh themes/apply.sh tests/smoke.sh tests/install.sh git/hooks/_chain git/hooks/pre-commit ghostty/fx.sh ghostty/quick-terminal.sh safari/start.sh telegram/palette.sh discord/theme.sh
 
 # список скриптов для CI — один источник, чтобы CI и make check проверяли одно и то же
 scripts:

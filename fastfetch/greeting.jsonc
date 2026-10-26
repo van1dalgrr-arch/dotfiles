@@ -3,9 +3,12 @@
 {
   "$schema": "https://github.com/fastfetch-cli/fastfetch/raw/dev/doc/json_schema.json",
   "logo": {
-    "type": "file",
-    "source": "~/dotfiles/fastfetch/ghost.txt",
-    "color": { "1": "magenta", "2": "blue" },
+    // своё фото (Ghostty показывает картинки по протоколу kitty); файл вне репозитория — личное.
+    // PNG обязателен для kitty-direct; нет файла — fastfetch покажет стандартный логотип
+    "type": "kitty-direct",
+    "source": "~/.local/share/dotfiles/fastfetch-logo.png",
+    "width": 24,
+    "height": 12,
     "padding": { "top": 0, "left": 2, "right": 3 }
   },
   "display": {
@@ -15,14 +18,14 @@
   },
   "modules": [
     { "type": "title", "format": "{user-name-colored}\u001b[90m@\u001b[0m{host-name-colored}", "color": { "user": "magenta", "host": "blue" } },
-    { "type": "os",     "key": "󰍹  os",   "keyColor": "magenta", "format": "{name} {version}" },
-    { "type": "kernel", "key": "  kern", "keyColor": "magenta", "format": "{release}" },
-    { "type": "uptime", "key": "󰅐  up",   "keyColor": "blue" },
-    { "type": "shell",  "key": "  sh",   "keyColor": "blue", "format": "{pretty-name}" },
-    { "type": "wm",     "key": "  wm",   "keyColor": "blue", "format": "{plugin-name}" },
+    { "type": "os",     "key": "\udb80\udf79  os",   "keyColor": "magenta", "format": "{name} {version}" },
+    { "type": "kernel", "key": "\uf013  kern", "keyColor": "magenta", "format": "{release}" },
+    { "type": "uptime", "key": "\udb80\udd50  up",   "keyColor": "blue" },
+    { "type": "shell",  "key": "\uf489  sh",   "keyColor": "blue", "format": "{pretty-name}" },
+    { "type": "wm",     "key": "\uf2d2  wm",   "keyColor": "blue", "format": "{plugin-name}" },
     // память — как в `ram` и мониторе системы: кэш macOS не считается занятым
     // (встроенный модуль memory показывает 85%+, когда реально занято ~50%)
-    { "type": "command", "key": "  ram",  "keyColor": "magenta",
+    { "type": "command", "key": "\uefc5  ram",  "keyColor": "magenta",
       "text": "memory_pressure -Q | awk -F': ' -v t=$(( $(sysctl -n hw.memsize) / 1073741824 )) '/percentage/ { gsub(\"%\", \"\", $2); u = 100 - $2; printf \"%.1f GiB / %d GiB (%d%%)\", u * t / 100, t, u }'" },
     { "type": "colors", "symbol": "circle", "paddingLeft": 0 }
   ]

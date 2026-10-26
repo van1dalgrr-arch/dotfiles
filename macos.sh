@@ -112,6 +112,10 @@ dock() {
     pref com.apple.dock minimize-to-application bool true              "Dock: сворачивать в иконку приложения"
     pref com.apple.dock mineffect string scale                         "Dock: простая анимация сворачивания"
     pref com.apple.dock mru-spaces bool false                          "не переставлять рабочие столы (AeroSpace)"
+    pref com.apple.dock magnification bool true                        "Dock: иконки растут под мышью"
+    pref com.apple.dock largesize int 72                               "… до 72 px"
+    pref com.apple.dock autohide-time-modifier float 0.35             "Dock: быстрый выезд"
+    pref com.apple.dock showhidden bool true                           "Dock: скрытые (⌘H) приложения — полупрозрачные"
 }
 
 # файлы кода (.go .md .json .yaml .sh .sql .env …) открываются в Zed — macos/default-apps.swift
@@ -187,6 +191,10 @@ safari() {
     pref com.apple.Safari WebKitDeveloperExtrasEnabledPreferenceKey bool true "инспектор веб-страниц"
     pref com.apple.Safari PreloadTopHit bool false                     "не грузить заранее первый результат (память)"
     pref com.apple.Safari AutoOpenSafeDownloads bool false             "не открывать загрузки сами"
+    # своя стартовая страница (safari/start.html → ~/.cache/dotfiles-theme/start, собирают theme и wall)
+    pref com.apple.Safari HomePage string "file://$HOME/.cache/dotfiles-theme/start/index.html" "домашняя — своя стартовая страница"
+    pref com.apple.Safari NewWindowBehavior int 0                      "новое окно — домашняя страница"
+    pref com.apple.Safari NewTabBehavior int 0                         "новая вкладка — домашняя страница"
 }
 
 appearance() {
