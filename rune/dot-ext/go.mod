@@ -2,7 +2,7 @@ module github.com/van1dalgrr-arch/dotfiles/rune/dot-ext
 
 go 1.25.6
 
-require github.com/unstablebuild/rune-go-sdk v0.14.0
+require github.com/unstablebuild/rune-go-sdk v1.2.2
 
 require (
 	cloud.google.com/go/compute/metadata v0.9.0 // indirect
