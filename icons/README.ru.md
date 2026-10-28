@@ -12,6 +12,7 @@
 | `photo-wallpaper.swift` | фото → обои под экран без мыла (`wall add`) |
 | `backdrop.swift` | фон терминала из цветов обоев (`backdrop`) |
 | `icons.swift` | стеклянные иконки приложений в цветах темы (`swift icons.swift apply`) |
+| `apps.swift` | готовые иконки приложений из `apps/` — TablePro, Telegram, OrbStack, Bruno (`swift apps.swift apply`) |
 | `folder.swift` | стеклянные иконки папок |
 | `html2png.swift` | HTML → PNG через WebKit — для скриншотов в docs |
 

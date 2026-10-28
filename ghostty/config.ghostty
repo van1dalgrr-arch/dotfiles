@@ -35,11 +35,9 @@ window-title-font-family = SF Pro Text
 window-save-state = always
 # AeroSpace постоянно меняет размеры окон — без всплывашки «120×40»
 resize-overlay = never
-# Иконка в доке в цветах Rosé Pine
-macos-icon = custom-style
-macos-icon-frame = chrome
-macos-icon-ghost-color = #ebbcba
-macos-icon-screen-color = #191724,#26233a
+# Иконка в доке — классический Терминал (icon.png, Wikimedia Commons: Terminalicon2.png)
+macos-icon = custom
+macos-custom-icon = ~/.config/ghostty/icon.png
 
 # --- Cursor ---
 # блок без мигания — классика терминалов на Linux (vim и т.п. сами меняют форму)

@@ -12,6 +12,7 @@ Swift generators: live wallpapers, photo wallpapers, the terminal backdrop, glas
 | `photo-wallpaper.swift` | photo → screen-sized wallpaper without blur (`wall add`) |
 | `backdrop.swift` | terminal background from the wallpaper's colors (`backdrop`) |
 | `icons.swift` | glass app icons in theme colors (`swift icons.swift apply`) |
+| `apps.swift` | ready-made app icons from `apps/` — TablePro, Telegram, OrbStack, Bruno (`swift apps.swift apply`) |
 | `folder.swift` | glass folder icons |
 | `html2png.swift` | HTML → PNG with WebKit, for the screenshots in docs |
 

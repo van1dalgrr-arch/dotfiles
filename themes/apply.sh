@@ -53,8 +53,6 @@ builtin_theme="/Applications/Ghostty.app/Contents/Resources/ghostty/themes/$THEM
 command cat > "$HOME/.config/ghostty/theme.ghostty" <<EOF
 # сгенерировано themes/apply.sh ($name) — не править руками
 theme = light:dotfiles-light,dark:dotfiles-dark
-macos-icon-ghost-color = #$T_ROSE
-macos-icon-screen-color = #$T_BASE,#$T_OVERLAY
 EOF
 
 # ─── starship, eza, lazygit, btop, bat — перекрашенные копии ───
@@ -106,11 +104,9 @@ if [ "${NO_WALLPAPER:-}" != 1 ]; then
     printf '%s\n' "$THEME_WALLPAPER" > "$HOME/.config/dotfiles/wall-path"        # для backdrop
 fi
 
-# ─── иконки приложений и папки ~/dev в цветах темы ───
+# ─── иконки папки ~/dev в цветах темы (у приложений — родные иконки) ───
 if [ "${NO_ICONS:-}" != 1 ]; then
-    recolor "$DOTFILES/icons/icons.swift" "$GEN/icons.swift"
     recolor "$DOTFILES/icons/folder.swift" "$GEN/folder.swift"
-    swift "$GEN/icons.swift" apply 2>/dev/null | grep -c '✓' | xargs -I{} echo "иконок обновлено: {}"
     swift "$GEN/folder.swift" apply >/dev/null 2>&1 || true
     killall Dock 2>/dev/null || true
 fi

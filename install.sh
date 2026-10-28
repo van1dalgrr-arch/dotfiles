@@ -44,6 +44,7 @@ link zsh/.zshrc                      "$HOME/.zshrc"
 link git/.gitconfig                  "$HOME/.gitconfig"
 link git/repo-hooks/pre-push         "$DOTFILES/.git/hooks/pre-push"   # проверки перед push в сам dotfiles
 link ghostty/config.ghostty          "$HOME/.config/ghostty/config.ghostty"
+link ghostty/icon.png                "$HOME/.config/ghostty/icon.png"
 link starship/starship.toml          "$HOME/.config/starship.toml"
 link btop/btop.conf                  "$HOME/.config/btop/btop.conf"
 link eza/theme.yml                   "$HOME/.config/eza/theme.yml"
