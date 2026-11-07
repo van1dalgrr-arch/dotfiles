@@ -184,7 +184,9 @@ backdrop() {
         _backdrop_build $style || return
         print -l "# сгенерировано backdrop ($style) — не править руками" \
             "background-image = $HOME/.cache/dotfiles-theme/backdrop/$style.png" \
-            "background-image-fit = cover" "background-image-repeat = false" >| $cfg
+            "background-image-fit = cover" "background-image-repeat = false" \
+            "# стекло macOS (macos-glass-*) заменяет фон окна и не рисует картинку — с фоном обычное размытие" \
+            "background-blur = 20" >| $cfg
     fi
     print $style >| ~/.config/dotfiles/backdrop
     _ghostty_reload

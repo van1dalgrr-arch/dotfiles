@@ -72,6 +72,8 @@ bat cache --build >/dev/null 2>&1 || true
 # ─── стартовая страница Safari: перекрасить и собрать с текущими обоями ───
 recolor "$DOTFILES/safari/start.html" "$GEN/start.tmpl.html"
 "$DOTFILES/safari/start.sh" || true
+# таблица стилей Safari — рядом со стартовой страницей (эту папку Safari читает из песочницы)
+recolor "$DOTFILES/safari/user.css" "$GEN/start/user.css"
 
 # ─── delta (git diff): цвета подключаются в .gitconfig через [include] ───
 recolor "$DOTFILES/git/delta.gitconfig" "$GEN/delta.gitconfig.tmp"

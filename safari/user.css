@@ -1,5 +1,29 @@
-/* Таблица стилей Safari для всех сайтов: Настройки → Дополнения → Таблица стилей → этот файл.
-   Только шрифт кода: обычный текст сайты рисуют своими шрифтами, иконочные шрифты не ломаются */
+/* Таблица стилей Safari для всех сайтов. Цвета записаны палитрой Rosé Pine — theme (themes/apply.sh)
+   перекрашивает их под текущую тему в ~/.cache/dotfiles-theme/start/user.css: его и выбрать в Safari.
+   Только то, что не ломает сайты: фон и текст страниц не трогаем, иконочные шрифты тоже. */
+
+/* шрифт кода — как в терминале */
 code, kbd, pre, samp, tt {
   font-family: "JetBrains Mono", ui-monospace, monospace !important;
+}
+
+/* выделение — полупрозрачный акцент темы: текст читается и на светлых, и на тёмных сайтах */
+::selection {
+  background: color-mix(in srgb, #ebbcba 45%, transparent) !important;
+}
+
+/* каретка в полях ввода — цвет курсора Ghostty */
+input, textarea, [contenteditable] {
+  caret-color: #ebbcba;
+}
+
+/* чекбоксы, радио, ползунки, прогресс — акцент темы вместо системного */
+:root {
+  accent-color: #ebbcba;
+}
+
+/* фокус с клавиатуры (Tab) — рамка цвета рамки промпта */
+:focus-visible {
+  outline: 2px solid #c4a7e7;
+  outline-offset: 2px;
 }

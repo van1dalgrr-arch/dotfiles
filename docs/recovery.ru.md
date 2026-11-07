@@ -47,7 +47,7 @@
 ## Приложения не из Brewfile
 
 Поставлены с сайтов, из App Store или brew-командой мимо `Brewfile`; `dot doctor --deep` показывает их как «нет в Brewfile»:
-Telegram, Discord, Яндекс Музыка, Happ, ChatGPT, Claude, GitHub Desktop, JetBrains Toolbox, UTM, Rectangle, Hammerspoon.
+Telegram, Discord, Яндекс Музыка, Happ, ChatGPT, Claude, GitHub Desktop, JetBrains Toolbox, UTM.
 Нужное постоянно — лучше внести в `Brewfile` (`cask "telegram"` и т.п.), тогда тоже вернётся само.
 
 ## Что пропадает

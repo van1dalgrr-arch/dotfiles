@@ -47,7 +47,7 @@ Optional: `make devops` (kind, OpenTofu, tflint…).
 ## Apps not in the Brewfile
 
 Installed from websites, the App Store or a brew command that skipped the `Brewfile`; `dot doctor --deep` lists them as "not in Brewfile":
-Telegram, Discord, Yandex Music, Happ, ChatGPT, Claude, GitHub Desktop, JetBrains Toolbox, UTM, Rectangle, Hammerspoon.
+Telegram, Discord, Yandex Music, Happ, ChatGPT, Claude, GitHub Desktop, JetBrains Toolbox, UTM.
 Anything you always need is better added to the `Brewfile` (`cask "telegram"` and so on) — then it comes back by itself too.
 
 ## What's lost

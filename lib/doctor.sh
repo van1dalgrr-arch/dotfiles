@@ -239,9 +239,9 @@ doc_editors() {
     if ! defaults read com.apple.Safari >/dev/null 2>&1; then
         info "Safari: шрифт кода не проверить без «Полного доступа к диску»"
     elif [ "$(defaults read com.apple.Safari UserStyleSheetEnabled 2>/dev/null)" = 1 ] &&
-       [ "$(defaults read com.apple.Safari UserStyleSheetLocationURLString 2>/dev/null)" = "file://$DOTFILES/safari/user.css" ]; then
-        pass "Safari: шрифт кода из safari/user.css"
-    else warning "Safari: шрифт кода не подключён" "→ safari/README.ru.md"; fi
+       [ "$(defaults read com.apple.Safari UserStyleSheetLocationURLString 2>/dev/null)" = "file://$HOME/.cache/dotfiles-theme/start/user.css" ]; then
+        pass "Safari: таблица стилей темы (шрифт кода, выделение, акцент)"
+    else warning "Safari: таблица стилей темы не подключена" "→ safari/README.ru.md"; fi
     if [ "$deep" = 1 ]; then
         local f bad=""
         if has python3; then
