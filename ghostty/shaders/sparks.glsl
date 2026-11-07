@@ -4,13 +4,16 @@
 const float LIFE  = 0.42;   // сек, сколько живёт искра
 const int   COUNT = 7;      // искр на одно нажатие
 
+// ownvim пометил свою вкладку ("animations": { "terminal": false } в settings.jsonc): 255-й цвет — #ff00ff
+bool ownvimQuiet() { return distance(iPalette[255], vec3(1.0, 0.0, 1.0)) < 0.05; }
+
 float hash(float n) { return fract(sin(n) * 43758.5453); }
 
 void mainImage(out vec4 fragColor, in vec2 fragCoord) {
     fragColor = texture(iChannel0, fragCoord / iResolution.xy);
 
     float age = iTime - iTimeCursorChange;
-    if (age >= LIFE || iFocus == 0) return;
+    if (age >= LIFE || iFocus == 0 || ownvimQuiet()) return;
 
     vec4 cur = iCurrentCursor, prev = iPreviousCursor;
     float cell = max(cur.w, 1.0);

@@ -5,6 +5,9 @@ const float BASE_DURATION = 0.07;   // сек на короткий шаг (од
 const float PER_CELL      = 0.012;  // + за каждую клетку расстояния
 const float MAX_DURATION  = 0.16;
 
+// ownvim пометил свою вкладку ("animations": { "terminal": false } в settings.jsonc): 255-й цвет — #ff00ff
+bool ownvimQuiet() { return distance(iPalette[255], vec3(1.0, 0.0, 1.0)) < 0.05; }
+
 float easeOut(float x) { return 1.0 - pow(1.0 - x, 3.0); }
 
 // маска прямоугольника с мягким краем; r.xy — левый верхний угол (ось y вверх), r.zw — размер
@@ -25,7 +28,7 @@ void mainImage(out vec4 fragColor, in vec2 fragCoord) {
     float dist = distance(cur.xy, prev.xy);
     float dur  = min(BASE_DURATION + PER_CELL * dist / cell, MAX_DURATION);
     float t    = clamp((iTime - iTimeCursorChange) / dur, 0.0, 1.0);
-    bool moving = t < 1.0 && dist > 0.5 && prev.z > 0.5;
+    bool moving = t < 1.0 && !ownvimQuiet() && dist > 0.5 && prev.z > 0.5;
 
     // мигание — как решил Ghostty; во время движения курсор виден всегда
     if (iCursorVisible == 0 && !moving) return;

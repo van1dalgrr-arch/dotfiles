@@ -3,6 +3,9 @@
 
 const float DURATION = 0.28;                       // сек
 
+// ownvim пометил свою вкладку ("animations": { "terminal": false } в settings.jsonc): 255-й цвет — #ff00ff
+bool ownvimQuiet() { return distance(iPalette[255], vec3(1.0, 0.0, 1.0)) < 0.05; }
+
 float easeOut(float x) { return 1.0 - pow(1.0 - x, 3.0); }
 
 // Расстояние до отрезка a→b; h — позиция вдоль отрезка (0..1)
@@ -21,7 +24,7 @@ void mainImage(out vec4 fragColor, in vec2 fragCoord) {
     float cell = max(iCurrentCursor.w, 1.0);
 
     float t = clamp((iTime - iTimeCursorChange) / DURATION, 0.0, 1.0);
-    if (t >= 1.0 || distance(cur, prev) < cell * 1.5) return;
+    if (t >= 1.0 || ownvimQuiet() || distance(cur, prev) < cell * 1.5) return;
 
     // хвост догоняет курсор
     vec2 tail = mix(prev, cur, easeOut(t));

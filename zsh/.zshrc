@@ -447,3 +447,4 @@ source "$HOME/dotfiles/zsh/reminders.zsh"
 
 source "$HOME/dotfiles/zsh/greeting.zsh"
 
+export DOCKER_HOST=unix://$HOME/.orbstack/run/docker.sock
